@@ -1,0 +1,14 @@
+---
+import Layout from '../layouts/Layout.astro';
+import { ContactForm } from '../components/Contact/ContactForm';
+---
+
+<Layout title="お問い合わせ | マイブログ">
+  <div class="max-w-2xl mx-auto">
+    <h1 class="text-3xl font-bold mb-6">お問い合わせ</h1>
+    <p class="text-gray-600 dark:text-gray-400 mb-8">
+      ご質問やお問い合わせがありましたら、以下のフォームからご連絡ください。できるだけ早くご返信いたします。
+    </p>
+    <ContactForm client:load />
+  </div>
+</Layout>

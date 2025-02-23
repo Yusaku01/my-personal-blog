@@ -1,0 +1,30 @@
+---
+import { getCollection } from 'astro:content';
+import Layout from '../../layouts/Layout.astro';
+import { PostCard, BlogControls } from '../../components/Blog';
+import SectionHeading from '../../components/SectionHeading.astro';
+import { getQiitaPosts } from '../../lib/api-clients/qiita';
+
+const posts = await getCollection('blog');
+const qiitaPosts = await getQiitaPosts('ngtnysk');
+
+const allPosts = [
+  ...posts.map(post => ({
+    title: post.data.title,
+    url: `/blog/${post.slug}`,
+    publishDate: post.data.publishDate,
+    excerpt: post.data.description,
+    thumbnail: post.data.image,
+    isExternal: false,
+    tags: post.data.tags || []
+  })),
+  ...qiitaPosts
+];
+---
+
+<Layout title="ブログ | マイブログ">
+  <div class="max-w-7xl mx-auto">
+    <SectionHeading title="記事一覧" className="text-4xl font-bold mb-8" />
+    <BlogControls client:load posts={allPosts} />
+  </div>
+</Layout>

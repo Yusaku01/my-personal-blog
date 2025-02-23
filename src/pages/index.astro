@@ -1,0 +1,62 @@
+---
+import { getCollection } from 'astro:content';
+import Layout from '../layouts/Layout.astro';
+import { PostCard } from '../components/Blog/PostCard';
+import SectionHeading from '../components/SectionHeading.astro';
+import { getQiitaPosts } from '../lib/api-clients/qiita';
+
+const posts = await getCollection('blog');
+const qiitaPosts = await getQiitaPosts('ngtnysk');
+
+const allPosts = [
+  ...posts.map(post => ({
+    title: post.data.title,
+    url: `/blog/${post.slug}`,
+    publishDate: post.data.publishDate,
+    excerpt: post.data.description,
+    thumbnail: post.data.image,
+    isExternal: false
+  })),
+  ...qiitaPosts
+].sort((a, b) => b.publishDate.getTime() - a.publishDate.getTime());
+
+const POSTS_PER_SECTION = 4;
+---
+
+<Layout title="ホーム | マイブログ">
+  <div class="max-w-7xl mx-auto">
+    <section class="mb-12">
+      <h1 class="text-4xl font-bold mb-8">ようこそマイブログへ</h1>
+      <p class="text-lg text-gray-600">
+        技術、プログラミング、その他の話題について共有する場所です。
+      </p>
+    </section>
+
+    <section class="mb-12">
+      <SectionHeading title="最新の記事" />
+      <div class="grid gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-4">
+        {allPosts.slice(0, POSTS_PER_SECTION).map(post => (
+          <PostCard
+            client:load
+            title={post.title}
+            url={post.url}
+            publishDate={post.publishDate}
+            excerpt={post.excerpt}
+            platform={post.platform}
+            isExternal={post.isExternal}
+            thumbnail={post.thumbnail}
+          />
+        ))}
+      </div>
+      
+      <div class="text-center mt-8">
+        <a
+          href="/blog"
+          class="inline-block bg-blue-600 text-white px-6 py-2 rounded-md hover:bg-blue-700 transition-colors"
+        >
+          すべての記事を見る
+        </a>
+      </div>
+    </section>
+  </div>
+</Layout>
