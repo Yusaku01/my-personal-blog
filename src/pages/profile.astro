@@ -3,44 +3,40 @@ import Layout from '../layouts/Layout.astro';
 import ProfileSection from '../components/ProfileSection.astro';
 
 const profile = {
-  name: "あなたの名前",
-  role: "ソフトウェア開発者",
-  avatar: "/images/profile-avatar.jpg",
-  coverImage: "/images/profile-cover.jpg",
-  bio: "高速で使いやすいアプリケーションの構築に特に関心を持つ、情熱的なソフトウェア開発者です。",
-  skills: [
-    "TypeScript",
-    "React",
-    "Node.js",
-    "Astro",
-    "TailwindCSS"
-  ],
+  name: 'あなたの名前',
+  role: 'ソフトウェア開発者',
+  avatar: '/images/profile-avatar.jpg',
+  coverImage: '/images/profile-cover.jpg',
+  bio: '高速で使いやすいアプリケーションの構築に特に関心を持つ、情熱的なソフトウェア開発者です。',
+  skills: ['TypeScript', 'React', 'Node.js', 'Astro', 'TailwindCSS'],
   socialLinks: [
-    { name: "GitHub", url: "https://github.com/yourusername" },
-    { name: "Twitter", url: "https://twitter.com/yourusername" },
-    { name: "LinkedIn", url: "https://linkedin.com/in/yourusername" }
-  ]
+    { name: 'GitHub', url: 'https://github.com/yourusername' },
+    { name: 'Twitter', url: 'https://twitter.com/yourusername' },
+    { name: 'LinkedIn', url: 'https://linkedin.com/in/yourusername' },
+  ],
 };
 ---
 
-<Layout title="プロフィール | マイブログ">
+<Layout title="PROFILE" showHero={false}>
   <div class="max-w-4xl mx-auto">
     <div class="bg-white rounded-lg shadow-sm overflow-hidden">
       <div class="h-32 relative">
-        <img 
-          src={profile.coverImage} 
+        <img
+          src={profile.coverImage}
           alt="カバー画像"
           class="w-full h-full object-cover"
           width="800"
           height="128"
         />
       </div>
-      
+
       <div class="px-6 py-4">
         <div class="flex items-center gap-4 mb-6">
-          <div class="w-16 h-16 rounded-full overflow-hidden -mt-10 border-4 border-white relative z-10">
-            <img 
-              src={profile.avatar} 
+          <div
+            class="w-16 h-16 rounded-full overflow-hidden -mt-10 border-4 border-white relative z-10"
+          >
+            <img
+              src={profile.avatar}
               alt={profile.name}
               class="w-full h-full object-cover"
               width="64"
@@ -59,26 +55,30 @@ const profile = {
 
         <ProfileSection title="スキル">
           <div class="flex flex-wrap gap-2">
-            {profile.skills.map(skill => (
-              <span class="bg-gray-100 text-gray-700 px-3 py-1 rounded-full text-xs">
-                {skill}
-              </span>
-            ))}
+            {
+              profile.skills.map((skill) => (
+                <span class="bg-gray-100 text-gray-700 px-3 py-1 rounded-full text-xs">
+                  {skill}
+                </span>
+              ))
+            }
           </div>
         </ProfileSection>
 
         <ProfileSection title="SNS" className="mb-0">
           <div class="flex justify-center gap-4">
-            {profile.socialLinks.map(link => (
-              <a
-                href={link.url}
-                target="_blank"
-                rel="noopener noreferrer"
-                class="text-blue-600 hover:text-blue-800 transition-colors text-sm"
-              >
-                {link.name}
-              </a>
-            ))}
+            {
+              profile.socialLinks.map((link) => (
+                <a
+                  href={link.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="text-blue-600 hover:text-blue-800 transition-colors text-sm"
+                >
+                  {link.name}
+                </a>
+              ))
+            }
           </div>
         </ProfileSection>
       </div>

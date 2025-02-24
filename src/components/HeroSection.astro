@@ -1,0 +1,26 @@
+---
+interface Props {
+  showHero?: boolean;
+  title?: string;
+}
+
+const { showHero = true, title = 'SAKUSPACE' } = Astro.props;
+---
+
+{
+  showHero && (
+    <div class="hero-section relative bg-white py-24 sm:py-32" role="banner">
+      <div class="max-w-4xl mx-auto px-4 text-center">
+        <h1 class="text-3xl sm:text-4xl font-light tracking-[0.3em] mb-4 text-gray-900">{title}</h1>
+      </div>
+    </div>
+  )
+}
+
+<!-- <style>
+  .hero-section {
+    background-color: bg-gray-50;
+    background-size: cover;
+    background-position: center;
+  }
+</style> -->

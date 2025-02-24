@@ -15,8 +15,10 @@
 │   ├── components
 │   │   ├── Blog
 │   │   ├── Contact
+│   │   ├── ui
 │   │   ├── Footer.astro
 │   │   ├── Header.astro
+│   │   ├── HeroSection.astro
 │   │   ├── ProfileSection.astro
 │   │   ├── SectionHeading.astro
 │   │   ├── TableOfContents.astro
@@ -49,7 +51,7 @@
 ├── tailwind.config.mjs
 └── tsconfig.json
 
-18 directories, 25 files
+19 directories, 26 files
 
 ```
 

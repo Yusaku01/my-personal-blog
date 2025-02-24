@@ -1,7 +1,8 @@
 ---
 import { getCollection } from 'astro:content';
 import Layout from '../../layouts/Layout.astro';
-import { PostCard, BlogControls } from '../../components/Blog';
+import { BlogControls } from '../../components/Blog';
+import HeroSection from '../../components/HeroSection.astro';
 import SectionHeading from '../../components/SectionHeading.astro';
 import { getQiitaPosts } from '../../lib/api-clients/qiita';
 
@@ -9,22 +10,23 @@ const posts = await getCollection('blog');
 const qiitaPosts = await getQiitaPosts('ngtnysk');
 
 const allPosts = [
-  ...posts.map(post => ({
+  ...posts.map((post) => ({
     title: post.data.title,
     url: `/blog/${post.slug}`,
     publishDate: post.data.publishDate,
     excerpt: post.data.description,
     thumbnail: post.data.image,
     isExternal: false,
-    tags: post.data.tags || []
+    tags: post.data.tags || [],
   })),
-  ...qiitaPosts
+  ...qiitaPosts,
 ];
 ---
 
-<Layout title="ブログ | マイブログ">
+<Layout title="BLOG | マイブログ">
+  <HeroSection title="BLOG" />
   <div class="max-w-7xl mx-auto">
-    <SectionHeading title="記事一覧" className="text-4xl font-bold mb-8" />
+    <SectionHeading title="" className="text-4xl font-bold mb-8" />
     <BlogControls client:load posts={allPosts} />
   </div>
 </Layout>

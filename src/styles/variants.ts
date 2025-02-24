@@ -39,6 +39,13 @@ export const input = tv({
       md: 'px-3 py-2 text-base',
       lg: 'px-4 py-3 text-lg',
     },
+    rounded: {
+      sm: 'rounded',
+      md: 'rounded-md',
+      lg: 'rounded-lg',
+      full: 'rounded-full',
+      none: 'rounded-none',
+    },
     disabled: {
       true: 'bg-gray-100 cursor-not-allowed',
     },

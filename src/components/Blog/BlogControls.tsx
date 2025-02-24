@@ -1,6 +1,6 @@
 import React, { useState, useMemo } from 'react';
 import { PostCard } from './PostCard';
-import { input, button } from '../../styles/variants';
+import { input } from '../../styles/variants';
 import type { Post } from '../../types';
 
 interface BlogControlsProps {
@@ -16,12 +16,12 @@ export const BlogControls: React.FC<BlogControlsProps> = ({ posts }) => {
 
   const filteredPosts = useMemo(() => {
     return posts
-      .filter(post => {
+      .filter((post) => {
         const searchLower = searchQuery.toLowerCase();
         return (
           post.title.toLowerCase().includes(searchLower) ||
           post.excerpt?.toLowerCase().includes(searchLower) ||
-          post.tags?.some(tag => tag.toLowerCase().includes(searchLower))
+          post.tags?.some((tag) => tag.toLowerCase().includes(searchLower))
         );
       })
       .sort((a, b) => new Date(b.publishDate).getTime() - new Date(a.publishDate).getTime());
@@ -29,19 +29,19 @@ export const BlogControls: React.FC<BlogControlsProps> = ({ posts }) => {
 
   return (
     <div>
-      <form onSubmit={handleSubmit} className="mb-6 flex gap-4 items-center">
-        <div className="flex-1">
+      <form onSubmit={handleSubmit} className="mb-10 max-w-xl mx-auto relative">
+        <div className="w-full">
           <input
             type="search"
-            placeholder="記事を検索..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className={input()}
+            placeholder="検索キーワードを入力してください"
+            className="w-full px-4 py-2 border border-gray-200 rounded-md focus:outline-none focus:ring-2 focus:ring-[#333] dark:bg-gray-800 dark:border-gray-700"
           />
         </div>
         <button
           type="submit"
-          className={button()}
+          className="absolute top-0 right-0 px-4 py-2 text-sm bg-[#333] text-white hover:opacity-70 transition-all duration-300 rounded-r-md h-full"
         >
           検索する
         </button>
@@ -55,7 +55,7 @@ export const BlogControls: React.FC<BlogControlsProps> = ({ posts }) => {
         </div>
       ) : (
         <div className="grid gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-4">
-          {filteredPosts.map(post => (
+          {filteredPosts.map((post) => (
             <PostCard key={post.url} {...post} />
           ))}
         </div>

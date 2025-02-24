@@ -7,7 +7,7 @@ interface Props {
   description?: string;
 }
 
-const { title, description = "個人ブログとポートフォリオ" } = Astro.props;
+const { title, description = '個人ブログとポートフォリオ' } = Astro.props;
 ---
 
 <!doctype html>
@@ -26,20 +26,22 @@ const { title, description = "個人ブログとポートフォリオ" } = Astro
         }
         return 'light';
       })();
-      
+
       if (theme === 'dark') {
         document.documentElement.classList.add('dark');
       } else {
         document.documentElement.classList.remove('dark');
       }
-      
+
       window.localStorage.setItem('theme', theme);
     </script>
     <slot name="head" />
   </head>
-  <body class="min-h-screen bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-gray-100 transition-colors flex flex-col">
+  <body
+    class="min-h-screen bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 transition-colors flex flex-col"
+  >
     <Header />
-    <main class="container mx-auto px-4 py-8 flex-grow">
+    <main class="flex-grow">
       <slot />
     </main>
     <Footer />
