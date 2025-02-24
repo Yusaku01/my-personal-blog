@@ -22,6 +22,7 @@
 │   │   ├── ProfileSection.astro
 │   │   ├── SectionHeading.astro
 │   │   ├── TableOfContents.astro
+│   │   ├── ThemeToggle.astro
 │   │   └── ViewToggle.tsx
 │   ├── content
 │   │   ├── blog
@@ -30,7 +31,6 @@
 │   │   └── Layout.astro
 │   ├── lib
 │   │   ├── api-clients
-│   │   ├── styles
 │   │   └── utils
 │   ├── pages
 │   │   ├── blog
@@ -51,7 +51,7 @@
 ├── tailwind.config.mjs
 └── tsconfig.json
 
-19 directories, 26 files
+18 directories, 27 files
 
 ```
 
