@@ -17,6 +17,8 @@ const allPosts = [
     excerpt: post.data.description,
     thumbnail: post.data.image,
     isExternal: false,
+    tags: post.data.tags || [],
+    platform: '',
   })),
   ...qiitaPosts,
 ].sort((a, b) => b.publishDate.getTime() - a.publishDate.getTime());
@@ -25,9 +27,9 @@ const POSTS_PER_SECTION = 4;
 ---
 
 <Layout title="SAKUSPACE">
-  <HeroSection title="SAKUSPACE" />
+  <HeroSection title="SAKUSPACE" isHome={true} />
   <div class="content-section py-16">
-    <div class="max-w-7xl mx-auto px-4">
+    <div class="max-w-5xl mx-auto px-4">
       <section class="mb-16">
         <SectionHeading title="最新の記事" />
         <div class="grid gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-4">
@@ -44,6 +46,7 @@ const POSTS_PER_SECTION = 4;
                   platform={post.platform}
                   isExternal={post.isExternal}
                   thumbnail={post.thumbnail}
+                  tags={post.tags}
                 />
               ))
           }
@@ -52,7 +55,7 @@ const POSTS_PER_SECTION = 4;
         <div class="text-center mt-8">
           <a
             href="/blog"
-            class="inline-block bg-gray-900 text-white px-6 py-2 rounded-md hover:bg-gray-800 transition-colors"
+            class="px-6 py-3 bg-[#333] text-white rounded-md hover:opacity-70 transition-all duration-300 dark:bg-white dark:text-[#333] font-bold leading-loose"
           >
             すべての記事を見る
           </a>
