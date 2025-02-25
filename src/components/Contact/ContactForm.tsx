@@ -1,7 +1,7 @@
 import React from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { contactFormSchema, type ContactForm as ContactFormData } from '../../types';
+import { contactFormSchema, type ContactForm as ContactFormData } from '../../types/index';
 import { submitContactForm } from '../../lib/api-clients/contact';
 import { button, input } from '../../styles/variants';
 
@@ -29,7 +29,7 @@ export const ContactForm: React.FC = () => {
   return (
     <form
       onSubmit={handleSubmit(onSubmit)}
-      className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-sm space-y-6"
+      className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-sm pt-6 pb-14"
     >
       <div>
         <label

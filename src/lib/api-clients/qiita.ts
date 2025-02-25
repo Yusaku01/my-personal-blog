@@ -1,4 +1,4 @@
-import { type ExternalPost } from '../../types';
+import { type ExternalPost } from '../../types/index';
 import { getOGPImage } from '../utils/ogp';
 
 const CACHE_DURATION = 60 * 60 * 1000; // 1時間

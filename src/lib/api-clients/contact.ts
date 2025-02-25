@@ -1,4 +1,4 @@
-import { type ContactForm } from '../../types';
+import { type ContactForm } from '../../types/index';
 
 const FORM_ENDPOINT = process.env.CONTACT_FORM_ENDPOINT || 'https://ssgform.com/s/xxxxx';
 

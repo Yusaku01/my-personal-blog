@@ -1,10 +1,10 @@
 import { tv } from 'tailwind-variants';
-import type { Post } from '../../types';
+import type { Post } from '../../types/index';
 
-interface PostCardProps extends Post {}
+type PostCardProps = Post;
 
 const article = tv({
-  base: 'bg-white dark:bg-gray-800 rounded-lg shadow-sm overflow-hidden hover:shadow-md transition-shadow',
+  base: 'bg-white dark:bg-[#222] rounded-lg shadow-sm overflow-hidden hover:shadow-md transition-shadow border border-gray-200 dark:border-gray-700',
 });
 
 const link = tv({
@@ -43,8 +43,8 @@ const tagContainer = tv({
   base: 'flex flex-wrap gap-2',
 });
 
-const tag = tv({
-  base: 'text-xs text-gray-600 dark:text-gray-400',
+const tagStyle = tv({
+  base: 'text-xs text-gray-600 dark:text-gray-400 border border-gray-200 dark:border-gray-700 rounded-lg px-2',
 });
 
 export function PostCard({
@@ -53,46 +53,38 @@ export function PostCard({
   publishDate,
   excerpt,
   thumbnail,
-  platform,
   isExternal,
   tags = [],
+  ...props
 }: PostCardProps) {
-  const formattedDate = new Date(publishDate).toLocaleDateString('ja-JP', {
-    year: 'numeric',
-    month: 'long',
-    day: 'numeric',
-  });
+  const platform = isExternal ? (props as { platform: string }).platform : undefined;
 
   return (
     <article className={article()}>
       <a
         href={url}
         className={link()}
-        {...(isExternal ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
+        target={isExternal ? '_blank' : '_self'}
+        rel={isExternal ? 'noopener noreferrer' : ''}
       >
-        <div className={imageWrapper()}>
-          <img
-            src={thumbnail}
-            alt={title}
-            className={image()}
-            loading="lazy"
-            width={320}
-            height={180}
-          />
-        </div>
+        {thumbnail && (
+          <div className={imageWrapper()}>
+            <img src={thumbnail} alt={title} className={image()} />
+          </div>
+        )}
         <div className={content()}>
-          <h3 className={titleStyle()}>{title}</h3>
+          <h2 className={titleStyle()}>{title}</h2>
           <div className={meta()}>
-            <p className={dateStyle()}>
-              {formattedDate}
-              {platform && ` • ${platform}に投稿`}
-            </p>
+            <time dateTime={publishDate.toISOString()} className={dateStyle()}>
+              {new Date(publishDate).toLocaleDateString('ja-JP')}
+              {isExternal && platform && ` ${platform} に投稿`}
+            </time>
             {excerpt && <p className={excerptStyle()}>{excerpt}</p>}
             {tags.length > 0 && (
               <div className={tagContainer()}>
-                {tags.map((tagName) => (
-                  <span key={tagName} className={tag()}>
-                    #{tagName}
+                {tags.map((tag) => (
+                  <span key={tag} className={tagStyle()}>
+                    #{tag}
                   </span>
                 ))}
               </div>
