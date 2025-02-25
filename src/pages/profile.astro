@@ -1,5 +1,6 @@
 ---
 import Layout from '../layouts/Layout.astro';
+import HeroSection from '../components/HeroSection.astro';
 import ProfileSection from '../components/ProfileSection.astro';
 
 const profile = {
@@ -10,14 +11,16 @@ const profile = {
   bio: '高速で使いやすいアプリケーションの構築に特に関心を持つ、情熱的なソフトウェア開発者です。',
   skills: ['TypeScript', 'React', 'Node.js', 'Astro', 'TailwindCSS'],
   socialLinks: [
-    { name: 'GitHub', url: 'https://github.com/yourusername' },
-    { name: 'Twitter', url: 'https://twitter.com/yourusername' },
-    { name: 'LinkedIn', url: 'https://linkedin.com/in/yourusername' },
+    { name: 'GitHub', url: 'https://github.com/Yusaku01' },
+    { name: 'X', url: 'https://x.com/Saku37215349' },
+    { name: 'LinkedIn', url: 'https://www.linkedin.com/in/yusaku-nagatani-9325ab238/' },
+    { name: 'Qiita', url: 'https://qiita.com/ngtnysk' },
   ],
 };
 ---
 
-<Layout title="PROFILE" showHero={false}>
+<Layout title="PROFILE">
+  <HeroSection title="PROFILE" isHome={false} />
   <div class="max-w-4xl mx-auto">
     <div class="bg-white rounded-lg shadow-sm overflow-hidden">
       <div class="h-32 relative">
