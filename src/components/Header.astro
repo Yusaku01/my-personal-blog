@@ -4,6 +4,7 @@ import ThemeToggle from './ThemeToggle.astro';
 const { pathname } = Astro.url;
 
 const navItems = [
+  { href: '/', text: 'HOME' },
   { href: '/blog', text: 'BLOG' },
   { href: '/profile', text: 'PROFILE' },
   { href: '/contact', text: 'CONTACT' },
@@ -11,7 +12,7 @@ const navItems = [
 ---
 
 <header
-  class="fixed top-0 left-0 right-0 z-50 bg-white/95 backdrop-blur-sm dark:bg-gray-800/95 border-b border-gray-200 dark:border-gray-700 transition-all duration-300"
+  class="fixed top-0 left-0 right-0 z-50 bg-white/95 backdrop-blur-sm dark:bg-[#333] border-b border-gray-200 dark:border-gray-700 transition-all duration-300"
   id="header"
 >
   <div class="container mx-auto px-4">
@@ -21,6 +22,55 @@ const navItems = [
       </a>
 
       <nav class="flex items-center gap-4">
+        <!-- デスクトップナビゲーション -->
+        <div class="hidden lg:flex items-center gap-4">
+          {
+            navItems.map((item) => {
+              const isActive =
+                pathname === item.href || (item.href === '/blog' && pathname.startsWith('/blog/'));
+
+              return (
+                <a
+                  href={item.href}
+                  class={`px-4 py-2 text-[#333] dark:text-white relative group hover:bg-[#333] hover:text-white transition-colors duration-300 ${
+                    isActive
+                      ? 'after:content-[""] after:absolute after:left-0 after:right-0 after:bottom-0 after:h-0.5 after:bg-[#333] dark:after:bg-white'
+                      : ''
+                  }`}
+                >
+                  {item.text}
+                </a>
+              );
+            })
+          }
+        </div>
+
+        <!-- モバイルメニューボタン -->
+        <button
+          id="menuButton"
+          class="lg:hidden px-4 py-2 text-[#333] dark:text-white hover:bg-[#333] hover:text-white transition-colors duration-300"
+        >
+          MENU
+        </button>
+
+        <ThemeToggle />
+      </nav>
+    </div>
+  </div>
+
+  <!-- モバイルメニュー -->
+  <div
+    id="mobileMenu"
+    class="fixed inset-0 bg-white/95 dark:bg-gray-800/95 backdrop-blur-sm transform translate-x-full transition-transform duration-300 lg:hidden"
+  >
+    <div class="mx-auto px-4 py-8 bg-white z-[9999] h-screen">
+      <button
+        id="closeButton"
+        class="absolute top-4 right-4 p-2 text-[#333] dark:text-white hover:bg-[#333] hover:text-white transition-colors duration-300"
+      >
+        ✕
+      </button>
+      <div class="flex flex-col items-center gap-6 mt-16">
         {
           navItems.map((item) => {
             const isActive =
@@ -29,10 +79,8 @@ const navItems = [
             return (
               <a
                 href={item.href}
-                class={`px-4 py-2 text-[#333] dark:text-white relative group hover:bg-[#333] hover:text-white transition-colors duration-300 ${
-                  isActive
-                    ? 'after:content-[""] after:absolute after:left-0 after:right-0 after:bottom-0 after:h-0.5 after:bg-[#333] dark:after:bg-white'
-                    : ''
+                class={`px-4 py-2 text-[#333] dark:text-white text-xl ${
+                  isActive ? 'font-bold' : ''
                 }`}
               >
                 {item.text}
@@ -40,8 +88,7 @@ const navItems = [
             );
           })
         }
-        <ThemeToggle />
-      </nav>
+      </div>
     </div>
   </div>
 </header>
@@ -50,8 +97,12 @@ const navItems = [
 
 <script>
   const header = document.getElementById('header');
+  const menuButton = document.getElementById('menuButton');
+  const closeButton = document.getElementById('closeButton');
+  const mobileMenu = document.getElementById('mobileMenu');
   let lastScroll = 0;
 
+  // ヘッダーのスクロール制御
   window.addEventListener('scroll', () => {
     const currentScroll = window.pageYOffset;
 
@@ -60,14 +111,31 @@ const navItems = [
     }
 
     if (currentScroll > lastScroll && currentScroll > 80) {
-      // Scrolling down & past header
       header?.classList.add('-translate-y-full');
     } else {
-      // Scrolling up
       header?.classList.remove('-translate-y-full');
     }
 
     lastScroll = currentScroll;
+  });
+
+  // モバイルメニューの制御
+  menuButton?.addEventListener('click', () => {
+    mobileMenu?.classList.remove('translate-x-full');
+    document.body.style.overflow = 'hidden';
+  });
+
+  closeButton?.addEventListener('click', () => {
+    mobileMenu?.classList.add('translate-x-full');
+    document.body.style.overflow = '';
+  });
+
+  // モバイルメニューのリンククリック時に自動で閉じる
+  mobileMenu?.querySelectorAll('a').forEach((link) => {
+    link.addEventListener('click', () => {
+      mobileMenu.classList.add('translate-x-full');
+      document.body.style.overflow = '';
+    });
   });
 
   const themeToggle = document.getElementById('themeToggle');

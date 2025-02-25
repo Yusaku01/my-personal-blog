@@ -4,7 +4,8 @@ export const button = tv({
   base: 'transition-colors font-medium shadow-sm hover:shadow focus:outline-none focus:ring-2 focus:ring-offset-2',
   variants: {
     color: {
-      primary: 'bg-blue-600 text-white hover:bg-blue-700 focus:ring-blue-500',
+      primary:
+        'px-6 py-3 bg-[#333] text-white rounded-md hover:opacity-70 transition-all duration-300 dark:bg-white dark:text-[#333] font-bold leading-loose',
       secondary: 'bg-gray-200 text-gray-700 hover:bg-gray-300 focus:ring-gray-500',
     },
     size: {
