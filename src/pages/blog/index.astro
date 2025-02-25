@@ -3,7 +3,7 @@ import { getCollection } from 'astro:content';
 import Layout from '../../layouts/Layout.astro';
 import { BlogControls } from '../../components/Blog';
 import HeroSection from '../../components/HeroSection.astro';
-import SectionHeading from '../../components/SectionHeading.astro';
+// import SectionHeading from '../../components/SectionHeading.astro';
 import { getQiitaPosts } from '../../lib/api-clients/qiita';
 
 const posts = await getCollection('blog');
@@ -16,7 +16,8 @@ const allPosts = [
     publishDate: post.data.publishDate,
     excerpt: post.data.description,
     thumbnail: post.data.image,
-    isExternal: false,
+    isExternal: false as const,
+    platform: 'blog' as const,
     tags: post.data.tags || [],
   })),
   ...qiitaPosts,
@@ -24,9 +25,9 @@ const allPosts = [
 ---
 
 <Layout title="BLOG | マイブログ">
-  <HeroSection title="BLOG" />
-  <div class="max-w-7xl mx-auto">
-    <SectionHeading title="" className="text-4xl font-bold mb-8" />
+  <HeroSection title="BLOG" isHome={false} />
+  <div class="max-w-5xl mx-auto pb-14 px-5 lg:px-0 -mt-4">
+    <!-- <SectionHeading title="BLOG" className="text-4xl font-bold mb-8" /> -->
     <BlogControls client:load posts={allPosts} />
   </div>
 </Layout>
