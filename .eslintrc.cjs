@@ -44,7 +44,15 @@ module.exports = {
       },
       rules: {
         'astro/no-set-html-directive': 'error',
+        // Astroファイルではclassを使うので無効化
+        'react/no-unknown-property': ['error', { 
+          ignore: ['class', 'class:list', 'is:inline', 'is:global'] 
+        }],
+        // MapでJSX使う場合のkey警告を無効化
+        'react/jsx-key': 'off',
       },
     },
   ],
+  // distディレクトリを無視
+  ignorePatterns: ['dist/**/*', 'node_modules/**/*'],
 }

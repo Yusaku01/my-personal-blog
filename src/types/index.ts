@@ -5,7 +5,7 @@ export const contactFormSchema = z.object({
   name: z.string().min(1, { message: '名前を入力してください' }),
   email: z.string().email({ message: '有効なメールアドレスを入力してください' }),
   subject: z.string().min(1, { message: '件名を入力してください' }),
-  message: z.string().min(1, { message: 'メッセージを入力してください' })
+  message: z.string().min(1, { message: 'メッセージを入力してください' }),
 });
 
 export type ContactForm = z.infer<typeof contactFormSchema>;

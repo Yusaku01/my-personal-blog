@@ -15,16 +15,15 @@ const { headings } = Astro.props;
     <summary class="text-lg font-semibold mb-2 cursor-pointer">目次</summary>
     <nav class="toc">
       <ul class="space-y-1">
-        {headings.map(heading => (
-          <li class={`pl-${(heading.depth - 1) * 4}`}>
-            <a
-              href={`#${heading.slug}`}
-              class="text-blue-600 hover:text-blue-800 text-sm"
-            >
-              {heading.text}
-            </a>
-          </li>
-        ))}
+        {
+          headings.map((heading) => (
+            <li class={`pl-${(heading.depth - 1) * 4}`}>
+              <a href={`#${heading.slug}`} class="text-blue-600 hover:text-blue-800 text-sm">
+                {heading.text}
+              </a>
+            </li>
+          ))
+        }
       </ul>
     </nav>
   </details>
@@ -35,22 +34,22 @@ const { headings } = Astro.props;
     list-style-type: none;
     padding: 0;
   }
-  
+
   details > summary {
     list-style: none;
   }
-  
+
   details > summary::-webkit-details-marker {
     display: none;
   }
-  
+
   details > summary::before {
     content: '▼';
     margin-right: 0.5em;
     display: inline-block;
     transition: transform 0.2s;
   }
-  
+
   details[open] > summary::before {
     transform: rotate(180deg);
   }

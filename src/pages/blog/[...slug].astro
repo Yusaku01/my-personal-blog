@@ -6,7 +6,7 @@ import { format } from 'date-fns';
 
 export async function getStaticPaths() {
   const posts = await getCollection('blog');
-  return posts.map(post => ({
+  return posts.map((post) => ({
     params: { slug: post.slug },
     props: { post },
   }));
@@ -18,16 +18,18 @@ const { Content, headings } = await post.render();
 
 <Layout title={`${post.data.title} | Your Blog`}>
   <article class="max-w-4xl mx-auto">
-    {post.data.image && (
-      <img
-        src={post.data.image}
-        alt={post.data.title}
-        class="w-full h-64 object-cover rounded-lg mb-8"
-      />
-    )}
+    {
+      post.data.image && (
+        <img
+          src={post.data.image}
+          alt={post.data.title}
+          class="w-full h-64 object-cover rounded-lg mb-8"
+        />
+      )
+    }
 
     <h1 class="text-4xl font-bold mb-4">{post.data.title}</h1>
-    
+
     <div class="flex items-center gap-4 text-gray-600 mb-8">
       <span>{format(post.data.publishDate, 'MMMM d, yyyy')}</span>
       <span>•</span>
@@ -40,17 +42,17 @@ const { Content, headings } = await post.render();
       <Content />
     </div>
 
-    {post.data.tags.length > 0 && (
-      <div class="mt-8 pt-8 border-t">
-        <h2 class="text-xl font-semibold mb-4">Tags</h2>
-        <div class="flex flex-wrap gap-2">
-          {post.data.tags.map(tag => (
-            <span class="bg-gray-100 text-gray-700 px-3 py-1 rounded-full text-sm">
-              {tag}
-            </span>
-          ))}
+    {
+      post.data.tags.length > 0 && (
+        <div class="mt-8 pt-8 border-t">
+          <h2 class="text-xl font-semibold mb-4">Tags</h2>
+          <div class="flex flex-wrap gap-2">
+            {post.data.tags.map((tag) => (
+              <span class="bg-gray-100 text-gray-700 px-3 py-1 rounded-full text-sm">{tag}</span>
+            ))}
+          </div>
         </div>
-      </div>
-    )}
+      )
+    }
   </article>
 </Layout>

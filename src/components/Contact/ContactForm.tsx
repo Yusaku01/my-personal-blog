@@ -18,7 +18,7 @@ const FormInput = React.memo(
     id: keyof ContactFormData;
     label: string;
     type?: string;
-    register: any;
+    register: ReturnType<typeof useForm>['register'];
     error?: { message?: string };
     rows?: number;
   }) => {
@@ -103,8 +103,8 @@ export const ContactForm: React.FC = () => {
 
       try {
         // 非同期処理をstartTransitionの外側で実行
-        const result = await submitContactForm(data);
-        
+        await submitContactForm(data);
+
         // 状態更新のみをstartTransitionでラップ
         startTransition(() => {
           setFormStatus({ isSuccess: true, error: null });
@@ -152,7 +152,11 @@ export const ContactForm: React.FC = () => {
       <input type="hidden" name="_csrf" value="token" />
 
       <div className="mt-6">
-        <FormStatus isPending={isPending} isSuccess={formStatus.isSuccess} error={formStatus.error} />
+        <FormStatus
+          isPending={isPending}
+          isSuccess={formStatus.isSuccess}
+          error={formStatus.error}
+        />
       </div>
 
       <div className="mx-auto grid justify-center mt-8">
