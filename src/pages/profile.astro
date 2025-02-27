@@ -2,83 +2,134 @@
 import Layout from '../layouts/Layout.astro';
 import HeroSection from '../components/HeroSection.astro';
 import ProfileSection from '../components/ProfileSection.astro';
-
-const profile = {
-  name: 'あなたの名前',
-  role: 'ソフトウェア開発者',
-  avatar: '/images/profile-avatar.jpg',
-  coverImage: '/images/profile-cover.jpg',
-  bio: '高速で使いやすいアプリケーションの構築に特に関心を持つ、情熱的なソフトウェア開発者です。',
-  skills: ['TypeScript', 'React', 'Node.js', 'Astro', 'TailwindCSS'],
-  socialLinks: [
-    { name: 'GitHub', url: 'https://github.com/Yusaku01' },
-    { name: 'X', url: 'https://x.com/Saku37215349' },
-    { name: 'LinkedIn', url: 'https://www.linkedin.com/in/yusaku-nagatani-9325ab238/' },
-    { name: 'Qiita', url: 'https://qiita.com/ngtnysk' },
-  ],
-};
+import { ProfileContent } from '../data/profileData.ts';
 ---
 
 <Layout title="PROFILE">
   <HeroSection title="PROFILE" isHome={false} />
-  <div class="max-w-4xl mx-auto">
-    <div class="bg-white rounded-lg shadow-sm overflow-hidden">
-      <div class="h-32 relative">
+
+  <div class="max-w-4xl mx-auto px-4 py-8">
+    <div class="bg-white dark:bg-gray-800 rounded-xl shadow-md overflow-hidden">
+      <!-- カバー画像セクション -->
+      <div class="h-48 md:h-64 relative">
         <img
-          src={profile.coverImage}
+          src={ProfileContent.coverImage}
           alt="カバー画像"
           class="w-full h-full object-cover"
-          width="800"
-          height="128"
+          width="1000"
+          height="250"
         />
       </div>
 
-      <div class="px-6 py-4">
-        <div class="flex items-center gap-4 mb-6">
+      <div class="px-6 py-8">
+        <!-- プロフィールヘッダー -->
+        <div class="flex flex-col md:flex-row items-center md:items-start gap-6 mb-8">
+          <!-- プロフィール画像 -->
           <div
-            class="w-16 h-16 rounded-full overflow-hidden -mt-10 border-4 border-white relative z-10"
+            class="w-28 h-28 rounded-full overflow-hidden -mt-16 border-4 border-white dark:border-gray-800 shadow-md relative z-10 bg-white dark:bg-gray-700"
           >
             <img
-              src={profile.avatar}
-              alt={profile.name}
+              src={ProfileContent.avatar}
+              alt={ProfileContent.name}
               class="w-full h-full object-cover"
-              width="64"
-              height="64"
+              width="112"
+              height="112"
             />
           </div>
-          <div>
-            <h1 class="text-2xl font-bold text-gray-900">{profile.name}</h1>
-            <p class="text-gray-600">{profile.role}</p>
+          <!-- 名前と肩書き -->
+          <div class="text-center md:text-left">
+            <h1 class="text-3xl font-bold text-gray-900 dark:text-white">{ProfileContent.name}</h1>
+            <p class="text-xl text-gray-600 dark:text-gray-300 mt-1">{ProfileContent.role}</p>
           </div>
         </div>
 
-        <ProfileSection title="自己紹介">
-          <p class="text-gray-700 leading-relaxed text-sm">{profile.bio}</p>
+        <!-- 自己紹介セクション -->
+        <ProfileSection title="自己紹介" className="mb-10">
+          <p class="text-gray-700 dark:text-gray-300 leading-relaxed">
+            {ProfileContent.bio}
+          </p>
         </ProfileSection>
 
-        <ProfileSection title="スキル">
-          <div class="flex flex-wrap gap-2">
-            {
-              profile.skills.map((skill) => (
-                <span class="bg-gray-100 text-gray-700 px-3 py-1 rounded-full text-xs">
-                  {skill}
-                </span>
-              ))
-            }
+        <!-- スキルセクション -->
+        <ProfileSection title="スキル" className="mb-10">
+          <!-- 業務スキル -->
+          <div class="mb-8">
+            <div class="flex items-center gap-3 mb-4">
+              <h3 class="text-lg font-semibold text-gray-800 dark:text-gray-200">業務経験</h3>
+              <div class="h-px flex-grow bg-gray-200 dark:bg-gray-700"></div>
+            </div>
+
+            <div class="grid grid-cols-1 gap-4">
+              {
+                ProfileContent.professionalSkills.map((skill) => (
+                  <div class="bg-white dark:bg-gray-750 rounded-lg shadow-sm border border-gray-100 dark:border-gray-700 p-4 transition-all hover:shadow-md">
+                    <div class="flex items-center justify-between mb-2">
+                      <h4 class="text-lg font-medium text-gray-900 dark:text-white">
+                        {skill.name}
+                      </h4>
+                      <span class="bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 px-3 py-1 text-xs rounded-full">
+                        {skill.years}年の経験
+                      </span>
+                    </div>
+
+                    <div class="text-sm text-gray-600 dark:text-gray-300">{skill.details}</div>
+                  </div>
+                ))
+              }
+            </div>
+          </div>
+
+          <!-- 個人開発スキル -->
+          <div>
+            <div class="flex items-center gap-3 mb-4">
+              <h3 class="text-lg font-semibold text-gray-800 dark:text-gray-200">個人開発・学習</h3>
+              <div class="h-px flex-grow bg-gray-200 dark:bg-gray-700"></div>
+            </div>
+
+            <div class="grid grid-cols-1 gap-4">
+              {
+                ProfileContent.personalSkills.map((skill) => (
+                  <div class="bg-white dark:bg-gray-750 rounded-lg shadow-sm border border-gray-100 dark:border-gray-700 p-4 transition-all hover:shadow-md">
+                    <div class="flex items-center justify-between mb-2">
+                      <h4 class="text-lg font-medium text-gray-900 dark:text-white">
+                        {skill.name}
+                      </h4>
+                      <span class="bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 px-3 py-1 text-xs rounded-full">
+                        {skill.years}年の経験
+                      </span>
+                    </div>
+
+                    <div class="text-sm text-gray-600 dark:text-gray-300">{skill.details}</div>
+                  </div>
+                ))
+              }
+            </div>
           </div>
         </ProfileSection>
 
+        <!-- SNSセクション -->
         <ProfileSection title="SNS" className="mb-0">
-          <div class="flex justify-center gap-4">
+          <div class="flex flex-wrap justify-center gap-8">
             {
-              profile.socialLinks.map((link) => (
+              ProfileContent.socialLinks.map((link) => (
                 <a
                   href={link.url}
                   target="_blank"
                   rel="noopener noreferrer"
-                  class="text-blue-600 hover:text-blue-800 transition-colors text-sm"
+                  class="transition-transform hover:scale-110"
+                  title={link.name}
+                  aria-label={`${link.name}プロフィールへ`}
                 >
-                  {link.name}
+                  <img
+                    src={link.iconLight}
+                    alt={link.name}
+                    class={`${link.class} block dark:hidden`}
+                  />
+                  <img
+                    src={link.iconDark}
+                    alt={link.name}
+                    class={`${link.class} hidden dark:block`}
+                  />
                 </a>
               ))
             }
