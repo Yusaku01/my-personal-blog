@@ -1,7 +1,9 @@
 import React, { useCallback, useState, useTransition } from 'react';
 import { useForm } from 'react-hook-form';
+import type { UseFormRegister } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { contactFormSchema, type ContactForm as ContactFormData } from '../../types/index';
+import { contactFormSchema } from '../../types/index';
+import type { ContactForm as ContactFormData } from '../../types/index';
 import { submitContactForm } from '../../lib/api-clients/contact';
 import { button, input } from '../../styles/variants';
 
@@ -18,7 +20,7 @@ const FormInput = React.memo(
     id: keyof ContactFormData;
     label: string;
     type?: string;
-    register: ReturnType<typeof useForm>['register'];
+    register: UseFormRegister<ContactFormData>;
     error?: { message?: string };
     rows?: number;
   }) => {

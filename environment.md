@@ -7,6 +7,15 @@
 ```text
 .
 ├── public
+│   ├── images
+│   │   ├── astro-tutorial.jpg
+│   │   ├── icon_github-dark.svg
+│   │   ├── icon_github-light.svg
+│   │   ├── icon_linkedin.svg
+│   │   ├── icon_qiita.png
+│   │   ├── icon_x-dark.svg
+│   │   ├── icon_x-light.svg
+│   │   └── img_profile.png
 │   └── favicon.svg
 ├── src
 │   ├── assets
@@ -27,6 +36,8 @@
 │   ├── content
 │   │   ├── blog
 │   │   └── config.ts
+│   ├── data
+│   │   └── profileData.ts
 │   ├── layouts
 │   │   └── Layout.astro
 │   ├── lib
@@ -51,7 +62,7 @@
 ├── tailwind.config.mjs
 └── tsconfig.json
 
-18 directories, 27 files
+20 directories, 36 files
 
 ```
 
