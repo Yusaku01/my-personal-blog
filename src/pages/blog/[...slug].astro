@@ -17,42 +17,51 @@ const { Content, headings } = await post.render();
 ---
 
 <Layout title={`${post.data.title} | Your Blog`}>
-  <article class="max-w-4xl mx-auto">
+  <article class="max-w-4xl mx-auto px-4 py-20">
+    <!-- 1. Title -->
+    <h1 class="text-4xl font-bold mb-6">{post.data.title}</h1>
+
+    <!-- 2. Thumbnail Image -->
     {
       post.data.image && (
-        <img
-          src={post.data.image}
-          alt={post.data.title}
-          class="w-full h-64 object-cover rounded-lg mb-8"
-        />
+        <div class="mb-6">
+          <img
+            src={post.data.image}
+            alt={post.data.title}
+            class="w-full h-72 object-cover rounded-lg"
+          />
+        </div>
       )
     }
 
-    <h1 class="text-4xl font-bold mb-4">{post.data.title}</h1>
-
-    <div class="flex items-center gap-4 text-gray-600 mb-8">
-      <span>{format(post.data.publishDate, 'MMMM d, yyyy')}</span>
-      <span>•</span>
-      <span>{post.data.author}</span>
-    </div>
-
-    <TableOfContents headings={headings} />
-
-    <div class="prose prose-lg max-w-none">
-      <Content />
-    </div>
-
+    <!-- 3. Tags -->
     {
       post.data.tags.length > 0 && (
-        <div class="mt-8 pt-8 border-t">
-          <h2 class="text-xl font-semibold mb-4">Tags</h2>
+        <div class="mb-5">
           <div class="flex flex-wrap gap-2">
             {post.data.tags.map((tag) => (
-              <span class="bg-gray-100 text-gray-700 px-3 py-1 rounded-full text-sm">{tag}</span>
+              <span class="bg-gray-100 text-gray-700 px-3 py-1 rounded-full text-sm font-medium">
+                {tag}
+              </span>
             ))}
           </div>
         </div>
       )
     }
+
+    <!-- 4. Publish Date and Author -->
+    <div class="flex items-center gap-4 text-gray-600 mb-8 text-sm">
+      <span>{format(post.data.publishDate, 'MMMM d, yyyy')}</span>
+      <span>•</span>
+      <span>{post.data.author}</span>
+    </div>
+
+    <!-- 5. Table of Contents -->
+    <TableOfContents headings={headings} />
+
+    <!-- 6. Content -->
+    <div class="prose prose-lg max-w-none prose-headings:font-bold prose-a:text-blue-600">
+      <Content />
+    </div>
   </article>
 </Layout>
