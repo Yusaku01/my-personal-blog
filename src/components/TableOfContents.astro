@@ -8,17 +8,31 @@ interface Props {
 }
 
 const { headings } = Astro.props;
+
+// TableOfContentsコンポーネント固有のスタイル
+const tocStyles = {
+  container: 'bg-gray-50 p-4 rounded-lg mb-8 dark:bg-gray-800',
+  summary: 'text-lg font-semibold cursor-pointer list-none flex items-center',
+  arrow: 'mr-2 inline-block transition-transform duration-200',
+  nav: 'mt-2',
+  list: 'space-y-1 list-none p-0',
+  getItemIndent: (depth: number) => `pl-${(depth - 1) * 4}`,
+  link: 'text-blue-600 hover:text-blue-800 text-sm dark:text-blue-400 dark:hover:text-blue-300',
+};
 ---
 
-<div class="bg-gray-50 p-4 rounded-lg mb-8">
-  <details>
-    <summary class="text-lg font-semibold cursor-pointer">目次</summary>
-    <nav class="toc">
-      <ul class="space-y-1">
+<div class={tocStyles.container}>
+  <details class="toc-details">
+    <summary class={tocStyles.summary}>
+      <span class={`toc-arrow ${tocStyles.arrow}`}>▼</span>
+      目次
+    </summary>
+    <nav class={tocStyles.nav}>
+      <ul class={tocStyles.list}>
         {
           headings.map((heading) => (
-            <li class={`pl-${(heading.depth - 1) * 4}`}>
-              <a href={`#${heading.slug}`} class="text-blue-600 hover:text-blue-800 text-sm">
+            <li class={tocStyles.getItemIndent(heading.depth)}>
+              <a href={`#${heading.slug}`} class={tocStyles.link}>
                 {heading.text}
               </a>
             </li>
@@ -30,27 +44,15 @@ const { headings } = Astro.props;
 </div>
 
 <style>
-  .toc ul {
-    list-style-type: none;
-    padding: 0;
+  .toc-arrow {
+    transition: transform 0.3s;
   }
 
-  details > summary {
-    list-style: none;
+  details[open] .toc-arrow {
+    transform: rotate(180deg);
   }
 
   details > summary::-webkit-details-marker {
     display: none;
-  }
-
-  details > summary::before {
-    content: '▼';
-    margin-right: 0.5em;
-    display: inline-block;
-    transition: transform 0.2s;
-  }
-
-  details[open] > summary::before {
-    transform: rotate(180deg);
   }
 </style>

@@ -24,7 +24,6 @@
 │   ├── components
 │   │   ├── Blog
 │   │   ├── Contact
-│   │   ├── ui
 │   │   ├── Footer.astro
 │   │   ├── Header.astro
 │   │   ├── HeroSection.astro
@@ -36,8 +35,6 @@
 │   ├── content
 │   │   ├── blog
 │   │   └── config.ts
-│   ├── data
-│   │   └── profileData.ts
 │   ├── layouts
 │   │   └── Layout.astro
 │   ├── lib
@@ -49,8 +46,7 @@
 │   │   ├── index.astro
 │   │   └── profile.astro
 │   ├── styles
-│   │   ├── post-card.css
-│   │   └── variants.ts
+│   │   └── unoVariants.ts
 │   ├── types
 │   │   └── index.ts
 │   └── env.d.ts
@@ -59,10 +55,10 @@
 ├── environment.md
 ├── package-lock.json
 ├── package.json
-├── tailwind.config.mjs
-└── tsconfig.json
+├── tsconfig.json
+└── uno.config.ts
 
-20 directories, 36 files
+18 directories, 34 files
 
 ```
 

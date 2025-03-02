@@ -1,32 +1,35 @@
 import { defineConfig } from 'astro/config';
-import tailwind from '@astrojs/tailwind';
 import mdx from '@astrojs/mdx';
 import react from '@astrojs/react';
+import UnoCSS from 'unocss/astro';
 
 export default defineConfig({
   integrations: [
-    tailwind(),
+    UnoCSS({
+      // UnoCSS設定はuno.config.tsから読み込まれます
+      injectReset: true, // CSSリセットを注入
+    }),
     mdx(),
-    react()
+    react(),
   ],
   markdown: {
     shikiConfig: {
-      theme: 'dracula'
-    }
+      theme: 'dracula',
+    },
   },
   prefetch: {
     prefetchAll: true,
-    defaultStrategy: 'hover'
+    defaultStrategy: 'hover',
   },
   build: {
-    inlineStylesheets: 'auto'
+    inlineStylesheets: 'auto',
   },
   vite: {
     build: {
-      cssCodeSplit: false
+      cssCodeSplit: false,
     },
     ssr: {
-      noExternal: ['date-fns']
-    }
-  }
+      noExternal: ['date-fns'],
+    },
+  },
 });

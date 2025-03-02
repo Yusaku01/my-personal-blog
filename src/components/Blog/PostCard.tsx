@@ -1,51 +1,21 @@
-import { tv } from 'tailwind-variants';
 import type { Post } from '../../types/index';
 
 type PostCardProps = Post;
 
-const article = tv({
-  base: 'bg-white dark:bg-[#222] rounded-lg shadow-sm overflow-hidden hover:shadow-md transition-shadow border border-gray-200 dark:border-gray-700',
-});
-
-const link = tv({
-  base: 'block',
-});
-
-const imageWrapper = tv({
-  base: 'relative aspect-video',
-});
-
-const image = tv({
-  base: 'w-full h-full object-cover',
-});
-
-const content = tv({
-  base: 'p-4',
-});
-
-const titleStyle = tv({
-  base: 'text-lg font-medium text-gray-900 dark:text-white mb-2 line-clamp-2',
-});
-
-const meta = tv({
-  base: 'space-y-2',
-});
-
-const dateStyle = tv({
-  base: 'text-sm text-gray-600 dark:text-gray-400',
-});
-
-const excerptStyle = tv({
-  base: 'text-sm text-gray-600 dark:text-gray-400 line-clamp-2',
-});
-
-const tagContainer = tv({
-  base: 'flex flex-wrap gap-2',
-});
-
-const tagStyle = tv({
-  base: 'text-xs text-gray-600 dark:text-gray-400 border border-gray-200 dark:border-gray-700 rounded-lg px-2',
-});
+// PostCardコンポーネント固有のスタイル
+const postCardStyles = {
+  article:
+    'bg-white dark:bg-gray-800 rounded-lg shadow-sm overflow-hidden border border-gray-200 dark:border-gray-700 transition-all duration-200 h-full hover:shadow-md',
+  link: 'block',
+  imageContainer: 'relative aspect-video',
+  image: 'w-full h-full object-cover',
+  contentContainer: 'p-4',
+  title: 'text-lg font-semibold text-gray-900 dark:text-white line-clamp-2 leading-tight',
+  date: 'text-sm text-gray-600 dark:text-gray-400',
+  excerpt: 'text-sm text-gray-600 dark:text-gray-400 line-clamp-2',
+  tagContainer: 'flex flex-wrap gap-2',
+  tag: 'inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-[#f2f2f2] dark:bg-gray-700 text-[#333] dark:text-gray-200',
+};
 
 export function PostCard({
   title,
@@ -60,30 +30,60 @@ export function PostCard({
   const platform = isExternal ? (props as { platform: string }).platform : undefined;
 
   return (
-    <article className={article()}>
+    <article className={postCardStyles.article}>
+      <style>
+        {`
+          /* リスト表示時のスタイル */
+          .list-view article a {
+            @apply flex-row items-start;
+          }
+
+          .list-view .list-view-image {
+            @apply w-64 pt-0 flex-shrink-0;
+          }
+
+          .list-view .list-view-content {
+            @apply flex-1 min-w-0;
+          }
+
+          .list-view article {
+            @apply w-full;
+          }
+
+          /* 画像のアスペクト比を維持 */
+          .list-view-image {
+            aspect-ratio: 16 / 9;
+          }
+
+          /* グリッド表示時の画像サイズ調整 */
+          .grid article .list-view-image {
+            @apply w-full;
+          }
+        `}
+      </style>
       <a
         href={url}
-        className={link()}
+        className={postCardStyles.link}
         target={isExternal ? '_blank' : '_self'}
         rel={isExternal ? 'noopener noreferrer' : ''}
       >
         {thumbnail && (
-          <div className={imageWrapper()}>
-            <img src={thumbnail} alt={title} className={image()} />
+          <div className={postCardStyles.imageContainer}>
+            <img src={thumbnail} alt={title} className={postCardStyles.image} />
           </div>
         )}
-        <div className={content()}>
-          <h2 className={titleStyle()}>{title}</h2>
-          <div className={meta()}>
-            <time dateTime={publishDate.toISOString()} className={dateStyle()}>
+        <div className={postCardStyles.contentContainer}>
+          <h2 className={postCardStyles.title}>{title}</h2>
+          <div className="space-y-2">
+            <time dateTime={publishDate.toISOString()} className={postCardStyles.date}>
               {new Date(publishDate).toLocaleDateString('ja-JP')}
               {isExternal && platform && ` ${platform} に投稿`}
             </time>
-            {excerpt && <p className={excerptStyle()}>{excerpt}</p>}
+            {excerpt && <p className={postCardStyles.excerpt}>{excerpt}</p>}
             {tags.length > 0 && (
-              <div className={tagContainer()}>
+              <div className={postCardStyles.tagContainer}>
                 {tags.map((tag) => (
-                  <span key={tag} className={tagStyle()}>
+                  <span key={tag} className={postCardStyles.tag}>
                     #{tag}
                   </span>
                 ))}

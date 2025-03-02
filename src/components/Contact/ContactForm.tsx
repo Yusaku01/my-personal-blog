@@ -5,7 +5,28 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { contactFormSchema } from '../../types/index';
 import type { ContactForm as ContactFormData } from '../../types/index';
 import { submitContactForm } from '../../lib/api-clients/contact';
-import { button, input } from '../../styles/variants';
+import { button, input } from '../../styles/unoVariants';
+
+// FormInputコンポーネント固有のスタイル
+const formInputStyles = {
+  container: 'mb-6',
+  label: 'block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2',
+  errorMessage: 'mt-1 text-sm text-red-600',
+};
+
+// FormStatusコンポーネント固有のスタイル
+const formStatusStyles = {
+  pending: 'mt-2 text-blue-600',
+  success: 'mt-2 text-green-600',
+  error: 'mt-2 text-red-600',
+};
+
+// ContactFormコンポーネント固有のスタイル
+const contactFormStyles = {
+  form: 'bg-white dark:bg-[#222] p-6 rounded-lg shadow-sm pt-6 pb-14 space-y-3',
+  statusContainer: 'mt-6',
+  buttonContainer: 'mx-auto grid justify-center mt-8',
+};
 
 // FormInput コンポーネントで入力フィールドの責務を分離
 const FormInput = React.memo(
@@ -27,11 +48,8 @@ const FormInput = React.memo(
     const InputComponent = rows ? 'textarea' : 'input';
 
     return (
-      <div className="mb-6">
-        <label
-          htmlFor={id}
-          className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2"
-        >
+      <div className={formInputStyles.container}>
+        <label htmlFor={id} className={formInputStyles.label}>
           {label}
         </label>
         <InputComponent
@@ -41,7 +59,7 @@ const FormInput = React.memo(
           rows={rows}
           className={input({ color: error ? 'error' : 'primary' })}
         />
-        {error && <p className="mt-1 text-sm text-red-600">{error.message}</p>}
+        {error && <p className={formInputStyles.errorMessage}>{error.message}</p>}
       </div>
     );
   }
@@ -61,15 +79,15 @@ const FormStatus = React.memo(
     error: string | null;
   }) => {
     if (isPending) {
-      return <div className="mt-2 text-blue-600">処理中です。しばらくお待ちください...</div>;
+      return <div className={formStatusStyles.pending}>処理中です。しばらくお待ちください...</div>;
     }
 
     if (isSuccess) {
-      return <div className="mt-2 text-green-600">お問い合わせを送信しました！</div>;
+      return <div className={formStatusStyles.success}>お問い合わせを送信しました！</div>;
     }
 
     if (error) {
-      return <div className="mt-2 text-red-600">{error}</div>;
+      return <div className={formStatusStyles.error}>{error}</div>;
     }
 
     return null;
@@ -127,10 +145,7 @@ export const ContactForm: React.FC = () => {
   );
 
   return (
-    <form
-      onSubmit={handleSubmit(onSubmit)}
-      className="bg-white dark:bg-[#222] p-6 rounded-lg shadow-sm pt-6 pb-14 space-y-3"
-    >
+    <form onSubmit={handleSubmit(onSubmit)} className={contactFormStyles.form}>
       <FormInput id="name" label="お名前" register={register} error={errors.name} />
 
       <FormInput
@@ -153,7 +168,7 @@ export const ContactForm: React.FC = () => {
 
       <input type="hidden" name="_csrf" value="token" />
 
-      <div className="mt-6">
+      <div className={contactFormStyles.statusContainer}>
         <FormStatus
           isPending={isPending}
           isSuccess={formStatus.isSuccess}
@@ -161,7 +176,7 @@ export const ContactForm: React.FC = () => {
         />
       </div>
 
-      <div className="mx-auto grid justify-center mt-8">
+      <div className={contactFormStyles.buttonContainer}>
         <button
           type="submit"
           disabled={isSubmitting || isPending}

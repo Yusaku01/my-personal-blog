@@ -1,10 +1,16 @@
 ---
+import { heading } from '../styles/unoVariants';
+
 interface Props {
   title: string;
   className?: string;
+  size?: 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6';
+  marginBottom?: 'sm' | 'md' | 'lg' | 'xl';
 }
 
-const { title, className = 'mb-6' } = Astro.props;
+const { title, className = '', size = 'h2', marginBottom = 'md' } = Astro.props;
+
+const classes = heading({ size, marginBottom, className });
 ---
 
-<h2 class={`text-2xl font-semibold ${className}`}>{title}</h2>
+<h2 class={classes}>{title}</h2>

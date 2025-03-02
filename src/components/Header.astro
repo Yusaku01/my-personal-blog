@@ -9,35 +9,51 @@ const navItems = [
   { href: '/profile', text: 'PROFILE' },
   { href: '/contact', text: 'CONTACT' },
 ];
+
+// Headerコンポーネント固有のスタイル
+const headerStyles = {
+  header:
+    'fixed w-full top-0 bg-white dark:bg-[#111] z-50 shadow-sm transition-transform duration-300',
+  container: 'container mx-auto px-4',
+  wrapper: 'flex items-center justify-between h-16',
+  logo: 'text-xl font-light tracking-[0.2em] text-gray-900 dark:text-white',
+  nav: 'flex items-center gap-4',
+  desktopNav: 'hidden lg:flex items-center gap-4',
+  desktopNavLink: (isActive: boolean) =>
+    `px-4 py-2 text-[#333] dark:text-white relative group hover:bg-[#333] hover:text-white transition-colors duration-300 ${
+      isActive
+        ? 'after:content-[""] after:absolute after:left-0 after:right-0 after:bottom-0 after:h-0.5 after:bg-[#333] dark:after:bg-white'
+        : ''
+    }`,
+  menuButton:
+    'lg:hidden px-4 py-2 text-[#333] dark:text-white hover:bg-[#333] hover:text-white transition-colors duration-300',
+  mobileMenu:
+    'fixed inset-0 bg-white/95 dark:bg-gray-800/95 backdrop-blur-sm transform translate-x-full transition-transform duration-300 z-50',
+  mobileMenuContainer: 'mx-auto px-4 py-8 bg-white z-[9999] h-screen',
+  closeButton:
+    'absolute top-4 right-4 p-2 text-[#333] dark:text-white hover:bg-[#333] hover:text-white transition-colors duration-300',
+  mobileMenuNav: 'flex flex-col items-center gap-6 mt-16',
+  mobileNavLink: (isActive: boolean) =>
+    `px-4 py-2 text-[#333] dark:text-white text-xl ${isActive ? 'font-bold' : ''}`,
+  spacer: 'h-16',
+};
 ---
 
-<header
-  class="fixed top-0 left-0 right-0 z-50 bg-white/95 backdrop-blur-sm dark:bg-[#333] border-b border-gray-200 dark:border-gray-700 transition-all duration-300"
-  id="header"
->
-  <div class="container mx-auto px-4">
-    <div class="flex items-center justify-between h-16">
-      <a href="/" class="text-xl font-light tracking-[0.2em] text-gray-900 dark:text-white">
-        SAKUSPACE
-      </a>
+<header class={headerStyles.header} id="header">
+  <div class={headerStyles.container}>
+    <div class={headerStyles.wrapper}>
+      <a href="/" class={headerStyles.logo}> SAKUSPACE</a>
 
-      <nav class="flex items-center gap-4">
+      <nav class={headerStyles.nav}>
         <!-- デスクトップナビゲーション -->
-        <div class="hidden lg:flex items-center gap-4">
+        <div class={headerStyles.desktopNav}>
           {
             navItems.map((item) => {
               const isActive =
                 pathname === item.href || (item.href === '/blog' && pathname.startsWith('/blog/'));
 
               return (
-                <a
-                  href={item.href}
-                  class={`px-4 py-2 text-[#333] dark:text-white relative group hover:bg-[#333] hover:text-white transition-colors duration-300 ${
-                    isActive
-                      ? 'after:content-[""] after:absolute after:left-0 after:right-0 after:bottom-0 after:h-0.5 after:bg-[#333] dark:after:bg-white'
-                      : ''
-                  }`}
-                >
+                <a href={item.href} class={headerStyles.desktopNavLink(isActive)}>
                   {item.text}
                 </a>
               );
@@ -46,12 +62,7 @@ const navItems = [
         </div>
 
         <!-- モバイルメニューボタン -->
-        <button
-          id="menuButton"
-          class="lg:hidden px-4 py-2 text-[#333] dark:text-white hover:bg-[#333] hover:text-white transition-colors duration-300"
-        >
-          MENU
-        </button>
+        <button id="menuButton" class={headerStyles.menuButton}> MENU</button>
 
         <ThemeToggle />
       </nav>
@@ -59,30 +70,17 @@ const navItems = [
   </div>
 
   <!-- モバイルメニュー -->
-  <div
-    id="mobileMenu"
-    class="fixed inset-0 bg-white/95 dark:bg-gray-800/95 backdrop-blur-sm transform translate-x-full transition-transform duration-300 lg:hidden"
-  >
-    <div class="mx-auto px-4 py-8 bg-white z-[9999] h-screen">
-      <button
-        id="closeButton"
-        class="absolute top-4 right-4 p-2 text-[#333] dark:text-white hover:bg-[#333] hover:text-white transition-colors duration-300"
-      >
-        ✕
-      </button>
-      <div class="flex flex-col items-center gap-6 mt-16">
+  <div id="mobileMenu" class={headerStyles.mobileMenu}>
+    <div class={headerStyles.mobileMenuContainer}>
+      <button id="closeButton" class={headerStyles.closeButton}> ✕</button>
+      <div class={headerStyles.mobileMenuNav}>
         {
           navItems.map((item) => {
             const isActive =
               pathname === item.href || (item.href === '/blog' && pathname.startsWith('/blog/'));
 
             return (
-              <a
-                href={item.href}
-                class={`px-4 py-2 text-[#333] dark:text-white text-xl ${
-                  isActive ? 'font-bold' : ''
-                }`}
-              >
+              <a href={item.href} class={headerStyles.mobileNavLink(isActive)}>
                 {item.text}
               </a>
             );
@@ -93,7 +91,7 @@ const navItems = [
   </div>
 </header>
 
-<div class="h-16"></div>
+<div class={headerStyles.spacer}></div>
 
 <script>
   const header = document.getElementById('header');

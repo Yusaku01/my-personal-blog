@@ -87,7 +87,7 @@ export const ProfileContent = {
       url: 'https://github.com/Yusaku01',
       iconLight: '/images/icon_github-light.svg',
       iconDark: '/images/icon_github-dark.svg',
-      class: 'w-6 h-6',
+      class: 'w-5 h-5',
     },
     {
       name: 'X',

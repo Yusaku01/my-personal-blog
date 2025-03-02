@@ -1,16 +1,20 @@
 ---
+import { heading } from '../styles/unoVariants';
+
 interface Props {
   title: string;
   className?: string;
 }
 
 const { title, className = 'mb-8' } = Astro.props;
+const headingClasses = heading({
+  size: 'h2',
+  className: 'pb-2 border-b border-gray-200 dark:border-gray-700',
+});
 ---
 
 <div class={className}>
-  <h2
-    class="text-2xl font-bold text-gray-800 dark:text-gray-200 mb-4 pb-2 border-b border-gray-200 dark:border-gray-700"
-  >
+  <h2 class={headingClasses}>
     {title}
   </h2>
   <div class="mt-3">
