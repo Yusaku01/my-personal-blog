@@ -8,14 +8,14 @@
 - プロフィールページ
 - コンタクトフォーム
 - レスポンシブデザイン
-- Tailwind CSSによるスタイリング
+- UnoCSSによるスタイリング
 - TypeScriptサポート
 
 ## 🚀 技術スタック
 
 - [Astro](https://astro.build/) - 静的サイトジェネレーター
 - [TypeScript](https://www.typescriptlang.org/) - 型安全な開発
-- [Tailwind CSS](https://tailwindcss.com/) - スタイリング
+- [UnoCSS](https://unocss.dev/) - スタイリング
 - [date-fns](https://date-fns.org/) - 日付操作
 - React（一部コンポーネント）
 
