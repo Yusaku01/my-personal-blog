@@ -9,7 +9,7 @@ import { ProfileContent } from '../lib/utils/profileData';
   <HeroSection title="PROFILE" isHome={false} />
 
   <div class="max-w-4xl mx-auto px-4 py-8">
-    <div class="bg-white dark:bg-gray-800 rounded-xl shadow-md overflow-hidden">
+    <div class="bg-white dark:bg-[#222] rounded-xl shadow-md overflow-hidden">
       <!-- カバー画像セクション -->
       <div class="h-48 md:h-64 relative">
         <img
@@ -64,15 +64,15 @@ import { ProfileContent } from '../lib/utils/profileData';
                 ProfileContent.professionalSkills.map((skill) => (
                   <div class="bg-white dark:bg-gray-750 rounded-lg shadow-sm border border-gray-100 dark:border-gray-700 p-4 transition-all hover:shadow-md">
                     <div class="flex items-center justify-between mb-2">
-                      <h4 class="text-lg font-medium text-gray-900 dark:text-white">
+                      <h4 class="text-lg font-medium text-gray-900 dark:text-[#222]">
                         {skill.name}
                       </h4>
-                      <span class="bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 px-3 py-1 text-xs rounded-full">
+                      <span class="bg-gray-100 dark:bg-[#222] text-gray-700 dark:text-gray-300 px-3 py-1 text-xs rounded-full">
                         {skill.years}年の経験
                       </span>
                     </div>
 
-                    <div class="text-sm text-gray-600 dark:text-gray-300">{skill.details}</div>
+                    <div class="text-sm text-gray-600 dark:text-[#222]">{skill.details}</div>
                   </div>
                 ))
               }
@@ -91,15 +91,15 @@ import { ProfileContent } from '../lib/utils/profileData';
                 ProfileContent.personalSkills.map((skill) => (
                   <div class="bg-white dark:bg-gray-750 rounded-lg shadow-sm border border-gray-100 dark:border-gray-700 p-4 transition-all hover:shadow-md">
                     <div class="flex items-center justify-between mb-2">
-                      <h4 class="text-lg font-medium text-gray-900 dark:text-white">
+                      <h4 class="text-lg font-medium text-gray-900 dark:text-[#222]">
                         {skill.name}
                       </h4>
-                      <span class="bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 px-3 py-1 text-xs rounded-full">
+                      <span class="bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-white px-3 py-1 text-xs rounded-full">
                         {skill.years}年の経験
                       </span>
                     </div>
 
-                    <div class="text-sm text-gray-600 dark:text-gray-300">{skill.details}</div>
+                    <div class="text-sm text-gray-600 dark:text-[#222]">{skill.details}</div>
                   </div>
                 ))
               }

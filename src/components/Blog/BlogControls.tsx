@@ -6,9 +6,9 @@ import type { Post } from '../../types/index';
 const styles = {
   searchForm: 'mb-8 max-w-xl mx-auto relative',
   searchInput:
-    'w-full px-4 py-2 border border-gray-200 rounded-md focus:outline-none focus:ring-2 focus:ring-[#333] bg-white dark:bg-white dark:border-none',
+    'w-full px-4 py-2 border border-gray-200 rounded-md focus:outline-none focus:ring-2 focus:ring-[#333] bg-white dark:bg-white dark:border-none dark:text-[#222]',
   searchButton:
-    'absolute top-0 right-0 px-4 py-2 text-sm bg-[#333] text-white hover:opacity-70 transition-all duration-300 rounded-r-md h-full font-bold leading-loose dark:border-none',
+    'absolute top-0 right-0 px-4 py-2 text-sm bg-[#111] text-white hover:opacity-70 transition-all duration-300 rounded-r-md h-full font-bold leading-loose dark:border-none',
   postGrid: 'grid gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-4',
   loadMoreButton:
     'px-6 py-2 bg-[#333] text-white rounded-md hover:opacity-70 transition-all duration-300 dark:bg-white dark:text-[#333] font-bold leading-loose',

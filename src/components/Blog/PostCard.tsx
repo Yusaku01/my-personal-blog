@@ -5,16 +5,16 @@ type PostCardProps = Post;
 // PostCardコンポーネント固有のスタイル
 const postCardStyles = {
   article:
-    'bg-white dark:bg-gray-800 rounded-lg shadow-sm overflow-hidden border border-gray-200 dark:border-gray-700 transition-all duration-200 h-full hover:shadow-md',
+    'bg-white dark:bg-[#222] rounded-lg shadow-sm overflow-hidden border border-gray-200 dark:border-gray-700 transition-all duration-200 h-full hover:shadow-md',
   link: 'block',
   imageContainer: 'relative aspect-video',
   image: 'w-full h-full object-cover',
   contentContainer: 'p-4',
-  title: 'text-lg font-semibold text-gray-900 dark:text-white line-clamp-2 leading-tight',
+  title: 'text-lg font-semibold text-gray-900 dark:text-white line-clamp-4 leading-tight',
   date: 'text-sm text-gray-600 dark:text-gray-400',
   excerpt: 'text-sm text-gray-600 dark:text-gray-400 line-clamp-2',
   tagContainer: 'flex flex-wrap gap-2',
-  tag: 'inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-[#f2f2f2] dark:bg-gray-700 text-[#333] dark:text-gray-200',
+  tag: 'inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-[#f2f2f2] dark:bg-[#333] text-[#333] dark:text-gray-200',
 };
 
 export function PostCard({
@@ -31,36 +31,6 @@ export function PostCard({
 
   return (
     <article className={postCardStyles.article}>
-      <style>
-        {`
-          /* リスト表示時のスタイル */
-          .list-view article a {
-            @apply flex-row items-start;
-          }
-
-          .list-view .list-view-image {
-            @apply w-64 pt-0 flex-shrink-0;
-          }
-
-          .list-view .list-view-content {
-            @apply flex-1 min-w-0;
-          }
-
-          .list-view article {
-            @apply w-full;
-          }
-
-          /* 画像のアスペクト比を維持 */
-          .list-view-image {
-            aspect-ratio: 16 / 9;
-          }
-
-          /* グリッド表示時の画像サイズ調整 */
-          .grid article .list-view-image {
-            @apply w-full;
-          }
-        `}
-      </style>
       <a
         href={url}
         className={postCardStyles.link}

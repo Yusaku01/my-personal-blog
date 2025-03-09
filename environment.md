@@ -67,7 +67,7 @@ _このファイルは自動的に生成・更新されます_
 ### 設定ファイル
 
 - `astro.config.mjs`: Astroの設定（プラグイン、統合など）
-- `uno.config.ts`: UnoCSSのカスタマイズ設定
+- `uno.config.ts`: UnoCSSの設定
 - `tsconfig.json`: TypeScriptのコンパイラ設定
 
 ### コアコンポーネント
