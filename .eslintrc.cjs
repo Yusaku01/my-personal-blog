@@ -55,6 +55,13 @@ module.exports = {
         'react/jsx-key': 'off',
       },
     },
+    // env.d.ts用のルール設定
+    {
+      files: ['src/env.d.ts'],
+      rules: {
+        '@typescript-eslint/triple-slash-reference': 'off'
+      }
+    }
   ],
   // distディレクトリを無視
   ignorePatterns: ['dist/**/*', 'node_modules/**/*'],
