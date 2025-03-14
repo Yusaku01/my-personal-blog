@@ -5,23 +5,22 @@ type PostCardProps = Post;
 // PostCardコンポーネント固有のスタイル
 const postCardStyles = {
   article:
-    'bg-white dark:bg-[#222] rounded-lg shadow-sm overflow-hidden border border-gray-200 dark:border-gray-700 transition-all duration-200 h-full hover:shadow-md',
+    'bg-gray-50 dark:bg-[#222] rounded-md overflow-hidden transition-all duration-200 h-full hover:shadow-md',
   link: 'block',
   imageContainer: 'relative aspect-video',
   image: 'w-full h-full object-cover',
   contentContainer: 'p-4',
-  title: 'text-lg font-semibold text-gray-900 dark:text-white line-clamp-4 leading-tight',
+  title: 'text-md font-semibold text-gray-900 dark:text-white line-clamp-4 leading-tight',
   date: 'text-sm text-gray-600 dark:text-gray-400',
   excerpt: 'text-sm text-gray-600 dark:text-gray-400 line-clamp-2',
   tagContainer: 'flex flex-wrap gap-2',
-  tag: 'inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-[#f2f2f2] dark:bg-[#333] text-[#333] dark:text-gray-200',
+  tag: 'inline-flex items-center px-2.5 py-0.5 rounded-full text-2.5 font-medium bg-gray-50 border-1 border-[#222] dark:bg-[#222] dark:border-gray-50 text-[#333] dark:text-gray-200',
 };
 
 export function PostCard({
   title,
   url,
   publishDate,
-  excerpt,
   thumbnail,
   isExternal,
   tags = [],
@@ -49,7 +48,7 @@ export function PostCard({
               {new Date(publishDate).toLocaleDateString('ja-JP')}
               {isExternal && platform && ` ${platform} に投稿`}
             </time>
-            {excerpt && <p className={postCardStyles.excerpt}>{excerpt}</p>}
+            {/* {excerpt && <p className={postCardStyles.excerpt}>{excerpt}</p>} */}
             {tags.length > 0 && (
               <div className={postCardStyles.tagContainer}>
                 {tags.map((tag) => (

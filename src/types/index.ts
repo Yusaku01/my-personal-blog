@@ -26,7 +26,7 @@ export type Post = {
   | {
       platform?: string;
       isExternal: false;
-      excerpt?: string;
+      // excerpt?: string;
       thumbnail?: string;
     }
 );

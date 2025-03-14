@@ -24,6 +24,7 @@
 │   ├── components
 │   │   ├── Blog
 │   │   ├── Contact
+│   │   ├── Breadcrumb.astro
 │   │   ├── Footer.astro
 │   │   ├── Header.astro
 │   │   ├── HeroSection.astro
@@ -44,7 +45,8 @@
 │   │   ├── blog
 │   │   ├── contact.astro
 │   │   ├── index.astro
-│   │   └── profile.astro
+│   │   ├── profile.astro
+│   │   └── sitemap.astro
 │   ├── styles
 │   │   └── unoVariants.ts
 │   ├── types
@@ -58,7 +60,7 @@
 ├── tsconfig.json
 └── uno.config.ts
 
-18 directories, 34 files
+18 directories, 36 files
 
 ```
 
