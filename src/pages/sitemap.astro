@@ -1,0 +1,91 @@
+---
+import Layout from '../layouts/Layout.astro';
+
+// u30dau30fcu30b8u306eu60c5u5831u3092u53d6u5f97
+const pages = await Astro.glob('../pages/**/*.astro');
+
+// u30d6u30edu30b0u8a18u4e8bu306eu60c5u5831u3092u53d6u5f97u3059u308bu305fu3081u306eu30b3u30fcu30c9u3092u8ffdu52a0u3059u308bu5834u6240
+// u4f8b: const blogPosts = await Astro.glob('../content/blog/**/*.md');
+
+// u30b5u30a4u30c8u30deu30c3u30d7u306eu30abu30c6u30b4u30eau3092u5b9au7fa9
+const categories = [
+  {
+    name: 'u30e1u30a4u30f3u30dau30fcu30b8',
+    pages: pages.filter(page => 
+      !page.url?.includes('/blog/') && 
+      !page.url?.includes('/sitemap') && 
+      page.url
+    ).sort((a, b) => {
+      if (a.url === '/') return -1;
+      if (b.url === '/') return 1;
+      return (a.url || '').localeCompare(b.url || '');
+    }),
+  },
+  // u30d6u30edu30b0u30abu30c6u30b4u30eau306fu5fc5u8981u306bu5fdcu3058u3066u8ffdu52a0
+  {
+    name: 'u30d6u30edu30b0',
+    pages: pages.filter(page => 
+      page.url?.includes('/blog/') && 
+      page.url
+    ),
+  },
+];
+
+// u30dau30fcu30b8u30bfu30a4u30c8u30ebu3092u53d6u5f97u3059u308bu30d8u30ebu30d1u30fcu95a2u6570
+function getPageTitle(url: string | undefined): string {
+  if (!url) return '';
+  
+  // u30ebu30fcu30c8u30dau30fcu30b8u306eu5834u5408
+  if (url === '/') return 'u30dbu30fcu30e0';
+  
+  // URLu304bu3089u6700u5f8cu306eu30bbu30b0u30e1u30f3u30c8u3092u53d6u5f97
+  const segments = url.split('/');
+  const lastSegment = segments[segments.length - 1] || segments[segments.length - 2] || '';
+  
+  // u30cfu30a4u30d5u30f3u3092u30b9u30dau30fcu30b9u306bu5909u63dbu3057u3001u5148u982du3092u5927u6587u5b57u306b
+  return lastSegment
+    .split('-')
+    .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+    .join(' ');
+}
+---
+
+<Layout title="u30b5u30a4u30c8u30deu30c3u30d7 | u500bu4ebau30d6u30edu30b0" description="u30b5u30a4u30c8u306eu5168u30dau30fcu30b8u3092u4e00u89a7u3067u78bau8a8du3067u304du307eu3059">
+  <div class="container mx-auto px-4 py-8">
+    <h1 class="text-3xl font-bold mb-8">u30b5u30a4u30c8u30deu30c3u30d7</h1>
+    
+    <div class="space-y-8">
+      {categories.map(category => (
+        <div class="mb-6">
+          <h2 class="text-xl font-semibold mb-4 pb-2 border-b border-gray-200 dark:border-gray-700">
+            {category.name}
+          </h2>
+          
+          {category.pages.length > 0 ? (
+            <ul class="space-y-2 ml-4">
+              {category.pages.map(page => (
+                <li class="hover:bg-gray-50 dark:hover:bg-gray-800 p-2 rounded transition-colors">
+                  <a 
+                    href={page.url} 
+                    class="text-blue-600 dark:text-blue-400 hover:underline flex items-center"
+                  >
+                    <span class="mr-2">u2022</span>
+                    <span>{getPageTitle(page.url)}</span>
+                  </a>
+                </li>
+              ))}
+            </ul>
+          ) : (
+            <p class="text-gray-500 dark:text-gray-400 ml-4">u3053u306eu30abu30c6u30b4u30eau306bu306fu30dau30fcu30b8u304cu3042u308au307eu305bu3093u3002</p>
+          )}
+        </div>
+      ))}
+    </div>
+    
+    <div class="mt-12 pt-6 border-t border-gray-200 dark:border-gray-700">
+      <p class="text-sm text-gray-500 dark:text-gray-400">
+        u30b5u30a4u30c8u30deu30c3u30d7XMLu30d5u30a1u30a4u30ebu306f <a href="/sitemap-index.xml" class="text-blue-600 dark:text-blue-400 hover:underline">/sitemap-index.xml</a> u3067u3082u5229u7528u53efu80fdu3067u3059u3002
+      </p>
+    </div>
+  </div>
+</Layout>

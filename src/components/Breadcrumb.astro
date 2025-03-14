@@ -1,0 +1,50 @@
+---
+// パスの情報を取得
+const { pathname } = Astro.url;
+
+// パスを分割して配列に変換（最初の空要素を除去）
+const pathSegments = pathname.split('/').filter(Boolean);
+
+// パンくずリストの項目を生成
+const breadcrumbItems = [
+  { label: 'ホーム', path: '/' },
+  ...pathSegments.map((segment, index) => {
+    // パスを構築
+    const path = `/${pathSegments.slice(0, index + 1).join('/')}`;
+
+    // ラベルをフォーマット（最初の文字を大文字に、ハイフンをスペースに）
+    const label = segment
+      .split('-')
+      .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+      .join(' ');
+
+    return { label, path };
+  }),
+];
+
+// 現在のページがホームの場合はパンくずリストを表示しない
+const isHomePage = pathname === '/';
+---
+
+{
+  !isHomePage && (
+    <nav aria-label="パンくずリスト" class="py-2 bg-gray-50 dark:bg-gray-800 text-sm">
+      <ol class="flex flex-wrap items-center gap-2 container mx-auto px-4">
+        {breadcrumbItems.map((item, index) => (
+          <li class="flex items-center">
+            {index > 0 && <span class="mx-2 text-gray-400">/</span>}
+            {index === breadcrumbItems.length - 1 ? (
+              <span class="text-gray-600 dark:text-gray-300" aria-current="page">
+                {item.label}
+              </span>
+            ) : (
+              <a href={item.path} class="text-blue-600 dark:text-blue-400 hover:underline">
+                {item.label}
+              </a>
+            )}
+          </li>
+        ))}
+      </ol>
+    </nav>
+  )
+}
