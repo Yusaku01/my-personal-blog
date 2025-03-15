@@ -24,10 +24,9 @@ const allPosts = [
 ];
 ---
 
-<Layout title="BLOG | マイブログ">
+<Layout title="BLOG | u30deu30a4u30d6u30edu30b0">
   <HeroSection title="BLOG" isHome={false} />
-  <div class="max-w-5xl mx-auto pb-14 px-5 lg:px-0 -mt-4">
-    <!-- <SectionHeading title="BLOG" className="text-4xl font-bold mb-8" /> -->
+  <div class="container-md container-base py-14 dark:bg-gray-900">
     <BlogControls client:load posts={allPosts} />
   </div>
 </Layout>

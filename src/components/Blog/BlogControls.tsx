@@ -36,7 +36,6 @@ export const BlogControls: React.FC<BlogControlsProps> = ({ posts }) => {
         const searchLower = searchQuery.toLowerCase();
         return (
           post.title.toLowerCase().includes(searchLower) ||
-          post.excerpt?.toLowerCase().includes(searchLower) ||
           post.tags?.some((tag) => tag.toLowerCase().includes(searchLower))
         );
       })
