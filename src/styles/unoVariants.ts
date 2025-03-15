@@ -52,8 +52,7 @@ export const button = (
 ) => {
   const { color = 'primary', size = 'md', fullWidth = false, disabled = false } = options;
 
-  let classes =
-    'transition-colors font-medium shadow-sm hover:shadow focus:outline-none focus:ring-2 focus:ring-offset-2';
+  let classes = 'transition-colors font-medium focus:outline-none focus:ring-2 focus:ring-offset-2';
 
   // 色のバリアント
   if (color === 'primary') {
