@@ -4,13 +4,18 @@ import HeroSection from '../components/HeroSection.astro';
 import { ContactForm } from '../components/Contact/ContactForm';
 ---
 
-<Layout title="お問い合わせ | マイブログ">
+<Layout title="お問い合わせ | SAKUSPACE">
   <HeroSection title="CONTACT" isHome={false} />
-  <div class="max-w-xl mx-auto py-8">
-    <p class="text-gray-600 dark:text-gray-400 mb-8">
-      ご質問やお問い合わせがありましたら、以下のフォームからご連絡ください。<br
-      />可能な限り早くご返信いたします。
-    </p>
-    <ContactForm client:load />
+
+  <div class="bg-gray-50 dark:bg-gray-900 py-12">
+    <div class="container-sm container-base">
+      <div class="p-8">
+        <p class="text-gray-600 dark:text-gray-400 mb-8 text-center">
+          ご質問やお問い合わせがありましたら、以下のフォームからご連絡ください。<br />
+          可能な限り早くご返信いたします。
+        </p>
+        <ContactForm client:load />
+      </div>
+    </div>
   </div>
 </Layout>

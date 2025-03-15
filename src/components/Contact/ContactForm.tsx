@@ -11,19 +11,19 @@ import { button, input } from '../../styles/unoVariants';
 const formInputStyles = {
   container: 'mb-6',
   label: 'block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2',
-  errorMessage: 'mt-1 text-sm text-red-600',
+  errorMessage: 'mt-1 text-sm text-red-600 dark:text-red-400',
 };
 
 // FormStatusコンポーネント固有のスタイル
 const formStatusStyles = {
-  pending: 'mt-2 text-blue-600',
-  success: 'mt-2 text-green-600',
-  error: 'mt-2 text-red-600',
+  pending: 'mt-2 text-gray-600 dark:text-gray-400',
+  success: 'mt-2 text-gray-700 dark:text-gray-300',
+  error: 'mt-2 text-gray-700 dark:text-gray-300',
 };
 
 // ContactFormコンポーネント固有のスタイル
 const contactFormStyles = {
-  form: 'bg-white dark:bg-[#222] p-6 rounded-lg shadow-sm pt-6 pb-14 space-y-3',
+  form: 'bg-white dark:bg-gray-800 p-6 rounded-lg pt-6 pb-14 space-y-3',
   statusContainer: 'mt-6',
   buttonContainer: 'mx-auto grid justify-center mt-8',
 };
