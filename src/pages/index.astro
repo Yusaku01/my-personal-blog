@@ -28,11 +28,11 @@ const POSTS_PER_SECTION = 4;
 
 <Layout title="SAKUSPACE">
   <HeroSection title="SAKUSPACE" isHome={true} />
-  <div class="content-section py-16">
-    <div class="max-w-5xl mx-auto px-4">
+  <div class="py-16 bg-gray-50 dark:bg-gray-900">
+    <div class="container-lg container-base">
       <section class="mb-16">
-        <SectionHeading title="最新の記事" className="font-bold text-2xl" />
-        <div class="grid gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-4">
+        <SectionHeading title="BLOG" className="heading-h2" />
+        <div class="blog-post-grid">
           {
             allPosts
               .slice(0, POSTS_PER_SECTION)
@@ -46,34 +46,44 @@ const POSTS_PER_SECTION = 4;
                   platform={post.platform}
                   isExternal={post.isExternal}
                   thumbnail={post.thumbnail}
-                  tags={post.tags}
+                  tags={post.tags || []}
+                  showTags={false}
                 />
               ))
           }
         </div>
-
         <div class="text-center mt-8">
-          <a
-            href="/blog"
-            class="px-6 py-3 bg-[#333] text-white rounded-md hover:opacity-70 transition-all duration-300 dark:bg-white dark:text-[#333] font-bold leading-loose"
-          >
-            すべての記事を見る
-          </a>
+          <a href="/blog" class="btn-primary inline-block">すべての記事を見る</a>
+        </div>
+      </section>
+
+      <section class="mb-16">
+        <SectionHeading title="PROFILE" className="heading-h2" />
+        <div class="py-6">
+          <div class="flex flex-col md:flex-row gap-8 items-center">
+            <div class="w-32 h-32 rounded-full overflow-hidden flex-shrink-0">
+              <img
+                src="/images/img_profile.png"
+                alt="プロフィール画像"
+                class="w-full h-full object-cover"
+              />
+            </div>
+            <div class="flex-grow">
+              <h3 class="heading-h3 mb-2">長谷 優作</h3>
+              <p class="text-gray-700 dark:text-gray-300 mb-4">
+                フロントエンドエンジニア / デザイナー
+              </p>
+              <p class="text-gray-600 dark:text-gray-400">
+                マークアップエンジニアとしての経験とデザインの知識を活かし、Web制作をしています。<br
+                />最近はLLMを使って作業をより効率化できるかに興味があります。
+              </p>
+            </div>
+          </div>
+          <div class="mt-6 text-center">
+            <a href="/profile" class="btn-primary inline-block">詳しく見る</a>
+          </div>
         </div>
       </section>
     </div>
   </div>
 </Layout>
-
-<style>
-  .hero-section {
-    background-color: #fff;
-    background-size: cover;
-    background-position: center;
-  }
-
-  .site-title {
-    font-family: 'Noto Sans JP', sans-serif;
-    letter-spacing: 0.2em;
-  }
-</style>
