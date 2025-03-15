@@ -20,7 +20,7 @@ const isActiveLink = (href: string) => {
   id="header"
   class="fixed w-full top-0 bg-white dark:bg-gray-900 z-50 transition-transform duration-300"
 >
-  <div class="container mx-auto px-4">
+  <div class="container-lg mx-auto px-4">
     <div class="flex items-center justify-between h-16">
       <a href="/" class="text-xl font-light tracking-[0.2em] text-gray-900 dark:text-white">
         SAKUSPACE
@@ -85,6 +85,7 @@ const isActiveLink = (href: string) => {
 <div class="h-16"></div>
 
 <script>
+  // クライアントサイドDOM操作
   const header = document.getElementById('header');
   const menuButton = document.getElementById('menuButton');
   const closeButton = document.getElementById('closeButton');
