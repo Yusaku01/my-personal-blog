@@ -18,9 +18,6 @@
 │   │   └── img_profile.png
 │   └── favicon.svg
 ├── src
-│   ├── assets
-│   │   ├── astro.svg
-│   │   └── background.svg
 │   ├── components
 │   │   ├── Blog
 │   │   ├── Contact
@@ -45,8 +42,7 @@
 │   │   ├── blog
 │   │   ├── contact.astro
 │   │   ├── index.astro
-│   │   ├── profile.astro
-│   │   └── sitemap.astro
+│   │   └── profile.astro
 │   ├── styles
 │   │   └── unoVariants.ts
 │   ├── types
@@ -60,7 +56,7 @@
 ├── tsconfig.json
 └── uno.config.ts
 
-18 directories, 36 files
+17 directories, 33 files
 
 ```
 

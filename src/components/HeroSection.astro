@@ -18,12 +18,12 @@ const headingClasses = heading({
   showHero && (
     <div
       class:list={[
-        'hero-section relative bg-white dark:bg-[#333]',
+        'relative bg-white dark:bg-gray-900',
         isHome ? 'py-24 sm:py-32' : 'py-16 sm:py-20',
       ]}
       role="banner"
     >
-      <div class="max-w-4xl mx-auto px-4 text-center">
+      <div class="container-md container-base text-center">
         <h1 class={headingClasses}>{title}</h1>
       </div>
     </div>

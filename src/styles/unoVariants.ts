@@ -32,7 +32,7 @@ export function createVariants(
       }
     });
 
-    // className prop がある場合は追加
+    // クラス名プロパティがある場合は追加
     if (props.className) {
       classes += ' ' + props.className;
     }
@@ -58,7 +58,7 @@ export const button = (
   // 色のバリアント
   if (color === 'primary') {
     classes +=
-      ' px-6 py-3 bg-[#333] text-white rounded-md hover:opacity-70 transition-all duration-300 dark:bg-white dark:text-[#333] font-bold leading-loose';
+      ' px-6 py-3 bg-gray-800 text-white rounded-md hover:bg-gray-700 transition-all duration-300 dark:bg-gray-200 dark:text-gray-800 font-bold leading-loose';
   } else if (color === 'secondary') {
     classes += ' bg-gray-200 text-gray-700 hover:bg-gray-300 focus:ring-gray-500';
   }

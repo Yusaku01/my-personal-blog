@@ -29,10 +29,34 @@ export default defineConfig({
           },
         },
       },
+      colors: {
+        // モノトーンカラーパレットの拡張
+        gray: {
+          50: '#f9fafb',
+          100: '#f3f4f6',
+          200: '#e5e7eb',
+          300: '#d1d5db',
+          400: '#9ca3af',
+          500: '#6b7280',
+          600: '#4b5563',
+          700: '#374151',
+          800: '#1f2937',
+          900: '#111827',
+          950: '#030712',
+        },
+      },
     },
   },
   // カスタムルールや省略形
   shortcuts: {
+    // コンテナ用の省略形
+    'container-base': 'px-4 mx-auto',
+    'container-sm': 'max-w-2xl px-4 mx-auto',
+    'container-md': 'max-w-4xl px-4 mx-auto',
+    'container-lg': 'max-w-[1132px] px-4 mx-auto',
+    'container-xl': 'max-w-6xl px-4 mx-auto',
+    'container-2xl': 'max-w-7xl px-4 mx-auto',
+
     // カードコンポーネント用の省略形
     'card-base':
       'bg-white dark:bg-gray-800 rounded-lg shadow-sm overflow-hidden border border-gray-200 dark:border-gray-700 transition-all duration-200 h-full',
@@ -42,7 +66,7 @@ export default defineConfig({
     'btn-base':
       'transition-colors font-medium shadow-sm hover:shadow focus:outline-none focus:ring-2 focus:ring-offset-2',
     'btn-primary':
-      'px-6 py-3 bg-[#333] text-white rounded-md hover:opacity-70 transition-all duration-300 dark:bg-white dark:text-[#333] font-bold leading-loose',
+      'px-6 py-3 bg-gray-800 text-white rounded-md hover:bg-gray-700 transition-all duration-300 dark:bg-gray-200 dark:text-gray-800 font-bold leading-loose',
     'btn-secondary': 'bg-gray-200 text-gray-700 hover:bg-gray-300 focus:ring-gray-500',
 
     // サイズバリアント
@@ -53,7 +77,7 @@ export default defineConfig({
     // 入力フィールド用の省略形
     'input-base':
       'w-full border rounded-md focus:outline-none focus:ring-2 focus:ring-offset-0 transition-colors',
-    'input-primary': 'border-gray-300 focus:border-blue-500 focus:ring-blue-500',
+    'input-primary': 'border-gray-300 focus:border-gray-500 focus:ring-gray-500',
     'input-error': 'border-red-300 focus:border-red-500 focus:ring-red-500',
 
     // 見出し用の省略形
@@ -68,20 +92,12 @@ export default defineConfig({
     // ブログ関連の省略形
     'blog-search-form': 'mb-8 max-w-xl mx-auto relative',
     'blog-search-input':
-      'w-full px-4 py-2 border border-gray-200 rounded-md focus:outline-none focus:ring-2 focus:ring-[#333] bg-white dark:bg-white dark:border-none',
+      'w-full px-4 py-2 border border-gray-200 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-500 bg-white dark:bg-white dark:border-none',
     'blog-search-button':
-      'absolute top-0 right-0 px-4 py-2 text-sm bg-[#333] text-white hover:opacity-70 transition-all duration-300 rounded-r-md h-full font-bold leading-loose dark:border-none',
+      'absolute top-0 right-0 px-4 py-2 text-sm bg-gray-800 text-white hover:opacity-70 transition-all duration-300 rounded-r-md h-full font-bold leading-loose dark:border-none',
     'blog-post-grid': 'grid gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-4',
     'blog-load-more-button':
-      'px-6 py-2 bg-[#333] text-white rounded-md hover:opacity-70 transition-all duration-300 dark:bg-white dark:text-[#333] font-bold leading-loose',
-    'blog-post-card':
-      'bg-white dark:bg-[#222] rounded-lg shadow-sm overflow-hidden hover:shadow-md transition-shadow border border-gray-200 dark:border-gray-700',
-
-    'blog-post-title': 'text-lg font-medium text-gray-900 dark:text-white mb-2 line-clamp-2',
-    'blog-post-excerpt': 'text-sm text-gray-600 dark:text-gray-400 line-clamp-2',
-    'blog-post-tag':
-      'text-xs text-gray-600 dark:text-gray-400 border border-gray-200 dark:border-gray-700 rounded-lg px-2',
+      'mx-auto mt-8 px-6 py-2 bg-gray-800 text-white rounded-md hover:opacity-70 transition-all duration-300 dark:bg-gray-200 dark:text-gray-800 font-bold',
   },
-  // 動的に生成されるクラスでPurgeされないようにするリスト
-  safelist: [],
+  rules: [],
 });
