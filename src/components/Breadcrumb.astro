@@ -2,21 +2,33 @@
 // パスの情報を取得
 const { pathname } = Astro.url;
 
+// ブログ記事のタイトルをpropsとして受け取る
+interface Props {
+  blogTitle?: string;
+}
+
+const { blogTitle } = Astro.props;
+
 // パスを分割して配列に変換（最初の空要素を除去）
 const pathSegments = pathname.split('/').filter(Boolean);
 
 // パンくずリストの項目を生成
-const breadcrumbItems = [
+let breadcrumbItems = [
   { label: 'ホーム', path: '/' },
   ...pathSegments.map((segment, index) => {
     // パスを構築
     const path = `/${pathSegments.slice(0, index + 1).join('/')}`;
 
     // ラベルをフォーマット（最初の文字を大文字に、ハイフンをスペースに）
-    const label = segment
+    let label = segment
       .split('-')
       .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
       .join(' ');
+
+    // ブログ記事の詳細ページで、かつブログタイトルが提供されている場合
+    if (index === pathSegments.length - 1 && pathSegments[0] === 'blog' && blogTitle) {
+      label = blogTitle;
+    }
 
     return { label, path };
   }),
@@ -29,22 +41,27 @@ const isHomePage = pathname === '/';
 {
   !isHomePage && (
     <nav aria-label="パンくずリスト" class="py-2 bg-gray-50 dark:bg-gray-800 text-sm">
-      <ol class="flex flex-wrap items-center gap-2 container mx-auto px-4">
-        {breadcrumbItems.map((item, index) => (
-          <li class="flex items-center">
-            {index > 0 && <span class="mx-2 text-gray-400">/</span>}
-            {index === breadcrumbItems.length - 1 ? (
-              <span class="text-gray-600 dark:text-gray-300" aria-current="page">
-                {item.label}
-              </span>
-            ) : (
-              <a href={item.path} class="text-blue-600 dark:text-blue-400 hover:underline">
-                {item.label}
-              </a>
-            )}
-          </li>
-        ))}
-      </ol>
+      <div class="container mx-auto px-4">
+        <ol class="flex flex-wrap items-center gap-2">
+          {breadcrumbItems.map((item, index) => (
+            <li class="flex items-center">
+              {index > 0 && <span class="mx-2 text-gray-500 dark:text-gray-400">＞</span>}
+              {index === breadcrumbItems.length - 1 ? (
+                <span class="text-gray-700 dark:text-gray-300" aria-current="page">
+                  {item.label}
+                </span>
+              ) : (
+                <a
+                  href={item.path}
+                  class="text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-200 hover:underline transition-colors"
+                >
+                  {item.label}
+                </a>
+              )}
+            </li>
+          ))}
+        </ol>
+      </div>
     </nav>
   )
 }
