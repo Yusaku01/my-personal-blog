@@ -23,7 +23,7 @@ const formStatusStyles = {
 
 // ContactFormコンポーネント固有のスタイル
 const contactFormStyles = {
-  form: 'bg-white dark:bg-gray-800 p-6 rounded-lg pt-6 pb-14 space-y-3',
+  form: 'p-6 rounded-lg pt-6 pb-14 ',
   statusContainer: 'mt-6',
   buttonContainer: 'mx-auto grid justify-center mt-8',
 };
@@ -180,9 +180,9 @@ export const ContactForm: React.FC = () => {
         <button
           type="submit"
           disabled={isSubmitting || isPending}
-          className={button({ size: 'md', disabled: isSubmitting || isPending })}
+          className={`${button({ size: 'md', color: 'primary', disabled: isSubmitting || isPending })} !bg-gray-800 dark:!bg-white dark:!text-gray-800 !font-bold`}
         >
-          {isSubmitting || isPending ? '送信中...' : '送信する'}
+          {isSubmitting || isPending ? '送信中・・・' : '送信する'}
         </button>
       </div>
     </form>
