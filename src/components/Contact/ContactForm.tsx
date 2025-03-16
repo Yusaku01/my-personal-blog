@@ -57,7 +57,7 @@ const FormInput = React.memo(
           type={type}
           {...register(id)}
           rows={rows}
-          className={input({ color: error ? 'error' : 'primary' })}
+          className={`${input({ color: error ? 'error' : 'primary' })} !px-2`}
         />
         {error && <p className={formInputStyles.errorMessage}>{error.message}</p>}
       </div>
