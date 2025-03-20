@@ -1,6 +1,6 @@
 # プロジェクト環境構成
 
-*このファイルは自動的に生成・更新されます*
+_このファイルは自動的に生成・更新されます_
 
 ## 📁 ディレクトリ構造
 
@@ -63,11 +63,13 @@
 ## 🔑 主要ファイルの役割
 
 ### 設定ファイル
+
 - `astro.config.mjs`: Astroの設定（プラグイン、統合など）
 - `tailwind.config.mjs`: Tailwind CSSのカスタマイズ設定
 - `tsconfig.json`: TypeScriptのコンパイラ設定
 
 ### コアコンポーネント
+
 - `src/layouts/Layout.astro`: 全ページで使用される基本レイアウト
 - `src/components/Header.astro`: サイトヘッダー（ナビゲーション）
 - `src/components/Footer.astro`: サイトフッター
@@ -77,7 +79,6 @@
 ### スタイル
 
 ### ユーティリティ
-
 
 ## 🔄 自動更新の仕組み
 

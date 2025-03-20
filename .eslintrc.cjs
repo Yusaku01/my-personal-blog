@@ -59,9 +59,9 @@ module.exports = {
     {
       files: ['src/env.d.ts'],
       rules: {
-        '@typescript-eslint/triple-slash-reference': 'off'
-      }
-    }
+        '@typescript-eslint/triple-slash-reference': 'off',
+      },
+    },
   ],
   // distディレクトリを無視
   ignorePatterns: ['dist/**/*', 'node_modules/**/*'],

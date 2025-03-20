@@ -5,7 +5,7 @@ import UnoCSS from 'unocss/astro';
 import sitemap from '@astrojs/sitemap';
 
 export default defineConfig({
-  site: 'https://example.com', 
+  site: 'https://example.com',
   integrations: [
     UnoCSS({
       // UnoCSS設定はuno.config.tsから読み込まれます
