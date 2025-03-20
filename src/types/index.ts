@@ -2,12 +2,14 @@ import { z } from 'zod';
 
 // Contact Form Schema
 export const contactFormSchema = z.object({
-  name: z.string().min(1, { message: '名前を入力してください' }),
-  email: z.string().email({ message: '有効なメールアドレスを入力してください' }),
-  subject: z.string().min(1, { message: '件名を入力してください' }),
-  message: z.string().min(1, { message: 'メッセージを入力してください' }),
+  name: z.string().min(1, 'お名前を入力してください'),
+  email: z
+    .string()
+    .min(1, 'メールアドレスを入力してください')
+    .email('有効なメールアドレスを入力してください'),
+  subject: z.string().min(1, '件名を入力してください'),
+  message: z.string().min(1, 'メッセージを入力してください'),
 });
-
 export type ContactForm = z.infer<typeof contactFormSchema>;
 
 // Post Types

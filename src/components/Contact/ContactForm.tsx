@@ -1,190 +1,96 @@
-import React, { useCallback, useState, useTransition } from 'react';
+'use client';
+
 import { useForm } from 'react-hook-form';
-import type { UseFormRegister } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
+import type { z } from 'zod';
 import { contactFormSchema } from '../../types/index';
-import type { ContactForm as ContactFormData } from '../../types/index';
-import { submitContactForm } from '../../lib/api-clients/contact';
-import { button, input } from '../../styles/unoVariants';
+import { useState } from 'react';
+import ContactFormLabel from './ContactFormLabel';
+import ContactFormInput from './ContactFormInput';
+import ContactFormTextarea from './ContactFormTextarea';
 
-// FormInputコンポーネント固有のスタイル
-const formInputStyles = {
-  container: 'mb-6',
-  label: 'block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2',
-  errorMessage: 'mt-1 text-sm text-red-600 dark:text-red-400',
-};
+type ContactFormValues = z.infer<typeof contactFormSchema>;
 
-// FormStatusコンポーネント固有のスタイル
-const formStatusStyles = {
-  pending: 'mt-2 text-gray-600 dark:text-gray-400',
-  success: 'mt-2 text-gray-700 dark:text-gray-300',
-  error: 'mt-2 text-gray-700 dark:text-gray-300',
-};
-
-// ContactFormコンポーネント固有のスタイル
-const contactFormStyles = {
-  form: 'p-6 rounded-lg pt-6 pb-14 ',
-  statusContainer: 'mt-6',
-  buttonContainer: 'mx-auto grid justify-center mt-8',
-};
-
-// FormInput コンポーネントで入力フィールドの責務を分離
-const FormInput = React.memo(
-  ({
-    id,
-    label,
-    type = 'text',
-    register,
-    error,
-    rows,
-  }: {
-    id: keyof ContactFormData;
-    label: string;
-    type?: string;
-    register: UseFormRegister<ContactFormData>;
-    error?: { message?: string };
-    rows?: number;
-  }) => {
-    const InputComponent = rows ? 'textarea' : 'input';
-
-    return (
-      <div className={formInputStyles.container}>
-        <label htmlFor={id} className={formInputStyles.label}>
-          {label}
-        </label>
-        <InputComponent
-          id={id}
-          type={type}
-          {...register(id)}
-          rows={rows}
-          className={`${input({ color: error ? 'error' : 'primary' })} !px-2`}
-        />
-        {error && <p className={formInputStyles.errorMessage}>{error.message}</p>}
-      </div>
-    );
-  }
-);
-
-FormInput.displayName = 'FormInput';
-
-// FormStatus コンポーネントでフォームの状態表示の責務を分離
-const FormStatus = React.memo(
-  ({
-    isPending,
-    isSuccess,
-    error,
-  }: {
-    isPending: boolean;
-    isSuccess: boolean;
-    error: string | null;
-  }) => {
-    if (isPending) {
-      return <div className={formStatusStyles.pending}>処理中です。しばらくお待ちください...</div>;
-    }
-
-    if (isSuccess) {
-      return <div className={formStatusStyles.success}>お問い合わせを送信しました！</div>;
-    }
-
-    if (error) {
-      return <div className={formStatusStyles.error}>{error}</div>;
-    }
-
-    return null;
-  }
-);
-
-FormStatus.displayName = 'FormStatus';
-
-export const ContactForm: React.FC = () => {
-  const [isPending, startTransition] = useTransition();
-  const [formStatus, setFormStatus] = useState<{
-    isSuccess: boolean;
-    error: string | null;
-  }>({
-    isSuccess: false,
-    error: null,
-  });
+export default function ContactForm() {
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isSubmitted, setIsSubmitted] = useState(false);
 
   const {
     register,
     handleSubmit,
-    formState: { errors, isSubmitting },
+    formState: { errors },
     reset,
-  } = useForm<ContactFormData>({
+  } = useForm<ContactFormValues>({
     resolver: zodResolver(contactFormSchema),
+    mode: 'onChange', // リアルタイムバリデーション用
   });
 
-  // useCallbackでメモ化してレンダリングごとに再生成されるのを防止
-  const onSubmit = useCallback(
-    async (data: ContactFormData) => {
-      // エラーや成功メッセージをリセット
-      setFormStatus({ isSuccess: false, error: null });
+  const onSubmit = async (data: ContactFormValues) => {
+    setIsSubmitting(true);
+    try {
+      // ここで実際のAPI送信処理を行います
+      console.log('送信データ:', data);
 
-      try {
-        // 非同期処理をstartTransitionの外側で実行
-        await submitContactForm(data);
+      // 送信成功を模擬（実際の実装では適切なAPIコールに置き換えてください）
+      await new Promise((resolve) => setTimeout(resolve, 1000));
 
-        // 状態更新のみをstartTransitionでラップ
-        startTransition(() => {
-          setFormStatus({ isSuccess: true, error: null });
-          reset();
-        });
-      } catch (error) {
-        // エラー時の状態更新もstartTransitionでラップ
-        startTransition(() => {
-          setFormStatus({
-            isSuccess: false,
-            error: 'エラーが発生しました。時間をおいて再度お試しください。',
-          });
-        });
-        console.error('Form submission error:', error);
-      }
-    },
-    [reset, startTransition]
-  );
+      setIsSubmitted(true);
+      reset();
+    } catch (error) {
+      console.error('送信エラー:', error);
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
+  if (isSubmitted) {
+    return (
+      <div className="bg-green-50 p-6 rounded-lg text-center">
+        <h2 className="text-xl font-bold text-green-800 mb-2">送信完了</h2>
+        <p className="text-green-700">
+          お問い合わせありがとうございます。できるだけ早くご返信いたします。
+        </p>
+        <button
+          onClick={() => setIsSubmitted(false)}
+          className="mt-4 px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700 transition-colors"
+        >
+          新しいお問い合わせ
+        </button>
+      </div>
+    );
+  }
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className={contactFormStyles.form}>
-      <FormInput id="name" label="お名前" register={register} error={errors.name} />
-
-      <FormInput
-        id="email"
-        label="メールアドレス"
-        type="email"
-        register={register}
-        error={errors.email}
-      />
-
-      <FormInput id="subject" label="件名" register={register} error={errors.subject} />
-
-      <FormInput
-        id="message"
-        label="メッセージ"
-        register={register}
-        error={errors.message}
-        rows={5}
-      />
-
-      <input type="hidden" name="_csrf" value="token" />
-
-      <div className={contactFormStyles.statusContainer}>
-        <FormStatus
-          isPending={isPending}
-          isSuccess={formStatus.isSuccess}
-          error={formStatus.error}
-        />
+    <form onSubmit={handleSubmit(onSubmit)} className="max-w-2xl mx-auto">
+      <div className="mb-4">
+        <ContactFormLabel htmlFor="name" label="お名前" required />
+        <ContactFormInput register={register} errors={errors} id="name" type="text" />
       </div>
 
-      <div className={contactFormStyles.buttonContainer}>
+      <div className="mb-4">
+        <ContactFormLabel htmlFor="email" label="メールアドレス" required />
+        <ContactFormInput register={register} errors={errors} id="email" type="email" />
+      </div>
+
+      <div className="mb-4">
+        <ContactFormLabel htmlFor="subject" label="件名" required />
+        <ContactFormInput register={register} errors={errors} id="subject" type="text" />
+      </div>
+
+      <div className="mb-6">
+        <ContactFormLabel htmlFor="message" label="メッセージ" required />
+        <ContactFormTextarea register={register} errors={errors} />
+      </div>
+
+      <div className="text-center">
         <button
           type="submit"
-          disabled={isSubmitting || isPending}
-          className={`${button({ size: 'md', color: 'primary', disabled: isSubmitting || isPending })} !bg-gray-800 dark:!bg-white dark:!text-gray-800 !font-bold`}
+          disabled={isSubmitting}
+          className="px-6 py-3 bg-gray-800 text-white font-medium rounded-md hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2 transition-colors disabled:opacity-70"
         >
-          {isSubmitting || isPending ? '送信中・・・' : '送信する'}
+          {isSubmitting ? '送信中...' : '送信する'}
         </button>
       </div>
     </form>
   );
-};
+}
