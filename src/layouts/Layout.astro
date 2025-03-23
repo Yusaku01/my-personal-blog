@@ -7,16 +7,20 @@ import '@fontsource/zen-kaku-gothic-new/700.css'; // 太字（必要な場合）
 interface Props {
   title: string;
   description?: string;
-  image?: string;
   blogTitle?: string; // ブログ記事のタイトルを渡すためのプロパティを追加
 }
 
 const {
   title,
-  description = '個人ブログとポートフォリオ',
-  image = '/images/default-og.png',
+  description = '個人ブログとプロフィール',
   blogTitle, // ブログタイトルを受け取る
 } = Astro.props;
+
+// OGP画像パスを動的に設定
+const slug = Astro.url.pathname.split('/').filter(Boolean).pop() || 'index';
+const ogImageUrl = blogTitle
+  ? `/ogp/${slug}.png` // ブログ記事の場合、スラッグに基づいたOGP画像を使用
+  : '/ogp/default.png'; // その他のページは共通のOGP画像を使用
 ---
 
 <!doctype html>
@@ -47,7 +51,22 @@ const {
 
       window.localStorage.setItem('theme', theme);
     </script>
-    <!-- 重要: プリロードでフォントの読み込みを高速化 -->
+    <!-- OGP 基本設定 -->
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:type" content={blogTitle ? 'article' : 'website'} />
+    <meta property="og:url" content={new URL(Astro.url.pathname, Astro.site).toString()} />
+    <meta property="og:image" content={new URL(ogImageUrl, Astro.site).toString()} />
+    <meta property="og:site_name" content="SAKUSPACE" />
+    <meta property="og:locale" content="ja_JP" />
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={new URL(ogImageUrl, Astro.site).toString()} />
+
+    <!-- Web fonts -->
     <link
       rel="preload"
       href="/node_modules/@fontsource/zen-kaku-gothic-new/files/zen-kaku-gothic-new-japanese-400-normal.woff2"
@@ -55,8 +74,6 @@ const {
       type="font/woff2"
       crossorigin
     />
-
-    <!-- 太字も使用する場合 -->
     <link
       rel="preload"
       href="/node_modules/@fontsource/zen-kaku-gothic-new/files/zen-kaku-gothic-new-japanese-700-normal.woff2"
@@ -70,16 +87,13 @@ const {
     class="min-h-screen flex flex-col bg-gray-100 dark:bg-gray-800 text-gray-900 dark:text-gray-100 transition-colors"
   >
     <Header />
-    <!-- <div class="h-16"></div> ヘッダーの固定分のスペース -->
     <Breadcrumb blogTitle={blogTitle} />
     <main class="flex-grow">
       <slot />
     </main>
     <Footer />
     <script>
-      document.addEventListener('astro:page-load', () => {
-        // ページ遷移後に実行されるコード
-      });
+      document.addEventListener('astro:page-load', () => {});
     </script>
   </body>
 </html>
