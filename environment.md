@@ -8,7 +8,7 @@
 .
 ├── public
 │   ├── images
-│   │   ├── astro-tutorial.jpg
+│   │   ├── blog
 │   │   ├── icon_github-dark.svg
 │   │   ├── icon_github-light.svg
 │   │   ├── icon_linkedin.svg
@@ -21,6 +21,7 @@
 │   │   ├── contact.png
 │   │   ├── default.png
 │   │   ├── getting-started-blog.png
+│   │   ├── getting-started-blog2.png
 │   │   └── profile.png
 │   └── favicon.svg
 ├── src
@@ -63,7 +64,7 @@
 ├── tsconfig.json
 └── uno.config.ts
 
-19 directories, 38 files
+20 directories, 38 files
 
 ```
 
@@ -71,33 +72,20 @@
 
 ### 設定ファイル
 - `astro.config.mjs`: Astroの設定（プラグイン、統合など）
-- `uno.config.ts`: UnoCSSの設定と拡張
+- `tailwind.config.mjs`: Tailwind CSSのカスタマイズ設定
 - `tsconfig.json`: TypeScriptのコンパイラ設定
 
 ### コアコンポーネント
-- `src/layouts/Layout.astro`: 全ページで使用される基本レイアウト（OGP対応含む）
+- `src/layouts/Layout.astro`: 全ページで使用される基本レイアウト
 - `src/components/Header.astro`: サイトヘッダー（ナビゲーション）
 - `src/components/Footer.astro`: サイトフッター
 
 ### ページコンポーネント
-- `src/pages/index.astro`: トップページ
-- `src/pages/blog/index.astro`: ブログ一覧ページ
-- `src/pages/blog/[slug].astro`: 個別ブログ記事ページ
-- `src/pages/profile.astro`: プロフィールページ
-- `src/pages/contact.astro`: お問い合わせページ
-- `src/pages/api/og/[...slug].astro`: 動的OGP画像生成エンドポイント
 
 ### スタイル
-- `src/styles/unoVariants.ts`: UnoCSSのカスタム変数・バリアント定義
-- UnoCSSを使用したユーティリティファーストなスタイリング
 
 ### ユーティリティ
-- `scripts/build-ogp.js`: Puppeteerを使用したOGP画像生成スクリプト
-- `src/content/config.ts`: コンテンツコレクション定義
 
-### 静的アセット
-- `public/ogp/`: 動的生成されたOGP画像
-- `public/images/`: サイトで使用される画像素材
 
 ## 🔄 自動更新の仕組み
 
