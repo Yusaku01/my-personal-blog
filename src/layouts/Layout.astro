@@ -17,10 +17,31 @@ const {
 } = Astro.props;
 
 // OGP画像パスを動的に設定
-const slug = Astro.url.pathname.split('/').filter(Boolean).pop() || 'index';
-const ogImageUrl = blogTitle
-  ? `/ogp/${slug}.png` // ブログ記事の場合、スラッグに基づいたOGP画像を使用
-  : '/ogp/default.png'; // その他のページは共通のOGP画像を使用
+let ogImageUrl;
+
+// URLパス名を取得
+const pathname = Astro.url.pathname;
+
+if (blogTitle) {
+  // ブログ記事の場合、スラッグに基づいたOGP画像を使用
+  const slug = Astro.url.pathname.split('/').filter(Boolean).pop() || 'index';
+  ogImageUrl = `/ogp/${slug}.png`;
+} else if (pathname === '/' || pathname === '') {
+  // トップページ
+  ogImageUrl = '/ogp/default.png';
+} else if (pathname === '/blog' || pathname === '/blog/') {
+  // ブログ一覧ページ
+  ogImageUrl = '/ogp/blog.png';
+} else if (pathname === '/profile' || pathname === '/profile/') {
+  // プロフィールページ
+  ogImageUrl = '/ogp/profile.png';
+} else if (pathname === '/contact' || pathname === '/contact/') {
+  // お問い合わせページ
+  ogImageUrl = '/ogp/contact.png';
+} else {
+  // その他のページ
+  ogImageUrl = '/ogp/default.png';
+}
 ---
 
 <!doctype html>
@@ -83,12 +104,12 @@ const ogImageUrl = blogTitle
     />
     <slot name="head" />
   </head>
-  <body
-    class="min-h-screen flex flex-col bg-gray-100 dark:bg-gray-800 text-gray-900 dark:text-gray-100 transition-colors"
-  >
+  <body class="min-h-screen flex flex-col text-gray-900 dark:text-gray-100 transition-colors">
     <Header />
+    <!-- <div class="h-16"></div> -->
+    <!-- ヘッダーの固定分のスペース -->
     <Breadcrumb blogTitle={blogTitle} />
-    <main class="flex-grow">
+    <main class="flex-grow bg-gray-100 dark:bg-gray-800">
       <slot />
     </main>
     <Footer />
