@@ -82,6 +82,8 @@ const isActiveLink = (href: string) => {
   </div>
 </header>
 
+<div class="h-16"></div>
+
 <script>
   // クライアントサイドDOM操作
   const header = document.getElementById('header');
@@ -91,23 +93,23 @@ const isActiveLink = (href: string) => {
   let lastScroll = 0;
 
   // スクロール時のヘッダー表示/非表示の処理
-  function handleScroll() {
-    const currentScroll = window.scrollY;
+  window.addEventListener('scroll', () => {
+    const currentScroll = window.pageYOffset;
 
-    // スクロール方向を判定
     if (currentScroll <= 0) {
-      // 最上部ではヘッダーを表示
-      header?.classList.remove('translate-y-[-100%]');
-    } else if (currentScroll > lastScroll && currentScroll > 50) {
-      // 下スクロールでヘッダーを隠す（50px以上スクロール後）
-      header?.classList.add('translate-y-[-100%]');
+      header?.classList.remove('-translate-y-full');
+    }
+
+    if (currentScroll > lastScroll && currentScroll > 80) {
+      // Scrolling down & past header
+      header?.classList.add('-translate-y-full');
     } else {
-      // 上スクロールでヘッダーを表示
-      header?.classList.remove('translate-y-[-100%]');
+      // Scrolling up
+      header?.classList.remove('-translate-y-full');
     }
 
     lastScroll = currentScroll;
-  }
+  });
 
   // モバイルメニューの開閉処理
   function setupMobileMenu() {
@@ -123,17 +125,6 @@ const isActiveLink = (href: string) => {
       });
     }
   }
-
-  // イベントリスナーの設定
-  document.addEventListener('astro:page-load', () => {
-    window.addEventListener('scroll', handleScroll, { passive: true });
-    setupMobileMenu();
-  });
-
-  document.addEventListener('astro:after-swap', () => {
-    window.addEventListener('scroll', handleScroll, { passive: true });
-    setupMobileMenu();
-  });
 
   const themeToggle = document.getElementById('themeToggle');
   themeToggle?.addEventListener('click', () => {
