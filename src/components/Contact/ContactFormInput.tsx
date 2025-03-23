@@ -1,5 +1,3 @@
-'use client';
-
 import type { UseFormRegister, FieldErrors } from 'react-hook-form';
 import type { ContactForm } from '../../types';
 
