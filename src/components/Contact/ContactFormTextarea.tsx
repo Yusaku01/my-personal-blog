@@ -15,7 +15,7 @@ export default function ContactFormTextarea({
       <textarea
         id={id}
         rows={6}
-        className={`w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 ${
+        className={`w-full p-2 border rounded-md focus:outline-none focus:ring-2 dark:text-gray-900 max-h-60 ${
           errors[id] ? 'border-red-500 text-red-500 focus:ring-red-500' : 'focus:ring-blue-500'
         }`}
         {...register(id)}

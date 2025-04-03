@@ -1,5 +1,3 @@
-'use client';
-
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import type { z } from 'zod';
@@ -61,36 +59,43 @@ export default function ContactForm() {
   }
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="max-w-2xl mx-auto">
-      <div className="mb-4">
-        <ContactFormLabel htmlFor="name" label="お名前" required />
-        <ContactFormInput register={register} errors={errors} id="name" type="text" />
-      </div>
+    <>
+      <p className="text-gray-800 dark:text-white mb-8 text-center">
+        ご質問やお問い合わせがありましたら、以下のフォームからご連絡ください。
+        <br />
+        可能な限り早くご返信いたします。
+      </p>
+      <form onSubmit={handleSubmit(onSubmit)} className="max-w-2xl mx-auto">
+        <div className="mb-4">
+          <ContactFormLabel htmlFor="name" label="お名前" required />
+          <ContactFormInput register={register} errors={errors} id="name" type="text" />
+        </div>
 
-      <div className="mb-4">
-        <ContactFormLabel htmlFor="email" label="メールアドレス" required />
-        <ContactFormInput register={register} errors={errors} id="email" type="email" />
-      </div>
+        <div className="mb-4">
+          <ContactFormLabel htmlFor="email" label="メールアドレス" required />
+          <ContactFormInput register={register} errors={errors} id="email" type="email" />
+        </div>
 
-      <div className="mb-4">
-        <ContactFormLabel htmlFor="subject" label="件名" required />
-        <ContactFormInput register={register} errors={errors} id="subject" type="text" />
-      </div>
+        <div className="mb-4">
+          <ContactFormLabel htmlFor="subject" label="件名" required />
+          <ContactFormInput register={register} errors={errors} id="subject" type="text" />
+        </div>
 
-      <div className="mb-6">
-        <ContactFormLabel htmlFor="message" label="メッセージ" required />
-        <ContactFormTextarea register={register} errors={errors} />
-      </div>
+        <div className="mb-6">
+          <ContactFormLabel htmlFor="message" label="メッセージ" required />
+          <ContactFormTextarea register={register} errors={errors} />
+        </div>
 
-      <div className="text-center">
-        <button
-          type="submit"
-          disabled={isSubmitting}
-          className="px-6 py-3 bg-gray-800 text-white font-medium rounded-md hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2 transition-colors disabled:opacity-70"
-        >
-          {isSubmitting ? '送信中...' : '送信する'}
-        </button>
-      </div>
-    </form>
+        <div className="text-center">
+          <button
+            type="submit"
+            disabled={isSubmitting}
+            className="px-6 py-3 bg-gray-800 text-white rounded-md hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2 transition-colors disabled:opacity-70 dark:bg-white dark:text-gray-900 dark:hover:bg-gray-300 dark:focus:ring-gray-300 dark:focus:ring-offset-gray-300 font-bold tracking-wide"
+          >
+            {isSubmitting ? '送信中...' : '送信する'}
+          </button>
+        </div>
+      </form>
+    </>
   );
 }
