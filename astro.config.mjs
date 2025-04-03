@@ -1,11 +1,18 @@
 import { defineConfig } from 'astro/config';
+import cloudflare from '@astrojs/cloudflare';
 import mdx from '@astrojs/mdx';
 import react from '@astrojs/react';
 import UnoCSS from 'unocss/astro';
 import sitemap from '@astrojs/sitemap';
 
 export default defineConfig({
-  site: 'http://localhost:4321',
+  site: 'https://saku-space.com',
+  output: 'server',
+  adapter: cloudflare({
+    platformProxy: {
+      enabled: true,
+    },
+  }),
   integrations: [
     UnoCSS({
       injectReset: true, // CSSリセットを注入
@@ -25,7 +32,11 @@ export default defineConfig({
   ],
   markdown: {
     shikiConfig: {
-      theme: 'dracula',
+      themes: {
+        light: 'github-light',
+        dark: 'github-dark',
+      },
+      wrap: true,
     },
   },
   prefetch: {
