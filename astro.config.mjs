@@ -7,12 +7,7 @@ import sitemap from '@astrojs/sitemap';
 
 export default defineConfig({
   site: 'https://saku-space.com',
-  output: 'server',
-  adapter: cloudflare({
-    platformProxy: {
-      enabled: true,
-    },
-  }),
+  output: 'static',
   integrations: [
     UnoCSS({
       injectReset: true, // CSSリセットを注入
