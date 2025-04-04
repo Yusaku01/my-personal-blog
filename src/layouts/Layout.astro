@@ -42,6 +42,10 @@ if (blogTitle) {
   // その他のページ
   ogImageUrl = '/ogp/default.png';
 }
+
+// Google Analytics IDを環境変数から取得
+const gaId = import.meta.env.PUBLIC_GOOGLE_ANALYTICS_ID;
+
 ---
 
 <!doctype html>
@@ -102,6 +106,21 @@ if (blogTitle) {
       type="font/woff2"
       crossorigin
     />
+
+    <!-- Google Analytics -->
+    {gaId && (
+      <>
+        <script is:inline async src={`https://www.googletagmanager.com/gtag/js?id=${gaId}`}></script>
+        <script define:vars={{ gaId }} is:inline>
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+          gtag('config', gaId);
+        </script>
+      </>
+    )}
+    <!-- End Google Analytics -->
+
     <slot name="head" />
   </head>
   <body class="min-h-screen flex flex-col text-gray-900 dark:text-gray-100 transition-colors">
