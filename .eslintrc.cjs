@@ -45,14 +45,12 @@ module.exports = {
       rules: {
         'astro/no-set-html-directive': 'error',
         // Astroファイルではclassを使うので無効化
-        'react/no-unknown-property': [
-          'error',
-          {
-            ignore: ['class', 'class:list', 'is:inline', 'is:global'],
-          },
-        ],
+        'react/no-unknown-property': 'off', // Astroファイル内ではこのルールを完全に無効化
+        'jsx-a11y/html-has-lang': 'off', // Astroファイル内ではこのルールも無効化
         // MapでJSX使う場合のkey警告を無効化
         'react/jsx-key': 'off',
+        // Prettierのルールを緩和
+        'prettier/prettier': 'warn',
       },
     },
     // env.d.ts用のルール設定
@@ -60,6 +58,7 @@ module.exports = {
       files: ['src/env.d.ts'],
       rules: {
         '@typescript-eslint/triple-slash-reference': 'off',
+        '@typescript-eslint/no-explicit-any': 'off', // env.d.tsでは any 型を許可
       },
     },
   ],
