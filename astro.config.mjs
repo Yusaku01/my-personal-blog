@@ -1,5 +1,6 @@
 import { defineConfig } from 'astro/config';
-import cloudflare from '@astrojs/cloudflare';
+// もしSSRにするときは、以下コメントアウトを解除
+// import cloudflare from '@astrojs/cloudflare';
 import mdx from '@astrojs/mdx';
 import react from '@astrojs/react';
 import UnoCSS from 'unocss/astro';
