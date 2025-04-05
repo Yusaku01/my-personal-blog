@@ -20,7 +20,7 @@ export default function ContactFormTextarea({
         }`}
         {...register(id)}
       ></textarea>
-      {errors[id] && <p className="mt-1 text-sm text-red-500">{errors[id].message}</p>}
+      {errors[id] && <p className="mt-1 text-sm text-red-500">{errors[id]?.message}</p>}
     </>
   );
 }
