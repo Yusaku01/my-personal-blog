@@ -1,7 +1,7 @@
 ---
 import Layout from '../layouts/Layout.astro';
 import HeroSection from '../components/HeroSection.astro';
-import ContactForm from '../components/Contact/ContactForm';
+import SuspenseContactForm from '../components/Contact/SuspenseContactForm';
 ---
 
 <Layout title="お問い合わせ | SAKUSPACE">
@@ -10,7 +10,7 @@ import ContactForm from '../components/Contact/ContactForm';
   <div class="py-12">
     <div class="container-md">
       <div class="p-8">
-        <ContactForm client:load />
+        <SuspenseContactForm client:only="react" />
       </div>
     </div>
   </div>
