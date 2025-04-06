@@ -2,7 +2,7 @@ import { type ContactForm } from '../../types/index';
 
 // SSGFormのエンドポイントURL
 // クライアントサイドでも使えるようにpublicなエンドポイントです
-const FORM_ENDPOINT = 'https://ssgform.com/s/rGYtwI020c3g';
+const FORM_ENDPOINT = process.env.PUBLIC_CONTACT_FORM_ENDPOINT || '';
 
 export async function submitContactForm(data: ContactForm): Promise<Response> {
   console.log('送信先URL:', FORM_ENDPOINT);

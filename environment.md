@@ -1,6 +1,6 @@
 # プロジェクト環境構成
 
-_このファイルは自動的に生成・更新されます_
+*このファイルは自動的に生成・更新されます*
 
 ## 📁 ディレクトリ構造
 
@@ -48,6 +48,7 @@ _このファイルは自動的に生成・更新されます_
 │   ├── pages
 │   │   ├── api
 │   │   ├── blog
+│   │   ├── contact-plain.astro
 │   │   ├── contact.astro
 │   │   ├── index.astro
 │   │   └── profile.astro
@@ -64,20 +65,18 @@ _このファイルは自動的に生成・更新されます_
 ├── tsconfig.json
 └── uno.config.ts
 
-20 directories, 38 files
+20 directories, 39 files
 
 ```
 
 ## 🔑 主要ファイルの役割
 
 ### 設定ファイル
-
 - `astro.config.mjs`: Astroの設定（プラグイン、統合など）
 - `tailwind.config.mjs`: Tailwind CSSのカスタマイズ設定
 - `tsconfig.json`: TypeScriptのコンパイラ設定
 
 ### コアコンポーネント
-
 - `src/layouts/Layout.astro`: 全ページで使用される基本レイアウト
 - `src/components/Header.astro`: サイトヘッダー（ナビゲーション）
 - `src/components/Footer.astro`: サイトフッター
@@ -87,6 +86,7 @@ _このファイルは自動的に生成・更新されます_
 ### スタイル
 
 ### ユーティリティ
+
 
 ## 🔄 自動更新の仕組み
 
