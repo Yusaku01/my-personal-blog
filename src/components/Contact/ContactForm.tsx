@@ -8,6 +8,7 @@ import { useState } from 'react';
 import ContactFormLabel from './ContactFormLabel';
 import ContactFormInput from './ContactFormInput';
 import ContactFormTextarea from './ContactFormTextarea';
+import { submitContactForm } from '../../lib/api-clients/contact';
 
 type ContactFormValues = z.infer<typeof contactFormSchema>;
 
@@ -28,17 +29,15 @@ export default function ContactForm() {
   const onSubmit = async (data: ContactFormValues) => {
     setIsSubmitting(true);
     try {
-      // ここで実際のAPI送信処理を行います
-      console.log('送信データ:', data);
+      // submitContactForm関数を呼び出してデータを送信
+      await submitContactForm(data);
 
-      // 送信成功を模擬（実際の実装では適切なAPIコールに置き換えてください）
-      await new Promise((resolve) => setTimeout(resolve, 1000));
-
-      setIsSubmitted(true);
+      // フォームをリセット
       reset();
     } catch (error) {
-      console.error('送信エラー:', error);
+      setIsSubmitted(false);
     } finally {
+      setIsSubmitted(true);
       setIsSubmitting(false);
     }
   };
