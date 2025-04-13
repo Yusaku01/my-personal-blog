@@ -47,7 +47,6 @@
 │   ├── pages
 │   │   ├── api
 │   │   ├── blog
-│   │   ├── contact-plain.astro
 │   │   ├── contact.astro
 │   │   ├── index.astro
 │   │   └── profile.astro
@@ -64,7 +63,7 @@
 ├── tsconfig.json
 └── uno.config.ts
 
-19 directories, 39 files
+19 directories, 38 files
 
 ```
 

@@ -67,6 +67,10 @@ export default function ContactForm() {
         可能な限り早くご返信いたします。
       </p>
       <form onSubmit={handleSubmit(onSubmit)} className="max-w-2xl mx-auto">
+        <div
+          className="g-recaptcha"
+          data-sitekey={import.meta.env.PUBLIC_GOOGLE_RECAPTCHA_SITE_KEY}
+        ></div>
         <div className="mb-4">
           <ContactFormLabel htmlFor="name" label="お名前" required />
           <ContactFormInput register={register} errors={errors} id="name" type="text" />
