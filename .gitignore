@@ -26,3 +26,6 @@ pnpm-debug.log*
 
 # windsurf rules
 .windsurfrules
+
+# meta-info
+meta-info.md
