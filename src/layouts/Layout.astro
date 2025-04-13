@@ -12,7 +12,7 @@ interface Props {
 
 const {
   title,
-  description = '個人ブログとプロフィール',
+  description = 'SAKUSPACE（サクスペース）は、フロントエンド開発〜デザイン領域のことを中心に、アウトプットする場として運営しているブログサイトです。',
   blogTitle, // ブログタイトルを受け取る
 } = Astro.props;
 
@@ -51,7 +51,8 @@ const gaId = import.meta.env.PUBLIC_GOOGLE_ANALYTICS_ID;
 <html lang="ja">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <meta content="email=no,telephone=no,address=no" name="format-detection" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="generator" content={Astro.generator} />
     <meta name="description" content={description} />
