@@ -106,19 +106,19 @@ const gaId = import.meta.env.PUBLIC_GOOGLE_ANALYTICS_ID;
       crossorigin="anonymous"
     />
 
-    <!-- Google Analytics -->
-    {
-      gaId && (
-        <>
-          <script is:inline async src={`https://www.googletagmanager.com/gtag/js?id=${gaId}`} />
-          <script define:vars={{ gaId }} is:inline>
-            window.dataLayer = window.dataLayer || []; function gtag() {dataLayer.push(arguments)}
-            gtag('js', new Date()); gtag('config', gaId);
-          </script>
-        </>
-      )
-    }
-    <!-- End Google Analytics -->
+    <!-- Google tag (gtag.js) -->
+    <script
+      is:inline
+      src={`https://www.googletagmanager.com/gtag/js?id=${import.meta.env.PUBLIC_GTM_ID}`}
+      async></script>
+    <script is:inline>
+      window.dataLayer = window.dataLayer || [];
+      function gtag() {
+        dataLayer.push(arguments);
+      }
+      gtag('js', new Date());
+      gtag('config', import.meta.env.PUBLIC_GTM_ID);
+    </script>
 
     <!-- Google reCAPTCHA -->
     <script is:inline src="https://www.google.com/recaptcha/api.js" async defer></script>
