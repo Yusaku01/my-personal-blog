@@ -3,6 +3,9 @@ import Layout from '../layouts/Layout.astro';
 import HeroSection from '../components/HeroSection.astro';
 import ProfileSection from '../components/ProfileSection.astro';
 import { ProfileContent } from '../lib/utils/profileData';
+
+import { Image } from 'astro:assets';
+import myImage from '../assets/img/img_profile.png';
 ---
 
 <Layout title="プロフィール | SAKUSPACE">
@@ -29,9 +32,9 @@ import { ProfileContent } from '../lib/utils/profileData';
             <div
               class="w-46 h-46 rounded-full overflow-hidden relative z-10 bg-white dark:bg-gray-700"
             >
-              <img
-                src={ProfileContent.avatar}
-                alt={ProfileContent.name}
+              <Image
+                src={myImage}
+                alt="プロフィール画像"
                 class="w-full h-full object-cover"
                 width="184"
                 height="184"

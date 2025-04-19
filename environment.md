@@ -6,6 +6,10 @@
 
 ```text
 .
+├── docs
+│   ├── lighthouse
+│   │   └── lh_20250419.html
+│   └── todo.md
 ├── public
 │   ├── images
 │   │   ├── blog
@@ -14,8 +18,7 @@
 │   │   ├── icon_linkedin.svg
 │   │   ├── icon_qiita.png
 │   │   ├── icon_x-dark.svg
-│   │   ├── icon_x-light.svg
-│   │   └── img_profile.png
+│   │   └── icon_x-light.svg
 │   ├── ogp
 │   │   ├── blog.png
 │   │   ├── contact.png
@@ -23,8 +26,11 @@
 │   │   ├── getting-started-blog.png
 │   │   ├── getting-started-blog2.png
 │   │   └── profile.png
+│   ├── apple-touch-icon.png
 │   └── favicon.svg
 ├── src
+│   ├── assets
+│   │   └── img
 │   ├── components
 │   │   ├── Blog
 │   │   ├── Contact
@@ -64,7 +70,7 @@
 ├── tsconfig.json
 └── uno.config.ts
 
-19 directories, 39 files
+23 directories, 41 files
 
 ```
 

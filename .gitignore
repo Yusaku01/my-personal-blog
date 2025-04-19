@@ -29,3 +29,6 @@ pnpm-debug.log*
 
 # meta-info
 meta-info.md
+
+# docs
+/docs

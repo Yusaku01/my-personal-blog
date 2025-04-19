@@ -24,6 +24,9 @@ const allPosts = [
 ].sort((a, b) => b.publishDate.getTime() - a.publishDate.getTime());
 
 const POSTS_PER_SECTION = 4;
+
+import { Image } from 'astro:assets';
+import myImage from '../assets/img/img_profile.png';
 ---
 
 <Layout title="SAKUSPACE">
@@ -62,10 +65,12 @@ const POSTS_PER_SECTION = 4;
         <div class="py-6">
           <div class="flex flex-col md:flex-row gap-8 items-center">
             <div class="w-32 h-32 rounded-full overflow-hidden flex-shrink-0">
-              <img
-                src="/images/img_profile.png"
+              <Image
+                src={myImage}
                 alt="プロフィール画像"
                 class="w-full h-full object-cover"
+                width="128"
+                height="128"
               />
             </div>
             <div class="flex-grow">
