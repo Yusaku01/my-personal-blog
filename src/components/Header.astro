@@ -126,6 +126,15 @@ const isActiveLink = (href: string) => {
     }
   }
 
+  // クライアントサイドで初回ロード時にsetupMobileMenuを呼び出す
+  if (typeof window !== 'undefined') {
+    if (document.readyState === 'loading') {
+      window.addEventListener('DOMContentLoaded', setupMobileMenu);
+    } else {
+      setupMobileMenu();
+    }
+  }
+
   const themeToggle = document.getElementById('themeToggle');
   themeToggle?.addEventListener('click', () => {
     const element = document.documentElement;
