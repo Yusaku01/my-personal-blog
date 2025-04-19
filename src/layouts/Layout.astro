@@ -51,12 +51,13 @@ const gaId = import.meta.env.PUBLIC_GOOGLE_ANALYTICS_ID;
 <html lang="ja">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
     <meta content="email=no,telephone=no,address=no" name="format-detection" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="generator" content={Astro.generator} />
     <meta name="description" content={description} />
     <title>{title}</title>
+    <!-- テーマ切り替え -->
     <script is:inline>
       const theme = (() => {
         if (typeof localStorage !== 'undefined' && localStorage.getItem('theme')) {
@@ -107,26 +108,24 @@ const gaId = import.meta.env.PUBLIC_GOOGLE_ANALYTICS_ID;
       crossorigin="anonymous"
     />
 
-    <!-- Google tag (gtag.js) -->
-    <script
-      is:inline
-      src={`https://www.googletagmanager.com/gtag/js?id=${import.meta.env.PUBLIC_GTM_ID}`}
-      async></script>
+    <!-- Google Analytics (gtag.js) -->
+    <script is:inline async src={`https://www.googletagmanager.com/gtag/js?id=${gaId}`}></script>
     <script is:inline>
       window.dataLayer = window.dataLayer || [];
       function gtag() {
         dataLayer.push(arguments);
       }
       gtag('js', new Date());
-      gtag('config', import.meta.env.PUBLIC_GTM_ID);
+      gtag('config', gaId);
     </script>
 
     <!-- Google reCAPTCHA -->
     <script is:inline src="https://www.google.com/recaptcha/api.js" async defer></script>
 
     <slot name="head" />
-  </head>
-  <body class="min-h-screen flex flex-col text-gray-900 dark:text-gray-100 transition-colors">
+  </head><body
+    class="min-h-screen flex flex-col text-gray-900 dark:text-gray-100 transition-colors"
+  >
     <Header />
     <!-- <div class="h-16"></div> -->
     <!-- ヘッダーの固定分のスペース -->
