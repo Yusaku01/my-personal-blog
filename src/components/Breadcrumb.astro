@@ -40,7 +40,7 @@ const isHomePage = pathname === '/';
 
 {
   !isHomePage && (
-    <nav aria-label="パンくずリスト" class="py-2 text-sm bg-white dark:bg-gray-900">
+    <nav aria-label="パンくずリスト" class="py-2 text-sm bg-white dark:bg-gray-900 mt-16">
       <div class="container-lg mx-auto px-4">
         <ol class="flex flex-wrap items-center gap-2">
           {breadcrumbItems.map((item, index) => (

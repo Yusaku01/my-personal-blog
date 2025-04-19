@@ -129,7 +129,9 @@ const gaId = import.meta.env.PUBLIC_GOOGLE_ANALYTICS_ID;
     <slot name="head" />
   </head>
 
-  <body class="min-h-screen flex flex-col text-gray-900 dark:text-gray-100 transition-colors">
+  <body
+    class="min-h-screen flex flex-col text-gray-900 dark:text-gray-100 transition-colors overscroll-y-none"
+  >
     <Header />
     <!-- <div class="h-16"></div> -->
     <!-- ヘッダーの固定分のスペース -->
