@@ -33,15 +33,14 @@
 │   │   └── img
 │   ├── components
 │   │   ├── Blog
+│   │   ├── Breadcrump
 │   │   ├── Contact
-│   │   ├── Breadcrumb.astro
-│   │   ├── Footer.astro
-│   │   ├── Header.astro
-│   │   ├── HeroSection.astro
-│   │   ├── ProfileSection.astro
-│   │   ├── SectionHeading.astro
-│   │   ├── TableOfContents.astro
-│   │   ├── ThemeToggle.astro
+│   │   ├── Footer
+│   │   ├── Header
+│   │   ├── Hero
+│   │   ├── Profile
+│   │   ├── Section
+│   │   ├── Theme
 │   │   └── ViewToggle.tsx
 │   ├── content
 │   │   ├── blog
@@ -71,7 +70,7 @@
 ├── tsconfig.json
 └── uno.config.ts
 
-24 directories, 41 files
+31 directories, 33 files
 
 ```
 
