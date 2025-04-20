@@ -51,7 +51,7 @@ export default function ContactForm() {
         </p>
         <button
           onClick={() => setIsSubmitted(false)}
-          className="mt-4 px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700 transition-colors"
+          className="mt-4 px-4 py-2 bg-green-600 text-white rounded lg:hover:bg-green-700 transition-colors"
         >
           新しいお問い合わせ
         </button>
@@ -95,7 +95,7 @@ export default function ContactForm() {
           <button
             type="submit"
             disabled={isSubmitting}
-            className="px-6 py-3 bg-gray-800 text-white rounded-md hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2 transition-colors disabled:opacity-70 dark:bg-white dark:text-gray-900 dark:hover:bg-gray-300 dark:focus:ring-gray-300 dark:focus:ring-offset-gray-300 font-bold tracking-wide"
+            className="px-6 py-3 bg-gray-800 text-white rounded-md lg:hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2 transition-colors disabled:opacity-70 dark:bg-white dark:text-gray-900 dark:lg:hover:bg-gray-300 dark:focus:ring-gray-300 dark:focus:ring-offset-gray-300 font-bold tracking-wide"
           >
             {isSubmitting ? '送信中...' : '送信する'}
           </button>

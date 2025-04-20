@@ -12,15 +12,15 @@ const postCardStyles = {
   imageContainer: 'relative aspect-video overflow-hidden', // overflow-hiddenを維持
   image: 'w-full h-full object-cover transition-all duration-300 ease-in-out', // 拡大を削除
   overlay:
-    'absolute inset-0 bg-black bg-opacity-0 flex items-center justify-center transition-all duration-300 ease-in-out group-hover:bg-opacity-60', // オーバーレイを追加
+    'absolute inset-0 bg-black bg-opacity-0 flex items-center justify-center transition-all duration-300 ease-in-out lg:group-hover:bg-opacity-60', // オーバーレイを追加
   readText:
-    'text-white font-bold opacity-0 transform translate-y-4 transition-all duration-300 ease-in-out group-hover:opacity-100 group-hover:translate-y-0 tracking-wider', // 「記事を読む」テキスト
+    'text-white font-bold opacity-0 transform translate-y-4 transition-all duration-300 ease-in-out lg:group-hover:opacity-100 lg:group-hover:translate-y-0 tracking-wider', // 「記事を読む」テキスト
   contentContainer: 'p-4',
   title: 'text-md font-semibold text-gray-900 dark:text-white line-clamp-4 leading-tight',
   date: 'text-sm text-gray-600 dark:text-gray-400',
   excerpt: 'text-sm text-gray-600 dark:text-gray-400 line-clamp-2',
   tagContainer: 'flex flex-wrap gap-2',
-  tag: 'inline-flex items-center px-2.5 py-0.5 rounded-full text-2.5 font-medium border border-gray-900 dark:bg-gray-400 dark:border-gray-600 text-gray-700 dark:text-gray-200',
+  tag: 'inline-flex items-center px-2.5 py-0.5 rounded-full text-2.5 font-medium border border-gray-900 dark:border-gray-600 text-gray-700 dark:text-gray-200',
 };
 
 export function PostCard({

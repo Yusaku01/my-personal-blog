@@ -2,8 +2,7 @@
 import { getCollection } from 'astro:content';
 import Layout from '../../layouts/Layout.astro';
 import { BlogControls } from '../../components/Blog';
-import HeroSection from '../../components/HeroSection.astro';
-// import SectionHeading from '../../components/SectionHeading.astro';
+import HeroSection from '../../components/Hero/HeroSection.astro';
 import { getQiitaPosts } from '../../lib/api-clients/qiita';
 
 const posts = await getCollection('blog');

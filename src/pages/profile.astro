@@ -1,7 +1,7 @@
 ---
 import Layout from '../layouts/Layout.astro';
-import HeroSection from '../components/HeroSection.astro';
-import ProfileSection from '../components/ProfileSection.astro';
+import HeroSection from '../components/Hero/HeroSection.astro';
+import ProfileSection from '../components/Profile/ProfileSection.astro';
 import { ProfileContent } from '../lib/utils/profileData';
 
 import { Image } from 'astro:assets';
@@ -146,7 +146,7 @@ import myImage from '../assets/img/img_profile.png';
                     href={link.url}
                     target="_blank"
                     rel="noopener noreferrer"
-                    class="text-gray-600 hover:text-gray-800 dark:text-gray-300 dark:hover:text-white transition-colors duration-200"
+                    class="text-gray-600 lg:hover:text-gray-800 dark:text-gray-300 dark:lg:hover:text-white transition-colors duration-200"
                     aria-label={`Follow me on ${link.name}`}
                   >
                     <span class="sr-only">{link.name}</span>

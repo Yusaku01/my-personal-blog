@@ -1,5 +1,5 @@
 ---
-import ThemeToggle from './ThemeToggle.astro';
+import ThemeToggle from '../Theme/ThemeToggle.astro';
 
 const { pathname } = Astro.url;
 
@@ -33,7 +33,8 @@ const isActiveLink = (href: string) => {
             navItems.map((item) => (
               <a
                 href={item.href}
-                class={`px-4 py-2 text-gray-800 dark:text-white relative group hover:bg-gray-800 hover:text-white transition-colors duration-300 ${isActiveLink(item.href) ? 'after:content-[""] after:absolute after:left-0 after:right-0 after:bottom-0 after:h-0.5 after:bg-gray-800 dark:after:bg-white' : ''}`}
+                class={`px-4 py-2 text-gray-800 dark:text-white relative group lg:hover:bg-gray-800 lg:hover:text-white transition-colors duration-300 ${isActiveLink(item.href) ? 'after:content-[""] after:absolute after:left-0 after:right-0 after:bottom-0 after:h-0.5 after:bg-gray-800 dark:after:bg-white' : ''}`}
+                aria-current={isActiveLink(item.href) ? 'page' : undefined}
               >
                 {item.text}
               </a>
@@ -44,7 +45,7 @@ const isActiveLink = (href: string) => {
         <!-- モバイルメニューボタン -->
         <button
           id="menuButton"
-          class="lg:hidden px-4 py-2 text-gray-800 dark:text-white hover:bg-gray-800 hover:text-white transition-colors duration-300"
+          class="lg:hidden px-4 py-2 text-gray-800 dark:text-white lg:hover:bg-gray-800 lg:hover:text-white transition-colors duration-300"
         >
           MENU
         </button>
@@ -62,7 +63,7 @@ const isActiveLink = (href: string) => {
     <div class="mx-auto px-4 py-8 bg-white dark:bg-gray-900 z-[9999] h-screen">
       <button
         id="closeButton"
-        class="absolute top-4 right-4 p-2 text-gray-800 dark:text-white hover:bg-gray-800 hover:text-white transition-colors duration-300"
+        class="absolute top-4 right-4 p-2 text-gray-800 dark:text-white lg:hover:bg-gray-800 lg:hover:text-white transition-colors duration-300"
       >
         ✕
       </button>

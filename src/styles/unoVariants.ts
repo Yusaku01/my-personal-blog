@@ -57,9 +57,9 @@ export const button = (
   // 色のバリアント
   if (color === 'primary') {
     classes +=
-      ' px-6 py-3 bg-gray-800 text-white rounded-md hover:bg-gray-700 transition-all duration-300 dark:bg-gray-200 dark:text-gray-800 font-bold leading-loose';
+      ' px-6 py-3 bg-gray-800 text-white rounded-md lg:hover:bg-gray-700 transition-all duration-300 dark:bg-gray-200 dark:text-gray-800 font-bold leading-loose';
   } else if (color === 'secondary') {
-    classes += ' bg-gray-200 text-gray-700 hover:bg-gray-300 focus:ring-gray-500';
+    classes += ' bg-gray-200 text-gray-700 lg:hover:bg-gray-300 focus:ring-gray-500';
   }
 
   // サイズのバリアント
@@ -143,7 +143,7 @@ export const card = (options: { hoverable?: boolean } = {}) => {
     'bg-white dark:bg-gray-800 rounded-lg shadow-sm overflow-hidden border border-gray-200 dark:border-gray-700 transition-all duration-200 h-full';
 
   if (hoverable) {
-    classes += ' hover:shadow-md';
+    classes += ' lg:hover:shadow-md';
   }
 
   return classes;

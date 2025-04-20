@@ -44,6 +44,7 @@
 │   │   ├── ThemeToggle.astro
 │   │   └── ViewToggle.tsx
 │   ├── content
+│   │   ├── blog
 │   │   └── config.ts
 │   ├── layouts
 │   │   └── Layout.astro
@@ -70,7 +71,7 @@
 ├── tsconfig.json
 └── uno.config.ts
 
-23 directories, 41 files
+24 directories, 41 files
 
 ```
 

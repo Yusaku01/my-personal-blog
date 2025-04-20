@@ -8,7 +8,7 @@ interface ViewToggleProps {
 // ViewToggleコンポーネント固有のスタイル
 const viewToggleStyles = {
   button:
-    'px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 hover:bg-gray-100 dark:hover:bg-gray-700 flex items-center gap-2',
+    'px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 lg:hover:bg-gray-100 dark:lg:hover:bg-gray-700 flex items-center gap-2',
   activeText: '',
   hiddenText: 'hidden',
 };
