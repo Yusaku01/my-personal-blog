@@ -44,7 +44,7 @@ export default defineConfig({
   },
   vite: {
     build: {
-      cssCodeSplit: false,
+      cssCodeSplit: true,
     },
     ssr: {
       noExternal: ['date-fns'],

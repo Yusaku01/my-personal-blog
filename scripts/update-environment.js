@@ -28,7 +28,6 @@ function getDirectoryTree() {
 function generateFileDescriptions() {
   const descriptions = {
     'astro.config.mjs': 'Astroの設定（プラグイン、統合など）',
-    'tailwind.config.mjs': 'Tailwind CSSのカスタマイズ設定',
     'tsconfig.json': 'TypeScriptのコンパイラ設定',
     'src/layouts/Layout.astro': '全ページで使用される基本レイアウト',
     'src/components/Header.astro': 'サイトヘッダー（ナビゲーション）',
@@ -40,7 +39,7 @@ function generateFileDescriptions() {
 
   // カテゴリごとにファイルを整理
   const categories = {
-    設定ファイル: ['astro.config.mjs', 'tailwind.config.mjs', 'tsconfig.json'],
+    設定ファイル: ['astro.config.mjs', 'tsconfig.json'],
     コアコンポーネント: [
       'src/layouts/Layout.astro',
       'src/components/Header.astro',

@@ -7,9 +7,8 @@
 ```text
 .
 ├── docs
-│   ├── lighthouse
-│   │   └── lh_20250419.html
-│   └── todo.md
+│   └── lighthouse
+│       └── lh_20250419.html
 ├── public
 │   ├── images
 │   │   ├── blog
@@ -67,6 +66,7 @@
 ├── meta-info.md
 ├── package-lock.json
 ├── package.json
+├── todo.md
 ├── tsconfig.json
 └── uno.config.ts
 
@@ -78,7 +78,6 @@
 
 ### 設定ファイル
 - `astro.config.mjs`: Astroの設定（プラグイン、統合など）
-- `tailwind.config.mjs`: Tailwind CSSのカスタマイズ設定
 - `tsconfig.json`: TypeScriptのコンパイラ設定
 
 ### コアコンポーネント

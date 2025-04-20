@@ -8,8 +8,7 @@ export const ProfileContent = {
   professionalSkills: [
     {
       name: 'HTML',
-      details:
-        'HTML5, セマンティックマークアップ, ウェブアクセシビリティ（学習中）, SEO最適化（学習中）',
+      details: 'HTML5, セマンティックマークアップ, ウェブアクセシビリティ, SEO最適化',
     },
     {
       name: 'CSS',
