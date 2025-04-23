@@ -1,58 +1,126 @@
 ---
+// Heading interface definition
+interface Heading {
+  depth: number;
+  slug: string;
+  text: string;
+}
+
 interface Props {
-  headings: {
-    depth: number;
-    slug: string;
-    text: string;
-  }[];
+  headings: Heading[];
+}
+
+// TocNode for tree structure
+interface TocNode extends Heading {
+  children: TocNode[];
 }
 
 const { headings } = Astro.props;
 
-// TableOfContentsコンポーネント固有のスタイル
+// Helper function to build the TOC tree
+function buildTocTree(headings: Heading[]): TocNode[] {
+  const root: TocNode = { depth: 0, slug: '', text: '', children: [] }; // Use depth 0 for the root
+  const stack: TocNode[] = [root];
+
+  for (const heading of headings) {
+    // Create a new node for the current heading
+    const node: TocNode = { ...heading, children: [] };
+
+    // Pop from stack until the parent node is found
+    // The parent's depth must be less than the current node's depth
+    while (stack.length > 0 && node.depth <= stack[stack.length - 1].depth) {
+      stack.pop();
+    }
+
+    // Add the current node as a child of the node at the top of the stack
+    if (stack.length > 0) {
+      stack[stack.length - 1].children.push(node);
+    } else {
+      // This case should ideally not happen if headings are structured correctly (e.g., start with h2)
+      // As a fallback, add to the root's children if the stack becomes empty
+      root.children.push(node);
+    }
+
+    // Push the current node onto the stack
+    stack.push(node);
+  }
+  return root.children; // Return children of the root node
+}
+
+// Helper function to render the TOC list recursively
+// Add isNested parameter to control indentation class
+function renderTocList(nodes: TocNode[], isNested = false): string {
+  if (!nodes || nodes.length === 0) {
+    return '';
+  }
+
+  // Apply margin class only to nested lists using UnoCSS class
+  const olClass = `list-decimal px-4`;
+  let html = `<ol class="${olClass}">`;
+
+  for (const node of nodes) {
+    html += `<li>`;
+    html += `<a href="#${node.slug}" class="text-sm dark:text-white hover:underline transition duration-200">${node.text}</a>`;
+
+    // Recursively render children if they exist, passing true for isNested
+    if (node.children.length > 0) {
+      html += renderTocList(node.children, true);
+    }
+    html += '</li>';
+  }
+
+  html += '</ol>';
+  return html;
+}
+
+// Filter headings to include only h2 and h3, then build the tree
+const filteredHeadings = headings.filter((h) => h.depth >= 2 && h.depth <= 3);
+const tocTree = buildTocTree(filteredHeadings);
+const tocHtml = renderTocList(tocTree); // Initial call, isNested defaults to false
+
+// Styles (Simplified: remove getItemIndent)
 const tocStyles = {
-  container: 'p-4 rounded-lg mb-8',
-  summary: 'text-lg font-semibold cursor-pointer list-none flex items-center',
-  arrow: 'mr-2 inline-block transition-transform duration-200',
-  nav: 'mt-2',
-  list: 'space-y-1 list-none p-0',
-  getItemIndent: (depth: number) => `pl-${(depth - 1) * 4}`,
-  link: 'lg:hover:underline text-sm dark:text-white transition duration-200',
+  container: 'mb-8',
+  summary:
+    'text-lg font-semibold cursor-pointer flex items-center border duration-200 p-4 rounded-lg',
+  arrow: 'toc-arrow mr-2 inline-block transition-transform duration-200',
+  nav: 'mt-2 px-4 bg-gray-50 dark:bg-gray-800',
+  // link style is applied within renderTocList now
 };
 ---
 
 <div class={tocStyles.container}>
+  {/* Add 'open' attribute to make it open by default */}
   <details class="toc-details">
     <summary class={tocStyles.summary}>
-      <span class={`toc-arrow ${tocStyles.arrow}`}>▼</span>
+      <span class={tocStyles.arrow}>▼</span>
       目次
     </summary>
-    <nav class={tocStyles.nav}>
-      <ul class={tocStyles.list}>
-        {
-          headings.map((heading) => (
-            <li class={tocStyles.getItemIndent(heading.depth)}>
-              <a href={`#${heading.slug}`} class={tocStyles.link}>
-                {heading.text}
-              </a>
-            </li>
-          ))
-        }
-      </ul>
-    </nav>
+    {/* Use set:html to render the dynamically generated HTML */}
+    <nav class={tocStyles.nav} set:html={tocHtml} />
   </details>
 </div>
 
 <style>
+  /* Arrow rotation style (unchanged) */
   .toc-arrow {
     transition: transform 0.3s;
   }
-
   details[open] .toc-arrow {
+    transform: rotate(0deg);
+  }
+  details:not([open]) .toc-arrow {
     transform: rotate(180deg);
   }
 
-  details > summary::-webkit-details-marker {
-    display: none;
+  /* Ensure nested lists also have no bullets/padding by default */
+  .toc-details nav ol {
+    padding-left: 0; /* Reset browser default padding */
   }
+  /* Add margin for nested lists (indentation) - Now handled by ml-4 class */
+  /*
+  .toc-details nav ul ul {
+    margin-left: 1rem; 
+  }
+  */
 </style>
