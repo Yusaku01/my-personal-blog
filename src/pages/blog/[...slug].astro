@@ -17,9 +17,9 @@ const { Content, headings } = await post.render();
 ---
 
 <Layout title={`${post.data.title} | SAKUSPACE`} blogTitle={post.data.title}>
-  <div class="bg-gray-50 dark:bg-gray-800 py-12">
+  <div class="bg-gray-50 dark:bg-gray-800 pt-12 pb-25">
     <div class="container-md container-base">
-      <article class="p-8">
+      <article>
         <!-- 1. Title -->
         <h1 class="heading-h1 mb-6">{post.data.title}</h1>
 
@@ -42,7 +42,7 @@ const { Content, headings } = await post.render();
             <div class="mb-5">
               <div class="flex flex-wrap gap-2">
                 {post.data.tags.map((tag) => (
-                  <span class="bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 px-3 py-1 rounded-full text-sm font-medium">
+                  <span class="border-2 border-gray-900 dark:border-gray-600 text-gray-700 dark:text-gray-200 px-3 py-1 rounded-full text-sm font-medium">
                     {tag}
                   </span>
                 ))}
@@ -70,3 +70,20 @@ const { Content, headings } = await post.render();
     </div>
   </div>
 </Layout>
+
+<style is:global>
+  .footnotes {
+    @apply border-t border-gray-200 dark:border-gray-700 mt-12 pt-8;
+  }
+  .footnotes ol {
+    @apply mb-0;
+  }
+  .footnotes li:last-child p {
+    @apply mb-0;
+  }
+
+  /* 必要であればフットノート内のリンクスタイルも調整 */
+  /* .footnotes a {
+    @apply text-brand hover:underline;
+  } */
+</style>

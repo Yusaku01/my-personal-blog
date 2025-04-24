@@ -54,7 +54,6 @@ function renderTocList(nodes: TocNode[], isNested = false): string {
     return '';
   }
 
-  // Apply margin class only to nested lists using UnoCSS class
   const olClass = `list-decimal px-4`;
   let html = `<ol class="${olClass}">`;
 
@@ -62,7 +61,6 @@ function renderTocList(nodes: TocNode[], isNested = false): string {
     html += `<li>`;
     html += `<a href="#${node.slug}" class="text-sm dark:text-white hover:underline transition duration-200">${node.text}</a>`;
 
-    // Recursively render children if they exist, passing true for isNested
     if (node.children.length > 0) {
       html += renderTocList(node.children, true);
     }
@@ -78,31 +76,26 @@ const filteredHeadings = headings.filter((h) => h.depth >= 2 && h.depth <= 3);
 const tocTree = buildTocTree(filteredHeadings);
 const tocHtml = renderTocList(tocTree); // Initial call, isNested defaults to false
 
-// Styles (Simplified: remove getItemIndent)
 const tocStyles = {
   container: 'mb-8',
   summary:
-    'text-lg font-semibold cursor-pointer flex items-center border duration-200 p-4 rounded-lg',
+    'text-lg font-semibold cursor-pointer flex items-center duration-200 p-4 bg-gray-200 dark:bg-gray-100 dark:text-gray-900',
   arrow: 'toc-arrow mr-2 inline-block transition-transform duration-200',
-  nav: 'mt-2 px-4 bg-gray-50 dark:bg-gray-800',
-  // link style is applied within renderTocList now
+  nav: 'p-4 bg-gray-100 dark:bg-gray-700',
 };
 ---
 
 <div class={tocStyles.container}>
-  {/* Add 'open' attribute to make it open by default */}
   <details class="toc-details">
     <summary class={tocStyles.summary}>
-      <span class={tocStyles.arrow}>▼</span>
+      <span class={tocStyles.arrow}>&#9660;</span>
       目次
     </summary>
-    {/* Use set:html to render the dynamically generated HTML */}
     <nav class={tocStyles.nav} set:html={tocHtml} />
   </details>
 </div>
 
 <style>
-  /* Arrow rotation style (unchanged) */
   .toc-arrow {
     transition: transform 0.3s;
   }
@@ -112,15 +105,7 @@ const tocStyles = {
   details:not([open]) .toc-arrow {
     transform: rotate(180deg);
   }
-
-  /* Ensure nested lists also have no bullets/padding by default */
   .toc-details nav ol {
-    padding-left: 0; /* Reset browser default padding */
+    padding-left: 0;
   }
-  /* Add margin for nested lists (indentation) - Now handled by ml-4 class */
-  /*
-  .toc-details nav ul ul {
-    margin-left: 1rem; 
-  }
-  */
 </style>
