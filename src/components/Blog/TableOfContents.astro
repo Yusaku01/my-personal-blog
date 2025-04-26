@@ -54,7 +54,7 @@ function renderTocList(nodes: TocNode[], isNested = false): string {
     return '';
   }
 
-  const olClass = `list-decimal px-4`;
+  const olClass = `list-decimal px-4 leading-7`;
   let html = `<ol class="${olClass}">`;
 
   for (const node of nodes) {
