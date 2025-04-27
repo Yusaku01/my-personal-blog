@@ -79,9 +79,9 @@ const tocHtml = renderTocList(tocTree); // Initial call, isNested defaults to fa
 const tocStyles = {
   container: 'mb-8',
   summary:
-    'text-lg font-semibold cursor-pointer flex items-center duration-200 p-4 bg-gray-200 dark:bg-gray-100 dark:text-gray-900',
+    'text-lg font-semibold cursor-pointer flex items-center duration-200 p-4 bg-gray-900 text-gray-100 dark:bg-gray-100 dark:text-gray-900',
   arrow: 'toc-arrow mr-2 inline-block transition-transform duration-200',
-  nav: 'p-4 bg-gray-100 dark:bg-gray-700',
+  nav: 'p-4 bg-gray-200 dark:bg-gray-700',
 };
 ---
 
@@ -100,7 +100,7 @@ const tocStyles = {
     transition: transform 0.3s;
   }
   details[open] .toc-arrow {
-    transform: rotate(0deg);
+    transform: rotate(360deg);
   }
   details:not([open]) .toc-arrow {
     transform: rotate(180deg);
