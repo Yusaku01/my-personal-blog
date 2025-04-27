@@ -96,6 +96,13 @@ const tocStyles = {
 </div>
 
 <style>
+  summary::marker {
+    content: '';
+    display: none;
+  }
+  summary::-webkit-details-marker {
+    display: none;
+  }
   .toc-arrow {
     transition: transform 0.3s;
   }
