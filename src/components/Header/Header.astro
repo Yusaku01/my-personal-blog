@@ -12,7 +12,7 @@ const navItems = [
 
 // アクティブなリンクかどうかを判定する関数
 const isActiveLink = (href: string) => {
-  return pathname === href || (href === '/blog' && pathname.startsWith('/blog/'));
+  return pathname === href || pathname.startsWith(href + '/');
 };
 ---
 
@@ -30,15 +30,21 @@ const isActiveLink = (href: string) => {
         <!-- デスクトップナビゲーション -->
         <div class="hidden lg:flex items-center gap-4">
           {
-            navItems.map((item) => (
-              <a
-                href={item.href}
-                class={`px-4 py-2 text-gray-800 dark:text-white relative group lg:hover:bg-gray-800 lg:hover:text-white transition-colors duration-300 ${isActiveLink(item.href) ? 'after:content-[""] after:absolute after:left-0 after:right-0 after:bottom-0 after:h-0.5 after:bg-gray-800 dark:after:bg-white' : ''}`}
-                aria-current={isActiveLink(item.href) ? 'page' : undefined}
-              >
-                {item.text}
-              </a>
-            ))
+            navItems.map((item) => {
+              const isActive = isActiveLink(item.href);
+              const baseUnoClasses = 'px-4 py-2 text-gray-800 dark:text-white relative';
+              const customClasses = `nav-link ${isActive ? 'nav-link-active' : 'nav-link-hoverable'}`;
+
+              return (
+                <a
+                  href={item.href}
+                  class={`${baseUnoClasses} ${customClasses}`}
+                  aria-current={isActive ? 'page' : undefined}
+                >
+                  {item.text}
+                </a>
+              );
+            })
           }
         </div>
 
@@ -82,6 +88,41 @@ const isActiveLink = (href: string) => {
     </div>
   </div>
 </header>
+
+<style>
+  .nav-link {
+    position: relative; /* Needed for absolute positioning of ::after */
+    transition: color 0.3s; /* Optional: Keep color transition */
+  }
+
+  /* Base style for the underline */
+  .nav-link::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    bottom: 0; /* Adjust as needed, maybe slightly above bottom edge */
+    height: 2px; /* Underline thickness */
+    background-color: theme('colors.gray.800'); /* Use theme colors */
+    transition: width 0.3s ease-out; /* Animate only width */
+    width: 0; /* Default width is 0 */
+  }
+
+  /* Dark mode underline color */
+  :global(html.dark) .nav-link::after {
+    background-color: theme('colors.white');
+  }
+
+  /* Style for hoverable (non-active) links */
+  .nav-link-hoverable:hover::after {
+    width: 100%; /* Expand width on hover */
+  }
+
+  /* Style for active links */
+  .nav-link-active::after {
+    width: 100%; /* Always full width */
+    transition: none; /* No transition needed for active state */
+  }
+</style>
 
 <!-- <div class="h-16"></div> -->
 
