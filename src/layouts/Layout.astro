@@ -117,13 +117,13 @@ const gaId = import.meta.env.PUBLIC_GOOGLE_ANALYTICS_ID;
 
     <!-- Google Analytics (gtag.js) -->
     <script is:inline async src={`https://www.googletagmanager.com/gtag/js?id=${gaId}`}></script>
-    <script is:inline>
+    <script is:inline define:vars={{ gaId }}>
       window.dataLayer = window.dataLayer || [];
       function gtag() {
         dataLayer.push(arguments);
       }
       gtag('js', new Date());
-      gtag('config', gaId);
+      gtag('config', '${gaId}');
     </script>
 
     <!-- Google reCAPTCHA -->
