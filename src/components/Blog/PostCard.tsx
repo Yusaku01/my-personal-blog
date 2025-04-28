@@ -45,7 +45,7 @@ export function PostCard({
       >
         {thumbnail && (
           <div className={postCardStyles.imageContainer}>
-            <img src={thumbnail} alt={title} className={postCardStyles.image} />
+            <img src={thumbnail} alt={title} className={postCardStyles.image} loading="lazy" />
             <div className={postCardStyles.overlay}>
               <span className={postCardStyles.readText}>記事を読む</span>
             </div>

@@ -23,7 +23,6 @@
 │   │   ├── contact.png
 │   │   ├── default.png
 │   │   ├── getting-started-blog.png
-│   │   ├── getting-started-blog2.png
 │   │   └── profile.png
 │   ├── apple-touch-icon.png
 │   ├── favicon.ico
@@ -71,7 +70,7 @@
 ├── tsconfig.json
 └── uno.config.ts
 
-31 directories, 34 files
+31 directories, 33 files
 
 ```
 
