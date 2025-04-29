@@ -118,14 +118,12 @@ const gaId = import.meta.env.PUBLIC_GOOGLE_ANALYTICS_ID;
     <!-- Google Analytics (gtag.js) -->
     <script is:inline async src={`https://www.googletagmanager.com/gtag/js?id=${gaId}`}></script>
     <script is:inline define:vars={{ gaId }}>
-      document.addEventListener('astro:page-load', () => {
-        window.dataLayer = window.dataLayer || [];
-        function gtag() {
-          dataLayer.push(arguments);
-        }
-        gtag('js', new Date());
-        gtag('config', gaId);
-      });
+      window.dataLayer = window.dataLayer || [];
+      function gtag() {
+        dataLayer.push(arguments);
+      }
+      gtag('js', new Date());
+      gtag('config', gaId);
     </script>
 
     <!-- Google reCAPTCHA -->
@@ -145,9 +143,6 @@ const gaId = import.meta.env.PUBLIC_GOOGLE_ANALYTICS_ID;
       <slot />
     </main>
     <Footer />
-    <script>
-      document.addEventListener('astro:page-load', () => {});
-    </script>
     <style is:global>
       :root {
         --accent: 136, 58, 234;
