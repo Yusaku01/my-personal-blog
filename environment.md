@@ -63,14 +63,13 @@
 ├── README.md
 ├── astro.config.mjs
 ├── environment.md
-├── meta-info.md
 ├── package-lock.json
 ├── package.json
 ├── todo.md
 ├── tsconfig.json
 └── uno.config.ts
 
-31 directories, 33 files
+31 directories, 32 files
 
 ```
 
