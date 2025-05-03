@@ -46,8 +46,7 @@ import myImage from '../assets/img/img_profile.png';
           </ProfileSection>
 
           <!-- スキルセクション -->
-          <ProfileSection title="スキル" className="mb-10">
-            <!-- 業務スキル -->
+          <!-- <ProfileSection title="スキル" className="mb-10">
             <div class="mb-8">
               <div class="flex items-center gap-3 mb-4">
                 <h3 class="heading-h3">＜業務経験＞</h3>
@@ -55,23 +54,24 @@ import myImage from '../assets/img/img_profile.png';
 
               <div class="grid grid-cols-1 gap-3">
                 {
-                  ProfileContent.professionalSkills.map((skill) => (
-                    <div class="p-4">
-                      <div class="flex items-center justify-between mb-2">
-                        <h4 class="heading-h4">{skill.name}</h4>
-                        {/* <span class="bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 px-3 py-1 text-xs rounded-full">
+                  Array.isArray(ProfileContent.professionalSkills) &&
+                    ProfileContent.professionalSkills.length > 0 &&
+                    ProfileContent.professionalSkills.map((skill) => (
+                      <div class="p-4">
+                        <div class="flex items-center justify-between mb-2">
+                          <h4 class="heading-h4">{skill.name}</h4>
+                          {/* <span class="bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 px-3 py-1 text-xs rounded-full">
                           {skill.years}年の経験
                         </span> */}
-                      </div>
+                        </div>
 
-                      <div class="text-sm text-gray-600 dark:text-gray-400">{skill.details}</div>
-                    </div>
-                  ))
+                        <div class="text-sm text-gray-600 dark:text-gray-400">{skill.details}</div>
+                      </div>
+                    ))
                 }
               </div>
             </div>
 
-            <!-- 個人開発スキル -->
             <div>
               <div class="flex items-center gap-3 mb-4">
                 <h3 class="heading-h3">＜個人開発・学習＞</h3>
@@ -79,22 +79,24 @@ import myImage from '../assets/img/img_profile.png';
 
               <div class="grid grid-cols-1 gap-3">
                 {
-                  ProfileContent.personalSkills.map((skill) => (
-                    <div class="p-4">
-                      <div class="flex items-center justify-between mb-2">
-                        <h4 class="heading-h4">{skill.name}</h4>
-                        {/* <span class="bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 px-3 py-1 text-xs rounded-full">
+                  Array.isArray(ProfileContent.personalSkills) &&
+                    ProfileContent.personalSkills.length > 0 &&
+                    ProfileContent.personalSkills.map((skill) => (
+                      <div class="p-4">
+                        <div class="flex items-center justify-between mb-2">
+                          <h4 class="heading-h4">{skill.name}</h4>
+                          {/* <span class="bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 px-3 py-1 text-xs rounded-full">
                           {skill.years}年の経験
                         </span> */}
-                      </div>
+                        </div>
 
-                      <div class="text-sm text-gray-600 dark:text-gray-400">{skill.details}</div>
-                    </div>
-                  ))
+                        <div class="text-sm text-gray-600 dark:text-gray-400">{skill.details}</div>
+                      </div>
+                    ))
                 }
               </div>
             </div>
-          </ProfileSection>
+          </ProfileSection> -->
 
           <!-- 経歴セクション -->
           <!-- <ProfileSection title="経歴" className="mb-10">

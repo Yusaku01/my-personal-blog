@@ -5,63 +5,51 @@ export const ProfileContent = {
   coverImage:
     'https://images.unsplash.com/photo-1550645612-83f5d594b671?ixlib=rb-1.2.1&auto=format&fit=crop&w=1000&q=80',
   bio: '写真を撮ることに興味を持ったことがきっかけで、いつしかWebデザインの世界へと足を踏み入れました。Webサイトをデザインする過程で、コーディングの楽しさに気づき、次第にフロントエンド開発に興味を持っていきました。HTML/CSSの静的なコードを書いているうちに、業務をよりスムーズに進めるためには開発フロー全体を理解する必要性を痛感。最近は好奇心から生成AIツールにも触れており、新しい技術に常にアンテナを張っています。最新技術に触れるたび、CS基礎の重要性を感じ、個人学習で開発全体のプロセスやネットワークの基礎知識を学び直しています。',
-  professionalSkills: [
-    {
-      name: 'HTML',
-      details: 'HTML5, セマンティックマークアップ, ウェブアクセシビリティ, SEO最適化',
-    },
-    {
-      name: 'CSS',
-      details:
-        'CSS3, ,Sass/SCSS, Flexbox, Grid, UIインタラクション, 簡単なアニメーション, レスポンシブデザイン',
-    },
-    {
-      name: 'TailwindCSS',
-      details: 'レスポンシブデザイン, カスタム設定, ダークモード対応, Sass/SCSSとの組み合わせ記述',
-    },
-    {
-      name: 'JavaScript',
-      details: 'ES6+, DOM操作, 非同期処理, API連携, jQuery',
-    },
-    {
-      name: 'Git（Sourcetree/GitHub等コラボレーションツールも含む）',
-      details: 'リビション管理, ファイル差分管理, Git連携/運用',
-    },
-    {
-      name: 'Backlog',
-      details: 'クライアントさんとのプロジェクト管理, Gitリポジトリ管理/運用',
-    },
-    {
-      name: 'Figma',
-      details: 'UIの設計, Figjamを使用したワークショップ',
-    },
-    {
-      name: 'AdobeCreativeCloud',
-      details: 'Photoshop, Illustrator, XDなどを使用してデザイン作成を行なっていた時もありました。',
-    },
-  ],
-  personalSkills: [
-    {
-      name: 'TypeScript',
-      details: '型定義, インターフェース, ジェネリクス',
-    },
-    {
-      name: 'React',
-      years: 1,
-      details: 'Hooks, コンポーネント設計, 状態管理',
-    },
-    {
-      name: 'Astro',
-      years: 1,
-      details:
-        'コンポーネント設計, アイランドアーキテクチャ, ページルーティング, Reactと組み合わせて使用',
-    },
-    {
-      name: 'Next.js',
-      years: 1,
-      details: 'SSR, SSG, API Routes',
-    },
-  ],
+  // professionalSkills: [
+  // {
+  //   name: 'HTML',
+  //   details: 'HTML5, セマンティックマークアップ, ウェブアクセシビリティ, SEO最適化',
+  // },
+  // {
+  //   name: 'CSS',
+  //   details:
+  //     'CSS3, ,Sass/SCSS, Flexbox, Grid, UIインタラクション, 簡単なアニメーション, レスポンシブデザイン',
+  // },
+  // {
+  //   name: 'TailwindCSS',
+  //   details: 'レスポンシブデザイン, カスタム設定, ダークモード対応, Sass/SCSSとの組み合わせ記述',
+  // },
+  // {
+  //   name: 'JavaScript',
+  //   details: 'ES6+, DOM操作, 非同期処理, API連携, jQuery',
+  // },
+  // {
+  //   name: 'Git（Sourcetree/GitHub等コラボレーションツールも含む）',
+  //   details: 'リビション管理, ファイル差分管理, Git連携/運用',
+  // },
+  // {
+  //   name: 'Figma',
+  //   details: 'UIの設計, Figjamを使用したワークショップ',
+  // },
+  // {
+  //   name: 'AdobeCreativeCloud',
+  //   details: 'Photoshop, Illustrator, XDなどを使用してデザイン作成を行なっていた時もありました。',
+  // },
+  // ],
+  // personalSkills: [
+  // {
+  //   name: 'TypeScript',
+  //   details: '',
+  // },
+  // {
+  //   name: 'React',
+  //   details: '',
+  // },
+  // {
+  //   name: 'Astro',
+  //   details: '',
+  // },
+  // ],
   socialLinks: [
     {
       name: 'GitHub',
