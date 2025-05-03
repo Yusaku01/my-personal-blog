@@ -1,4 +1,10 @@
-import { defineConfig, presetAttributify, presetTypography, presetWind3 } from 'unocss';
+import {
+  defineConfig,
+  presetAttributify,
+  presetTypography,
+  presetWind3,
+  presetIcons,
+} from 'unocss';
 import transformerVariantGroup from '@unocss/transformer-variant-group';
 import transformerDirectives from '@unocss/transformer-directives';
 
@@ -7,6 +13,10 @@ export default defineConfig({
     presetWind3(), // Tailwind互換の基本機能
     presetAttributify(), // 属性ベースのユーティリティ
     presetTypography(), // Tailwindの@tailwindcss/typographyの代替
+    presetIcons({
+      scale: 1.2, // デフォルトのアイコンサイズ（任意）
+      warn: true, // 存在しないアイコン名の警告
+    }),
   ],
   transformers: [
     transformerVariantGroup(), // バリアント機能の拡張
