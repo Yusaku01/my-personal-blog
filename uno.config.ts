@@ -14,8 +14,17 @@ export default defineConfig({
     presetAttributify(), // 属性ベースのユーティリティ
     presetTypography(), // Tailwindの@tailwindcss/typographyの代替
     presetIcons({
-      scale: 1.2, // デフォルトのアイコンサイズ（任意）
-      warn: true, // 存在しないアイコン名の警告
+      scale: 1.2,
+      mode: 'auto',
+      prefix: 'i-',
+      extraProperties: {
+        display: 'inline-block',
+        'vertical-align': 'middle',
+      },
+      collections: {
+        ic: () => import('@iconify-json/ic/icons.json').then((i) => i.default),
+      },
+      // cdn: 'https://esm.sh/', // ← collections指定したら不要です
     }),
   ],
   transformers: [

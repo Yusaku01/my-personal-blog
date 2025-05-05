@@ -54,7 +54,8 @@
 │   │   ├── blog
 │   │   ├── contact.astro
 │   │   ├── index.astro
-│   │   └── profile.astro
+│   │   ├── profile.astro
+│   │   └── rss.xml.ts
 │   ├── styles
 │   │   └── unoVariants.ts
 │   ├── types
@@ -69,7 +70,7 @@
 ├── tsconfig.json
 └── uno.config.ts
 
-31 directories, 32 files
+31 directories, 33 files
 
 ```
 

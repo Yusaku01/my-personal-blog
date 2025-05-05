@@ -40,6 +40,7 @@
     "zod": "^3.24.2"
   },
   "devDependencies": {
+    "@iconify-json/ic": "^1.2.2",
     "@types/xml2js": "^0.4.14",
     "@typescript-eslint/eslint-plugin": "^6.14.0",
     "@typescript-eslint/parser": "^6.14.0",
