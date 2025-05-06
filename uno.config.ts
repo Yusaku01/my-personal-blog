@@ -101,11 +101,11 @@ export default defineConfig({
 
     // 見出し用の省略形
     'heading-base': 'font-semibold text-gray-900 dark:text-white',
-    'heading-h1': 'text-4xl',
-    'heading-h2': 'text-3xl',
-    'heading-h3': 'text-2xl',
-    'heading-h4': 'text-xl',
-    'heading-h5': 'text-lg',
+    'heading-h1': 'text-3xl lg:text-5xl',
+    'heading-h2': 'text-2xl lg:text-4xl',
+    'heading-h3': 'text-xl lg:text-3xl',
+    'heading-h4': 'text-lg lg:text-2xl',
+    'heading-h5': 'text-base lg:text-xl',
     'heading-h6': 'text-base',
 
     // ブログ関連の省略形
