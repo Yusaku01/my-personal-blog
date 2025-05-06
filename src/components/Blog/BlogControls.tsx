@@ -24,7 +24,7 @@ interface BlogControlsProps {
 export const BlogControls: React.FC<BlogControlsProps> = ({ posts }) => {
   const [searchQuery, setSearchQuery] = useState('');
   const [showAllPosts, setShowAllPosts] = useState(false);
-  const INITIAL_POST_COUNT = 20;
+  const INITIAL_POST_COUNT = 12;
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();

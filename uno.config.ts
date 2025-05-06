@@ -82,11 +82,8 @@ export default defineConfig({
     'card-hoverable': 'lg:hover:shadow-md',
 
     // ボタン用の省略形
-    'btn-base':
-      'transition-colors font-medium shadow-sm lg:hover:shadow focus:outline-none focus:ring-2 focus:ring-offset-2',
     'btn-primary':
-      'px-6 py-3 bg-gray-800 text-white rounded-md lg:hover:bg-gray-700 transition-all duration-300 dark:bg-gray-200 dark:text-gray-800 font-bold leading-loose',
-    'btn-secondary': 'bg-gray-200 text-gray-700 lg:hover:bg-gray-300 focus:ring-gray-500',
+      'px-6 py-3 bg-gray-800 text-white rounded-md lg:hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2 transition-colors disabled:opacity-70 dark:bg-white dark:text-gray-900 dark:lg:hover:bg-gray-300 dark:focus:ring-gray-300 dark:focus:ring-offset-gray-300 font-bold tracking-wide',
 
     // サイズバリアント
     'btn-sm': 'px-3 py-1.5 text-sm rounded',

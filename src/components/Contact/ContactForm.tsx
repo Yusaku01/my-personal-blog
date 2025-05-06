@@ -92,11 +92,7 @@ export default function ContactForm() {
         </div>
 
         <div className="text-center">
-          <button
-            type="submit"
-            disabled={isSubmitting}
-            className="px-6 py-3 bg-gray-800 text-white rounded-md lg:hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2 transition-colors disabled:opacity-70 dark:bg-white dark:text-gray-900 dark:lg:hover:bg-gray-300 dark:focus:ring-gray-300 dark:focus:ring-offset-gray-300 font-bold tracking-wide"
-          >
+          <button type="submit" disabled={isSubmitting} className="btn-primary">
             {isSubmitting ? '送信中...' : '送信する'}
           </button>
         </div>
