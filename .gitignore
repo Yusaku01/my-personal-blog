@@ -32,3 +32,6 @@ meta-info.md
 
 # docs
 /docs
+
+# blog
+src/content/blog/_*
