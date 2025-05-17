@@ -82,6 +82,14 @@ const gaId = import.meta.env.PUBLIC_GOOGLE_ANALYTICS_ID;
       }
 
       window.localStorage.setItem('theme', theme);
+
+      if (document.readyState === 'loading') {
+        window.addEventListener('DOMContentLoaded', () => {
+          window.dispatchEvent(new Event('themechange'));
+        });
+      } else {
+        window.dispatchEvent(new Event('themechange'));
+      }
     </script>
     <!-- OGP 基本設定 -->
     <meta property="og:title" content={title} />

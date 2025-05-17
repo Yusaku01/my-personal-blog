@@ -16,7 +16,7 @@ const {
 } = Astro.props;
 
 const baseClasses = {
-  default: 'flex items-center space-x-4',
+  default: 'flex items-center space-x-6',
   minimal: 'flex items-center space-x-2',
 };
 
@@ -69,40 +69,20 @@ const iconPaths = {
   }
 </div>
 
-<script>
-  let observer: MutationObserver | undefined;
-
+<script is:inline>
   // アイコンの切り替え関数
   const updateIcons = () => {
     const isDark = document.documentElement.classList.contains('dark');
-    const icons = document.querySelectorAll<HTMLImageElement>('.social-icons img');
-    icons.forEach((icon) => {
+    document.querySelectorAll('.social-icons img').forEach((icon) => {
       const src = isDark ? icon.dataset.darkSrc : icon.dataset.lightSrc;
       if (src) icon.src = src;
     });
   };
 
-  // 初期化関数
-  const init = () => {
-    updateIcons();
-    observer = new MutationObserver(() => updateIcons());
-    observer.observe(document.documentElement, {
-      attributes: true,
-      attributeFilter: ['class'],
-    });
-  };
+  // 初期表示時
+  document.addEventListener('astro:page-load', updateIcons);
+  document.addEventListener('astro:after-swap', updateIcons);
 
-  // クリーンアップ関数
-  const cleanup = () => {
-    if (observer) observer.disconnect();
-  };
-
-  document.addEventListener('astro:page-load', () => {
-    init();
-  });
-
-  document.addEventListener('astro:after-swap', () => {
-    cleanup();
-    init();
-  });
+  // テーマ切り替え時
+  window.addEventListener('themechange', updateIcons);
 </script>

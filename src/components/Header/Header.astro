@@ -90,8 +90,8 @@ const isActiveLink = (href: string) => {
             ))
           }
         </div>
-        <div class="mt-auto mb-8">
-          <p class="text-center text-gray-600 dark:text-gray-400 mb-3">Follow me on</p>
+        <div class="my-8">
+          <p class="text-center text-gray-800 dark:text-white mb-3">Follow me on</p>
           <SocialIcons variant="default" class="justify-center" iconClass="h-7 w-7" />
         </div>
       </div>
@@ -193,5 +193,6 @@ const isActiveLink = (href: string) => {
     element.classList.toggle('dark');
     const isDark = element.classList.contains('dark');
     localStorage.setItem('theme', isDark ? 'dark' : 'light');
+    window.dispatchEvent(new Event('themechange'));
   });
 </script>
