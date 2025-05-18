@@ -39,8 +39,8 @@
 │   │   ├── Hero
 │   │   ├── Profile
 │   │   ├── Section
+│   │   ├── Sns
 │   │   ├── Theme
-│   │   ├── ui
 │   │   └── ViewToggle.tsx
 │   ├── content
 │   │   ├── blog

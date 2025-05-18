@@ -1,0 +1,26 @@
+---
+interface Props {
+  url: string;
+  title: string;
+  description?: string;
+  class?: string;
+}
+
+const { url, title, class: extraClass = '' } = Astro.props;
+const shareUrl = `https://twitter.com/share?url=${encodeURIComponent(url)}&text=${encodeURIComponent(title)}`;
+---
+
+<div class={`flex flex-col items-center gap-4 ${extraClass}`}>
+  <div class="text-gray-900 dark:text-white text-center mb-2">記事を共有する</div>
+  <div class="flex flex-row gap-4 justify-center w-full flex-wrap">
+    <a
+      href={shareUrl}
+      target="_blank"
+      rel="noopener noreferrer"
+      aria-label="Xで共有"
+      class="flex items-center justify-center min-w-40 h-14 rounded-lg bg-black lg:hover:opacity-70 transition-all duration-300 text-lg gap-2 relative px-6 py-2 before:(content-[''] inline-block w-6 h-6 bg-[url('/images/icon_x-dark.svg')] bg-no-repeat bg-contain)"
+    >
+      <span class="text-white font-medium lg:block hidden">Xで共有</span>
+    </a>
+  </div>
+</div>
