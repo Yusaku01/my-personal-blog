@@ -9,12 +9,12 @@ export async function submitContactForm(data: ContactForm): Promise<Response> {
   try {
     // FormDataを生成
     const formData = new FormData();
-    
+
     // 各フィールドをFormDataに追加
     Object.entries(data).forEach(([key, value]) => {
       formData.append(key, String(value));
     });
-    
+
     // FormDataを使って送信(Content-Typeヘッダーは自動的に設定される)
     const response = await fetch(FORM_ENDPOINT, {
       method: 'POST',

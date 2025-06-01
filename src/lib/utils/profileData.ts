@@ -79,5 +79,12 @@ export const ProfileContent = {
       iconDark: '/images/icon_qiita.png',
       class: 'w-7 h-7',
     },
+    {
+      name: 'RSS',
+      url: '/rss.xml',
+      iconLight: '/images/icon_rss-light.svg',
+      iconDark: '/images/icon_rss-dark.svg',
+      class: 'w-7 h-7',
+    },
   ],
 };

@@ -63,6 +63,7 @@
 │   │   └── index.ts
 │   └── env.d.ts
 ├── astro.config.mjs
+├── CLAUDE.md
 ├── environment.md
 ├── package-lock.json
 ├── package.json
@@ -71,7 +72,7 @@
 ├── tsconfig.json
 └── uno.config.ts
 
-32 directories, 33 files
+32 directories, 34 files
 
 ```
 

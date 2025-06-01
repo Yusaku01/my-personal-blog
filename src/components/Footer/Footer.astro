@@ -1,4 +1,6 @@
 ---
+import SocialIcons from '../Sns/SocialIcons.astro';
+
 const currentYear = new Date().getFullYear();
 
 // ヘッダーと同じナビゲーションアイテムを定義
@@ -18,7 +20,7 @@ const footerLinks = navItems;
 >
   <div class="container mx-auto px-4 py-20">
     <!-- フッターナビゲーション -->
-    <div class="flex flex-col md:flex-row justify-center items-center mb-6 gap-4">
+    <div class="flex flex-col md:flex-row justify-center items-center mb-8 gap-4">
       <nav aria-label="フッターナビゲーション">
         <ul class="flex flex-wrap justify-center gap-x-7 gap-y-2">
           {
@@ -37,8 +39,17 @@ const footerLinks = navItems;
       </nav>
     </div>
 
+    <!-- SNSアイコン -->
+    <div class="flex justify-center items-center mb-8">
+      <SocialIcons
+        variant="minimal"
+        class="gap-4"
+        networks={['GitHub', 'X', 'LinkedIn', 'Qiita', 'RSS']}
+      />
+    </div>
+
     <!-- コピーライト -->
-    <div class="text-center text-gray-400 dark:text-gray-400 pt-4">
+    <div class="text-center text-gray-400 dark:text-gray-400">
       <small>&copy; {currentYear} SAKUSPACE. All rights reserved.</small>
     </div>
   </div>
