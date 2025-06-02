@@ -88,8 +88,8 @@ export const BlogControls: React.FC<BlogControlsProps> = ({ posts }) => {
       ) : (
         <>
           <div className={styles.postGrid}>
-            {displayPosts.map((post) => (
-              <PostCard key={post.url} {...post} />
+            {displayPosts.map((post, index) => (
+              <PostCard key={post.url} {...post} index={index} />
             ))}
           </div>
 

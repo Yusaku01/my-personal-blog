@@ -2,6 +2,7 @@ import type { Post } from '../../types/index';
 
 type PostCardProps = Post & {
   showTags?: boolean; // タグの表示/非表示を制御するためのプロパティを追加
+  index?: number; // 画像の読み込み優先度を決定するためのインデックス
 };
 
 // PostCardコンポーネント固有のスタイル
@@ -31,9 +32,14 @@ export function PostCard({
   isExternal,
   tags = [],
   showTags = true, // デフォルトではタグを表示する
+  index,
   ...props
 }: PostCardProps) {
   const platform = isExternal ? (props as { platform: string }).platform : undefined;
+
+  // 最初の8個の画像はlazy loadingを無効化し、最初の1個は高優先度に設定
+  const shouldLazyLoad = index !== undefined && index >= 8;
+  const fetchPriority = index === 0 ? 'high' : undefined;
 
   return (
     <article className={postCardStyles.article}>
@@ -45,7 +51,13 @@ export function PostCard({
       >
         {thumbnail && (
           <div className={postCardStyles.imageContainer}>
-            <img src={thumbnail} alt={title} className={postCardStyles.image} loading="lazy" />
+            <img
+              src={thumbnail}
+              alt={title}
+              className={postCardStyles.image}
+              loading={shouldLazyLoad ? 'lazy' : undefined}
+              fetchPriority={fetchPriority}
+            />
             <div className={postCardStyles.overlay}>
               <span className={postCardStyles.readText}>記事を読む</span>
             </div>
