@@ -16,6 +16,8 @@
 │   │   ├── icon_github-light.svg
 │   │   ├── icon_linkedin.svg
 │   │   ├── icon_qiita.png
+│   │   ├── icon_rss-dark.svg
+│   │   ├── icon_rss-light.svg
 │   │   ├── icon_x-dark.svg
 │   │   └── icon_x-light.svg
 │   ├── ogp
@@ -72,7 +74,7 @@
 ├── tsconfig.json
 └── uno.config.ts
 
-32 directories, 34 files
+32 directories, 36 files
 
 ```
 
