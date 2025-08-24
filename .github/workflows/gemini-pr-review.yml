@@ -109,7 +109,6 @@ jobs:
             echo "EOF"
           } >> "${GITHUB_OUTPUT}"
 
-
       - name: 'Get PR details (issue_comment)'
         id: 'get_pr_comment'
         if: |-
@@ -431,7 +430,6 @@ jobs:
                 - Mention overall patterns or architectural decisions
                 - Highlight positive aspects of the implementation
                 - Note any recurring themes across files
-
 
       - name: 'Post PR review failure comment'
         if: |-

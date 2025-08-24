@@ -146,7 +146,7 @@ const isActiveLink = (href: string) => {
 
   // スクロール時のヘッダー表示/非表示の処理
   window.addEventListener('scroll', () => {
-    const currentScroll = window.pageYOffset;
+    const currentScroll = window.scrollY;
 
     if (currentScroll <= 0) {
       header?.classList.remove('-translate-y-full');
