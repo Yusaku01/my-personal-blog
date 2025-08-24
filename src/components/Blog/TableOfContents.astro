@@ -49,7 +49,8 @@ function buildTocTree(headings: Heading[]): TocNode[] {
 
 // Helper function to render the TOC list recursively
 // Add isNested parameter to control indentation class
-function renderTocList(nodes: TocNode[], isNested = false): string {
+// function renderTocList(nodes: TocNode[], isNested = false): string {
+function renderTocList(nodes: TocNode[]): string {
   if (!nodes || nodes.length === 0) {
     return '';
   }
@@ -62,7 +63,7 @@ function renderTocList(nodes: TocNode[], isNested = false): string {
     html += `<a href="#${node.slug}" class="text-sm dark:text-white hover:underline transition duration-200">${node.text}</a>`;
 
     if (node.children.length > 0) {
-      html += renderTocList(node.children, true);
+      html += renderTocList(node.children);
     }
     html += '</li>';
   }
