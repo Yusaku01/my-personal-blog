@@ -1,0 +1,72 @@
+name: Claude PR Assistant
+
+on:
+  issue_comment:
+    types: [created, edited]
+  pull_request_review_comment:
+    types: [created, edited]
+  issues:
+    types: [opened, assigned, edited]
+  pull_request_review:
+    types: [submitted, edited]
+
+jobs:
+  claude-code-action:
+    if: |
+      (github.event_name == 'issue_comment' && contains(github.event.comment.body, '@claude')) ||
+      (github.event_name == 'pull_request_review_comment' && contains(github.event.comment.body, '@claude')) ||
+      (github.event_name == 'pull_request_review' && contains(github.event.review.body, '@claude')) ||
+      (github.event_name == 'issues' && contains(github.event.issue.body, '@claude'))
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
+      issues: read
+      id-token: write
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+
+      - name: Run Claude PR Action
+        uses: anthropics/claude-code-action@beta
+        with:
+          claude_code_oauth_token: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
+          timeout_minutes: "60"
+
+      - name: Derive branch suffix from first changed file
+        id: branch_suffix
+        shell: bash
+        run: |
+          set -euo pipefail
+          files=$(git status --porcelain | awk '{print $2}' || true)
+          if [ -z "$files" ]; then
+            echo "suffix=changes" >> $GITHUB_OUTPUT
+            exit 0
+          fi
+          first=$(printf "%s\n" "$files" | head -n1)
+          base=$(basename "$first")
+          name="${base%.*}"
+          name=$(echo "$name" | tr '[:upper:]' '[:lower:]')
+          name=$(echo "$name" | sed -E 's/[^a-z0-9]+/-/g; s/^-+//; s/-+$//; s/-{2,}/-/g')
+          two=$(echo "$name" | tr '-' '\n' | awk 'NF' | head -n2 | paste -sd- -)
+          if [ -z "$two" ]; then
+            two="changes"
+          fi
+          two=${two:0:30}
+          echo "suffix=$two" >> $GITHUB_OUTPUT
+
+      - name: Create Pull Request (if changes)
+        uses: peter-evans/create-pull-request@v6
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          commit-message: "chore(claude): apply changes by Claude"
+          branch: "claude/changes-${{ steps.branch_suffix.outputs.suffix }}-${{ github.run_id }}"
+          title: "chore(claude): apply changes by Claude"
+          body: |
+            This PR was automatically created by the Claude PR Assistant workflow.
+            - Workflow run: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+            - Trigger: ${{ github.event_name }}
+          labels: claude, automated-pr
+          draft: false

@@ -35,3 +35,7 @@ meta-info.md
 
 # blog
 src/content/blog/_*
+
+# claude
+/CLAUDE.md
+.claude
