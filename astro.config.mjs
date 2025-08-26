@@ -44,7 +44,20 @@ export default defineConfig({
   },
   vite: {
     build: {
+      manifest: true,
       cssCodeSplit: true,
+      // rollupOptions: {
+      //   output: {
+      //     // 共有集約（例: vendor/main）
+      //     manualChunks(id) {
+      //       if (id.includes('node_modules')) return 'vendor';
+      //       return 'main';
+      //     },
+      //     entryFileNames: 'assets/[name].js',
+      //     chunkFileNames: 'assets/[name].js',
+      //     assetFileNames: 'assets/[name][extname]',
+      //   },
+      // },
     },
     ssr: {
       noExternal: ['date-fns'],
