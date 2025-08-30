@@ -1,16 +1,11 @@
-import {
-  defineConfig,
-  presetAttributify,
-  presetTypography,
-  presetWind3,
-  presetIcons,
-} from 'unocss';
+import { defineConfig, presetAttributify, presetTypography, presetIcons } from 'unocss';
+import presetWind from '@unocss/preset-wind';
 import transformerVariantGroup from '@unocss/transformer-variant-group';
 import transformerDirectives from '@unocss/transformer-directives';
 
 export default defineConfig({
   presets: [
-    presetWind3(), // Tailwind互換の基本機能
+    presetWind(), // Tailwind互換の基本機能
     presetAttributify(), // 属性ベースのユーティリティ
     presetTypography(), // Tailwindの@tailwindcss/typographyの代替
     presetIcons({
