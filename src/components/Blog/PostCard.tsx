@@ -56,7 +56,7 @@ export function PostCard({
               alt={title}
               className={postCardStyles.image}
               loading={shouldLazyLoad ? 'lazy' : undefined}
-              fetchPriority={fetchpriority}
+              fetchpriority={fetchpriority}
             />
             <div className={postCardStyles.overlay}>
               <span className={postCardStyles.readText}>記事を読む</span>
