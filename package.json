@@ -18,12 +18,11 @@
     "build:with-ogp": "astro build && npm run generate-ogp"
   },
   "dependencies": {
-    "@astrojs/check": "^0.12.0",
-    "@astrojs/cloudflare": "^12.10.0",
-    "@astrojs/mdx": "^4.6.0",
-    "@astrojs/react": "^4.6.0",
-    "@astrojs/rss": "^4.1.0",
-    "@astrojs/sitemap": "^3.5.0",
+    "@astrojs/cloudflare": "^12.6.7",
+    "@astrojs/mdx": "^4.2.3",
+    "@astrojs/react": "^4.2.3",
+    "@astrojs/rss": "^4.0.11",
+    "@astrojs/sitemap": "^3.3.0",
     "@fontsource/zen-kaku-gothic-new": "^5.2.5",
     "@hookform/resolvers": "^3.3.2",
     "@types/react": "^18.3.0",
@@ -40,6 +39,7 @@
     "zod": "^3.24.2"
   },
   "devDependencies": {
+    "@astrojs/check": "^0.9.4",
     "@iconify-json/ic": "^1.2.2",
     "@types/xml2js": "^0.4.14",
     "@typescript-eslint/eslint-plugin": "^6.14.0",
@@ -48,7 +48,7 @@
     "@unocss/preset-attributify": "^0.63.6",
     "@unocss/preset-icons": "^0.63.6",
     "@unocss/preset-typography": "^0.63.6",
-    "@unocss/preset-wind3": "^0.63.6",
+    "@unocss/preset-wind": "^0.63.6",
     "@unocss/transformer-directives": "^0.63.6",
     "@unocss/transformer-variant-group": "^0.63.6",
     "eslint": "^8.55.0",
