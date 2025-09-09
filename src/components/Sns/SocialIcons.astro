@@ -6,6 +6,7 @@ interface Props {
   iconClass?: string;
   variant?: 'default' | 'minimal';
   networks?: string[];
+  forceTheme?: 'light' | 'dark';
 }
 
 const {
@@ -13,6 +14,7 @@ const {
   iconClass = 'h-7 w-7',
   variant = 'default',
   networks = ['GitHub', 'X', 'LinkedIn', 'Qiita', 'RSS'],
+  forceTheme,
 } = Astro.props;
 
 const baseClasses = {
@@ -40,7 +42,7 @@ const iconPaths = {
 };
 ---
 
-<div class={`${baseClasses[variant]} ${className} social-icons`}>
+<div class={`${baseClasses[variant]} ${className} social-icons`} data-force-theme={forceTheme}>
   {
     socialLinks.map((social) => {
       const iconPath = iconPaths[social.name as keyof typeof iconPaths];
@@ -74,9 +76,14 @@ const iconPaths = {
   // アイコンの切り替え関数
   const updateIcons = () => {
     const isDark = document.documentElement.classList.contains('dark');
-    document.querySelectorAll('.social-icons img').forEach((icon) => {
-      const src = isDark ? icon.dataset.darkSrc : icon.dataset.lightSrc;
-      if (src) icon.src = src;
+    document.querySelectorAll('.social-icons').forEach((container) => {
+      const forceTheme = container.dataset.forceTheme;
+      const shouldUseDark = forceTheme === 'dark' || (forceTheme !== 'light' && isDark);
+      
+      container.querySelectorAll('img').forEach((icon) => {
+        const src = shouldUseDark ? icon.dataset.darkSrc : icon.dataset.lightSrc;
+        if (src) icon.src = src;
+      });
     });
   };
 
