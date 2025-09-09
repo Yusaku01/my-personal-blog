@@ -55,6 +55,7 @@ npm run format:check # 変更なしでフォーマットチェック
 2. **外部コンテンツ統合**
 
    - Qiita API統合（`src/lib/api-clients/qiita.ts`）
+   - Zenn API統合（`src/lib/api-clients/zenn.ts`）
    - メモリキャッシュ（1時間TTL）による API レスポンス最適化
    - OGP画像の自動取得とサムネイル生成
 
@@ -101,6 +102,10 @@ PUBLIC_CONTACT_FORM_ENDPOINT=https://ssgform.com/s/xxxxx
 # オプション: Qiita統合用
 QIITA_API_ENDPOINT=https://qiita.com/api/v2
 QIITA_USERNAME=USER_NAME
+
+# オプション: Zenn統合用
+ZENN_API_ENDPOINT=https://zenn.dev/api
+ZENN_USERNAME=saku2323
 
 # オプション: アナリティクス用
 PUBLIC_GOOGLE_ANALYTICS_ID=GA_TRACKING_ID
