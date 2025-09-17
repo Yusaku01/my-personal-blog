@@ -4,9 +4,11 @@ import Layout from '../../layouts/Layout.astro';
 import { BlogControls } from '../../components/Blog';
 import HeroSection from '../../components/Hero/HeroSection.astro';
 import { getQiitaPosts } from '../../lib/api-clients/qiita';
+import { getZennPosts } from '../../lib/api-clients/zenn';
 
 const posts = await getCollection('blog');
 const qiitaPosts = await getQiitaPosts('ngtnysk');
+const zennPosts = await getZennPosts('saku2323');
 
 const allPosts = [
   ...posts.map((post) => ({
@@ -20,6 +22,7 @@ const allPosts = [
     tags: post.data.tags || [],
   })),
   ...qiitaPosts,
+  ...zennPosts,
 ];
 ---
 
