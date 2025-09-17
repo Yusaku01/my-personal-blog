@@ -22,31 +22,9 @@ function parseDate(dateStr: string): Date {
   }
 }
 
-function generateCustomThumbnail(emoji?: string): string {
-  if (!emoji) {
-    emoji = '📝'; // デフォルトの絵文字
-  }
-  
-  // SVGベースのカスタムサムネイル生成
-  const svgContent = `
-    <svg width="300" height="157" xmlns="http://www.w3.org/2000/svg">
-      <defs>
-        <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
-          <stop offset="0%" style="stop-color:#f8f9fa"/>
-          <stop offset="100%" style="stop-color:#e9ecef"/>
-        </linearGradient>
-      </defs>
-      <rect width="300" height="157" fill="url(#bg)"/>
-      <text x="150" y="90" font-family="system-ui" font-size="48" text-anchor="middle" dominant-baseline="middle">${emoji}</text>
-    </svg>
-  `;
-  
-  return `data:image/svg+xml;base64,${btoa(svgContent)}`;
-}
-
 export async function getZennPosts(username?: string): Promise<ExternalPost[]> {
   const targetUsername = username || process.env.ZENN_USERNAME || 'saku2323';
-  
+
   const cacheKey = `zenn-posts-${targetUsername}`;
   const cachedData = cache.get(cacheKey);
   const now = Date.now();
@@ -79,13 +57,8 @@ export async function getZennPosts(username?: string): Promise<ExternalPost[]> {
           // まずOGP画像を取得を試みる
           thumbnail = await getOGPImage(fullUrl);
         } catch {
-          // OGP画像が取得できない場合はカスタムサムネイルを生成
+          // OGP画像が取得できない場合はundefinedを代入
           thumbnail = undefined;
-        }
-
-        // OGP画像がない場合はカスタムサムネイルを使用
-        if (!thumbnail) {
-          thumbnail = generateCustomThumbnail(article.emoji);
         }
 
         return {
@@ -95,8 +68,7 @@ export async function getZennPosts(username?: string): Promise<ExternalPost[]> {
           publishDate: parseDate(article.published_at),
           thumbnail,
           isExternal: true as const,
-          // article_typeをタグとして追加し、その他に必要なタグがあれば含める
-          tags: [article.article_type].filter(Boolean),
+          tags: article.article_type ? [article.article_type] : [],
         };
       })
     );
