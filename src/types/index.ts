@@ -18,17 +18,16 @@ export type Post = {
   url: string;
   publishDate: Date;
   tags: string[];
+  excerpt?: string;
 } & (
   | {
       platform: string;
       isExternal: true;
-      excerpt?: string;
       thumbnail?: string;
     }
   | {
       platform?: string;
       isExternal: false;
-      // excerpt?: string;
       thumbnail?: string;
     }
 );
