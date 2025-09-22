@@ -15,6 +15,7 @@ type ContactFormValues = z.infer<typeof contactFormSchema>;
 export default function ContactForm() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
+  const [submitError, setSubmitError] = useState<string | null>(null);
 
   const {
     register,
@@ -28,16 +29,23 @@ export default function ContactForm() {
 
   const onSubmit = async (data: ContactFormValues) => {
     setIsSubmitting(true);
+    setSubmitError(null);
     try {
       // submitContactForm関数を呼び出してデータを送信
       await submitContactForm(data);
 
       // フォームをリセット
       reset();
-    } catch (error) {
-      setIsSubmitted(false);
-    } finally {
       setIsSubmitted(true);
+    } catch (error) {
+      console.error('Failed to submit contact form', error);
+      setIsSubmitted(false);
+      setSubmitError(
+        error instanceof Error
+          ? error.message
+          : 'お問い合わせの送信に失敗しました。しばらく時間をおいてから再度お試しください。',
+      );
+    } finally {
       setIsSubmitting(false);
     }
   };
@@ -50,7 +58,10 @@ export default function ContactForm() {
           お問い合わせありがとうございます。できるだけ早くご返信いたします。
         </p>
         <button
-          onClick={() => setIsSubmitted(false)}
+          onClick={() => {
+            setIsSubmitted(false);
+            setSubmitError(null);
+          }}
           className="mt-4 px-4 py-2 bg-green-600 text-white rounded lg:hover:bg-green-700 transition-colors"
         >
           新しいお問い合わせ
@@ -96,6 +107,9 @@ export default function ContactForm() {
             {isSubmitting ? '送信中...' : '送信する'}
           </button>
         </div>
+        {submitError && (
+          <p className="mt-4 text-center text-red-600 dark:text-red-400">{submitError}</p>
+        )}
       </form>
     </>
   );
