@@ -12,8 +12,13 @@ function createOptimizedImageUrl(originalUrl: string): string {
   try {
     const targetUrl = new URL(originalUrl);
 
-    // images.weserv.nl expects scheme-less URLs
-    const proxiedPath = `${targetUrl.hostname}${targetUrl.pathname}${targetUrl.search}`;
+    const hostWithPort = targetUrl.port
+      ? `${targetUrl.hostname}:${targetUrl.port}`
+      : targetUrl.hostname;
+    const protocolPrefix = targetUrl.protocol === 'https:' ? 'ssl:' : '';
+
+    // images.weserv.nl expects scheme-less URLs, with an "ssl:" prefix to proxy HTTPS sources
+    const proxiedPath = `${protocolPrefix}${hostWithPort}${targetUrl.pathname}${targetUrl.search}`;
     const params = new URLSearchParams({
       url: proxiedPath,
       w: String(OPTIMIZED_WIDTH),
