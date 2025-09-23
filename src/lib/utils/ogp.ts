@@ -12,6 +12,12 @@ function createOptimizedImageUrl(originalUrl: string): string {
   try {
     const targetUrl = new URL(originalUrl);
 
+    // Qiita imgix URLs have complex nested encoding that breaks parameter modification
+    // Return original URL to avoid 403 errors and parameter inconsistency
+    if (targetUrl.hostname === 'qiita-user-contents.imgix.net') {
+      return originalUrl;
+    }
+
     const hostWithPort = targetUrl.port
       ? `${targetUrl.hostname}:${targetUrl.port}`
       : targetUrl.hostname;
