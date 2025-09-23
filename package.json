@@ -10,8 +10,8 @@
     "build": "astro build",
     "preview": "astro preview",
     "astro": "astro",
-    "lint": "eslint . --ext .js,.jsx,.ts,.tsx,.astro",
-    "lint:fix": "eslint . --ext .js,.jsx,.ts,.tsx,.astro --fix",
+    "lint": "eslint . --ext .js,.jsx,.ts,.tsx,.astro --format compact",
+    "lint:fix": "eslint . --ext .js,.jsx,.ts,.tsx,.astro --fix --format compact",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
     "generate-ogp": "node scripts/build-ogp.js",
@@ -51,7 +51,7 @@
     "@unocss/preset-wind": "^0.63.6",
     "@unocss/transformer-directives": "^0.63.6",
     "@unocss/transformer-variant-group": "^0.63.6",
-    "eslint": "^8.55.0",
+    "eslint": "^8.57.1",
     "eslint-config-prettier": "^9.1.0",
     "eslint-plugin-astro": "^0.31.0",
     "eslint-plugin-jsx-a11y": "^6.8.0",
@@ -64,6 +64,14 @@
     "unocss": "^0.63.6"
   },
   "overrides": {
-    "ansi-regex": "^6.2.2"
-  }
+    "strip-ansi": "^6.0.1"
+  },
+  "description": "このプロジェクトは、Astroを使用して構築された個人ブログ＆ポートフォリオウェブサイトです。",
+  "main": "index.js",
+  "directories": {
+    "doc": "docs"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
 }

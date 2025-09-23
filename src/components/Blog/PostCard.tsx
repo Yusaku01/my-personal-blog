@@ -39,7 +39,7 @@ export function PostCard({
 
   // 最初の8個の画像はlazy loadingを無効化し、最初の1個は高優先度に設定
   const shouldLazyLoad = index !== undefined && index >= 8;
-  const fetchpriority = index === 0 ? 'high' : undefined;
+  const fetchPriority = index === 0 ? 'high' : undefined;
 
   return (
     <article className={postCardStyles.article}>
@@ -54,9 +54,13 @@ export function PostCard({
             <img
               src={thumbnail}
               alt={title}
+              width={600}
+              height={315}
               className={postCardStyles.image}
               loading={shouldLazyLoad ? 'lazy' : undefined}
-              fetchpriority={fetchpriority}
+              fetchPriority={fetchPriority}
+              decoding="async"
+              sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
             />
             <div className={postCardStyles.overlay}>
               <span className={postCardStyles.readText}>記事を読む</span>

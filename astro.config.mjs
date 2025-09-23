@@ -9,6 +9,23 @@ import sitemap from '@astrojs/sitemap';
 export default defineConfig({
   site: 'https://saku-space.com',
   output: 'static',
+  image: {
+    domains: ['qiita-user-contents.imgix.net', 'res.cloudinary.com', 'cdn.qiita.com'],
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: 'qiita-user-contents.imgix.net',
+      },
+      {
+        protocol: 'https',
+        hostname: 'res.cloudinary.com',
+      },
+      {
+        protocol: 'https',
+        hostname: 'cdn.qiita.com',
+      },
+    ],
+  },
   integrations: [
     UnoCSS({
       injectReset: true, // CSSリセットを注入
