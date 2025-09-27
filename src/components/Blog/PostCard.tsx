@@ -58,7 +58,7 @@ export function PostCard({
               height={315}
               className={postCardStyles.image}
               loading={shouldLazyLoad ? 'lazy' : undefined}
-              fetchPriority={fetchPriority}
+              fetchpriority={fetchPriority}
               decoding="async"
               sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
             />
