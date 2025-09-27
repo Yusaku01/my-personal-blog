@@ -64,6 +64,7 @@
 │   ├── types
 │   │   └── index.ts
 │   └── env.d.ts
+├── AGENTS.md
 ├── astro.config.mjs
 ├── CLAUDE.md
 ├── environment.md
@@ -74,7 +75,7 @@
 ├── tsconfig.json
 └── uno.config.ts
 
-32 directories, 36 files
+32 directories, 37 files
 
 ```
 
