@@ -4,6 +4,8 @@ import HeroSection from '../components/Hero/HeroSection.astro';
 import ProfileSection from '../components/Profile/ProfileSection.astro';
 import { ProfileContent } from '../lib/utils/profileData';
 
+export const transition = { name: 'fade' };
+
 import { Image } from 'astro:assets';
 import myImage from '../assets/img/img_profile.png';
 ---

@@ -7,6 +7,8 @@ import SectionHeading from '../components/Section/SectionHeading.astro';
 import { getQiitaPosts } from '../lib/api-clients/qiita';
 import { getZennPosts } from '../lib/api-clients/zenn';
 
+export const transition = { name: 'fade' };
+
 const posts = await getCollection('blog');
 const qiitaPosts = await getQiitaPosts('ngtnysk');
 const zennPosts = await getZennPosts('saku2323');

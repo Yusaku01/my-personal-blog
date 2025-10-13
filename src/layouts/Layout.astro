@@ -1,4 +1,5 @@
 ---
+import { ClientRouter } from 'astro:transitions';
 import Header from '../components/Header/Header.astro';
 import Footer from '../components/Footer/Footer.astro';
 import Breadcrumb from '../components/Breadcrump/Breadcrumb.astro';
@@ -71,33 +72,39 @@ const gaId = import.meta.env.PUBLIC_GOOGLE_ANALYTICS_ID;
     <meta name="description" content={description} />
     <meta name="robots" content="index, follow" />
     <title>{title}</title>
+    <ClientRouter fallback="animate" />
     <!-- テーマ切り替え -->
-    <script is:inline>
-      const theme = (() => {
-        if (typeof localStorage !== 'undefined' && localStorage.getItem('theme')) {
-          return localStorage.getItem('theme');
+    <script is:inline data-astro-rerun>
+      const STORAGE_KEY = 'theme';
+
+      const resolveTheme = () => {
+        const stored = localStorage.getItem(STORAGE_KEY);
+        if (stored === 'dark' || stored === 'light') {
+          return stored;
         }
-        if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
-          return 'dark';
-        }
-        return 'light';
-      })();
+        return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+      };
 
-      if (theme === 'light') {
-        document.documentElement.classList.remove('dark');
-      } else {
-        document.documentElement.classList.add('dark');
-      }
-
-      window.localStorage.setItem('theme', theme);
-
-      if (document.readyState === 'loading') {
-        window.addEventListener('DOMContentLoaded', () => {
-          window.dispatchEvent(new Event('themechange'));
-        });
-      } else {
+      const applyTheme = (theme = resolveTheme()) => {
+        document.documentElement.classList.toggle('dark', theme === 'dark');
+        localStorage.setItem(STORAGE_KEY, theme);
         window.dispatchEvent(new Event('themechange'));
+      };
+
+      if (!window.__astroThemeSync) {
+        document.addEventListener('astro:before-swap', (event) => {
+          const theme = resolveTheme();
+          event.newDocument.documentElement.classList.toggle('dark', theme === 'dark');
+        });
+
+        document.addEventListener('astro:after-swap', () => {
+          applyTheme();
+        });
+
+        window.__astroThemeSync = true;
       }
+
+      applyTheme();
     </script>
     <!-- OGP 基本設定 -->
     <meta property="og:title" content={title} />
