@@ -5,6 +5,8 @@ import TableOfContents from '../../components/Blog/TableOfContents.astro';
 import ShareButtons from '../../components/Sns/ShareButtons.astro';
 import { format } from 'date-fns';
 
+export const transition = { name: 'fade' };
+
 export async function getStaticPaths() {
   const posts = await getCollection('blog');
   return posts.map((post) => ({
