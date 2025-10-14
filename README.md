@@ -26,15 +26,19 @@
 ```text
 /
 ├── src/
-│   ├── assets/      # 画像などの静的アセット
-│   ├── components/  # 再利用可能なコンポーネント
-│   ├── content/     # ブログ記事のMarkdownファイル
-│   ├── layouts/     # ページレイアウト
-│   ├── lib/        # ユーティリティ関数とAPI
-│   ├── pages/      # ルーティング用ページコンポーネント
-│   ├── styles/     # グローバルスタイルとCSS
-│   └── types/      # TypeScript型定義
-└── public/         # 静的ファイル
+│   ├── assets/       # 画像などの静的アセット
+│   ├── content/      # ブログ記事のMarkdownファイル
+│   ├── features/     # 機能単位でまとめたUI・ロジック
+│   │   ├── blog/     # ブログ一覧・詳細向けのコンポーネントやAPI
+│   │   ├── contact/  # お問い合わせフォーム関連のUIとAPI
+│   │   └── profile/  # プロフィールページ専用モジュール
+│   ├── pages/        # ルーティング用ページコンポーネント
+│   ├── shared/       # 複数機能で共有するレイアウトやUI部品
+│   │   ├── components/
+│   │   └── layouts/
+│   ├── styles/       # グローバルスタイルとUnoCSS関連
+│   └── types/        # TypeScript型定義
+└── public/           # 静的ファイル
 ```
 
 ## 🛠️ セットアップ

@@ -10,6 +10,39 @@ const __dirname = path.dirname(__filename);
 // プロジェクトのルートディレクトリを取得
 const projectRoot = path.resolve(__dirname, '..');
 
+const IGNORED_DIRECTORIES = new Set(['node_modules', '.git', 'dist', 'scripts']);
+
+function generateFallbackTree(directory, maxDepth, currentDepth = 0) {
+  if (currentDepth > maxDepth) {
+    return [];
+  }
+
+  const entries = fs
+    .readdirSync(directory, { withFileTypes: true })
+    .filter((entry) => !IGNORED_DIRECTORIES.has(entry.name))
+    .sort((a, b) => {
+      if (a.isDirectory() && !b.isDirectory()) return -1;
+      if (!a.isDirectory() && b.isDirectory()) return 1;
+      return a.name.localeCompare(b.name);
+    });
+
+  const lines = [];
+
+  for (const entry of entries) {
+    const indent = '  '.repeat(currentDepth);
+    const name = entry.isDirectory() ? `${entry.name}/` : entry.name;
+    lines.push(`${indent}${name}`);
+
+    if (entry.isDirectory() && currentDepth + 1 < maxDepth) {
+      lines.push(
+        ...generateFallbackTree(path.join(directory, entry.name), maxDepth, currentDepth + 1)
+      );
+    }
+  }
+
+  return lines;
+}
+
 // tree コマンドの出力を取得
 function getDirectoryTree() {
   try {
@@ -19,8 +52,9 @@ function getDirectoryTree() {
     });
     return treeOutput;
   } catch (error) {
-    console.error('Error getting directory tree:', error);
-    return '';
+    console.warn('tree command not available, generating fallback directory listing.');
+    const fallbackLines = generateFallbackTree(projectRoot, 3);
+    return fallbackLines.join('\n');
   }
 }
 
@@ -29,10 +63,17 @@ function generateFileDescriptions() {
   const descriptions = {
     'astro.config.mjs': 'Astroの設定（プラグイン、統合など）',
     'tsconfig.json': 'TypeScriptのコンパイラ設定',
-    'src/layouts/Layout.astro': '全ページで使用される基本レイアウト',
-    'src/components/Header.astro': 'サイトヘッダー（ナビゲーション）',
-    'src/components/Footer.astro': 'サイトフッター',
-    // 必要に応じて追加
+    'src/shared/layouts/Layout.astro': '全ページで使用される基本レイアウト',
+    'src/shared/components/header/Header.astro': 'サイトヘッダー（ナビゲーション）',
+    'src/shared/components/footer/Footer.astro': 'サイトフッター',
+    'src/features/blog/api/': 'ブログ機能で利用する外部記事の取得API',
+    'src/features/blog/utils/': 'ブログ向けの共通ユーティリティ',
+    'src/features/contact/api/': 'お問い合わせフォーム送信ロジック',
+    'src/pages/index.astro': 'トップページの Astro エントリポイント',
+    'src/pages/blog/index.astro': 'ブログ一覧ページ',
+    'src/pages/blog/[...slug].astro': 'ブログ詳細ページ',
+    'src/pages/profile.astro': 'プロフィールページ',
+    'src/pages/contact.astro': 'お問い合わせページ',
   };
 
   let result = '## 🔑 主要ファイルの役割\n\n';
@@ -41,17 +82,23 @@ function generateFileDescriptions() {
   const categories = {
     設定ファイル: ['astro.config.mjs', 'tsconfig.json'],
     コアコンポーネント: [
-      'src/layouts/Layout.astro',
-      'src/components/Header.astro',
-      'src/components/Footer.astro',
+      'src/shared/layouts/Layout.astro',
+      'src/shared/components/header/Header.astro',
+      'src/shared/components/footer/Footer.astro',
     ],
     ページコンポーネント: [
       'src/pages/index.astro',
+      'src/pages/blog/index.astro',
+      'src/pages/blog/[...slug].astro',
       'src/pages/profile.astro',
       'src/pages/contact.astro',
     ],
     スタイル: ['src/styles/post-card.css'],
-    ユーティリティ: ['src/lib/utils/', 'src/lib/api-clients/'],
+    ユーティリティ: [
+      'src/features/blog/api/',
+      'src/features/blog/utils/',
+      'src/features/contact/api/',
+    ],
   };
 
   for (const [category, files] of Object.entries(categories)) {

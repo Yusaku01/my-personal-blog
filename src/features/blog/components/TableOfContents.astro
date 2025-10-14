@@ -1,4 +1,6 @@
 ---
+import type { JSX } from 'astro/jsx-runtime';
+
 // Heading interface definition
 interface Heading {
   depth: number;
@@ -47,35 +49,31 @@ function buildTocTree(headings: Heading[]): TocNode[] {
   return root.children; // Return children of the root node
 }
 
-// Helper function to render the TOC list recursively
-// Add isNested parameter to control indentation class
-// function renderTocList(nodes: TocNode[], isNested = false): string {
-function renderTocList(nodes: TocNode[]): string {
-  if (!nodes || nodes.length === 0) {
-    return '';
-  }
-
-  const olClass = `list-decimal px-4 leading-7`;
-  let html = `<ol class="${olClass}">`;
-
-  for (const node of nodes) {
-    html += `<li>`;
-    html += `<a href="#${node.slug}" class="text-sm dark:text-white hover:underline transition duration-200">${node.text}</a>`;
-
-    if (node.children.length > 0) {
-      html += renderTocList(node.children);
-    }
-    html += '</li>';
-  }
-
-  html += '</ol>';
-  return html;
-}
-
 // Filter headings to include only h2 and h3, then build the tree
 const filteredHeadings = headings.filter((h) => h.depth >= 2 && h.depth <= 3);
 const tocTree = buildTocTree(filteredHeadings);
-const tocHtml = renderTocList(tocTree); // Initial call, isNested defaults to false
+
+function renderToc(nodes: TocNode[]): JSX.Element | null {
+  if (!nodes || nodes.length === 0) {
+    return null;
+  }
+
+  return (
+    <ol class="list-decimal px-4 leading-7">
+      {nodes.map((node) => (
+        <li>
+          <a
+            href={`#${node.slug}`}
+            class="text-sm dark:text-white hover:underline transition duration-200"
+          >
+            {node.text}
+          </a>
+          {renderToc(node.children)}
+        </li>
+      ))}
+    </ol>
+  );
+}
 
 const tocStyles = {
   container: 'mb-8',
@@ -92,7 +90,7 @@ const tocStyles = {
       <span class={tocStyles.arrow}>&#9660;</span>
       目次
     </summary>
-    <nav class={tocStyles.nav} set:html={tocHtml} />
+    <nav class={tocStyles.nav}>{renderToc(tocTree)}</nav>
   </details>
 </div>
 

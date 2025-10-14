@@ -1,6 +1,7 @@
 /// <reference path="../.astro/types.d.ts" />
 /* Astro types import */
 import type {} from '../.astro/types';
+import type { HTMLAttributes } from 'react';
 /// <reference types="astro/client" />
 
 // WindowオブジェクトにdataLayerプロパティを追加
@@ -25,7 +26,7 @@ interface ImportMeta {
 
 // React HTML要素の型定義を拡張
 declare module 'react' {
-  interface ImgHTMLAttributes<T> {
+  interface ImgHTMLAttributes<T> extends HTMLAttributes<T> {
     fetchpriority?: 'high' | 'low' | 'auto';
   }
 }

@@ -3,12 +3,12 @@
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import type { z } from 'zod';
-import { contactFormSchema } from '../../types/index';
+import { contactFormSchema } from '@/types';
 import { useState } from 'react';
 import ContactFormLabel from './ContactFormLabel';
 import ContactFormInput from './ContactFormInput';
 import ContactFormTextarea from './ContactFormTextarea';
-import { submitContactForm } from '../../lib/api-clients/contact';
+import { submitContactForm } from '@/features/contact/api/contact';
 
 type ContactFormValues = z.infer<typeof contactFormSchema>;
 

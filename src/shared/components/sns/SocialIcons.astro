@@ -1,5 +1,5 @@
 ---
-import { ProfileContent } from '../../lib/utils/profileData';
+import { ProfileContent } from '@/features/profile/constants/profileContent';
 
 interface Props {
   class?: string;
@@ -71,7 +71,6 @@ const iconPaths = {
     })
   }
 </div>
-
 <script is:inline>
   // アイコンの切り替え関数
   const updateIcons = () => {
@@ -79,7 +78,6 @@ const iconPaths = {
     document.querySelectorAll('.social-icons').forEach((container) => {
       const forceTheme = container.dataset.forceTheme;
       const shouldUseDark = forceTheme === 'dark' || (forceTheme !== 'light' && isDark);
-      
       container.querySelectorAll('img').forEach((icon) => {
         const src = shouldUseDark ? icon.dataset.darkSrc : icon.dataset.lightSrc;
         if (src) icon.src = src;

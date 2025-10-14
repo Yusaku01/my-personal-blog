@@ -1,5 +1,5 @@
 import type { UseFormRegister, FieldErrors } from 'react-hook-form';
-import type { ContactForm } from '../../types';
+import type { ContactForm } from '@/types';
 
 export default function ContactFormTextarea({
   register,
