@@ -1,10 +1,11 @@
 ---
 import { getCollection } from 'astro:content';
-import Layout from '../../layouts/Layout.astro';
-import { BlogControls } from '../../components/Blog';
-import HeroSection from '../../components/Hero/HeroSection.astro';
-import { getQiitaPosts } from '../../lib/api-clients/qiita';
-import { getZennPosts } from '../../lib/api-clients/zenn';
+import { Fragment } from 'astro/jsx-runtime';
+import Layout from '@/features/layout/layouts/SiteLayout.astro';
+import { BlogControls } from '@/features/blog/components';
+import HeroSection from '@/features/shared/components/Hero/HeroSection.astro';
+import { getQiitaPosts } from '@/features/blog/api/qiita';
+import { getZennPosts } from '@/features/blog/api/zenn';
 
 const posts = await getCollection('blog');
 const qiitaPosts = await getQiitaPosts('ngtnysk');

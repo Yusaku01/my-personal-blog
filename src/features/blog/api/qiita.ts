@@ -1,5 +1,5 @@
-import { type ExternalPost } from '../../types/index';
-import { getOGPImage } from '../utils/ogp';
+import { type ExternalPost } from '@/types';
+import { getOGPImage } from '@/lib/utils/ogp';
 
 const CACHE_DURATION = 60 * 60 * 1000; // 1時間
 const cache = new Map<string, { data: ExternalPost[]; timestamp: number }>();

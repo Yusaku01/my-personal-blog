@@ -1,4 +1,4 @@
-import type { Post } from '../../types/index';
+import type { Post } from '@/types';
 
 type PostCardProps = Post & {
   showTags?: boolean; // タグの表示/非表示を制御するためのプロパティを追加
@@ -58,7 +58,7 @@ export function PostCard({
               height={315}
               className={postCardStyles.image}
               loading={shouldLazyLoad ? 'lazy' : undefined}
-              fetchpriority={fetchPriority}
+              fetchPriority={fetchPriority}
               decoding="async"
               sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
             />

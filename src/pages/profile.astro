@@ -1,8 +1,8 @@
 ---
-import Layout from '../layouts/Layout.astro';
-import HeroSection from '../components/Hero/HeroSection.astro';
-import ProfileSection from '../components/Profile/ProfileSection.astro';
-import { ProfileContent } from '../lib/utils/profileData';
+import Layout from '@/features/layout/layouts/SiteLayout.astro';
+import HeroSection from '@/features/shared/components/Hero/HeroSection.astro';
+import ProfileSection from '@/features/profile/components/Profile/ProfileSection.astro';
+import { ProfileContent } from '@/features/profile/constants/profileContent';
 
 import { Image } from 'astro:assets';
 import myImage from '../assets/img/img_profile.png';

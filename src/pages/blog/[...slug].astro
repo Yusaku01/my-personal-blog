@@ -1,8 +1,8 @@
 ---
 import { getCollection } from 'astro:content';
-import Layout from '../../layouts/Layout.astro';
-import TableOfContents from '../../components/Blog/TableOfContents.astro';
-import ShareButtons from '../../components/Sns/ShareButtons.astro';
+import Layout from '@/features/layout/layouts/SiteLayout.astro';
+import TableOfContents from '@/features/blog/components/TableOfContents.astro';
+import ShareButtons from '@/features/blog/components/ShareButtons.astro';
 import { format } from 'date-fns';
 
 export async function getStaticPaths() {

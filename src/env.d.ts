@@ -25,7 +25,7 @@ interface ImportMeta {
 
 // React HTML要素の型定義を拡張
 declare module 'react' {
-  interface ImgHTMLAttributes<T> {
+  interface ImgHTMLAttributes<T = unknown> extends HTMLAttributes<T> {
     fetchpriority?: 'high' | 'low' | 'auto';
   }
 }
