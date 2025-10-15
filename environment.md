@@ -7,8 +7,9 @@
 ```text
 .
 ├── docs
-│   └── lighthouse
-│       └── lh_20250419.html
+│   ├── lighthouse
+│   │   └── lh_20250419.html
+│   └── public-release-checklist.md
 ├── public
 │   ├── images
 │   │   ├── blog
@@ -76,7 +77,7 @@
 ├── tsconfig.json
 └── uno.config.ts
 
-32 directories, 38 files
+32 directories, 39 files
 
 ```
 
