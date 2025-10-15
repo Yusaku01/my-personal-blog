@@ -51,7 +51,14 @@ git clone [repository-url]
 npm install
 ```
 
-3. 開発サーバーを起動：
+3. 環境変数ファイルを作成：
+
+```bash
+cp .env.example .env
+# 各サービスのIDやエンドポイントを編集
+```
+
+4. 開発サーバーを起動：
 
 ```bash
 npm run dev
@@ -69,6 +76,8 @@ npm run dev
 ## 🔄 自動更新
 
 環境構成の詳細は `environment.md` に記載されており、プロジェクトの構造が変更されると自動的に更新されます。
+
+公開リポジトリ向けの環境変数設定とセキュリティチェックは `docs/public-release-checklist.md` を参照してください。
 
 ## 📄 ライセンス
 
