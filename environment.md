@@ -6,64 +6,80 @@
 
 ```text
 .
-├── docs
-│   └── lighthouse
-│       └── lh_20250419.html
+├── .github
+│   ├── ISSUE_TEMPLATE
+│   │   ├── bug_report.md
+│   │   └── feature_request.md
+│   ├── workflows
+│   │   ├── claude-code-review.yml
+│   │   ├── claude.yml
+│   │   └── github_workflows_claude-issue-triage.yml
+│   └── pull_request_template.md
+├── .vscode
+│   ├── extensions.json
+│   └── launch.json
+├── .windsurf
+│   └── rules
+│       ├── architecture.md
+│       ├── basical-rules.md
+│       ├── coding-style.md
+│       ├── commit-message.md
+│       ├── design-guidelines.md
+│       ├── operation.md
+│       ├── security.md
+│       └── testing.md
 ├── public
-│   ├── images
-│   │   ├── blog
-│   │   ├── icon_github-dark.svg
-│   │   ├── icon_github-light.svg
-│   │   ├── icon_linkedin.svg
-│   │   ├── icon_qiita.png
-│   │   ├── icon_rss-dark.svg
-│   │   ├── icon_rss-light.svg
-│   │   ├── icon_x-dark.svg
-│   │   └── icon_x-light.svg
-│   ├── ogp
-│   │   ├── blog.png
-│   │   ├── contact.png
-│   │   ├── default.png
-│   │   ├── getting-started-blog.png
-│   │   └── profile.png
-│   ├── apple-touch-icon.png
-│   ├── favicon.ico
-│   └── favicon.svg
+│   ├── images
+│   │   ├── blog
+│   │   ├── icon_github-dark.svg
+│   │   ├── icon_github-light.svg
+│   │   ├── icon_linkedin.svg
+│   │   ├── icon_qiita.png
+│   │   ├── icon_rss-dark.svg
+│   │   ├── icon_rss-light.svg
+│   │   ├── icon_x-dark.svg
+│   │   └── icon_x-light.svg
+│   ├── ogp
+│   │   ├── blog.png
+│   │   ├── contact.png
+│   │   ├── default.png
+│   │   ├── getting-started-blog.png
+│   │   └── profile.png
+│   ├── _headers
+│   ├── apple-touch-icon.png
+│   ├── favicon.ico
+│   └── favicon.svg
 ├── src
-│   ├── assets
-│   │   └── img
-│   ├── components
-│   │   ├── Blog
-│   │   ├── Breadcrump
-│   │   ├── Contact
-│   │   ├── Footer
-│   │   ├── Header
-│   │   ├── Hero
-│   │   ├── Profile
-│   │   ├── Section
-│   │   ├── Sns
-│   │   ├── Theme
-│   │   └── ViewToggle.tsx
-│   ├── content
-│   │   ├── blog
-│   │   └── config.ts
-│   ├── layouts
-│   │   └── Layout.astro
-│   ├── lib
-│   │   ├── api-clients
-│   │   └── utils
-│   ├── pages
-│   │   ├── api
-│   │   ├── blog
-│   │   ├── contact.astro
-│   │   ├── index.astro
-│   │   ├── profile.astro
-│   │   └── rss.xml.ts
-│   ├── styles
-│   │   └── unoVariants.ts
-│   ├── types
-│   │   └── index.ts
-│   └── env.d.ts
+│   ├── assets
+│   │   └── img
+│   ├── content
+│   │   ├── blog
+│   │   └── config.ts
+│   ├── features
+│   │   ├── blog
+│   │   ├── contact
+│   │   └── profile
+│   ├── pages
+│   │   ├── api
+│   │   ├── blog
+│   │   ├── contact.astro
+│   │   ├── index.astro
+│   │   ├── profile.astro
+│   │   └── rss.xml.ts
+│   ├── shared
+│   │   ├── components
+│   │   ├── layouts
+│   │   └── utils
+│   ├── styles
+│   │   └── unoVariants.ts
+│   ├── types
+│   │   └── index.ts
+│   └── env.d.ts
+├── .env.example
+├── .eslintrc.cjs
+├── .gitignore
+├── .prettierignore
+├── .prettierrc
 ├── AGENTS.md
 ├── astro.config.mjs
 ├── CLAUDE.md
@@ -75,8 +91,6 @@
 ├── tsconfig.json
 └── uno.config.ts
 
-32 directories, 37 files
-
 ```
 
 ## 🔑 主要ファイルの役割
@@ -86,15 +100,23 @@
 - `tsconfig.json`: TypeScriptのコンパイラ設定
 
 ### コアコンポーネント
-- `src/layouts/Layout.astro`: 全ページで使用される基本レイアウト
-- `src/components/Header.astro`: サイトヘッダー（ナビゲーション）
-- `src/components/Footer.astro`: サイトフッター
+- `src/shared/layouts/Layout.astro`: 全ページで使用される基本レイアウト
+- `src/shared/components/header/Header.astro`: サイトヘッダー（ナビゲーション）
+- `src/shared/components/footer/Footer.astro`: サイトフッター
 
 ### ページコンポーネント
+- `src/pages/index.astro`: トップページ
+- `src/pages/profile.astro`: プロフィールページ
+- `src/pages/contact.astro`: お問い合わせページ
 
 ### スタイル
+- `src/styles/unoVariants.ts`: UnoCSSのバリアント設定とユーティリティ
 
 ### ユーティリティ
+- `src/shared/utils/ogp.ts`: OGP画像を取得し最適化するユーティリティ
+- `src/features/blog/api/qiita.ts`: Qiitaの記事一覧を取得するAPIクライアント
+- `src/features/blog/api/zenn.ts`: Zennの記事一覧を取得するAPIクライアント
+- `src/features/contact/api/contact.ts`: お問い合わせフォーム送信処理
 
 
 ## 🔄 自動更新の仕組み

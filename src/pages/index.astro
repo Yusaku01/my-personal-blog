@@ -1,11 +1,11 @@
 ---
 import { getCollection } from 'astro:content';
-import Layout from '../layouts/Layout.astro';
-import HeroSection from '../components/Hero/HeroSection.astro';
-import { PostCard } from '../components/Blog/PostCard';
-import SectionHeading from '../components/Section/SectionHeading.astro';
-import { getQiitaPosts } from '../lib/api-clients/qiita';
-import { getZennPosts } from '../lib/api-clients/zenn';
+import Layout from '@/shared/layouts/Layout.astro';
+import HeroSection from '@/shared/components/hero/HeroSection.astro';
+import { PostCard } from '@/features/blog/components/PostCard';
+import SectionHeading from '@/shared/components/section/SectionHeading.astro';
+import { getQiitaPosts } from '@/features/blog/api/qiita';
+import { getZennPosts } from '@/features/blog/api/zenn';
 
 const posts = await getCollection('blog');
 const qiitaPosts = await getQiitaPosts('ngtnysk');
@@ -29,7 +29,7 @@ const allPosts = [
 const POSTS_PER_SECTION = 4;
 
 import { Image } from 'astro:assets';
-import myImage from '../assets/img/img_profile.png';
+import myImage from '@/assets/img/img_profile.png';
 ---
 
 <Layout title="SAKUSPACE">
@@ -82,8 +82,9 @@ import myImage from '../assets/img/img_profile.png';
                 フロントエンドエンジニア / デザイナー
               </p>
               <p class="text-gray-600 dark:text-gray-400">
-                フロントエンドエンジニアとしての経験とデザインの知識を活かし、Web制作をしています。<br
-                />最近はLLMを使った作業効率化に興味があります。Windsurfが好きです。
+                フロントエンドエンジニアとしての経験とデザインの知識を活かし、Web制作をしています。
+                <br />
+                最近はLLMを使った作業効率化に興味があります。Windsurfが好きです。
               </p>
             </div>
           </div>

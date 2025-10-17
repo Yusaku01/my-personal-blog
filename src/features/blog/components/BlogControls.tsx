@@ -1,6 +1,6 @@
 import { useState, useMemo } from 'react';
 import { PostCard } from './PostCard';
-import type { Post } from '../../types/index';
+import type { Post } from '@/types';
 
 // BlogControlsコンポーネント固有のスタイル定義
 const styles = {

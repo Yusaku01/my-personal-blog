@@ -1,5 +1,5 @@
 ---
-import { ProfileContent } from '../../lib/utils/profileData';
+import { ProfileContent } from '@/features/profile/constants/profileData';
 
 interface Props {
   class?: string;
@@ -79,7 +79,7 @@ const iconPaths = {
     document.querySelectorAll('.social-icons').forEach((container) => {
       const forceTheme = container.dataset.forceTheme;
       const shouldUseDark = forceTheme === 'dark' || (forceTheme !== 'light' && isDark);
-      
+
       container.querySelectorAll('img').forEach((icon) => {
         const src = shouldUseDark ? icon.dataset.darkSrc : icon.dataset.lightSrc;
         if (src) icon.src = src;

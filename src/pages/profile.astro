@@ -1,11 +1,11 @@
 ---
-import Layout from '../layouts/Layout.astro';
-import HeroSection from '../components/Hero/HeroSection.astro';
-import ProfileSection from '../components/Profile/ProfileSection.astro';
-import { ProfileContent } from '../lib/utils/profileData';
+import Layout from '@/shared/layouts/Layout.astro';
+import HeroSection from '@/shared/components/hero/HeroSection.astro';
+import ProfileSection from '@/features/profile/components/ProfileSection.astro';
+import { ProfileContent } from '@/features/profile/constants/profileData';
 
 import { Image } from 'astro:assets';
-import myImage from '../assets/img/img_profile.png';
+import myImage from '@/assets/img/img_profile.png';
 ---
 
 <Layout title="プロフィール | SAKUSPACE">
