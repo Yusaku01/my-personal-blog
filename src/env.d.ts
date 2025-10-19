@@ -3,14 +3,20 @@
 import type {} from '../.astro/types';
 /// <reference types="astro/client" />
 
-// WindowオブジェクトにdataLayerプロパティを追加
+// Window 拡張
+type DataLayerEvent = unknown;
 interface Window {
-  dataLayer: any[]; // または Array<any> や、より具体的な型
+  dataLayer: DataLayerEvent[];
+  grecaptcha?: {
+    render: (container: HTMLElement, opts: { sitekey: string }) => number;
+    getResponse: (widgetId: number) => string;
+    reset: (widgetId?: number) => void;
+  };
 }
 
 // gtag関数をグローバルに追加
 declare global {
-  function gtag(...args: any[]): void; // any[] はより具体的な型にすることも可能
+  function gtag(...args: unknown[]): void;
 }
 
 // Google Analytics IDを環境変数から取得
@@ -25,7 +31,7 @@ interface ImportMeta {
 
 // React HTML要素の型定義を拡張
 declare module 'react' {
-  interface ImgHTMLAttributes<T> {
-    fetchpriority?: 'high' | 'low' | 'auto';
+  interface ImgHTMLAttributes {
+    fetchPriority?: 'high' | 'low' | 'auto';
   }
 }

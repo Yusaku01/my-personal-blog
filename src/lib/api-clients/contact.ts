@@ -1,5 +1,3 @@
-import { type ContactForm } from '../../types/index';
-
 // SSGFormのエンドポイントURL
 // 必ず環境変数で設定し、ハードコードされたURLが残らないようにする
 const resolveEndpoint = () => {
@@ -10,7 +8,8 @@ const resolveEndpoint = () => {
   return endpoint;
 };
 
-export async function submitContactForm(data: ContactForm): Promise<Response> {
+// 任意のキーを許容し、reCAPTCHA トークンなど追加フィールドも送信できるようにする
+export async function submitContactForm(data: Record<string, string>): Promise<Response> {
   // FormDataを生成
   const formData = new FormData();
 
