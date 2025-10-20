@@ -66,7 +66,7 @@
   "overrides": {
     "strip-ansi": "^6.0.1"
   },
-  "description": "このプロジェクトは、Astroを使用して構築された個人ブログ＆ポートフォリオウェブサイトです。",
+  "description": "このプロジェクトは、Astroを使用して構築された個人ブログサイトです。",
   "main": "index.js",
   "directories": {
     "doc": "docs"
