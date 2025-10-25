@@ -1,8 +1,8 @@
 import type { Post } from '../../types/index';
 
 type PostCardProps = Post & {
-  showTags?: boolean; // タグの表示/非表示を制御するためのプロパティを追加
-  index?: number; // 画像の読み込み優先度を決定するためのインデックス
+  showTags?: boolean;
+  index?: number;
 };
 
 // PostCardコンポーネント固有のスタイル
@@ -10,12 +10,12 @@ const postCardStyles = {
   article:
     'bg-white dark:bg-gray-900 rounded-md overflow-hidden transition-all duration-200 h-full hover',
   link: 'block',
-  imageContainer: 'relative aspect-video overflow-hidden', // overflow-hiddenを維持
-  image: 'w-full h-full object-cover transition-all duration-300 ease-in-out', // 拡大を削除
+  imageContainer: 'relative aspect-thumnail overflow-hidden',
+  image: 'w-full h-full object-cover transition-all duration-300 ease-in-out',
   overlay:
-    'absolute inset-0 bg-black bg-opacity-0 flex items-center justify-center transition-all duration-300 ease-in-out lg:group-hover:bg-opacity-60', // オーバーレイを追加
+    'absolute inset-0 bg-black bg-opacity-0 flex items-center justify-center transition-all duration-300 ease-in-out lg:group-hover:bg-opacity-60',
   readText:
-    'text-white font-bold opacity-0 transform translate-y-4 transition-all duration-300 ease-in-out lg:group-hover:opacity-100 lg:group-hover:translate-y-0 tracking-wider', // 「記事を読む」テキスト
+    'text-white font-bold opacity-0 transform translate-y-4 transition-all duration-300 ease-in-out lg:group-hover:opacity-100 lg:group-hover:translate-y-0 tracking-wider',
   contentContainer: 'p-4',
   title: 'text-md font-semibold text-gray-900 dark:text-white line-clamp-4 leading-tight',
   date: 'text-sm text-gray-600 dark:text-gray-400',
@@ -45,7 +45,7 @@ export function PostCard({
     <article className={postCardStyles.article}>
       <a
         href={url}
-        className={`${postCardStyles.link} group`} // groupクラスを追加
+        className={`${postCardStyles.link} group`}
         target={isExternal ? '_blank' : '_self'}
         rel={isExternal ? 'noopener noreferrer' : ''}
       >

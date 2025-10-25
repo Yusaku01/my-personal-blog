@@ -109,6 +109,9 @@ export default defineConfig({
     'blog-post-grid': 'grid gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-4',
     'blog-load-more-button':
       'mx-auto mt-8 px-6 py-2 bg-gray-800 text-white rounded-md lg:hover:opacity-70 transition-all duration-300 dark:bg-gray-200 dark:text-gray-800 font-bold',
+
+    // アスペクト比
+    'aspect-thumnail': 'aspect-[15/8]',
   },
   rules: [],
 });
