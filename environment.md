@@ -20,7 +20,9 @@
 │   │   ├── icon_rss-dark.svg
 │   │   ├── icon_rss-light.svg
 │   │   ├── icon_x-dark.svg
-│   │   └── icon_x-light.svg
+│   │   ├── icon_x-light.svg
+│   │   ├── icon_zenn-dark.svg
+│   │   └── icon_zenn-light.svg
 │   ├── ogp
 │   │   ├── blog.png
 │   │   ├── contact.png
@@ -77,7 +79,7 @@
 ├── tsconfig.json
 └── uno.config.ts
 
-32 directories, 39 files
+32 directories, 41 files
 
 ```
 

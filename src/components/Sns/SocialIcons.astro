@@ -13,7 +13,7 @@ const {
   class: className = '',
   iconClass = 'h-7 w-7',
   variant = 'default',
-  networks = ['GitHub', 'X', 'LinkedIn', 'Qiita', 'RSS'],
+  networks = ['GitHub', 'X', 'LinkedIn', 'Qiita', 'Zenn', 'RSS'],
   forceTheme,
 } = Astro.props;
 
@@ -38,6 +38,7 @@ const iconPaths = {
   X: { light: '/images/icon_x-light.svg', dark: '/images/icon_x-dark.svg' },
   LinkedIn: { light: '/images/icon_linkedin.svg', dark: '/images/icon_linkedin.svg' },
   Qiita: { light: '/images/icon_qiita.png', dark: '/images/icon_qiita.png' },
+  Zenn: { light: '/images/icon_zenn-light.svg', dark: '/images/icon_zenn-light.svg' },
   RSS: { light: '/images/icon_rss-light.svg', dark: '/images/icon_rss-dark.svg' },
 };
 ---
@@ -79,7 +80,7 @@ const iconPaths = {
     document.querySelectorAll('.social-icons').forEach((container) => {
       const forceTheme = container.dataset.forceTheme;
       const shouldUseDark = forceTheme === 'dark' || (forceTheme !== 'light' && isDark);
-      
+
       container.querySelectorAll('img').forEach((icon) => {
         const src = shouldUseDark ? icon.dataset.darkSrc : icon.dataset.lightSrc;
         if (src) icon.src = src;
