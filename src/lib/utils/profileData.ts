@@ -80,6 +80,13 @@ export const ProfileContent = {
       class: 'w-7 h-7',
     },
     {
+      name: 'Zenn',
+      url: 'http://zenn.dev/saku2323',
+      iconLight: '/images/icon_zenn-light.svg',
+      iconDark: '/images/icon_zenn-dark.svg',
+      class: 'w-7 h-7',
+    },
+    {
       name: 'RSS',
       url: '/rss.xml',
       iconLight: '/images/icon_rss-light.svg',
