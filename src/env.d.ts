@@ -7,11 +7,6 @@ import type {} from '../.astro/types';
 type DataLayerEvent = unknown;
 interface Window {
   dataLayer: DataLayerEvent[];
-  grecaptcha?: {
-    render: (container: HTMLElement, opts: { sitekey: string }) => number;
-    getResponse: (widgetId: number) => string;
-    reset: (widgetId?: number) => void;
-  };
 }
 
 // gtag関数をグローバルに追加
@@ -31,7 +26,21 @@ interface ImportMeta {
 
 // React HTML要素の型定義を拡張
 declare module 'react' {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   interface ImgHTMLAttributes<T> {
-    fetchpriority?: 'high' | 'low' | 'auto';
+    fetchPriority?: 'high' | 'low' | 'auto';
+  }
+}
+
+// reCAPTCHA の型定義
+interface ReCaptchaInstance {
+  render: (container: HTMLElement | string, parameters: any) => number;
+  getResponse: (widgetId: number) => string;
+  reset: (widgetId: number) => void;
+}
+
+declare global {
+  interface Window {
+    grecaptcha?: ReCaptchaInstance;
   }
 }

@@ -1,6 +1,6 @@
 ---
 import { getCollection } from 'astro:content';
-import { Fragment } from 'astro/jsx-runtime';
+// Removed invalid Fragment usage; use slot on element directly
 import Layout from '../../layouts/Layout.astro';
 import { BlogControls } from '../../components/Blog';
 import HeroSection from '../../components/Hero/HeroSection.astro';
@@ -35,20 +35,19 @@ const primaryThumbnail = sortedPosts.find((post) => Boolean(post.thumbnail))?.th
 ---
 
 <Layout title="BLOG | SAKUSPACE">
-  <Fragment slot="head">
-    {
-      primaryThumbnail && (
-        <link
-          rel="preload"
-          as="image"
-          href={primaryThumbnail}
-          imagesizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
-          fetchpriority="high"
-          crossorigin="anonymous"
-        />
-      )
-    }
-  </Fragment>
+  {
+    primaryThumbnail && (
+      <link
+        slot="head"
+        rel="preload"
+        as="image"
+        href={primaryThumbnail}
+        imagesizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
+        fetchpriority="high"
+        crossorigin="anonymous"
+      />
+    )
+  }
   <HeroSection title="BLOG" isHome={false} />
   <div class="container-lg container-lg py-14">
     <BlogControls client:load posts={allPosts} />
