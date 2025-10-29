@@ -6,6 +6,12 @@ interface Props {
   iconClass?: string;
   variant?: 'default' | 'minimal';
   networks?: string[];
+  /** 表示対象を限定 */
+  include?: string[];
+  /** 表示対象から除外 */
+  exclude?: string[];
+  /** 表示順を上書き（未指定はデータ順） */
+  order?: string[];
   forceTheme?: 'light' | 'dark';
 }
 
@@ -13,7 +19,10 @@ const {
   class: className = '',
   iconClass = 'h-7 w-7',
   variant = 'default',
-  networks = ['GitHub', 'X', 'LinkedIn', 'Qiita', 'Zenn', 'RSS'],
+  networks,
+  include,
+  exclude = [],
+  order,
   forceTheme,
 } = Astro.props;
 
@@ -29,47 +38,57 @@ const iconClasses = {
     'text-gray-400 hover:text-gray-600 dark:text-gray-400 dark:hover:text-gray-100 transition-colors',
 };
 
-// フィルタリング
-const socialLinks = ProfileContent.socialLinks.filter((social) => networks.includes(social.name));
+// 単一ソース
+const allLinks = ProfileContent.socialLinks;
 
-// ダークモード用のアイコンパス
-const iconPaths = {
-  GitHub: { light: '/images/icon_github-light.svg', dark: '/images/icon_github-dark.svg' },
-  X: { light: '/images/icon_x-light.svg', dark: '/images/icon_x-dark.svg' },
-  LinkedIn: { light: '/images/icon_linkedin.svg', dark: '/images/icon_linkedin.svg' },
-  Qiita: { light: '/images/icon_qiita.png', dark: '/images/icon_qiita.png' },
-  Zenn: { light: '/images/icon_zenn-light.svg', dark: '/images/icon_zenn-light.svg' },
-  RSS: { light: '/images/icon_rss-light.svg', dark: '/images/icon_rss-dark.svg' },
-};
+// include/networks → 絞り込み対象
+const includeSet = new Set((include ?? networks ?? allLinks.map((s) => s.name)) as string[]);
+let filtered = allLinks.filter((s) => includeSet.has(s.name));
+
+// exclude 適用
+if ((exclude?.length ?? 0) > 0) {
+  const ex = new Set(exclude);
+  filtered = filtered.filter((s) => !ex.has(s.name));
+}
+
+// order 指定がある場合はそれに従って並び替え（未指定は元順を維持）
+if ((order?.length ?? 0) > 0) {
+  const idx = new Map(order!.map((name, i) => [name, i] as const));
+  filtered = filtered
+    .map((s, i) => ({ s, i }))
+    .sort((a, b) => {
+      const ai = idx.has(a.s.name) ? (idx.get(a.s.name) as number) : Number.POSITIVE_INFINITY;
+      const bi = idx.has(b.s.name) ? (idx.get(b.s.name) as number) : Number.POSITIVE_INFINITY;
+      if (ai !== bi) return ai - bi;
+      return a.i - b.i; // 未指定同士は元の順序
+    })
+    .map(({ s }) => s);
+}
 ---
 
 <div class={`${baseClasses[variant]} ${className} social-icons`} data-force-theme={forceTheme}>
   {
-    socialLinks.map((social) => {
-      const iconPath = iconPaths[social.name as keyof typeof iconPaths];
-
-      return (
-        <a
-          href={social.url}
-          target="_blank"
-          rel="noopener noreferrer"
-          aria-label={social.name}
-          class={`${iconClasses[variant]} ${social.class || ''}`}
-          data-social={social.name}
-        >
-          <img
-            src={iconPath.light}
-            alt={social.name}
-            data-dark-src={iconPath.dark}
-            data-light-src={iconPath.light}
-            class={iconClass}
-            width="28"
-            height="28"
-            loading="lazy"
-          />
-        </a>
-      );
-    })
+    filtered.map((social) => (
+      <a
+        href={social.url}
+        target="_blank"
+        rel="noopener noreferrer"
+        aria-label={social.name}
+        class={`${iconClasses[variant]} ${social.class || ''}`}
+        data-social={social.name}
+      >
+        <img
+          src={social.iconLight}
+          alt={social.name}
+          data-dark-src={social.iconDark}
+          data-light-src={social.iconLight}
+          class={iconClass}
+          width="28"
+          height="28"
+          loading="lazy"
+        />
+      </a>
+    ))
   }
 </div>
 
