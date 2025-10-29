@@ -3,6 +3,7 @@ import Layout from '../layouts/Layout.astro';
 import HeroSection from '../components/Hero/HeroSection.astro';
 import ProfileSection from '../components/Profile/ProfileSection.astro';
 import { ProfileContent } from '../lib/utils/profileData';
+import SocialIcons from '../components/Sns/SocialIcons.astro';
 
 export const transition = { name: 'fade' };
 
@@ -132,32 +133,14 @@ import myImage from '../assets/img/img_profile.png';
             </ul>
           </ProfileSection> -->
 
-          <!-- SNSセクション -->
+          <!-- SNSセクション（SocialIconsに統一） -->
           <ProfileSection title="SNS">
-            <div class="mt-8 flex flex-wrap gap-7 justify-center">
-              {
-                ProfileContent.socialLinks.map((link) => (
-                  <a
-                    href={link.url}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    class="text-gray-600 lg:hover:text-gray-800 dark:text-gray-300 dark:lg:hover:text-white transition-colors duration-200"
-                    aria-label={`Follow me on ${link.name}`}
-                  >
-                    <span class="sr-only">{link.name}</span>
-                    <img
-                      src={link.iconLight}
-                      class={`${link.class} block dark:hidden`}
-                      alt={link.name}
-                    />
-                    <img
-                      src={link.iconDark}
-                      class={`${link.class} hidden dark:block`}
-                      alt={link.name}
-                    />
-                  </a>
-                ))
-              }
+            <div class="mt-8">
+              <SocialIcons
+                variant="default"
+                class="space-x-0 flex-wrap gap-7 justify-center"
+                iconClass="w-7 h-7"
+              />
             </div>
           </ProfileSection>
         </div>

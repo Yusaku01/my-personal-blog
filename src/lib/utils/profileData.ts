@@ -1,3 +1,11 @@
+export type SocialItem = {
+  name: string;
+  url: string;
+  iconLight: string;
+  iconDark: string;
+  class?: string;
+};
+
 export const ProfileContent = {
   name: '長谷 優作（Saku）',
   role: 'フロントエンドエンジニア / デザイナー',
@@ -93,5 +101,5 @@ export const ProfileContent = {
       iconDark: '/images/icon_rss-dark.svg',
       class: 'w-7 h-7',
     },
-  ],
+  ] as SocialItem[],
 };
