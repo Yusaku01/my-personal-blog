@@ -92,6 +92,7 @@ const tocStyles = {
       <span class={tocStyles.arrow}>&#9660;</span>
       目次
     </summary>
+    {/* eslint-disable-next-line astro/no-set-html-directive */}
     <nav class={tocStyles.nav} set:html={tocHtml} />
   </details>
 </div>
