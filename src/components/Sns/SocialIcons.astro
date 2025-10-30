@@ -93,24 +93,29 @@ if ((order?.length ?? 0) > 0) {
 </div>
 
 <script is:inline>
-  // アイコンの切り替え関数
-  const updateIcons = () => {
-    const isDark = document.documentElement.classList.contains('dark');
-    document.querySelectorAll('.social-icons').forEach((container) => {
-      const forceTheme = container.dataset.forceTheme;
-      const shouldUseDark = forceTheme === 'dark' || (forceTheme !== 'light' && isDark);
+  // Scope everything in an IIFE to avoid redeclaration across reruns.
+  (() => {
+    const updateIcons = () => {
+      const isDark = document.documentElement.classList.contains('dark');
+      document.querySelectorAll('.social-icons').forEach((container) => {
+        const forceTheme = container.getAttribute('data-force-theme');
+        const shouldUseDark = forceTheme === 'dark' || (forceTheme !== 'light' && isDark);
 
-      container.querySelectorAll('img').forEach((icon) => {
-        const src = shouldUseDark ? icon.dataset.darkSrc : icon.dataset.lightSrc;
-        if (src) icon.src = src;
+        container.querySelectorAll('img').forEach((icon) => {
+          const darkSrc = icon.getAttribute('data-dark-src');
+          const lightSrc = icon.getAttribute('data-light-src');
+          const src = shouldUseDark ? darkSrc : lightSrc;
+          if (src && icon.getAttribute('src') !== src) icon.setAttribute('src', src);
+        });
       });
-    });
-  };
+    };
 
-  // 初期表示時
-  document.addEventListener('astro:page-load', updateIcons);
-  document.addEventListener('astro:after-swap', updateIcons);
+    document.addEventListener('astro:page-load', updateIcons);
+    document.addEventListener('astro:after-swap', updateIcons);
+    window.addEventListener('themechange', updateIcons);
 
-  // テーマ切り替え時
-  window.addEventListener('themechange', updateIcons);
+    // Run once on first evaluation
+    updateIcons();
+  })();
+  
 </script>
