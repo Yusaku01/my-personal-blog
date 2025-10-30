@@ -3,8 +3,7 @@ import { ClientRouter } from 'astro:transitions';
 import Header from '../components/Header/Header.astro';
 import Footer from '../components/Footer/Footer.astro';
 import Breadcrumb from '../components/Breadcrump/Breadcrumb.astro';
-import '@fontsource/zen-kaku-gothic-new/japanese-400.css'; // 日本語サブセット（標準ウェイト）
-import '@fontsource/zen-kaku-gothic-new/japanese-700.css'; // 日本語サブセット（太字）
+// Self-host fonts via public/fonts; see scripts/copy-fonts.js
 
 interface Props {
   title: string;
@@ -122,35 +121,38 @@ const gaId = import.meta.env.PUBLIC_GOOGLE_ANALYTICS_ID;
     <meta name="twitter:image" content={new URL(ogImageUrl, Astro.site).toString()} />
     <meta name="twitter:site" content="@sakuspace" />
 
-    <!-- Web fonts -->
+    <!-- Web fonts (self-hosted) -->
     <link
       rel="preload"
-      href="/node_modules/@fontsource/zen-kaku-gothic-new/files/zen-kaku-gothic-new-japanese-400-normal.woff2"
+      href="/fonts/zen-kaku-gothic-new-jp-400.woff2"
       as="font"
       type="font/woff2"
       crossorigin="anonymous"
     />
     <link
       rel="preload"
-      href="/node_modules/@fontsource/zen-kaku-gothic-new/files/zen-kaku-gothic-new-japanese-700-normal.woff2"
+      href="/fonts/zen-kaku-gothic-new-jp-700.woff2"
       as="font"
       type="font/woff2"
       crossorigin="anonymous"
     />
 
-    <!-- Google Analytics (gtag.js) -->
-    <script is:inline async src={`https://www.googletagmanager.com/gtag/js?id=${gaId}`}></script>
+    <!-- Google Analytics (gtag.js): only when ID is provided -->
     <script is:inline define:vars={{ gaId }}>
-      window.dataLayer = window.dataLayer || [];
-      function gtag() {
-        dataLayer.push(arguments);
+      if (gaId) {
+        var s = document.createElement('script');
+        s.async = true;
+        s.src = 'https://www.googletagmanager.com/gtag/js?id=' + gaId;
+        window.dataLayer = window.dataLayer || [];
+        s.addEventListener('load', function () {
+          window.gtag('js', new Date());
+          window.gtag('config', gaId);
+        });
+        document.head.appendChild(s);
       }
-      gtag('js', new Date());
-      gtag('config', gaId);
     </script>
 
-    <!-- Google reCAPTCHA -->
-    <script is:inline src="https://www.google.com/recaptcha/api.js" async defer></script>
+    <!-- Google reCAPTCHA is injected per-page where needed -->
 
     <slot name="head" />
   </head>
@@ -177,15 +179,48 @@ const gaId = import.meta.env.PUBLIC_GOOGLE_ANALYTICS_ID;
           rgb(var(--accent-light)) 30%,
           white 60%
         );
-        --font-body: 'Zen Kaku Gothic New', sans-serif;
+        --font-body:
+          'Zen Kaku Gothic New', 'Zen Kaku Gothic New Fallback', system-ui, -apple-system,
+          'Hiragino Kaku Gothic ProN', 'Yu Gothic', Meiryo, sans-serif;
       }
 
       body {
         font-family: var(--font-body);
+        font-synthesis-weight: none;
       }
 
       img {
         content-visibility: auto;
+      }
+
+      /* Metrics-compatible fallback to reduce FOUT layout shift */
+      @font-face {
+        font-family: 'Zen Kaku Gothic New Fallback';
+        /* Use common JP system fonts as stand-ins */
+        src:
+          local('Hiragino Kaku Gothic ProN'), local('Yu Gothic Medium'), local('Yu Gothic'),
+          local('Meiryo'), local('Noto Sans CJK JP');
+        /* Tweak metrics to better match Zen Kaku Gothic New */
+        size-adjust: 100%;
+        ascent-override: 90%;
+        descent-override: 22%;
+        line-gap-override: 0%;
+      }
+
+      /* Self-hosted Zen Kaku Gothic New */
+      @font-face {
+        font-family: 'Zen Kaku Gothic New';
+        font-style: normal;
+        font-weight: 400;
+        font-display: optional; /* prefer no-swap for body text */
+        src: url('/fonts/zen-kaku-gothic-new-jp-400.woff2') format('woff2');
+      }
+      @font-face {
+        font-family: 'Zen Kaku Gothic New';
+        font-style: normal;
+        font-weight: 700;
+        font-display: swap; /* headings: keep immediate swap */
+        src: url('/fonts/zen-kaku-gothic-new-jp-700.woff2') format('woff2');
       }
     </style>
   </body>

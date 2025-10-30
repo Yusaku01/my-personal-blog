@@ -11,6 +11,9 @@ _このファイルは自動的に生成・更新されます_
 │   │   └── lh_20250419.html
 │   └── public-release-checklist.md
 ├── public
+│   ├── fonts
+│   │   ├── zen-kaku-gothic-new-jp-400.woff2
+│   │   └── zen-kaku-gothic-new-jp-700.woff2
 │   ├── images
 │   │   ├── blog
 │   │   ├── icon_github-dark.svg
@@ -79,7 +82,7 @@ _このファイルは自動的に生成・更新されます_
 ├── tsconfig.json
 └── uno.config.ts
 
-32 directories, 41 files
+33 directories, 43 files
 
 ```
 

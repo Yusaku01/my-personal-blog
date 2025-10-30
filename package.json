@@ -5,6 +5,8 @@
   "private": true,
   "scripts": {
     "predev": "node scripts/update-environment.js",
+    "prebuild": "node scripts/copy-fonts.js",
+    "prepare": "simple-git-hooks",
     "dev": "astro dev",
     "start": "astro dev",
     "build": "astro build",
@@ -61,7 +63,19 @@
     "prettier": "^3.1.1",
     "prettier-plugin-astro": "^0.12.2",
     "typescript": "^5.6.0",
-    "unocss": "^0.63.6"
+    "unocss": "^0.63.6",
+    "lint-staged": "^15.2.9",
+    "simple-git-hooks": "^2.11.1"
+  },
+  "simple-git-hooks": {
+    "pre-commit": "lint-staged",
+    "pre-push": "npm run format:check && npm run lint"
+  },
+  "lint-staged": {
+    "*.{js,jsx,ts,tsx,astro,md,css,json}": [
+      "prettier --write",
+      "eslint --cache --fix --ext .js,.jsx,.ts,.tsx,.astro"
+    ]
   },
   "overrides": {
     "strip-ansi": "^6.0.1"

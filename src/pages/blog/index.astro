@@ -42,7 +42,6 @@ const primaryThumbnail = sortedPosts.find((post) => Boolean(post.thumbnail))?.th
         rel="preload"
         as="image"
         href={primaryThumbnail}
-        imagesizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
         fetchpriority="high"
         crossorigin="anonymous"
       />
