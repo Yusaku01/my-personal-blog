@@ -4,9 +4,15 @@ import HeroSection from '../components/Hero/HeroSection.astro';
 import SuspenseContactForm from '../components/Contact/SuspenseContactForm';
 
 export const transition = { name: 'fade' };
+const recaptchaSiteKey = import.meta.env.PUBLIC_GOOGLE_RECAPTCHA_SITE_KEY;
 ---
 
 <Layout title="お問い合わせ | SAKUSPACE">
+  {
+    recaptchaSiteKey && (
+      <script slot="head" src="https://www.google.com/recaptcha/api.js" async defer />
+    )
+  }
   <HeroSection title="CONTACT" isHome={false} />
 
   <div class="py-12">

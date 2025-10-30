@@ -5,6 +5,7 @@
   "private": true,
   "scripts": {
     "predev": "node scripts/update-environment.js",
+    "prebuild": "node scripts/copy-fonts.js",
     "dev": "astro dev",
     "start": "astro dev",
     "build": "astro build",

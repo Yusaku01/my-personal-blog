@@ -1,0 +1,142 @@
+name: 'Lint & Format'
+
+on:
+  push:
+    branches: [main, master, develop, feature/**]
+    paths:
+      - 'src/**'
+      - 'scripts/**'
+      - 'uno.config.ts'
+      - 'astro.config.mjs'
+      - 'tsconfig.json'
+      - 'package.json'
+      - '.eslintrc.*'
+      - '.prettier*'
+      - '.github/workflows/**'
+  pull_request:
+    paths:
+      - 'src/**'
+      - 'scripts/**'
+      - 'uno.config.ts'
+      - 'astro.config.mjs'
+      - 'tsconfig.json'
+      - 'package.json'
+      - '.eslintrc.*'
+      - '.prettier*'
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  lint-format:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22.x'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Get changed files
+        id: changes
+        uses: tj-actions/changed-files@v45
+        with:
+          files: |
+            **/*.js
+            **/*.jsx
+            **/*.ts
+            **/*.tsx
+            **/*.astro
+            **/*.css
+            **/*.json
+            **/*.md
+
+      - name: Short-circuit if nothing to do
+        if: steps.changes.outputs.any_changed == 'false'
+        run: echo "No relevant file changes. Skipping." && exit 0
+
+      - name: List changed files
+        run: |
+          echo "Changed files:" ${{ steps.changes.outputs.all_changed_files }}
+
+      - name: Prettier (write)
+        run: |
+          npx prettier --write ${{ steps.changes.outputs.all_changed_files }} || true
+
+      - name: ESLint (fix)
+        run: |
+          npx eslint --ext .js,.jsx,.ts,.tsx,.astro --fix ${{ steps.changes.outputs.all_changed_files }} || true
+
+      - name: Detect modifications
+        id: diff
+        run: |
+          if [[ -n "$(git status --porcelain)" ]]; then
+            echo "changed=true" >> $GITHUB_OUTPUT
+          else
+            echo "changed=false" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Auto-commit fixes
+        if: steps.diff.outputs.changed == 'true' && (github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name == github.repository)
+        uses: stefanzweifel/git-auto-commit-action@v5
+        with:
+          commit_message: 'chore: apply lint & format fixes [skip ci]'
+          branch: ${{ github.head_ref || github.ref_name }}
+
+      - name: Prettier (check)
+        id: prettier_check
+        continue-on-error: true
+        run: |
+          npx prettier --check ${{ steps.changes.outputs.all_changed_files }} 2>&1 | tee $RUNNER_TEMP/prettier.out
+
+      - name: ESLint (check)
+        id: eslint_check
+        continue-on-error: true
+        run: |
+          npx eslint --ext .js,.jsx,.ts,.tsx,.astro ${{ steps.changes.outputs.all_changed_files }} --format compact 2>&1 | tee $RUNNER_TEMP/eslint.out
+
+      - name: Prepare failure report
+        id: report
+        if: steps.prettier_check.outcome == 'failure' || steps.eslint_check.outcome == 'failure'
+        run: |
+          mkdir -p docs
+          REPORT="docs/lint-report-${{ github.sha }}.md"
+          printf "# Lint/Format Report\n" > "$REPORT"
+          printf "- Commit: %s\n" "${{ github.sha }}" >> "$REPORT"
+          printf "- Event: %s\n" "${{ github.event_name }}" >> "$REPORT"
+          printf "- Branch: %s\n" "${{ github.head_ref || github.ref_name }}" >> "$REPORT"
+          printf "\n## Changed files\n\n\`\`\`\n%s\n\`\`\`\n" "${{ steps.changes.outputs.all_changed_files }}" >> "$REPORT"
+          printf "\n## Prettier Output\n\n\`\`\`\n" >> "$REPORT"
+          cat "$RUNNER_TEMP/prettier.out" >> "$REPORT" || true
+          printf "\n\`\`\`\n" >> "$REPORT"
+          printf "\n## ESLint Output\n\n\`\`\`\n" >> "$REPORT"
+          cat "$RUNNER_TEMP/eslint.out" >> "$REPORT" || true
+          printf "\n\`\`\`\n" >> "$REPORT"
+          echo "path=$REPORT" >> $GITHUB_OUTPUT
+
+      - name: Upload report artifact
+        if: steps.report.outcome == 'success'
+        uses: actions/upload-artifact@v4
+        with:
+          name: lint-report-${{ github.sha }}
+          path: ${{ steps.report.outputs.path }}
+
+      - name: Commit report file
+        if: steps.report.outcome == 'success' && (github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name == github.repository)
+        uses: stefanzweifel/git-auto-commit-action@v5
+        with:
+          commit_message: 'docs: add lint/format report for ${{ github.sha }} [skip ci]'
+          branch: ${{ github.head_ref || github.ref_name }}
+          file_pattern: docs/lint-report-*.md
