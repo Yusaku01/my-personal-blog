@@ -73,8 +73,10 @@
   },
   "lint-staged": {
     "*.{js,jsx,ts,tsx,astro,md,css,json}": [
-      "prettier --write",
-      "eslint --cache --fix --ext .js,.jsx,.ts,.tsx,.astro"
+      "prettier --write"
+    ],
+    "*.{js,jsx,ts,tsx,astro}": [
+      "eslint --cache --fix"
     ]
   },
   "overrides": {
