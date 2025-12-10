@@ -29,7 +29,7 @@
     "@hookform/resolvers": "^3.3.2",
     "@types/react": "^18.3.0",
     "@types/react-dom": "^18.3.0",
-    "astro": "^5.13.0",
+    "astro": "^5.16.4",
     "cheerio": "^1.0.0-rc.12",
     "date-fns": "^2.30.0",
     "node-fetch": "^3.3.0",
@@ -68,13 +68,16 @@
     "simple-git-hooks": "^2.11.1"
   },
   "simple-git-hooks": {
-    "pre-commit": "lint-staged",
+    "pre-commit": "npx lint-staged",
     "pre-push": "npm run format:check && npm run lint"
   },
   "lint-staged": {
-    "*.{js,jsx,ts,tsx,astro,md,css,json}": [
+    "*.{js,jsx,ts,tsx,astro}": [
       "prettier --write",
-      "eslint --cache --fix --ext .js,.jsx,.ts,.tsx,.astro"
+      "eslint --cache --fix"
+    ],
+    "*.{md,css,json}": [
+      "prettier --write"
     ]
   },
   "overrides": {
