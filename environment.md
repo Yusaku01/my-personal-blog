@@ -31,7 +31,8 @@
 │   │   ├── contact.png
 │   │   ├── default.png
 │   │   ├── getting-started-blog.png
-│   │   └── profile.png
+│   │   ├── profile.png
+│   │   └── zenn-scrap.png
 │   ├── _headers
 │   ├── apple-touch-icon.png
 │   ├── favicon.ico
@@ -82,7 +83,7 @@
 ├── tsconfig.json
 └── uno.config.ts
 
-33 directories, 43 files
+33 directories, 44 files
 
 ```
 
