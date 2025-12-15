@@ -60,7 +60,7 @@ export function PostCard({
               loading={shouldLazyLoad ? 'lazy' : undefined}
               // React dev build may not recognize `fetchPriority` yet; use lowercase
               // eslint-disable-next-line react/no-unknown-property
-              fetchpriority={fetchPriority}
+              fetchPriority={fetchPriority}
               decoding="async"
               sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
             />
