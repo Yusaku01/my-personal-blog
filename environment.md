@@ -9,7 +9,8 @@
 ├── docs
 │   ├── lighthouse
 │   │   └── lh_20250419.html
-│   └── public-release-checklist.md
+│   ├── public-release-checklist.md
+│   └── react-to-astro-blog-components.md
 ├── public
 │   ├── fonts
 │   │   ├── zen-kaku-gothic-new-jp-400.woff2
@@ -31,7 +32,8 @@
 │   │   ├── contact.png
 │   │   ├── default.png
 │   │   ├── getting-started-blog.png
-│   │   └── profile.png
+│   │   ├── profile.png
+│   │   └── zenn-scrap.png
 │   ├── _headers
 │   ├── apple-touch-icon.png
 │   ├── favicon.ico
@@ -82,7 +84,7 @@
 ├── tsconfig.json
 └── uno.config.ts
 
-33 directories, 43 files
+33 directories, 45 files
 
 ```
 

@@ -21,6 +21,8 @@ interface ZennScrap {
   comments_count: number;
 }
 
+const ZENN_SCRAP_THUMBNAIL = '/ogp/zenn-scrap.png';
+
 function parseDate(dateStr: string): Date {
   try {
     const date = new Date(dateStr);
@@ -125,26 +127,16 @@ export async function getZennScraps(username?: string): Promise<ExternalPost[]> 
     const scraps: ZennScrap[] = data.scraps || [];
 
     const posts = await Promise.all(
-      scraps.map(async (scrap) => {
-        const fullUrl = `https://zenn.dev${scrap.path}`;
-        let thumbnail: string | undefined;
-
-        try {
-          thumbnail = await getOGPImage(fullUrl);
-        } catch {
-          thumbnail = undefined;
-        }
-
-        return {
-          title: scrap.title,
-          url: fullUrl,
-          platform: 'Zenn Scrap',
-          publishDate: parseDate(scrap.created_at),
-          thumbnail,
-          isExternal: true as const,
-          tags: ['scrap'],
-        };
-      })
+      scraps.map(async (scrap) => ({
+        title: scrap.title,
+        url: `https://zenn.dev${scrap.path}`,
+        platform: 'Zenn Scrap',
+        publishDate: parseDate(scrap.created_at),
+        // Zenn Scrapは固定OGPを使用
+        thumbnail: ZENN_SCRAP_THUMBNAIL,
+        isExternal: true as const,
+        tags: ['scrap'],
+      }))
     );
 
     cache.set(cacheKey, {

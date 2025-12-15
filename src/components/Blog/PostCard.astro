@@ -1,0 +1,97 @@
+---
+import type { Post } from '../../types/index';
+
+type PostCardProps = Post & {
+  showTags?: boolean;
+  index?: number;
+};
+
+const {
+  title,
+  url,
+  publishDate,
+  thumbnail,
+  isExternal,
+  tags = [],
+  showTags = true,
+  index,
+  platform,
+} = Astro.props as PostCardProps;
+
+// 最初の8枚はlazyしない・1枚目のみfetchpriorityをhighに
+const shouldLazyLoad = index !== undefined && index >= 8;
+const fetchPriority = index === 0 ? 'high' : undefined;
+
+const postCardStyles = {
+  article:
+    'bg-white dark:bg-gray-900 rounded-md overflow-hidden transition-all duration-200 h-full hover',
+  link: 'block',
+  imageContainer: 'relative aspect-thumnail overflow-hidden',
+  image: 'w-full h-full object-cover transition-all duration-300 ease-in-out',
+  overlay:
+    'absolute inset-0 bg-black bg-opacity-0 flex items-center justify-center transition-all duration-300 ease-in-out lg:group-hover:bg-opacity-60',
+  readText:
+    'text-white font-bold opacity-0 transform translate-y-4 transition-all duration-300 ease-in-out lg:group-hover:opacity-100 lg:group-hover:translate-y-0 tracking-wider',
+  contentContainer: 'p-4',
+  title: 'text-md font-semibold text-gray-900 dark:text-white line-clamp-4 leading-tight',
+  date: 'text-sm text-gray-600 dark:text-gray-400',
+  excerpt: 'text-sm text-gray-600 dark:text-gray-400 line-clamp-2',
+  tagContainer: 'flex flex-wrap gap-2',
+  tag: 'inline-flex items-center px-2.5 py-0.5 rounded-full text-2.5 font-medium border border-gray-900 dark:border-gray-600 text-gray-700 dark:text-gray-200',
+};
+
+const publishDateObj = new Date(publishDate);
+---
+
+<article
+  class={postCardStyles.article}
+  data-post-card
+  data-title={title.toLowerCase()}
+  data-tags={tags.map((tag) => tag.toLowerCase()).join(' ')}
+>
+  <a
+    href={url}
+    class={`${postCardStyles.link} group`}
+    target={isExternal ? '_blank' : '_self'}
+    rel={isExternal ? 'noopener noreferrer' : undefined}
+  >
+    {
+      thumbnail && (
+        <div class={postCardStyles.imageContainer}>
+          <img
+            src={thumbnail}
+            alt={title}
+            width="600"
+            height="315"
+            class={postCardStyles.image}
+            loading={shouldLazyLoad ? 'lazy' : undefined}
+            fetchpriority={fetchPriority}
+            decoding="async"
+            sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
+          />
+          <div class={postCardStyles.overlay}>
+            <span class={postCardStyles.readText}>記事を読む</span>
+          </div>
+        </div>
+      )
+    }
+    <div class={postCardStyles.contentContainer}>
+      <h2 class={postCardStyles.title}>{title}</h2>
+      <div class="space-y-2">
+        <time datetime={publishDateObj.toISOString()} class={postCardStyles.date}>
+          {publishDateObj.toLocaleDateString('ja-JP')}
+          {isExternal && platform && ` ${platform} 投稿`}
+        </time>
+        {
+          showTags && tags.length > 0 && (
+            <div class={postCardStyles.tagContainer}>
+              {tags.map((tag) => (
+                <span class={postCardStyles.tag}>{tag}</span>
+              ))}
+            </div>
+          )
+        }
+      </div>
+    </div>
+  </a>
+</article>
