@@ -9,7 +9,8 @@
 ├── docs
 │   ├── lighthouse
 │   │   └── lh_20250419.html
-│   └── public-release-checklist.md
+│   ├── public-release-checklist.md
+│   └── react-to-astro-blog-components.md
 ├── public
 │   ├── fonts
 │   │   ├── zen-kaku-gothic-new-jp-400.woff2
@@ -83,7 +84,7 @@
 ├── tsconfig.json
 └── uno.config.ts
 
-33 directories, 44 files
+33 directories, 45 files
 
 ```
 

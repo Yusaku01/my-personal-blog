@@ -44,8 +44,8 @@
     "@astrojs/check": "^0.9.4",
     "@iconify-json/ic": "^1.2.2",
     "@types/xml2js": "^0.4.14",
-    "@typescript-eslint/eslint-plugin": "^6.14.0",
-    "@typescript-eslint/parser": "^6.14.0",
+    "@typescript-eslint/eslint-plugin": "^7.18.0",
+    "@typescript-eslint/parser": "^7.18.0",
     "@unocss/autocomplete": "^0.63.6",
     "@unocss/preset-attributify": "^0.63.6",
     "@unocss/preset-icons": "^0.63.6",
@@ -60,12 +60,12 @@
     "eslint-plugin-prettier": "^5.0.1",
     "eslint-plugin-react": "^7.33.2",
     "eslint-plugin-react-hooks": "^4.6.0",
+    "lint-staged": "^15.2.9",
     "prettier": "^3.1.1",
     "prettier-plugin-astro": "^0.12.2",
+    "simple-git-hooks": "^2.11.1",
     "typescript": "^5.6.0",
-    "unocss": "^0.63.6",
-    "lint-staged": "^15.2.9",
-    "simple-git-hooks": "^2.11.1"
+    "unocss": "^0.63.6"
   },
   "simple-git-hooks": {
     "pre-commit": "npx lint-staged",
