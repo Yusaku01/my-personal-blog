@@ -9,6 +9,9 @@ export async function getStaticPaths() {
   const paths = [
     { params: { slug: 'index' } },
     { params: { slug: 'blog' } },
+    { params: { slug: 'blog-personal' } },
+    { params: { slug: 'blog-zenn' } },
+    { params: { slug: 'blog-qiita' } },
     { params: { slug: 'profile' } },
     { params: { slug: 'contact' } },
   ];
@@ -31,7 +34,15 @@ let description = '';
 let isBasicPage = false;
 
 // 基本ページのスラッグリスト
-const basicPageSlugs = ['index', 'blog', 'profile', 'contact'];
+const basicPageSlugs = [
+  'index',
+  'blog',
+  'blog-personal',
+  'blog-zenn',
+  'blog-qiita',
+  'profile',
+  'contact',
+];
 if (basicPageSlugs.includes(slug)) {
   isBasicPage = true;
 }
@@ -40,6 +51,12 @@ if (slug === 'index') {
   title = 'SAKUSPACE';
 } else if (slug === 'blog') {
   title = 'BLOG';
+} else if (slug === 'blog-personal') {
+  title = 'BLOG | 個人ブログ';
+} else if (slug === 'blog-zenn') {
+  title = 'BLOG | Zenn（Scrap含む）';
+} else if (slug === 'blog-qiita') {
+  title = 'BLOG | Qiita';
 } else if (slug === 'profile') {
   title = 'PROFILE';
 } else if (slug === 'contact') {

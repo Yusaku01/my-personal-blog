@@ -1,0 +1,36 @@
+---
+import Layout from '../../../layouts/Layout.astro';
+import BlogControls from '../../../components/Blog/BlogControls.astro';
+import HeroSection from '../../../components/Hero/HeroSection.astro';
+import { getAllBlogPosts } from '../../../lib/blog/posts';
+
+export const transition = { name: 'fade' };
+
+const allPosts = await getAllBlogPosts();
+const filteredPosts = allPosts.filter(
+  (post) => post.source === 'zenn' || post.source === 'zennScrap'
+);
+const primaryThumbnail = filteredPosts.find((post) => Boolean(post.thumbnail))?.thumbnail;
+---
+
+<Layout
+  title="BLOG | Zenn（Scrap含む） | SAKUSPACE"
+  description="Zenn投稿とZenn Scrapをまとめた記事一覧。最新順で掲載しています。"
+>
+  {
+    primaryThumbnail && (
+      <link
+        slot="head"
+        rel="preload"
+        as="image"
+        href={primaryThumbnail}
+        fetchpriority="high"
+        crossorigin="anonymous"
+      />
+    )
+  }
+  <HeroSection title="BLOG" isHome={false} />
+  <div class="container-lg container-lg py-14">
+    <BlogControls posts={filteredPosts} currentPath={Astro.url.pathname} />
+  </div>
+</Layout>

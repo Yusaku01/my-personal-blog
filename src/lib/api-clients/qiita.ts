@@ -56,6 +56,7 @@ export async function getQiitaPosts(username?: string): Promise<ExternalPost[]> 
         publishDate: parseDate(item.created_at),
         thumbnail: await getOGPImage(item.url),
         isExternal: true as const,
+        source: 'qiita',
         tags: item.tags.map((tag) => tag.name),
       }))
     );

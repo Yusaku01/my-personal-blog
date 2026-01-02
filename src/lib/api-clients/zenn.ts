@@ -78,6 +78,7 @@ export async function getZennPosts(username?: string): Promise<ExternalPost[]> {
           publishDate: parseDate(article.published_at),
           thumbnail,
           isExternal: true as const,
+          source: 'zenn',
           tags: article.article_type ? [article.article_type] : [],
         };
       })
@@ -135,6 +136,7 @@ export async function getZennScraps(username?: string): Promise<ExternalPost[]> 
         // Zenn Scrapは固定OGPを使用
         thumbnail: ZENN_SCRAP_THUMBNAIL,
         isExternal: true as const,
+        source: 'zennScrap',
         tags: ['scrap'],
       }))
     );

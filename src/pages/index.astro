@@ -1,34 +1,13 @@
 ---
-import { getCollection } from 'astro:content';
 import Layout from '../layouts/Layout.astro';
 import HeroSection from '../components/Hero/HeroSection.astro';
 import PostCard from '../components/Blog/PostCard.astro';
 import SectionHeading from '../components/Section/SectionHeading.astro';
-import { getQiitaPosts } from '../lib/api-clients/qiita';
-import { getZennPosts, getZennScraps } from '../lib/api-clients/zenn';
+import { getAllBlogPosts } from '../lib/blog/posts';
 
 export const transition = { name: 'fade' };
 
-const posts = await getCollection('blog');
-const qiitaPosts = await getQiitaPosts('ngtnysk');
-const zennPosts = await getZennPosts('saku2323');
-const zennScraps = await getZennScraps('saku2323');
-
-const allPosts = [
-  ...posts.map((post) => ({
-    title: post.data.title,
-    url: `/blog/${post.slug}`,
-    publishDate: post.data.publishDate,
-    excerpt: post.data.description,
-    thumbnail: post.data.image,
-    isExternal: false,
-    tags: post.data.tags || [],
-    platform: '',
-  })),
-  ...qiitaPosts,
-  ...zennPosts,
-  ...zennScraps,
-].sort((a, b) => b.publishDate.getTime() - a.publishDate.getTime());
+const allPosts = await getAllBlogPosts();
 
 const POSTS_PER_SECTION = 4;
 

@@ -33,6 +33,12 @@ if (blogTitle) {
 } else if (pathname === '/blog' || pathname === '/blog/') {
   // ブログ一覧ページ
   ogImageUrl = '/ogp/blog.png';
+} else if (pathname === '/blog/personal' || pathname === '/blog/personal/') {
+  ogImageUrl = '/ogp/blog-personal.png';
+} else if (pathname === '/blog/zenn' || pathname === '/blog/zenn/') {
+  ogImageUrl = '/ogp/blog-zenn.png';
+} else if (pathname === '/blog/qiita' || pathname === '/blog/qiita/') {
+  ogImageUrl = '/ogp/blog-qiita.png';
 } else if (pathname === '/profile' || pathname === '/profile/') {
   // プロフィールページ
   ogImageUrl = '/ogp/profile.png';
