@@ -1,42 +1,20 @@
 ---
-import { getCollection } from 'astro:content';
 // Removed invalid Fragment usage; use slot on element directly
 import Layout from '../../layouts/Layout.astro';
 import BlogControls from '../../components/Blog/BlogControls.astro';
 import HeroSection from '../../components/Hero/HeroSection.astro';
-import { getQiitaPosts } from '../../lib/api-clients/qiita';
-import { getZennPosts, getZennScraps } from '../../lib/api-clients/zenn';
+import { getAllBlogPosts } from '../../lib/blog/posts';
 
 export const transition = { name: 'fade' };
 
-const posts = await getCollection('blog');
-const qiitaPosts = await getQiitaPosts('ngtnysk');
-const zennPosts = await getZennPosts('saku2323');
-const zennScraps = await getZennScraps('saku2323');
-
-const allPosts = [
-  ...posts.map((post) => ({
-    title: post.data.title,
-    url: `/blog/${post.slug}`,
-    publishDate: post.data.publishDate,
-    excerpt: post.data.description,
-    thumbnail: post.data.image,
-    isExternal: false as const,
-    platform: 'blog' as const,
-    tags: post.data.tags || [],
-  })),
-  ...qiitaPosts,
-  ...zennPosts,
-  ...zennScraps,
-];
-
-const sortedPosts = [...allPosts].sort(
-  (a, b) => new Date(b.publishDate).getTime() - new Date(a.publishDate).getTime()
-);
+const sortedPosts = await getAllBlogPosts();
 const primaryThumbnail = sortedPosts.find((post) => Boolean(post.thumbnail))?.thumbnail;
 ---
 
-<Layout title="BLOG | SAKUSPACE">
+<Layout
+  title="BLOG | SAKUSPACE"
+  description="個人ブログ、Zenn（Scrap含む）、Qiitaの投稿をまとめた記事一覧。最新順で掲載しています。"
+>
   {
     primaryThumbnail && (
       <link
@@ -51,6 +29,6 @@ const primaryThumbnail = sortedPosts.find((post) => Boolean(post.thumbnail))?.th
   }
   <HeroSection title="BLOG" isHome={false} />
   <div class="container-lg container-lg py-14">
-    <BlogControls posts={sortedPosts} />
+    <BlogControls posts={sortedPosts} currentPath={Astro.url.pathname} />
   </div>
 </Layout>

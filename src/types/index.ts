@@ -13,11 +13,14 @@ export const contactFormSchema = z.object({
 export type ContactForm = z.infer<typeof contactFormSchema>;
 
 // Post Types
+export type PostSource = 'personal' | 'zenn' | 'zennScrap' | 'qiita';
+
 export type Post = {
   title: string;
   url: string;
   publishDate: Date;
   tags: string[];
+  source: PostSource;
 } & (
   | {
       platform: string;

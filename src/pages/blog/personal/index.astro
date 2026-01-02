@@ -1,0 +1,34 @@
+---
+import Layout from '../../../layouts/Layout.astro';
+import BlogControls from '../../../components/Blog/BlogControls.astro';
+import HeroSection from '../../../components/Hero/HeroSection.astro';
+import { getAllBlogPosts } from '../../../lib/blog/posts';
+
+export const transition = { name: 'fade' };
+
+const allPosts = await getAllBlogPosts();
+const filteredPosts = allPosts.filter((post) => post.source === 'personal');
+const primaryThumbnail = filteredPosts.find((post) => Boolean(post.thumbnail))?.thumbnail;
+---
+
+<Layout
+  title="BLOG | 個人ブログ | SAKUSPACE"
+  description="SAKUSPACEの個人ブログ記事一覧。最新順で個人ブログのみを掲載しています。"
+>
+  {
+    primaryThumbnail && (
+      <link
+        slot="head"
+        rel="preload"
+        as="image"
+        href={primaryThumbnail}
+        fetchpriority="high"
+        crossorigin="anonymous"
+      />
+    )
+  }
+  <HeroSection title="BLOG" isHome={false} />
+  <div class="container-lg container-lg py-14">
+    <BlogControls posts={filteredPosts} currentPath={Astro.url.pathname} />
+  </div>
+</Layout>

@@ -4,11 +4,22 @@ import PostCard from './PostCard.astro';
 
 interface BlogControlsProps {
   posts: Post[];
+  currentPath: string;
 }
 
-const { posts } = Astro.props as BlogControlsProps;
+const { posts, currentPath } = Astro.props as BlogControlsProps;
 const initialPostCount = 12;
 const hasMorePosts = posts.length > initialPostCount;
+
+const normalizePath = (path: string) => (path.endsWith('/') ? path : `${path}/`);
+const activePath = normalizePath(currentPath);
+
+const tabs = [
+  { label: '全て', href: '/blog/' },
+  { label: '個人ブログ', href: '/blog/personal/' },
+  { label: 'Zenn（Scrap含む）', href: '/blog/zenn/' },
+  { label: 'Qiita', href: '/blog/qiita/' },
+];
 ---
 
 <div>
@@ -28,6 +39,27 @@ const hasMorePosts = posts.length > initialPostCount;
       検索する
     </button>
   </form>
+
+  <div class="flex flex-wrap justify-center gap-3 mb-8 text-sm">
+    {
+      tabs.map((tab) => {
+        const isActive = activePath === normalizePath(tab.href);
+        return (
+          <a
+            href={tab.href}
+            class={`px-4 py-2 rounded-full border transition-colors ${
+              isActive
+                ? 'bg-[#333] text-white border-[#333]'
+                : 'bg-white text-gray-700 border-gray-200 hover:bg-gray-100 dark:bg-gray-900 dark:text-gray-200 dark:border-gray-700 dark:hover:bg-gray-800'
+            }`}
+            aria-current={isActive ? 'page' : undefined}
+          >
+            {tab.label}
+          </a>
+        );
+      })
+    }
+  </div>
 
   <div class="text-center mb-8">
     <a
