@@ -53,8 +53,11 @@ const isHomePage = pathname === '/';
               ) : (
                 <a
                   href={item.path}
-                  class="text-gray-600 lg:hover:text-gray-900 dark:text-gray-400 dark:lg:hover:text-gray-200 lg:hover:underline transition-colors"
+                  class="inline-flex items-center text-gray-600 lg:hover:text-gray-900 dark:text-gray-400 dark:lg:hover:text-gray-200 lg:hover:underline transition-colors"
                 >
+                  {item.path === '/' && (
+                    <span class="i-ic-home mr-1 text-base" aria-hidden="true" />
+                  )}
                   {item.label}
                 </a>
               )}
