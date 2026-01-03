@@ -9,6 +9,7 @@
 ├── docs
 │   ├── lighthouse
 │   │   └── lh_20250419.html
+│   ├── astro-component-structure.md
 │   ├── public-release-checklist.md
 │   └── react-to-astro-blog-components.md
 ├── public
@@ -60,6 +61,7 @@
 │   │   └── Layout.astro
 │   ├── lib
 │   │   ├── api-clients
+│   │   ├── blog
 │   │   └── utils
 │   ├── pages
 │   │   ├── api
@@ -84,7 +86,7 @@
 ├── tsconfig.json
 └── uno.config.ts
 
-33 directories, 45 files
+34 directories, 46 files
 
 ```
 
