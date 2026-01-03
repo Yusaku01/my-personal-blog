@@ -8,9 +8,15 @@ import sitemap from '@astrojs/sitemap';
 
 export default defineConfig({
   site: 'https://saku-space.com',
+  cacheDir: './.astro-cache',
   output: 'static',
   image: {
-    domains: ['qiita-user-contents.imgix.net', 'res.cloudinary.com', 'cdn.qiita.com'],
+    domains: [
+      'qiita-user-contents.imgix.net',
+      'res.cloudinary.com',
+      'cdn.qiita.com',
+      'images.weserv.nl',
+    ],
     remotePatterns: [
       {
         protocol: 'https',
@@ -23,6 +29,10 @@ export default defineConfig({
       {
         protocol: 'https',
         hostname: 'cdn.qiita.com',
+      },
+      {
+        protocol: 'https',
+        hostname: 'images.weserv.nl',
       },
     ],
   },
