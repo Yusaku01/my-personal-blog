@@ -3,12 +3,21 @@ import Layout from '../../../layouts/Layout.astro';
 import BlogControls from '../../../components/Blog/BlogControls.astro';
 import HeroSection from '../../../components/Hero/HeroSection.astro';
 import { getAllBlogPosts } from '../../../lib/blog/posts';
+import { getImage } from 'astro:assets';
 
 export const transition = { name: 'fade' };
 
 const allPosts = await getAllBlogPosts();
 const filteredPosts = allPosts.filter((post) => post.source === 'personal');
 const primaryThumbnail = filteredPosts.find((post) => Boolean(post.thumbnail))?.thumbnail;
+const primaryThumbnailImage = primaryThumbnail
+  ? await getImage({
+      src: primaryThumbnail,
+      width: 600,
+      height: 315,
+      fit: 'cover',
+    })
+  : null;
 ---
 
 <Layout
@@ -16,12 +25,12 @@ const primaryThumbnail = filteredPosts.find((post) => Boolean(post.thumbnail))?.
   description="SAKUSPACEの個人ブログ記事一覧。最新順で個人ブログのみを掲載しています。"
 >
   {
-    primaryThumbnail && (
+    primaryThumbnailImage && (
       <link
         slot="head"
         rel="preload"
         as="image"
-        href={primaryThumbnail}
+        href={primaryThumbnailImage.src}
         fetchpriority="high"
         crossorigin="anonymous"
       />

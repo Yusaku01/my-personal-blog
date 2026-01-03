@@ -5,12 +5,19 @@ import mdx from '@astrojs/mdx';
 import react from '@astrojs/react';
 import UnoCSS from 'unocss/astro';
 import sitemap from '@astrojs/sitemap';
+import remarkLinkCard from 'remark-link-card';
 
 export default defineConfig({
   site: 'https://saku-space.com',
+  cacheDir: './.astro-cache',
   output: 'static',
   image: {
-    domains: ['qiita-user-contents.imgix.net', 'res.cloudinary.com', 'cdn.qiita.com'],
+    domains: [
+      'qiita-user-contents.imgix.net',
+      'res.cloudinary.com',
+      'cdn.qiita.com',
+      'images.weserv.nl',
+    ],
     remotePatterns: [
       {
         protocol: 'https',
@@ -23,6 +30,10 @@ export default defineConfig({
       {
         protocol: 'https',
         hostname: 'cdn.qiita.com',
+      },
+      {
+        protocol: 'https',
+        hostname: 'images.weserv.nl',
       },
     ],
   },
@@ -45,6 +56,7 @@ export default defineConfig({
     }),
   ],
   markdown: {
+    remarkPlugins: [[remarkLinkCard, { shortenUrl: true }]],
     shikiConfig: {
       themes: {
         light: 'github-light',

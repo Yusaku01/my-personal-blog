@@ -94,6 +94,47 @@ const { Content, headings } = await post.render();
     @apply mb-0;
   }
 
+  .prose .rlc-container {
+    @apply bg-white dark:bg-gray-800 rounded-lg shadow-sm overflow-hidden border border-gray-200 dark:border-gray-700 transition-all duration-200 lg:hover:shadow-md no-underline flex items-stretch gap-0 w-full my-6;
+  }
+
+  .prose .rlc-container:hover {
+    @apply text-gray-900 dark:text-gray-100;
+  }
+
+  .prose .rlc-info {
+    @apply p-6 flex flex-col gap-1.5 min-w-0;
+  }
+
+  .prose .rlc-title {
+    @apply text-md font-semibold text-gray-900 dark:text-gray-100 line-clamp-2;
+  }
+
+  .prose .rlc-description {
+    @apply text-sm text-gray-600 dark:text-gray-300 line-clamp-2;
+  }
+
+  .prose .rlc-url-container {
+    @apply mt-4 flex items-center gap-2 text-xs text-gray-500 dark:text-gray-400;
+  }
+
+  .prose .rlc-favicon {
+    @apply w-4 h-4;
+    margin-block: 0;
+  }
+
+  .prose .rlc-url {
+    @apply truncate;
+  }
+
+  .prose .rlc-image-container {
+    @apply hidden;
+  }
+
+  .prose .rlc-image {
+    @apply w-full h-full object-cover rounded-none;
+  }
+
   /* 必要であればフットノート内のリンクスタイルも調整 */
   /* .footnotes a {
     @apply text-brand hover:underline;

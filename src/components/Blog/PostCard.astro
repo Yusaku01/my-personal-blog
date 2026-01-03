@@ -1,5 +1,6 @@
 ---
 import type { Post } from '../../types/index';
+import { Image } from 'astro:assets';
 
 type PostCardProps = Post & {
   showTags?: boolean;
@@ -58,13 +59,14 @@ const publishDateObj = new Date(publishDate);
     {
       thumbnail && (
         <div class={postCardStyles.imageContainer}>
-          <img
+          <Image
             src={thumbnail}
             alt={title}
-            width="600"
-            height="315"
+            width={600}
+            height={315}
+            fit="cover"
             class={postCardStyles.image}
-            loading={shouldLazyLoad ? 'lazy' : undefined}
+            loading={shouldLazyLoad ? 'lazy' : 'eager'}
             fetchpriority={fetchPriority}
             decoding="async"
             sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
