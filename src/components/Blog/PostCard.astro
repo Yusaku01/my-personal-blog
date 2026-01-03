@@ -81,6 +81,11 @@ const publishDateObj = new Date(publishDate);
         <time datetime={publishDateObj.toISOString()} class={postCardStyles.date}>
           {publishDateObj.toLocaleDateString('ja-JP')}
           {isExternal && platform && ` ${platform} 投稿`}
+          {
+            isExternal && (
+              <span class="i-ic-open-in-new text-3.5 ml-1 align-middle" aria-label="外部リンク" />
+            )
+          }
         </time>
         {
           showTags && tags.length > 0 && (
