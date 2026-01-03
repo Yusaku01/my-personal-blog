@@ -5,6 +5,7 @@ import mdx from '@astrojs/mdx';
 import react from '@astrojs/react';
 import UnoCSS from 'unocss/astro';
 import sitemap from '@astrojs/sitemap';
+import remarkLinkCard from 'remark-link-card';
 
 export default defineConfig({
   site: 'https://saku-space.com',
@@ -55,6 +56,7 @@ export default defineConfig({
     }),
   ],
   markdown: {
+    remarkPlugins: [[remarkLinkCard, { shortenUrl: true }]],
     shikiConfig: {
       themes: {
         light: 'github-light',
