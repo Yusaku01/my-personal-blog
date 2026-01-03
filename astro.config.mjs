@@ -52,7 +52,7 @@ export default defineConfig({
         },
       },
       // サイトマップから除外したいページを指定
-      filter: (page) => !page.includes('/admin/'),
+      filter: (page) => !page.includes('/admin/') && !page.includes('/api/'),
     }),
   ],
   markdown: {
