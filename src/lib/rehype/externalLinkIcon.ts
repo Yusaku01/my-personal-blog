@@ -39,6 +39,18 @@ const isExternalLink = (href: string | undefined, site: URL): boolean => {
   return resolvedUrl.hostname !== site.hostname;
 };
 
+const getClassList = (classValue: unknown): string[] => {
+  if (Array.isArray(classValue)) {
+    return classValue.map(String);
+  }
+
+  if (typeof classValue === 'string') {
+    return classValue.split(' ').filter(Boolean);
+  }
+
+  return [];
+};
+
 const externalLinkIcon = ({ site }: ExternalLinkIconOptions) => {
   const siteUrl = new URL(site);
 
@@ -48,12 +60,10 @@ const externalLinkIcon = ({ site }: ExternalLinkIconOptions) => {
         return;
       }
 
-      const className = node.properties?.className;
-      const classList = Array.isArray(className)
-        ? className
-        : typeof className === 'string'
-          ? className.split(' ')
-          : [];
+      const classList = [
+        ...getClassList(node.properties?.className),
+        ...getClassList(node.properties?.class),
+      ];
       if (classList.includes('rlc-container')) {
         return;
       }
