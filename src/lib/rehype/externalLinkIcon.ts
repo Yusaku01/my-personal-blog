@@ -48,6 +48,16 @@ const externalLinkIcon = ({ site }: ExternalLinkIconOptions) => {
         return;
       }
 
+      const className = node.properties?.className;
+      const classList = Array.isArray(className)
+        ? className
+        : typeof className === 'string'
+          ? className.split(' ')
+          : [];
+      if (classList.includes('rlc-container')) {
+        return;
+      }
+
       const href = node.properties?.href;
       const hrefValue = typeof href === 'string' ? href : undefined;
 
