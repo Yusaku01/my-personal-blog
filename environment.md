@@ -29,6 +29,11 @@
 │   │   ├── icon_zenn-dark.svg
 │   │   └── icon_zenn-light.svg
 │   ├── ogp
+│   │   ├── _what-is-my-tech-stack.png
+│   │   ├── astro-docs-translation-beginner.png
+│   │   ├── blog-personal.png
+│   │   ├── blog-qiita.png
+│   │   ├── blog-zenn.png
 │   │   ├── blog.png
 │   │   ├── contact.png
 │   │   ├── default.png
@@ -62,6 +67,7 @@
 │   ├── lib
 │   │   ├── api-clients
 │   │   ├── blog
+│   │   ├── rehype
 │   │   └── utils
 │   ├── pages
 │   │   ├── api
@@ -84,9 +90,10 @@
 ├── README.md
 ├── todo.md
 ├── tsconfig.json
-└── uno.config.ts
+├── uno.config.ts
+└── スクリーンショット 2026-01-06 0.10.26.jpg
 
-34 directories, 46 files
+35 directories, 52 files
 
 ```
 
