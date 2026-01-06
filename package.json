@@ -17,7 +17,7 @@
     "format": "prettier --write .",
     "format:check": "prettier --check .",
     "generate-ogp": "node scripts/build-ogp.js",
-    "build:with-ogp": "astro build && npm run generate-ogp"
+    "build:with-ogp": "npm run generate-ogp && npm run build"
   },
   "dependencies": {
     "@astrojs/cloudflare": "^12.6.7",
