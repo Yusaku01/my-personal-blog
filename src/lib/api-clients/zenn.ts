@@ -21,7 +21,7 @@ interface ZennScrap {
   comments_count: number;
 }
 
-const ZENN_SCRAP_THUMBNAIL = '/ogp/zenn-scrap.png';
+const ZENN_SCRAP_THUMBNAIL = '/images/ogp/zenn-scrap.png';
 
 function parseDate(dateStr: string): Date {
   try {

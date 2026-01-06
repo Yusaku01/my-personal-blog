@@ -10,7 +10,7 @@ import matter from 'gray-matter';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const contentDir = path.join(__dirname, '..', 'src', 'content', 'blog');
-const outputDir = path.join(process.cwd(), 'public', 'ogp');
+const outputDir = path.join(process.cwd(), 'public', 'images', 'ogp');
 
 const WIDTH = 1200;
 const HEIGHT = 630;

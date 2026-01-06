@@ -26,28 +26,28 @@ const pathname = Astro.url.pathname;
 if (blogTitle) {
   // ブログ記事の場合、スラッグに基づいたOGP画像を使用
   const slug = Astro.url.pathname.split('/').filter(Boolean).pop() || 'index';
-  ogImageUrl = `/ogp/${slug}.png`;
+  ogImageUrl = `/images/ogp/${slug}.png`;
 } else if (pathname === '/' || pathname === '') {
   // トップページ
-  ogImageUrl = '/ogp/default.png';
+  ogImageUrl = '/images/ogp/default.png';
 } else if (pathname === '/blog' || pathname === '/blog/') {
   // ブログ一覧ページ
-  ogImageUrl = '/ogp/blog.png';
+  ogImageUrl = '/images/ogp/blog.png';
 } else if (pathname === '/blog/personal' || pathname === '/blog/personal/') {
-  ogImageUrl = '/ogp/blog-personal.png';
+  ogImageUrl = '/images/ogp/blog-personal.png';
 } else if (pathname === '/blog/zenn' || pathname === '/blog/zenn/') {
-  ogImageUrl = '/ogp/blog-zenn.png';
+  ogImageUrl = '/images/ogp/blog-zenn.png';
 } else if (pathname === '/blog/qiita' || pathname === '/blog/qiita/') {
-  ogImageUrl = '/ogp/blog-qiita.png';
+  ogImageUrl = '/images/ogp/blog-qiita.png';
 } else if (pathname === '/profile' || pathname === '/profile/') {
   // プロフィールページ
-  ogImageUrl = '/ogp/profile.png';
+  ogImageUrl = '/images/ogp/profile.png';
 } else if (pathname === '/contact' || pathname === '/contact/') {
   // お問い合わせページ
-  ogImageUrl = '/ogp/contact.png';
+  ogImageUrl = '/images/ogp/contact.png';
 } else {
   // その他のページ
-  ogImageUrl = '/ogp/default.png';
+  ogImageUrl = '/images/ogp/default.png';
 }
 
 // Google Analytics IDを環境変数から取得
