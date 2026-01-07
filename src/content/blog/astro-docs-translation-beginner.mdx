@@ -19,7 +19,7 @@ https://adventar.org/calendars/12671
 1. [Translation Status](https://i18n.docs.astro.build/)内の日本語セクションを確認し、翻訳対象を決める。翻訳対象がOutdated or Missing のどちらかによって、2-1 or 2-2 に分岐する
 2-1. Outdated（更新対応）の場合は、Translation Status > 翻訳対象ファイル名リンク > source change history で 更新内容を確認しつつ3以降のように翻訳する
 2-2. Missing（新規対応）の場合は、シンプルに3以降のように翻訳する
-3. withastro/docsリポを手元にForkし、VSCodeなどでリポを開く。その後src/content/docs配下の/enと/jaの翻訳対象ファイルを同時に開き、見比べられるようにする
+3. withastro/docsリポを手元にForkし、VSCodeなどでリポを開く。その後`src/content/docs`配下の`/en`と`/ja`の翻訳対象ファイルを同時に開き、見比べられるようにする
 4. [i18n-guides 日本語](https://github.com/withastro/docs/blob/main/i18n-guides/%E6%97%A5%E6%9C%AC%E8%AA%9E.md)も開き、いつでも確認できるようにする
 5. 4と同時に、[i18nと翻訳](https://contribute.docs.astro.build/guides/i18n/) も開き、いつでも確認できるようにする
 6. 初見のファイルであれば、まず既存のドキュメントの内容を上から下にかけてざっと読み、把握する。同時に既存の日本語文章の構造や口調がどのように書かれているかを把握する
@@ -28,11 +28,11 @@ https://adventar.org/calendars/12671
 
 ## 個人的Tips
 - guideドキュメントを参照し、そのルールに則る
-- src/content/docs/en配下の内容が基本的に正になるので、手元で開いて確認する
+- `src/content/docs/en`配下の内容が基本的に正になるので、手元で開いて確認する
 - 翻訳にLLM使うのは割とあり。Codex CLIやClaude Codeなどを使うと該当箇所の翻訳やsource change historyなどを加速できるのでおすすめ
 - 固有名詞は、できる限りその固有名詞の言語のままにする方がわかりやすい
 - どのように翻訳するか迷った時は以下の方法を試すといいと思う。最終的に自分が信じる状態でPRを出せば、レビューしてくれるので勇気を出してPR出すといい
-  - /frなどに翻訳対象のドキュメントがあれば見比べる。すでに翻訳済の主要言語を見ることで、他の言語だとどのように翻訳されるかを知り参考にできる
+  - `/fr`などに翻訳対象のドキュメントがあれば見比べる。すでに翻訳済の主要言語を見ることで、他の言語だとどのように翻訳されるかを知り参考にできる
   - LLMに聞く
   - 他の日本語ドキュメントで使用されてる表現ではないかを確認する
 - 冗長表現は避ける
