@@ -116,63 +116,87 @@ const tabs = [
 </div>
 
 <script is:inline define:vars={{ initialPostCount }}>
-  const searchInput = document.querySelector('#blog-search-input');
-  const postWrappers = Array.from(document.querySelectorAll('[data-post-wrapper]'));
-  const emptyEl = document.querySelector('#blog-empty');
-  const loadMoreBtn = document.querySelector('#blog-load-more');
-  const loadMoreContainer = document.querySelector('#blog-load-more-container');
-
-  let showAll = false;
-
-  const applyFilter = () => {
-    const query = (searchInput?.value || '').trim().toLowerCase();
-    let matched = 0;
-
-    postWrappers.forEach((wrapper, index) => {
-      const card = wrapper.querySelector('[data-post-card]');
-      const title = card?.getAttribute('data-title') || '';
-      const tags = card?.getAttribute('data-tags') || '';
-      const isMatch = title.includes(query) || tags.includes(query);
-
-      if (!isMatch) {
-        wrapper.classList.add('hidden');
-        return;
-      }
-
-      matched += 1;
-
-      if (!query && !showAll && index >= initialPostCount) {
-        wrapper.classList.add('hidden');
-      } else {
-        wrapper.classList.remove('hidden');
-      }
-    });
-
-    if (emptyEl) {
-      emptyEl.classList.toggle('hidden', matched > 0);
+  const initBlogControls = () => {
+    if (window.__blogControlsAbort) {
+      window.__blogControlsAbort.abort();
     }
 
-    if (loadMoreContainer) {
-      const shouldHideLoadMore =
-        !!query || showAll || matched <= initialPostCount || loadMoreBtn === null;
-      loadMoreContainer.classList.toggle('hidden', shouldHideLoadMore);
-    }
+    const controller = new AbortController();
+    window.__blogControlsAbort = controller;
+
+    const searchInput = document.querySelector('#blog-search-input');
+    const postWrappers = Array.from(document.querySelectorAll('[data-post-wrapper]'));
+    const emptyEl = document.querySelector('#blog-empty');
+    const loadMoreBtn = document.querySelector('#blog-load-more');
+    const loadMoreContainer = document.querySelector('#blog-load-more-container');
+
+    let showAll = false;
+
+    const applyFilter = () => {
+      const query = (searchInput?.value || '').trim().toLowerCase();
+      let matched = 0;
+
+      postWrappers.forEach((wrapper, index) => {
+        const card = wrapper.querySelector('[data-post-card]');
+        const title = card?.getAttribute('data-title') || '';
+        const tags = card?.getAttribute('data-tags') || '';
+        const isMatch = title.includes(query) || tags.includes(query);
+
+        if (!isMatch) {
+          wrapper.classList.add('hidden');
+          return;
+        }
+
+        matched += 1;
+
+        if (!query && !showAll && index >= initialPostCount) {
+          wrapper.classList.add('hidden');
+        } else {
+          wrapper.classList.remove('hidden');
+        }
+      });
+
+      if (emptyEl) {
+        emptyEl.classList.toggle('hidden', matched > 0);
+      }
+
+      if (loadMoreContainer) {
+        const shouldHideLoadMore =
+          !!query || showAll || matched <= initialPostCount || loadMoreBtn === null;
+        loadMoreContainer.classList.toggle('hidden', shouldHideLoadMore);
+      }
+    };
+
+    searchInput?.addEventListener(
+      'input',
+      () => {
+        showAll = false;
+        applyFilter();
+      },
+      { signal: controller.signal }
+    );
+
+    document.getElementById('blog-search-form')?.addEventListener(
+      'submit',
+      (e) => {
+        e.preventDefault();
+        applyFilter();
+      },
+      { signal: controller.signal }
+    );
+
+    loadMoreBtn?.addEventListener(
+      'click',
+      () => {
+        showAll = true;
+        applyFilter();
+      },
+      { signal: controller.signal }
+    );
+
+    applyFilter();
   };
 
-  searchInput?.addEventListener('input', () => {
-    showAll = false;
-    applyFilter();
-  });
-
-  document.getElementById('blog-search-form')?.addEventListener('submit', (e) => {
-    e.preventDefault();
-    applyFilter();
-  });
-
-  loadMoreBtn?.addEventListener('click', () => {
-    showAll = true;
-    applyFilter();
-  });
-
-  applyFilter();
+  document.addEventListener('astro:after-swap', initBlogControls);
+  initBlogControls();
 </script>
