@@ -12,20 +12,24 @@ Astroで個人ブログを作るときに役立ちそうなインテグレーシ
 
 ## すでによく使うインテグレーション
 
-まず定番になっているのが **astro-rss** と **astro-sitemap**。
+まず定番になっているのが **[astro-rss](https://www.npmjs.com/package/@astrojs/rss)** と
+**[astro-sitemap](https://www.npmjs.com/package/@astrojs/sitemap)**。
 RSSとサイトマップは最低限のSEO基盤なので、だいたい初期構成で入れる。
-それに加えて **astro-check** は、ビルド前に軽く健康診断できる感覚があって安心。
-あと、Markdownだけだと表現が足りない場面があるので、**MDX** はかなりおすすめ。
+それに加えて **[astro-check](https://www.npmjs.com/package/@astrojs/check)** は、
+ビルド前に軽く健康診断できる感覚があって安心。
+あと、Markdownだけだと表現が足りない場面があるので、**[MDX](https://mdxjs.com)** はかなりおすすめ。
+Astroなら **[@astrojs/mdx](https://docs.astro.build/en/guides/integrations-guide/mdx/)** を使う。
 このあたりは「入れておくと運用が楽になる」枠として見ている。
 
 ## これから試したいもの（気になっている）
 
-次に気になっているのは、公式インテグレーションの **Astro OG**。
+次に気になっているのは、公式インテグレーションの
+**[Astro OG](https://www.npmjs.com/package/@astrojs/og)**。
 中身はまだ深く見れていないけど、OG画像生成をもっとシンプルにできるならうれしい。
 今のブログだと、日本語改行の都合で自前実装が多くなっているので、
 そこが少しでも軽くなるなら試したい。
 
-SEOまわりだと **astro-seo** も気になる。
+SEOまわりだと **[astro-seo](https://www.npmjs.com/package/astro-seo)** も気になる。
 OG画像不足を直接補うものではないはずだけど、
 「基本を整える」という意味では見ておいて損はなさそう。
 
@@ -53,10 +57,21 @@ PCがあるときは問題ないけど、
 ## いろいろ見ているヘッドレスCMS候補
 
 Astroの公式CMSガイドを眺めて、
-Keystatic / KeystoneJS / microCMS / Payload CMS / Prismic / Sanity /
-Craft CMS / Crystallize / DatoCMS / Decap CMS / Directus / Drupal / Flotiq /
-Front Matter CMS / Ghost / GitCMS / Contentful / Cosmic / Strapi / Tina CMS /
-Builder.io / ButterCMS などを候補としてメモしておく。
+[Keystatic](https://keystatic.com) / [KeystoneJS](https://keystonejs.com) /
+[microCMS](https://microcms.io) / [Payload CMS](https://payloadcms.com) /
+[Prismic](https://prismic.io) / [Sanity](https://www.sanity.io) /
+[Craft CMS](https://craftcms.com) / [Crystallize](https://crystallize.com) /
+[DatoCMS](https://www.datocms.com) / [Decap CMS](https://decapcms.org) /
+[Directus](https://directus.io) / [Drupal](https://www.drupal.org) /
+[Flotiq](https://flotiq.com) / [Front Matter CMS](https://frontmatter.codes) /
+[Ghost](https://ghost.org) / [GitCMS](https://gitcms.com) /
+[Contentful](https://www.contentful.com) / [Cosmic](https://www.cosmicjs.com) /
+[Strapi](https://strapi.io) / [Tina CMS](https://tina.io) /
+[Builder.io](https://www.builder.io) / [ButterCMS](https://buttercms.com)
+などの候補やガイドが書かれている。
 
-現状は選択肢が多すぎてまだ検証途中。
-良さそうなものが出てきたら、このメモに追記していく予定。
+ContentfulやmicroCMSあたりは有名どころで触ったことはあるが、
+他はまだあまり深く見れていない。最近地域コミュニティでご一緒している方がNuxt Studioと発言しているのを見て、調べてみたが確かに良さそうな印象を受けた。Astroには類似の公式インテグレーションはないがポジション的にはKeystaticやTina CMSあたりに近いのかなと思う。色々触れていきたいなと感じる。
+
+ただまぁ現状は選択肢が多すぎてまだ検証途中。
+良さそうなものが出てきたら、別途記事にまとめたいと思う。
