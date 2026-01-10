@@ -18,6 +18,7 @@
 │   │   └── zen-kaku-gothic-new-jp-700.woff2
 │   ├── images
 │   │   ├── blog
+│   │   ├── ogp
 │   │   ├── icon_github-dark.svg
 │   │   ├── icon_github-light.svg
 │   │   ├── icon_linkedin.svg
@@ -28,18 +29,6 @@
 │   │   ├── icon_x-light.svg
 │   │   ├── icon_zenn-dark.svg
 │   │   └── icon_zenn-light.svg
-│   ├── ogp
-│   │   ├── _what-is-my-tech-stack.png
-│   │   ├── astro-docs-translation-beginner.png
-│   │   ├── blog-personal.png
-│   │   ├── blog-qiita.png
-│   │   ├── blog-zenn.png
-│   │   ├── blog.png
-│   │   ├── contact.png
-│   │   ├── default.png
-│   │   ├── getting-started-blog.png
-│   │   ├── profile.png
-│   │   └── zenn-scrap.png
 │   ├── _headers
 │   ├── apple-touch-icon.png
 │   ├── favicon.ico
@@ -70,7 +59,6 @@
 │   │   ├── rehype
 │   │   └── utils
 │   ├── pages
-│   │   ├── api
 │   │   ├── blog
 │   │   ├── contact.astro
 │   │   ├── index.astro
@@ -90,10 +78,9 @@
 ├── README.md
 ├── todo.md
 ├── tsconfig.json
-├── uno.config.ts
-└── スクリーンショット 2026-01-06 0.10.26.jpg
+└── uno.config.ts
 
-35 directories, 52 files
+34 directories, 40 files
 
 ```
 
