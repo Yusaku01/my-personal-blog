@@ -7,6 +7,7 @@ import UnoCSS from 'unocss/astro';
 import sitemap from '@astrojs/sitemap';
 import remarkLinkCard from 'remark-link-card';
 import externalLinkIcon from './src/lib/rehype/externalLinkIcon';
+import footnoteBackrefIcon from './src/lib/rehype/footnoteBackrefIcon';
 
 export default defineConfig({
   site: 'https://saku-space.com',
@@ -44,7 +45,10 @@ export default defineConfig({
       injectReset: true, // CSSリセットを注入
     }),
     mdx({
-      rehypePlugins: [[externalLinkIcon, { site: 'https://saku-space.com' }]],
+      rehypePlugins: [
+        [externalLinkIcon, { site: 'https://saku-space.com' }],
+        footnoteBackrefIcon,
+      ],
     }),
     react(),
     sitemap({
@@ -60,7 +64,10 @@ export default defineConfig({
   ],
   markdown: {
     remarkPlugins: [[remarkLinkCard, { shortenUrl: true }]],
-    rehypePlugins: [[externalLinkIcon, { site: 'https://saku-space.com' }]],
+    rehypePlugins: [
+      [externalLinkIcon, { site: 'https://saku-space.com' }],
+      footnoteBackrefIcon,
+    ],
     shikiConfig: {
       themes: {
         light: 'github-light',
