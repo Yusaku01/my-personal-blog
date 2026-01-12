@@ -10,7 +10,13 @@ const recaptchaSiteKey = import.meta.env.PUBLIC_GOOGLE_RECAPTCHA_SITE_KEY;
 <Layout title="お問い合わせ | SAKUSPACE">
   {
     recaptchaSiteKey && (
-      <script slot="head" is:inline src="https://www.google.com/recaptcha/api.js" async defer />
+      <script
+        slot="head"
+        is:inline
+        src="https://www.google.com/recaptcha/api.js?onload=recaptchaOnload&render=explicit"
+        async
+        defer
+      />
     )
   }
   <HeroSection title="CONTACT" isHome={false} />
