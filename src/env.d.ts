@@ -37,10 +37,12 @@ interface ReCaptchaInstance {
   render: (container: HTMLElement | string, parameters: any) => number;
   getResponse: (widgetId: number) => string;
   reset: (widgetId: number) => void;
+  ready?: (cb: () => void) => void;
 }
 
 declare global {
   interface Window {
     grecaptcha?: ReCaptchaInstance;
+    recaptchaOnload?: () => void;
   }
 }

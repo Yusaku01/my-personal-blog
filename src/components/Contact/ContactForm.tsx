@@ -32,10 +32,7 @@ export default function ContactForm() {
 
   // reCAPTCHA v2 の明示レンダー（React クライアントマウント後にレンダー）
   useEffect(() => {
-    let attempts = 0;
-    const maxAttempts = 50; // ~5秒（100ms間隔）
-    const timer = setInterval(() => {
-      attempts += 1;
+    const renderRecaptcha = () => {
       const grecaptcha = window.grecaptcha;
       if (
         recaptchaContainerRef.current &&
@@ -43,17 +40,28 @@ export default function ContactForm() {
         grecaptcha.render &&
         recaptchaWidgetId === null
       ) {
-        const id = grecaptcha.render(recaptchaContainerRef.current, {
-          sitekey: import.meta.env.PUBLIC_GOOGLE_RECAPTCHA_SITE_KEY,
-        });
-        setRecaptchaWidgetId(id);
-        clearInterval(timer);
+        const renderWidget = () => {
+          const id = grecaptcha.render(recaptchaContainerRef.current, {
+            sitekey: import.meta.env.PUBLIC_GOOGLE_RECAPTCHA_SITE_KEY,
+          });
+          setRecaptchaWidgetId(id);
+        };
+        if ('ready' in grecaptcha && typeof grecaptcha.ready === 'function') {
+          grecaptcha.ready(renderWidget);
+        } else {
+          renderWidget();
+        }
       }
-      if (attempts >= maxAttempts) {
-        clearInterval(timer);
+    };
+
+    window.recaptchaOnload = renderRecaptcha;
+    renderRecaptcha();
+
+    return () => {
+      if (window.recaptchaOnload === renderRecaptcha) {
+        window.recaptchaOnload = undefined;
       }
-    }, 100);
-    return () => clearInterval(timer);
+    };
   }, [recaptchaWidgetId]);
 
   const onSubmit = async (data: ContactFormValues) => {
