@@ -45,10 +45,7 @@ export default defineConfig({
       injectReset: true, // CSSリセットを注入
     }),
     mdx({
-      rehypePlugins: [
-        [externalLinkIcon, { site: 'https://saku-space.com' }],
-        footnoteBackrefIcon,
-      ],
+      rehypePlugins: [[externalLinkIcon, { site: 'https://saku-space.com' }], footnoteBackrefIcon],
     }),
     react(),
     sitemap({
@@ -64,10 +61,7 @@ export default defineConfig({
   ],
   markdown: {
     remarkPlugins: [[remarkLinkCard, { shortenUrl: true }]],
-    rehypePlugins: [
-      [externalLinkIcon, { site: 'https://saku-space.com' }],
-      footnoteBackrefIcon,
-    ],
+    rehypePlugins: [[externalLinkIcon, { site: 'https://saku-space.com' }], footnoteBackrefIcon],
     shikiConfig: {
       themes: {
         light: 'github-light',
