@@ -1,0 +1,91 @@
+---
+type BookmarkCardProps = {
+  title: string;
+  url: string;
+  publishDate: Date;
+  summary: string;
+  reason: string;
+  sourceName: string;
+  sourceUrl: string;
+  tags?: string[];
+  score?: number;
+};
+
+const {
+  title,
+  url,
+  publishDate,
+  summary,
+  reason,
+  sourceName,
+  sourceUrl,
+  tags = [],
+  score,
+} = Astro.props as BookmarkCardProps;
+
+const bookmarkCardStyles = {
+  article:
+    'bg-white dark:bg-gray-900 rounded-md overflow-hidden transition-all duration-200 h-full hover',
+  link: 'block h-full',
+  contentContainer: 'p-5 flex flex-col gap-3 h-full',
+  title: 'text-lg font-semibold text-gray-900 dark:text-white leading-snug',
+  meta: 'text-sm text-gray-600 dark:text-gray-400 flex flex-wrap gap-x-3 gap-y-1',
+  summary: 'text-sm text-gray-700 dark:text-gray-300 leading-relaxed',
+  reason: 'text-sm text-gray-600 dark:text-gray-400',
+  tagContainer: 'flex flex-wrap gap-2',
+  tag: 'inline-flex items-center px-2.5 py-0.5 rounded-full text-2.5 font-medium border border-gray-900 dark:border-gray-600 text-gray-700 dark:text-gray-200',
+  score: 'text-xs font-semibold uppercase tracking-widest text-gray-600 dark:text-gray-300',
+  source: 'text-sm text-gray-700 dark:text-gray-300 underline-offset-4 hover:underline',
+};
+
+const publishDateObj = new Date(publishDate);
+---
+
+<article class={bookmarkCardStyles.article}>
+  <a
+    href={url}
+    class={`${bookmarkCardStyles.link} group`}
+    target="_blank"
+    rel="noopener noreferrer"
+  >
+    <div class={bookmarkCardStyles.contentContainer}>
+      <div class="flex items-start justify-between gap-4">
+        <h2 class={bookmarkCardStyles.title}>{title}</h2>
+        {
+          score !== undefined && (
+            <span class={bookmarkCardStyles.score} aria-label={`おすすめ度 ${score}`}>
+              ★ {score}
+            </span>
+          )
+        }
+      </div>
+      <div class={bookmarkCardStyles.meta}>
+        <time datetime={publishDateObj.toISOString()}>
+          {publishDateObj.toLocaleDateString('ja-JP')}
+        </time>
+        <span>•</span>
+        <span>{sourceName}</span>
+        <span class="i-ic-open-in-new text-3.5 ml-1 align-middle" aria-label="外部リンク"></span>
+      </div>
+      <p class={bookmarkCardStyles.summary}>{summary}</p>
+      <p class={bookmarkCardStyles.reason}>おすすめ理由：{reason}</p>
+      {
+        tags.length > 0 && (
+          <div class={bookmarkCardStyles.tagContainer}>
+            {tags.map((tag) => (
+              <span class={bookmarkCardStyles.tag}>{tag}</span>
+            ))}
+          </div>
+        )
+      }
+      <div class="mt-auto pt-2">
+        <span class={bookmarkCardStyles.source}>
+          フィード元：
+          <a href={sourceUrl} target="_blank" rel="noopener noreferrer">
+            {sourceName}
+          </a>
+        </span>
+      </div>
+    </div>
+  </a>
+</article>

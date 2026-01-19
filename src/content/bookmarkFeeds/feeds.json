@@ -1,0 +1,25 @@
+{
+  "feeds": [
+    {
+      "name": "Astro Blog",
+      "url": "https://astro.build/rss.xml",
+      "description": "Astro公式のアップデートやベストプラクティスの共有",
+      "tags": ["Astro", "Frontend"],
+      "enabled": true
+    },
+    {
+      "name": "Zenn Frontend Topics",
+      "url": "https://zenn.dev/topics/frontend/feed",
+      "description": "フロントエンド周辺の日本語記事を横断チェック",
+      "tags": ["Frontend", "Japan"],
+      "enabled": true
+    },
+    {
+      "name": "CSS-Tricks",
+      "url": "https://css-tricks.com/feed/",
+      "description": "UI改善やCSSテクニックの参考用",
+      "tags": ["CSS", "Design"],
+      "enabled": false
+    }
+  ]
+}
