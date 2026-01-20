@@ -4,7 +4,7 @@
       "name": "Astro Blog",
       "nameUrl": "https://astro.build/blog",
       "url": "https://astro.build/rss.xml",
-      "description": "Astro公式のアップデートやベストプラクティスの共有",
+      "description": "Astro公式のアップデートやベストプラクティスブログ",
       "tags": ["Astro", "Frontend"],
       "enabled": true
     },
@@ -12,7 +12,7 @@
       "name": "Zenn Frontend Topics",
       "nameUrl": "https://zenn.dev/topics/frontend",
       "url": "https://zenn.dev/topics/frontend/feed",
-      "description": "フロントエンド周辺の日本語記事を横断チェック",
+      "description": "フロントエンド周辺の日本語記事まとめ",
       "tags": ["Frontend", "Japan"],
       "enabled": true
     },
