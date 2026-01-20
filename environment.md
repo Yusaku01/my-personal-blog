@@ -52,7 +52,6 @@
 │   ├── content
 │   │   ├── blog
 │   │   ├── findsFeed
-│   │   ├── bookmarkItems
 │   │   └── config.ts
 │   ├── layouts
 │   │   └── Layout.astro
@@ -63,7 +62,6 @@
 │   │   └── utils
 │   ├── pages
 │   │   ├── blog
-│   │   ├── bookmark.astro
 │   │   ├── contact.astro
 │   │   ├── finds.astro
 │   │   ├── index.astro
@@ -85,7 +83,7 @@
 ├── tsconfig.json
 └── uno.config.ts
 
-37 directories, 42 files
+36 directories, 41 files
 
 ```
 

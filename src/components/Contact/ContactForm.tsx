@@ -132,8 +132,6 @@ export default function ContactForm() {
         可能な限り早くご返信いたします。
       </p>
       <form onSubmit={handleSubmit(onSubmit)} className="max-w-2xl mx-auto">
-        <div ref={recaptchaContainerRef} className="g-recaptcha" />
-        {recaptchaError && <p className="mt-2 text-sm text-red-600">{recaptchaError}</p>}
         <div className="mb-4">
           <ContactFormLabel htmlFor="name" label="お名前" required />
           <ContactFormInput register={register} errors={errors} id="name" type="text" />
@@ -153,6 +151,9 @@ export default function ContactForm() {
           <ContactFormLabel htmlFor="message" label="メッセージ" required />
           <ContactFormTextarea register={register} errors={errors} />
         </div>
+
+        <div ref={recaptchaContainerRef} className="g-recaptcha mb-4 grid justify-center" />
+        {recaptchaError && <p className="mt-2 text-sm text-red-600">{recaptchaError}</p>}
 
         {errorMessage && <p className="mb-4 text-sm text-red-600 text-center">{errorMessage}</p>}
         <div className="text-center">
