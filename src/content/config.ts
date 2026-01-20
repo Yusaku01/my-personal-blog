@@ -12,12 +12,13 @@ const blog = defineCollection({
   }),
 });
 
-const bookmarkFeeds = defineCollection({
+const findsFeed = defineCollection({
   type: 'data',
   schema: z.object({
     feeds: z.array(
       z.object({
         name: z.string(),
+        nameUrl: z.string().url().optional(),
         url: z.string().url(),
         description: z.string().optional(),
         tags: z.array(z.string()).default([]),
@@ -39,6 +40,7 @@ const bookmarkItems = defineCollection({
         reason: z.string(),
         sourceName: z.string(),
         sourceUrl: z.string().url(),
+        thumbnail: z.string().optional(),
         tags: z.array(z.string()).default([]),
         score: z.number().min(0).max(100).optional(),
       })
@@ -48,6 +50,6 @@ const bookmarkItems = defineCollection({
 
 export const collections = {
   blog,
-  bookmarkFeeds,
+  findsFeed,
   bookmarkItems,
 };

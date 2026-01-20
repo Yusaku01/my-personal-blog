@@ -2,56 +2,53 @@
 import Layout from '../layouts/Layout.astro';
 import HeroSection from '../components/Hero/HeroSection.astro';
 import SectionHeading from '../components/Section/SectionHeading.astro';
-import BookmarkCard from '../components/Bookmark/BookmarkCard.astro';
 import { getCollection } from 'astro:content';
 
 export const transition = { name: 'fade' };
 
-const feedEntries = await getCollection('bookmarkFeeds');
+const feedEntries = await getCollection('findsFeed');
 const feeds = feedEntries.flatMap((entry) => entry.data.feeds).filter((feed) => feed.enabled);
-
-const itemEntries = await getCollection('bookmarkItems');
-const bookmarks = itemEntries
-  .flatMap((entry) => entry.data.items)
-  .sort((a, b) => b.publishDate.getTime() - a.publishDate.getTime());
 ---
 
-<Layout title="BOOKMARK | SAKUSPACE">
-  <HeroSection title="BOOKMARK" isHome={false} />
+<Layout title="FINDS | SAKUSPACE">
+  <HeroSection title="FINDS" isHome={false} />
 
   <div class="py-10">
     <div class="container-md">
       <section class="mb-12">
-        <SectionHeading title="ABOUT" className="heading-h2 tracking-widest" />
+        <SectionHeading title="What is FINDS" className="heading-h2 tracking-widest" />
         <div class="mt-6 space-y-4 text-gray-700 dark:text-gray-300 leading-relaxed">
           <p>
-            RSSフィードから取得した記事をキーワードとAI判定でスコアリングし、読む価値が高い
-            ものだけを紹介する読書メモページです。ここでは学習テーマの共有と、個人ブログの
-            布教を目的にしています。
+            SAKU自身がRSSフィードで購読しているブログや記事をシェアする場所です！<br />
+            気になった記事があればぜひ読みに行って、SNSなどでシェアされることをおすすめします！
           </p>
           <ul class="list-disc list-inside space-y-2 text-sm text-gray-600 dark:text-gray-400">
-            <li>RSSはホワイトリスト化し、取得結果はビルド時に保存して公開します。</li>
-            <li>記事本文は保存せず、要約と外部リンクのみ掲載します。</li>
-            <li>判定ルールはキーワード一致＋軽量モデルでコストを抑えます。</li>
+            <li>※ RSSフィードによる本文やOGPの再利用は著作権を考慮し非表示にしております。</li>
           </ul>
         </div>
       </section>
 
-      <section class="mb-12">
-        <SectionHeading title="RECOMMENDED" className="heading-h2 tracking-widest" />
-        <div class="mt-6 grid gap-6 md:grid-cols-2">
-          {bookmarks.map((bookmark) => <BookmarkCard {...bookmark} />)}
-        </div>
-      </section>
-
       <section class="mb-6">
-        <SectionHeading title="FEEDS" className="heading-h2 tracking-widest" />
+        <SectionHeading title="Feeds I Follow" className="heading-h2 tracking-widest" />
         <div class="mt-6 grid gap-4 md:grid-cols-2">
           {
             feeds.map((feed) => (
               <div class="rounded-md border border-gray-200 dark:border-gray-700 p-4 bg-white dark:bg-gray-900">
                 <div class="flex items-center justify-between">
-                  <h3 class="text-md font-semibold text-gray-900 dark:text-white">{feed.name}</h3>
+                  <h3 class="text-md font-semibold text-gray-900 dark:text-white">
+                    {feed.nameUrl ? (
+                      <a
+                        href={feed.nameUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        class="underline-offset-4 hover:underline"
+                      >
+                        {feed.name}
+                      </a>
+                    ) : (
+                      feed.name
+                    )}
+                  </h3>
                   {feed.tags.length > 0 && (
                     <div class="flex flex-wrap gap-2">
                       {feed.tags.map((tag) => (
