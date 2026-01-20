@@ -38,6 +38,7 @@ const basicPages = [
     title: 'BLOG | Qiita',
     isBasicPage: true,
   },
+  { slug: 'finds', filename: 'finds', title: 'FINDS', isBasicPage: true },
   { slug: 'profile', filename: 'profile', title: 'PROFILE', isBasicPage: true },
   { slug: 'contact', filename: 'contact', title: 'CONTACT', isBasicPage: true },
 ];
