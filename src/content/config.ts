@@ -28,28 +28,7 @@ const findsFeed = defineCollection({
   }),
 });
 
-const bookmarkItems = defineCollection({
-  type: 'data',
-  schema: z.object({
-    items: z.array(
-      z.object({
-        title: z.string(),
-        url: z.string().url(),
-        publishDate: z.coerce.date(),
-        summary: z.string(),
-        reason: z.string(),
-        sourceName: z.string(),
-        sourceUrl: z.string().url(),
-        thumbnail: z.string().optional(),
-        tags: z.array(z.string()).default([]),
-        score: z.number().min(0).max(100).optional(),
-      })
-    ),
-  }),
-});
-
 export const collections = {
   blog,
   findsFeed,
-  bookmarkItems,
 };
