@@ -20,17 +20,17 @@
     "build:with-ogp": "npm run generate-ogp && npm run build"
   },
   "dependencies": {
-    "@astrojs/cloudflare": "^12.6.12",
-    "@astrojs/mdx": "^4.2.3",
-    "@astrojs/react": "^4.2.3",
-    "@astrojs/rss": "^4.0.11",
-    "@astrojs/sitemap": "^3.3.0",
+    "@astrojs/cloudflare": "^12.6.8",
+    "@astrojs/mdx": "^4.3.13",
+    "@astrojs/react": "^4.4.2",
+    "@astrojs/rss": "^4.0.15",
+    "@astrojs/sitemap": "^3.7.0",
     "@fontsource/zen-kaku-gothic-new": "^5.2.5",
     "@hookform/resolvers": "^3.3.2",
     "@resvg/resvg-js": "^2.6.2",
     "@types/react": "^18.3.0",
     "@types/react-dom": "^18.3.0",
-    "astro": "^5.16.4",
+    "astro": "^5.16.11",
     "budoux": "^0.7.0",
     "cheerio": "^1.0.0-rc.12",
     "date-fns": "^2.30.0",
@@ -44,7 +44,7 @@
     "zod": "^3.24.2"
   },
   "devDependencies": {
-    "@astrojs/check": "^0.9.4",
+    "@astrojs/check": "^0.9.6",
     "@iconify-json/ic": "^1.2.2",
     "@typescript-eslint/eslint-plugin": "^7.18.0",
     "@typescript-eslint/parser": "^7.18.0",

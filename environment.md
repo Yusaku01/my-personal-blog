@@ -38,6 +38,7 @@
 │   │   └── img
 │   ├── components
 │   │   ├── Blog
+│   │   ├── Bookmark
 │   │   ├── Breadcrump
 │   │   ├── Contact
 │   │   ├── Footer
@@ -50,6 +51,8 @@
 │   │   └── ViewToggle.tsx
 │   ├── content
 │   │   ├── blog
+│   │   ├── findsFeed
+│   │   ├── bookmarkItems
 │   │   └── config.ts
 │   ├── layouts
 │   │   └── Layout.astro
@@ -60,7 +63,9 @@
 │   │   └── utils
 │   ├── pages
 │   │   ├── blog
+│   │   ├── bookmark.astro
 │   │   ├── contact.astro
+│   │   ├── finds.astro
 │   │   ├── index.astro
 │   │   ├── profile.astro
 │   │   └── rss.xml.ts
@@ -80,7 +85,7 @@
 ├── tsconfig.json
 └── uno.config.ts
 
-34 directories, 40 files
+37 directories, 42 files
 
 ```
 
