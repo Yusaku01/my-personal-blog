@@ -12,6 +12,44 @@ const blog = defineCollection({
   }),
 });
 
+const findsFeed = defineCollection({
+  type: 'data',
+  schema: z.object({
+    feeds: z.array(
+      z.object({
+        name: z.string(),
+        nameUrl: z.string().url().optional(),
+        url: z.string().url(),
+        description: z.string().optional(),
+        tags: z.array(z.string()).default([]),
+        enabled: z.boolean().default(true),
+      })
+    ),
+  }),
+});
+
+const bookmarkItems = defineCollection({
+  type: 'data',
+  schema: z.object({
+    items: z.array(
+      z.object({
+        title: z.string(),
+        url: z.string().url(),
+        publishDate: z.coerce.date(),
+        summary: z.string(),
+        reason: z.string(),
+        sourceName: z.string(),
+        sourceUrl: z.string().url(),
+        thumbnail: z.string().optional(),
+        tags: z.array(z.string()).default([]),
+        score: z.number().min(0).max(100).optional(),
+      })
+    ),
+  }),
+});
+
 export const collections = {
   blog,
+  findsFeed,
+  bookmarkItems,
 };

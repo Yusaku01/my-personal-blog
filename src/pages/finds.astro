@@ -1,0 +1,81 @@
+---
+import Layout from '../layouts/Layout.astro';
+import HeroSection from '../components/Hero/HeroSection.astro';
+import SectionHeading from '../components/Section/SectionHeading.astro';
+import { getCollection } from 'astro:content';
+
+export const transition = { name: 'fade' };
+
+const feedEntries = await getCollection('findsFeed');
+const feeds = feedEntries.flatMap((entry) => entry.data.feeds).filter((feed) => feed.enabled);
+---
+
+<Layout title="FINDS | SAKUSPACE">
+  <HeroSection title="FINDS" isHome={false} />
+
+  <div class="py-10">
+    <div class="container-md">
+      <section class="mb-12">
+        <SectionHeading title="What is FINDS" className="heading-h2 tracking-widest" />
+        <div class="mt-6 space-y-4 text-gray-700 dark:text-gray-300 leading-relaxed">
+          <p>
+            SAKU自身がRSSフィードで購読しているブログや記事をシェアする場所です！<br />
+            気になった記事があればぜひ読みに行って、SNSなどでシェアされることをおすすめします！
+          </p>
+          <ul class="list-disc list-inside space-y-2 text-sm text-gray-600 dark:text-gray-400">
+            <li>※ RSSフィードによる本文やOGPの再利用は著作権を考慮し非表示にしております。</li>
+          </ul>
+        </div>
+      </section>
+
+      <section class="mb-6">
+        <SectionHeading title="Feeds I Follow" className="heading-h2 tracking-widest" />
+        <div class="mt-6 grid gap-4 md:grid-cols-2">
+          {
+            feeds.map((feed) => (
+              <div class="rounded-md border border-gray-200 dark:border-gray-700 p-4 bg-white dark:bg-gray-900">
+                <div class="flex items-center justify-between">
+                  <h3 class="text-md font-semibold text-gray-900 dark:text-white">
+                    {feed.nameUrl ? (
+                      <a
+                        href={feed.nameUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        class="underline-offset-4 hover:underline"
+                      >
+                        {feed.name}
+                      </a>
+                    ) : (
+                      feed.name
+                    )}
+                  </h3>
+                  {feed.tags.length > 0 && (
+                    <div class="flex flex-wrap gap-2">
+                      {feed.tags.map((tag) => (
+                        <span class="inline-flex items-center px-2 py-0.5 rounded-full text-2.5 font-medium border border-gray-900 dark:border-gray-600 text-gray-700 dark:text-gray-200">
+                          {tag}
+                        </span>
+                      ))}
+                    </div>
+                  )}
+                </div>
+                {feed.description && (
+                  <p class="mt-2 text-sm text-gray-600 dark:text-gray-400">{feed.description}</p>
+                )}
+                <a
+                  href={feed.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="mt-3 inline-flex items-center text-sm text-gray-700 dark:text-gray-300 underline-offset-4 hover:underline"
+                >
+                  RSSを見る
+                  <span class="i-ic-open-in-new text-3.5 ml-1" aria-hidden="true" />
+                </a>
+              </div>
+            ))
+          }
+        </div>
+      </section>
+    </div>
+  </div>
+</Layout>

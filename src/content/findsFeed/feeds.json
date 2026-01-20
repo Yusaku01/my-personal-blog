@@ -1,0 +1,44 @@
+{
+  "feeds": [
+    {
+      "name": "Astro Blog",
+      "nameUrl": "https://astro.build/blog",
+      "url": "https://astro.build/rss.xml",
+      "description": "Astro公式のアップデートやベストプラクティスの共有",
+      "tags": ["Astro", "Frontend"],
+      "enabled": true
+    },
+    {
+      "name": "Zenn Frontend Topics",
+      "nameUrl": "https://zenn.dev/topics/frontend",
+      "url": "https://zenn.dev/topics/frontend/feed",
+      "description": "フロントエンド周辺の日本語記事を横断チェック",
+      "tags": ["Frontend", "Japan"],
+      "enabled": true
+    },
+    {
+      "name": "CSS-Tricks",
+      "nameUrl": "https://css-tricks.com/",
+      "url": "https://css-tricks.com/feed/",
+      "description": "UI改善やCSSテクニックの参考用",
+      "tags": ["CSS", "Design"],
+      "enabled": false
+    },
+    {
+      "name": "maguro.dev",
+      "nameUrl": "https://maguro.dev/",
+      "url": "https://maguro.dev/rss.xml",
+      "description": "magruoさんの個人技術ブログ",
+      "tags": ["CS", "Development"],
+      "enabled": true
+    },
+    {
+      "name": "blog.naito.dev",
+      "nameUrl": "https://blog.naito.dev",
+      "url": "https://blog.naito.dev/feed.xml",
+      "description": "naitoさんの個人技術ブログ",
+      "tags": ["Frontend", "Development"],
+      "enabled": true
+    }
+  ]
+}

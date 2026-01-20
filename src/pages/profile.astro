@@ -3,7 +3,6 @@ import Layout from '../layouts/Layout.astro';
 import HeroSection from '../components/Hero/HeroSection.astro';
 import ProfileSection from '../components/Profile/ProfileSection.astro';
 import { ProfileContent } from '../lib/utils/profileData';
-import SocialIcons from '../components/Sns/SocialIcons.astro';
 
 export const transition = { name: 'fade' };
 
@@ -134,15 +133,6 @@ import myImage from '../assets/img/img_profile.png';
           </ProfileSection> -->
 
           <!-- SNSセクション（SocialIconsに統一） -->
-          <ProfileSection title="SNS">
-            <div class="mt-8">
-              <SocialIcons
-                variant="default"
-                class="space-x-0 flex-wrap gap-7 justify-center"
-                iconClass="w-7 h-7"
-              />
-            </div>
-          </ProfileSection>
         </div>
       </div>
     </div>
