@@ -28,16 +28,24 @@
       "name": "maguro.dev",
       "nameUrl": "https://maguro.dev/",
       "url": "https://maguro.dev/rss.xml",
-      "description": "maguroさんの個人技術ブログ",
-      "tags": ["CS", "Development"],
+      "description": "maguroさんの個人ブログ",
+      "tags": ["Tech", "CS", "Development"],
       "enabled": true
     },
     {
       "name": "blog.naito.dev",
       "nameUrl": "https://blog.naito.dev",
       "url": "https://blog.naito.dev/feed.xml",
-      "description": "ナイトウさんの個人技術ブログ",
-      "tags": ["Frontend", "Development"],
+      "description": "ナイトウさんの個人ブログ",
+      "tags": ["Tech", "Frontend", "Development"],
+      "enabled": true
+    },
+    {
+      "name": "kouno.log",
+      "nameUrl": "https://kouno-log.pages.dev/",
+      "url": "https://kouno-log.pages.dev/feed.xml",
+      "description": "kounoさんの個人ブログ",
+      "tags": ["Tech", "Development"],
       "enabled": true
     }
   ]
