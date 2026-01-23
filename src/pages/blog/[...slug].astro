@@ -65,9 +65,30 @@ const { Content, headings } = await post.render();
 
         <!-- 6. Content -->
         <div
-          class="prose prose-lg max-w-none prose-headings:font-bold prose-a:text-sky-600 prose-a:underline-offset-4 hover:prose-a:underline dark:prose-invert dark:prose-a:text-sky-300 dark:hover:prose-a:text-sky-200 prose-img:rounded-lg mt-8"
+          class="blog-article-content prose prose-lg max-w-none prose-headings:font-bold prose-a:text-sky-600 prose-a:underline-offset-4 hover:prose-a:underline dark:prose-invert dark:prose-a:text-sky-300 dark:hover:prose-a:text-sky-200 prose-img:rounded-lg mt-8"
+          data-blog-content
         >
           <Content />
+        </div>
+
+        <div
+          id="blog-image-modal"
+          class="fixed inset-0 z-50 hidden items-center justify-center bg-black/70 p-4"
+          aria-hidden="true"
+        >
+          <button
+            type="button"
+            class="absolute top-6 right-6 text-white text-3xl leading-none"
+            data-modal-close
+            aria-label="画像モーダルを閉じる"
+          >
+            ×
+          </button>
+          <img
+            id="blog-image-modal-img"
+            class="max-h-[90vh] max-w-[90vw] rounded-lg shadow-2xl"
+            alt=""
+          />
         </div>
 
         <!-- SNS Share Buttons -->
@@ -140,8 +161,86 @@ const { Content, headings } = await post.render();
     @apply w-full h-full object-cover rounded-none;
   }
 
+  .blog-article-content img {
+    cursor: zoom-in;
+    -webkit-touch-callout: none;
+  }
+
   /* 必要であればフットノート内のリンクスタイルも調整 */
   /* .footnotes a {
     @apply text-brand hover:underline;
   } */
 </style>
+
+<script>
+  const contentRoot = document.querySelector('[data-blog-content]');
+  const modal = document.getElementById('blog-image-modal');
+  const modalImage = document.getElementById('blog-image-modal-img');
+
+  if (contentRoot && modal && modalImage) {
+    let pressTimer = null;
+    let activeImage = null;
+
+    const openModal = (image) => {
+      const src = image.getAttribute('src');
+      if (!src) return;
+      modalImage.setAttribute('src', src);
+      modalImage.setAttribute('alt', image.getAttribute('alt') ?? '');
+      modal.classList.remove('hidden');
+      modal.classList.add('flex');
+      modal.setAttribute('aria-hidden', 'false');
+      document.body.classList.add('overflow-hidden');
+    };
+
+    const closeModal = () => {
+      modal.classList.add('hidden');
+      modal.classList.remove('flex');
+      modal.setAttribute('aria-hidden', 'true');
+      modalImage.removeAttribute('src');
+      document.body.classList.remove('overflow-hidden');
+    };
+
+    const clearPressTimer = () => {
+      if (pressTimer) {
+        window.clearTimeout(pressTimer);
+        pressTimer = null;
+      }
+    };
+
+    const startPress = (event, image) => {
+      if (event.pointerType === 'mouse' && event.button !== 0) return;
+      activeImage = image;
+      clearPressTimer();
+      pressTimer = window.setTimeout(() => {
+        if (activeImage) {
+          openModal(activeImage);
+        }
+      }, 1000);
+    };
+
+    const cancelPress = () => {
+      activeImage = null;
+      clearPressTimer();
+    };
+
+    contentRoot.querySelectorAll('img').forEach((image) => {
+      image.addEventListener('pointerdown', (event) => startPress(event, image));
+      image.addEventListener('pointerup', cancelPress);
+      image.addEventListener('pointerleave', cancelPress);
+      image.addEventListener('pointercancel', cancelPress);
+      image.addEventListener('pointermove', cancelPress);
+    });
+
+    modal.addEventListener('click', (event) => {
+      if (event.target === modal || event.target.closest('[data-modal-close]')) {
+        closeModal();
+      }
+    });
+
+    window.addEventListener('keydown', (event) => {
+      if (event.key === 'Escape' && modal.classList.contains('flex')) {
+        closeModal();
+      }
+    });
+  }
+</script>
