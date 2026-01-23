@@ -65,9 +65,30 @@ const { Content, headings } = await post.render();
 
         <!-- 6. Content -->
         <div
-          class="prose prose-lg max-w-none prose-headings:font-bold prose-a:text-sky-600 prose-a:underline-offset-4 hover:prose-a:underline dark:prose-invert dark:prose-a:text-sky-300 dark:hover:prose-a:text-sky-200 prose-img:rounded-lg mt-8"
+          class="blog-article-content prose prose-lg max-w-none prose-headings:font-bold prose-a:text-sky-600 prose-a:underline-offset-4 hover:prose-a:underline dark:prose-invert dark:prose-a:text-sky-300 dark:hover:prose-a:text-sky-200 prose-img:rounded-lg mt-8"
+          data-blog-content
         >
           <Content />
+        </div>
+
+        <div
+          id="blog-image-modal"
+          class="fixed inset-0 z-50 hidden items-center justify-center bg-black/70 p-4"
+          aria-hidden="true"
+        >
+          <button
+            type="button"
+            class="absolute top-6 right-6 text-white text-3xl leading-none"
+            data-modal-close
+            aria-label="画像モーダルを閉じる"
+          >
+            ×
+          </button>
+          <img
+            id="blog-image-modal-img"
+            class="max-h-[90vh] max-w-[90vw] rounded-lg shadow-2xl"
+            alt=""
+          />
         </div>
 
         <!-- SNS Share Buttons -->
@@ -140,8 +161,94 @@ const { Content, headings } = await post.render();
     @apply w-full h-full object-cover rounded-none;
   }
 
+  .blog-article-content img {
+    -webkit-touch-callout: none;
+  }
+
+  .blog-article-content .image-zoom-wrapper {
+    position: relative;
+    display: inline-block;
+  }
+
+  .blog-article-content .image-zoom-button {
+    position: absolute;
+    right: 12px;
+    bottom: 12px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    border-radius: 9999px;
+    border: 1px solid rgba(255, 255, 255, 0.7);
+    background: rgba(15, 23, 42, 0.6);
+    color: #fff;
+    box-shadow: 0 6px 20px rgba(15, 23, 42, 0.3);
+    cursor: pointer;
+  }
+
+  .blog-article-content .image-zoom-button:focus-visible {
+    outline: 2px solid #38bdf8;
+    outline-offset: 2px;
+  }
+
   /* 必要であればフットノート内のリンクスタイルも調整 */
   /* .footnotes a {
     @apply text-brand hover:underline;
   } */
 </style>
+
+<script>
+  const contentRoot = document.querySelector('[data-blog-content]');
+  const modal = document.getElementById('blog-image-modal');
+  const modalImage = document.getElementById('blog-image-modal-img');
+
+  if (contentRoot && modal && modalImage) {
+    const openModal = (image) => {
+      const src = image.getAttribute('src');
+      if (!src) return;
+      modalImage.setAttribute('src', src);
+      modalImage.setAttribute('alt', image.getAttribute('alt') ?? '');
+      modal.classList.remove('hidden');
+      modal.classList.add('flex');
+      modal.setAttribute('aria-hidden', 'false');
+      document.body.classList.add('overflow-hidden');
+    };
+
+    const closeModal = () => {
+      modal.classList.add('hidden');
+      modal.classList.remove('flex');
+      modal.setAttribute('aria-hidden', 'true');
+      modalImage.removeAttribute('src');
+      document.body.classList.remove('overflow-hidden');
+    };
+
+    contentRoot.querySelectorAll('img').forEach((image) => {
+      const wrapper = document.createElement('span');
+      wrapper.className = 'image-zoom-wrapper';
+      image.parentNode?.insertBefore(wrapper, image);
+      wrapper.appendChild(image);
+
+      const zoomButton = document.createElement('button');
+      zoomButton.type = 'button';
+      zoomButton.className = 'image-zoom-button';
+      zoomButton.setAttribute('aria-label', '画像を拡大表示');
+      zoomButton.innerHTML =
+        '<svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" focusable="false"><path fill="currentColor" d="M10 4a6 6 0 1 1 4.472 10.03l3.749 3.75a1 1 0 0 1-1.414 1.414l-3.75-3.749A6 6 0 0 1 10 4Zm0 2a4 4 0 1 0 0 8a4 4 0 0 0 0-8Z"/></svg>';
+      zoomButton.addEventListener('click', () => openModal(image));
+      wrapper.appendChild(zoomButton);
+    });
+
+    modal.addEventListener('click', (event) => {
+      if (event.target === modal || event.target.closest('[data-modal-close]')) {
+        closeModal();
+      }
+    });
+
+    window.addEventListener('keydown', (event) => {
+      if (event.key === 'Escape' && modal.classList.contains('flex')) {
+        closeModal();
+      }
+    });
+  }
+</script>
