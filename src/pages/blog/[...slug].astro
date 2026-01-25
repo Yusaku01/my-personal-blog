@@ -73,7 +73,7 @@ const { Content, headings } = await post.render();
 
         <div
           id="blog-image-modal"
-          class="fixed inset-0 z-50 hidden items-center justify-center bg-black/70 p-4"
+          class="blog-image-modal fixed inset-0 z-50 flex items-center justify-center bg-black/70 p-4"
           aria-hidden="true"
         >
           <button
@@ -166,12 +166,35 @@ const { Content, headings } = await post.render();
     -webkit-touch-callout: none;
   }
 
-  .blog-article-content .image-zoom-wrapper {
-    @apply relative inline-block;
+  .blog-image-modal {
+    opacity: 0;
+    pointer-events: none;
+    transition:
+      opacity 200ms ease,
+      visibility 0ms linear 200ms;
+    visibility: hidden;
   }
 
-  .blog-article-content .image-zoom-icon {
-    @apply absolute bottom-3 right-3 text-white bg-black/60 rounded-full p-2 text-xl pointer-events-none;
+  .blog-image-modal.is-open {
+    opacity: 1;
+    pointer-events: auto;
+    visibility: visible;
+    transition:
+      opacity 200ms ease,
+      visibility 0ms;
+  }
+
+  .blog-image-modal img {
+    transform: scale(0.98);
+    opacity: 0;
+    transition:
+      transform 200ms ease,
+      opacity 200ms ease;
+  }
+
+  .blog-image-modal.is-open img {
+    transform: scale(1);
+    opacity: 1;
   }
 
   /* 必要であればフットノート内のリンクスタイルも調整 */
@@ -181,87 +204,79 @@ const { Content, headings } = await post.render();
 </style>
 
 <script>
-  const contentRoot = document.querySelector('[data-blog-content]');
-  const modal = document.getElementById('blog-image-modal');
-  const modalImage = document.getElementById('blog-image-modal-img');
+  let cleanupImageZoom = null;
 
-  if (contentRoot && modal && modalImage) {
-    let pressTimer = null;
-    let activeImage = null;
+  const initImageZoom = () => {
+    const contentRoot = document.querySelector('[data-blog-content]');
+    const modal = document.getElementById('blog-image-modal');
+    const modalImage = document.getElementById('blog-image-modal-img');
+
+    if (!contentRoot || !modal || !modalImage) return () => {};
+
+    const controller = new AbortController();
+    const { signal } = controller;
 
     const openModal = (image) => {
-      const src = image.getAttribute('src');
+      const src = image.currentSrc || image.getAttribute('src');
       if (!src) return;
       modalImage.setAttribute('src', src);
       modalImage.setAttribute('alt', image.getAttribute('alt') ?? '');
-      modal.classList.remove('hidden');
-      modal.classList.add('flex');
+      modal.classList.add('is-open');
       modal.setAttribute('aria-hidden', 'false');
       document.body.classList.add('overflow-hidden');
     };
 
     const closeModal = () => {
-      modal.classList.add('hidden');
-      modal.classList.remove('flex');
+      modal.classList.remove('is-open');
       modal.setAttribute('aria-hidden', 'true');
-      modalImage.removeAttribute('src');
       document.body.classList.remove('overflow-hidden');
     };
 
-    const clearPressTimer = () => {
-      if (pressTimer) {
-        window.clearTimeout(pressTimer);
-        pressTimer = null;
-      }
-    };
+    contentRoot.addEventListener(
+      'click',
+      (event) => {
+        const target = event.target;
+        if (!(target instanceof HTMLImageElement)) return;
+        event.preventDefault();
+        openModal(target);
+      },
+      { signal }
+    );
 
-    const startPress = (event, image) => {
-      if (event.pointerType === 'mouse' && event.button !== 0) return;
-      activeImage = image;
-      clearPressTimer();
-      pressTimer = window.setTimeout(() => {
-        if (activeImage) {
-          openModal(activeImage);
+    modal.addEventListener(
+      'click',
+      (event) => {
+        if (event.target === modal || event.target.closest('[data-modal-close]')) {
+          closeModal();
         }
-      }, 1000);
-    };
+      },
+      { signal }
+    );
 
-    const cancelPress = () => {
-      activeImage = null;
-      clearPressTimer();
-    };
+    window.addEventListener(
+      'keydown',
+      (event) => {
+        if (event.key === 'Escape' && modal.classList.contains('is-open')) {
+          closeModal();
+        }
+      },
+      { signal }
+    );
 
-    const addZoomIcon = (image) => {
-      if (image.closest('.image-zoom-wrapper')) return;
-      const wrapper = document.createElement('span');
-      wrapper.className = 'image-zoom-wrapper';
-      image.parentNode?.insertBefore(wrapper, image);
-      wrapper.appendChild(image);
-      const icon = document.createElement('span');
-      icon.className = 'image-zoom-icon i-mdi-magnify-plus-outline';
-      icon.setAttribute('aria-hidden', 'true');
-      wrapper.appendChild(icon);
-    };
+    return () => controller.abort();
+  };
 
-    contentRoot.querySelectorAll('img').forEach((image) => {
-      addZoomIcon(image);
-      image.addEventListener('pointerdown', (event) => startPress(event, image));
-      image.addEventListener('pointerup', cancelPress);
-      image.addEventListener('pointerleave', cancelPress);
-      image.addEventListener('pointercancel', cancelPress);
-      image.addEventListener('pointermove', cancelPress);
-    });
+  const setupImageZoom = () => {
+    cleanupImageZoom?.();
+    cleanupImageZoom = initImageZoom();
+  };
 
-    modal.addEventListener('click', (event) => {
-      if (event.target === modal || event.target.closest('[data-modal-close]')) {
-        closeModal();
-      }
-    });
-
-    window.addEventListener('keydown', (event) => {
-      if (event.key === 'Escape' && modal.classList.contains('flex')) {
-        closeModal();
-      }
-    });
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', setupImageZoom, { once: true });
+  } else {
+    setupImageZoom();
   }
+
+  document.addEventListener('astro:page-load', setupImageZoom);
+  document.addEventListener('astro:after-swap', setupImageZoom);
 </script>
