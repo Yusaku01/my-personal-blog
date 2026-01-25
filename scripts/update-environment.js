@@ -91,7 +91,7 @@ ${fileDescriptions}
 2. ディレクトリ構造の変更時
 3. 主要な設定ファイルの変更時
 
-更新は\`npm run dev\`実行時に自動的にチェックされます。
+更新は\`pnpm run dev\`実行時に自動的にチェックされます。
 `;
 
   fs.writeFileSync(path.join(projectRoot, 'environment.md'), content);

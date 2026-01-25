@@ -1,0 +1,7 @@
+ignoredBuiltDependencies:
+  - simple-git-hooks
+  - workerd
+
+onlyBuiltDependencies:
+  - esbuild
+  - sharp

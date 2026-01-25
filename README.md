@@ -48,7 +48,7 @@ git clone [repository-url]
 2. 依存関係をインストール：
 
 ```bash
-npm install
+pnpm install
 ```
 
 3. 環境変数ファイルを作成：
@@ -61,17 +61,17 @@ cp .env.example .env
 4. 開発サーバーを起動：
 
 ```bash
-npm run dev
+pnpm run dev
 ```
 
 ## 📝 コマンド
 
-| コマンド          | 説明                                   |
-| :---------------- | :------------------------------------- |
-| `npm install`     | 依存関係をインストール                 |
-| `npm run dev`     | 開発サーバーを起動（`localhost:4321`） |
-| `npm run build`   | 本番用ビルドを生成（`./dist/`）        |
-| `npm run preview` | ビルドしたサイトをプレビュー           |
+| コマンド           | 説明                                   |
+| :----------------- | :------------------------------------- |
+| `pnpm install`     | 依存関係をインストール                 |
+| `pnpm run dev`     | 開発サーバーを起動（`localhost:4321`） |
+| `pnpm run build`   | 本番用ビルドを生成（`./dist/`）        |
+| `pnpm run preview` | ビルドしたサイトをプレビュー           |
 
 ## 🔄 自動更新
 
