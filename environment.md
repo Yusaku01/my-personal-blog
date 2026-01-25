@@ -76,14 +76,15 @@
 ├── astro.config.mjs
 ├── CLAUDE.md
 ├── environment.md
-├── package-lock.json
 ├── package.json
+├── pnpm-lock.yaml
+├── pnpm-workspace.yaml
 ├── README.md
 ├── todo.md
 ├── tsconfig.json
 └── uno.config.ts
 
-36 directories, 41 files
+36 directories, 42 files
 
 ```
 
@@ -113,4 +114,4 @@
 2. ディレクトリ構造の変更時
 3. 主要な設定ファイルの変更時
 
-更新は`npm run dev`実行時に自動的にチェックされます。
+更新は`pnpm run dev`実行時に自動的にチェックされます。

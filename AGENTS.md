@@ -30,10 +30,10 @@ tags: ['Astro', 'UnoCSS']
 
 ## Build, Test, and Development Commands
 
-- Dev server: `npm run dev` (runs `predev` to sync `environment.md`)
-- Build/Preview: `npm run build` / `npm run preview`
-- OGP images: `npm run generate-ogp` (requires local server at `http://localhost:4321`; run `npm run dev` in another terminal) or `npm run build:with-ogp`
-- Quality gates: `npm run lint`, `npm run lint:fix`, `npm run format`, `npm run format:check`, `npm run astro check`
+- Dev server: `pnpm run dev` (runs `predev` to sync `environment.md`)
+- Build/Preview: `pnpm run build` / `pnpm run preview`
+- OGP images: `pnpm run generate-ogp` (requires local server at `http://localhost:4321`; run `pnpm run dev` in another terminal) or `pnpm run build:with-ogp`
+- Quality gates: `pnpm run lint`, `pnpm run lint:fix`, `pnpm run format`, `pnpm run format:check`, `pnpm run astro check`
 
 ## Coding Style & Naming Conventions
 
@@ -44,8 +44,8 @@ tags: ['Astro', 'UnoCSS']
 
 ## Testing Guidelines
 
-- No unit harness yet. Required checks: `lint` + `astro check` + manual `npm run preview`
-- When images/OGP change, run `npm run generate-ogp` and visually verify
+- No unit harness yet. Required checks: `lint` + `astro check` + manual `pnpm run preview`
+- When images/OGP change, run `pnpm run generate-ogp` and visually verify
 
 ## Commit & Pull Request Guidelines
 

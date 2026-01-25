@@ -17,7 +17,7 @@
     "format": "prettier --write .",
     "format:check": "prettier --check .",
     "generate-ogp": "node scripts/build-ogp.js",
-    "build:with-ogp": "npm run generate-ogp && npm run build"
+    "build:with-ogp": "pnpm run generate-ogp && pnpm run build"
   },
   "dependencies": {
     "@astrojs/cloudflare": "^12.6.8",
@@ -70,8 +70,8 @@
     "unocss": "^66.5.10"
   },
   "simple-git-hooks": {
-    "pre-commit": "npx lint-staged",
-    "pre-push": "npm run format:check && npm run lint"
+    "pre-commit": "pnpm exec lint-staged",
+    "pre-push": "pnpm run format:check && pnpm run lint"
   },
   "lint-staged": {
     "*.{js,jsx,ts,tsx,astro}": [
