@@ -48,7 +48,7 @@ export async function getQiitaPosts(username?: string): Promise<ExternalPost[]> 
 
     const items: QiitaPost[] = await response.json();
 
-    const posts = await Promise.all(
+    const posts: ExternalPost[] = await Promise.all(
       items.map(async (item) => ({
         title: item.title,
         url: item.url,
@@ -56,7 +56,7 @@ export async function getQiitaPosts(username?: string): Promise<ExternalPost[]> 
         publishDate: parseDate(item.created_at),
         thumbnail: await getOGPImage(item.url),
         isExternal: true as const,
-        source: 'qiita',
+        source: 'qiita' as const,
         tags: item.tags.map((tag) => tag.name),
       }))
     );

@@ -20,7 +20,7 @@
     "build:with-ogp": "pnpm run generate-ogp && pnpm run build"
   },
   "dependencies": {
-    "@astrojs/cloudflare": "^12.6.8",
+    "@astrojs/cloudflare": "^12.6.12",
     "@astrojs/mdx": "^4.3.13",
     "@astrojs/react": "^4.4.2",
     "@astrojs/rss": "^4.0.15",
@@ -47,6 +47,7 @@
   "devDependencies": {
     "@astrojs/check": "^0.9.6",
     "@iconify-json/ic": "^1.2.2",
+    "@types/hast": "^3.0.4",
     "@typescript-eslint/eslint-plugin": "^7.18.0",
     "@typescript-eslint/parser": "^7.18.0",
     "@unocss/autocomplete": "^66.5.10",
@@ -54,6 +55,7 @@
     "@unocss/preset-icons": "^66.5.10",
     "@unocss/preset-typography": "^66.5.10",
     "@unocss/preset-wind": "^66.5.10",
+    "@unocss/preset-wind3": "^66.6.0",
     "@unocss/reset": "^66.6.0",
     "@unocss/transformer-directives": "^66.5.10",
     "@unocss/transformer-variant-group": "^66.5.10",
@@ -84,8 +86,13 @@
       "prettier --write"
     ]
   },
-  "overrides": {
-    "strip-ansi": "^6.0.1"
+  "pnpm": {
+    "overrides": {
+      "strip-ansi": "^6.0.1",
+      "wrangler": "4.59.1",
+      "undici": "7.18.2",
+      "lodash": "4.17.23"
+    }
   },
   "description": "このプロジェクトは、Astroを使用して構築された個人ブログサイトです。",
   "main": "index.js",

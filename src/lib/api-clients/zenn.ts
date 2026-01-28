@@ -58,7 +58,7 @@ export async function getZennPosts(username?: string): Promise<ExternalPost[]> {
     const data = await response.json();
     const articles: ZennPost[] = data.articles || [];
 
-    const posts = await Promise.all(
+    const posts: ExternalPost[] = await Promise.all(
       articles.map(async (article) => {
         const fullUrl = `https://zenn.dev${article.path}`;
         let thumbnail: string | undefined;
@@ -78,7 +78,7 @@ export async function getZennPosts(username?: string): Promise<ExternalPost[]> {
           publishDate: parseDate(article.published_at),
           thumbnail,
           isExternal: true as const,
-          source: 'zenn',
+          source: 'zenn' as const,
           tags: article.article_type ? [article.article_type] : [],
         };
       })
@@ -127,7 +127,7 @@ export async function getZennScraps(username?: string): Promise<ExternalPost[]> 
     const data = await response.json();
     const scraps: ZennScrap[] = data.scraps || [];
 
-    const posts = await Promise.all(
+    const posts: ExternalPost[] = await Promise.all(
       scraps.map(async (scrap) => ({
         title: scrap.title,
         url: `https://zenn.dev${scrap.path}`,
@@ -136,7 +136,7 @@ export async function getZennScraps(username?: string): Promise<ExternalPost[]> 
         // Zenn Scrapは固定OGPを使用
         thumbnail: ZENN_SCRAP_THUMBNAIL,
         isExternal: true as const,
-        source: 'zennScrap',
+        source: 'zennScrap' as const,
         tags: ['scrap'],
       }))
     );

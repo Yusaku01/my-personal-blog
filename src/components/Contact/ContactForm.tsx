@@ -34,14 +34,10 @@ export default function ContactForm() {
   useEffect(() => {
     const renderRecaptcha = () => {
       const grecaptcha = window.grecaptcha;
-      if (
-        recaptchaContainerRef.current &&
-        grecaptcha &&
-        grecaptcha.render &&
-        recaptchaWidgetId === null
-      ) {
+      const container = recaptchaContainerRef.current;
+      if (container && grecaptcha && grecaptcha.render && recaptchaWidgetId === null) {
         const renderWidget = () => {
-          const id = grecaptcha.render(recaptchaContainerRef.current, {
+          const id = grecaptcha.render(container, {
             sitekey: import.meta.env.PUBLIC_GOOGLE_RECAPTCHA_SITE_KEY,
           });
           setRecaptchaWidgetId(id);
