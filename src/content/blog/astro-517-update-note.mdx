@@ -1,0 +1,57 @@
+---
+title: '私的 Astro v5.17 note① by Saku'
+description: 'Astro v5.17のマイナーアップデートについて、表面上理解できた部分をまとめた自分メモです。'
+publishDate: 2026-01-31
+author: 'Saku'
+image: '/images/blog/common/image_thumnail-2.png'
+tags: ['Astro', 'Sharp', 'Image Optimization', 'Content Collections']
+---
+
+こんにちは、Saku です！
+
+この記事は Astro のマイナーアップデートである **v5.17** について、表面上理解した部分のみまとめていこうと思います。
+
+今回参考にしているのは、[こちら](https://astro.build/blog/astro-5170/)の記事です。
+
+余談ですが、今回この記事最下部の方に Contributer として名前が記載されていたのがかなり嬉しかったです😌
+
+## 今回のアップデート概要
+
+さて本題ですが、今回のアップデートでは大きく以下6つの変更がありました。
+
+- **Configure dev toolbar placement** — Astro 開発環境での Dev toolbar の配置場所の設定に関するもの
+- **Async parsing in the file() loader** — `file()` ローダーの Async パースに関するもの
+- **Partitioned cookies support** — Cookie サポートの強化に関するもの
+- **Background color for image transformations** — `astro:assets` の `<Image />` など用いる画像最適化時の背景色選択に関するもの
+- **Sharp kernel selection for image resizing** — Astro の Image 最適化処理の内部で使用されている Sharp、その kernel の選択に関するもの
+- **retainBody option for glob() loader** — Content Collection 機能の内部処理で登場する `retainBody` のオプションに関するもの
+
+個人的にまだ完全理解まで及んでいない部分もあるので、少し理解を詰められた以下2点について深掘りしていきたいと思います。
+
+- Sharp の kernel 選択に関するもの
+- `retainBody` オプションに関するもの
+
+## Sharp と kernel 周りの変更
+
+Astro には `astro:assets` という機能があります。分かりやすく言うと Next.js の `next/image` のような機能で、`<Image />` や `<Picture />` コンポーネントを用いて画像最適化を行うことができます。
+
+> **Sharp** とは、Node.js での高速な画像処理を行うための OSS ライブラリです。内部は C++ で書かれており、`astro:assets` の画像最適化処理でも使用されています。
+> https://sharp.pixelplumbing.com/
+
+この Sharp の画像最適化処理の中では、**kernel** と呼ばれるいくつかの補間アルゴリズムが使用されています。Sharp および `astro:assets` 内でデフォルトで使用されるのは **lanczos3** と呼ばれるものです[^1]。
+
+[^1]: lanczos（ランチョス）は数学者の名前に由来しています。1D で複数回処理を行い画像の圧縮を行う仕組みですが、これ以上は数学的な領域になるので、後ほどしっかり理解しておきたいところです。
+
+この lanczos3 は基本的に汎用性が高く、そつなく圧縮処理をしてくれます。しかし、**最適化対象の画像によってはより適した kernel の選択肢がある**場合があります。こうしたケースに対応するため、今回の Astro アップデートで kernel のオプションが追加されたのだと理解しています。
+
+Sharp 自体はもともと複数の kernel を選択できるようになっており、今回の Astro はこの **Sharp 既存の機能を取り入れた**形になっているのかなと思います。
+
+> ここまで lanczos3 などの名前を出しましたが、これは画像の縮小（downsize）に属するものです。拡大（upsampling）側にも別の kernel が存在します。
+
+詳細な Sharp の resize ドキュメントは[こちら](https://sharp.pixelplumbing.com/api-resize/)を参照してください。
+
+個人的に、自分の個人ブログではテキストベースの OG 画像を多く取り扱っているので、**mks2021 などに切り替えてみて生成物やパフォーマンスの差を検証してみよう**と思っています。
+
+---
+
+思ったより長くなったので、`retainBody` オプション周りの変更についてはまた後日まとめます。
