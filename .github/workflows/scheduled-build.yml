@@ -9,7 +9,7 @@ on:
       - 'src/content/**'
       - 'scripts/build-ogp.js'
       - 'package.json'
-      - 'package-lock.json'
+      - 'pnpm-lock.yaml'
       - '.github/workflows/scheduled-build.yml'
   workflow_dispatch: {} # 手動トリガーも許可
 
@@ -32,17 +32,22 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 10
+
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: ${{ env.NODE_VERSION }}
-          cache: npm
+          cache: pnpm
 
       - name: Install dependencies
-        run: npm ci
+        run: pnpm install --frozen-lockfile
 
       - name: Build (fetch external content + ogp)
-        run: npm run build:with-ogp
+        run: pnpm run build:with-ogp
 
       - name: Deploy to Cloudflare Pages
         if: env.CF_PAGES_PROJECT_NAME != '' && env.CLOUDFLARE_ACCOUNT_ID != '' && env.CLOUDFLARE_API_TOKEN != ''
