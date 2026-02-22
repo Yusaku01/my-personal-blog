@@ -86,9 +86,24 @@ const gaId = import.meta.env.PUBLIC_GOOGLE_ANALYTICS_ID;
       // Wrap in an IIFE to avoid leaking identifiers across reruns/navigation.
       (() => {
         const STORAGE_KEY = 'theme';
+        const storage = (() => {
+          const noop = {
+            getItem: () => null,
+            setItem: () => {},
+          };
+
+          try {
+            const key = '__storage-test__';
+            localStorage.setItem(key, key);
+            localStorage.removeItem(key);
+            return localStorage;
+          } catch {
+            return noop;
+          }
+        })();
 
         const resolveTheme = () => {
-          const stored = localStorage.getItem(STORAGE_KEY);
+          const stored = storage.getItem(STORAGE_KEY);
           if (stored === 'dark' || stored === 'light') {
             return stored;
           }
@@ -97,7 +112,7 @@ const gaId = import.meta.env.PUBLIC_GOOGLE_ANALYTICS_ID;
 
         const applyTheme = (theme = resolveTheme()) => {
           document.documentElement.classList.toggle('dark', theme === 'dark');
-          localStorage.setItem(STORAGE_KEY, theme);
+          storage.setItem(STORAGE_KEY, theme);
           window.dispatchEvent(new Event('themechange'));
         };
 
