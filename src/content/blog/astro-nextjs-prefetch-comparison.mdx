@@ -56,7 +56,7 @@ a. Speculation Rules API に対応している場合は、`<script type="specula
 b. `<link rel="prefetch">` を挿入する。  
 c. `fetch()` を実行する。  
 
-ここで注目すべきは、AstroはPrefetchの実装にあたって、ブラウザのAPIを拡張する形で実装している点です。Speculation Rules APIなどを活用することで、ブラウザの最適化や制御の恩恵を受けることができます。
+ここで注目すべきは、AstroはブラウザのAPIを拡張する形でPrefetchを実現している点です。Speculation Rules APIなどを活用することで、ブラウザの最適化や制御の恩恵を受けることができます。
 
 
 ### 基本的な使い方
@@ -71,7 +71,7 @@ export default defineConfig({
 });
 ```
 
-個別リンクごとにPrefetchを有効化したい場合は、対象リンクに `data-astro-prefetch` 属性を付与します。サイト全体で有効化したい場合は、configファイルで `prefetch` や `prefetchAll` を設定します。
+個別リンクごとにPrefetchを有効化したい場合は、対象リンクに `data-astro-prefetch` 属性を付与します。
 
 ```astro
 <a href="/target" data-astro-prefetch>Go to target</a>
