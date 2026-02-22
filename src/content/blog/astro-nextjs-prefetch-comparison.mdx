@@ -40,7 +40,7 @@ Astro Prefetchの概要など詳しい情報は、Astro公式のPrefetchのガ�
 
 https://docs.astro.build/en/guides/prefetch/
 
-説明が重複するかもしれませんが、Astroのプリフェッチは「**MPAの次ページをユーザー操作前に先読みして、遷移体感を速くするためのオプトイン機能**」です。実態としては、data-astro-prefetch を付けたサイト内リンクを対象に、hover/tap/viewport/load の戦略で先読みし、低速回線時は節約寄りに動く設計です。
+説明が重複するかもしれませんが、Astroのプリフェッチは「**MPAの次ページをユーザー操作前に先読みして、遷移体感を速くするためのオプトイン機能**」です。実態としては、data-astro-prefetch を付けたサイト内リンクを対象に、hover/tap/viewport/load の各トリガーポイントで先読みし、低速回線時は節約寄りに動く設計です。
 
 > 上記の**次のページ**を取得するという部分ですが、同じPrefetchでもAstroとNext.jsで次のページ（画面）の先読み方法が異なるので、ここはフォーカスしておきたいところです。
 
@@ -172,7 +172,7 @@ export default function Page() {
 
 ## Astro/Next.js Prefetchそれぞれの違いを整理
 
-これまで色々ふれてきましたが、AstroとNext.jsのPrefetch戦略の違いを整理しました。
+これまで色々ふれてきましたが、AstroとNext.jsのPrefetchアプローチの違いを整理しました。
 
 | | Astro | Next.js |
 |--------|-------|---------|

@@ -124,6 +124,17 @@ const { Content, headings } = await post.render();
     word-break: break-word;
   }
 
+  .prose table {
+    table-layout: fixed;
+    width: 100%;
+  }
+
+  .prose th,
+  .prose td {
+    overflow-wrap: break-word;
+    word-break: break-word;
+  }
+
   .prose .rlc-container:hover {
     @apply text-gray-900 dark:text-gray-100;
   }
