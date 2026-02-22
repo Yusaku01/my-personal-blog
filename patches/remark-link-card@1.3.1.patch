@@ -1,0 +1,26 @@
+diff --git a/index.js b/index.js
+index 5de58d63759383c8644e1a982b63eb85f838a19b..3d78d39675c40cbf210d0abdd7a81fa3f9e8f61f 100644
+--- a/index.js
++++ b/index.js
+@@ -12,7 +12,7 @@ const defaultOutputDirectory = '/remark-link-card/';
+ const rlc = (options) => {
+   return async (tree) => {
+     transformers = [];
+-    visit(tree, 'paragraph', (paragraphNode, index) => {
++    visit(tree, 'paragraph', (paragraphNode, index, parent) => {
+       if (paragraphNode.children.length !== 1) {
+         return tree;
+       }
+@@ -39,7 +39,11 @@ const rlc = (options) => {
+             };
+ 
+             // Replace paragraph node with linkCardNode
+-            tree.children.splice(index, 1, linkCardNode);
++            const targetChildren =
++              parent && Array.isArray(parent.children)
++                ? parent.children
++                : tree.children;
++            targetChildren.splice(index, 1, linkCardNode);
+           });
+         }
+       });
