@@ -11,7 +11,7 @@ AstroとNext.jsは、どちらもPrefetch機能を備えていますが、その
 
 ## そもそもPrefetchとは何か
 
-端的に言うと、ユーザー体験の向上のために、ユーザーが到達・利用するであろうコンテンツを**先読み（取得）&キャッシュしておく**ことです。こうすることで、ユーザーリクエスト時にデータを取得する必要が減り、描画までの時間が早くなるという仕組みです。
+端的に言うと、ユーザー体験の向上のために、ユーザーが到達・利用するであろうコンテンツを**先読み（取得）&キャッシュしておく**ことです。こうすることで、ユーザーリクエスト時にデータを取得する必要が減り、描画までの時間が短くなるという仕組みです。
 
 いくつかの角度からPrefetchについて以前記述したので、興味がある方はぜひ見ていただけると嬉しいです。
 
@@ -42,7 +42,7 @@ https://docs.astro.build/en/guides/prefetch/
 
 説明が重複するかもしれませんが、Astroのプリフェッチは「**MPAの次ページをユーザー操作前に先読みして、遷移体感を速くするためのオプトイン機能**」です。実態としては、data-astro-prefetch を付けたサイト内リンクを対象に、hover/tap/viewport/load の戦略で先読みし、低速回線時は節約寄りに動く設計です。
 
-> 上記の**次のページ**を取得すると言う部分ですが、同じPrefetchでもAstroとNext.jsで次のページ（画面）の先読み方法が異なるので、ここはフォーカスしておきたいところです。
+> 上記の**次のページ**を取得するという部分ですが、同じPrefetchでもAstroとNext.jsで次のページ（画面）の先読み方法が異なるので、ここはフォーカスしておきたいところです。
 
 ### どのように実現されているか
 
@@ -71,13 +71,13 @@ export default defineConfig({
 });
 ```
 
-個別リンクごとにPrefetchをtrueにしたい場合は、上記のconfigファイルの設定に加えて、Prefetchをtrueにしたいリンクに `data-astro-prefetch` 属性を付与します。
+個別リンクごとにPrefetchを有効化したい場合は、対象リンクに `data-astro-prefetch` 属性を付与します。サイト全体で有効化したい場合は、configファイルで `prefetch` や `prefetchAll` を設定します。
 
 ```astro
 <a href="/target" data-astro-prefetch>Go to target</a>
 ```
 
-プロジェクト内の全ての要素にPrefetchを適用したい場合は、configファイルの `prefetch` 内に、`prefetchAll: true` と言う設定を加えれば、全てのサイト内リンクがPrefetchの対象になります。
+プロジェクト内の全ての要素にPrefetchを適用したい場合は、configファイルの `prefetch` 内に、`prefetchAll: true` という設定を加えれば、全てのサイト内リンクがPrefetchの対象になります。
 
 ```js
 import { defineConfig } from "astro/config";
@@ -120,10 +120,10 @@ Prefetchをtrueにしつつも、できる限り不要な通信を避けたい�
 
 ## Next.jsのPrefetchとは
 
-Next.jsのPrefetchも基本的には、ユーザー体験の向上のための機能です。ただし、Astroとはアプローチが異なります。Next.jsのPrefetchは、主に`next/link`コンポーネントを使用して行います。`next/link`を使用しユーザーがリンクに近づいたとき、またはhoverした時にページのコードやデータを先読みすることで、遷移を高速化します
+Next.jsのPrefetchも基本的には、ユーザー体験の向上のための機能です。ただし、Astroとはアプローチが異なります。Next.jsのPrefetchは、主に`next/link`コンポーネントを使用して行います。`next/link`を使用し、ユーザーがリンクに近づいたとき、またはhoverした時にページのコードやデータを先読みすることで、遷移を高速化します。
 
 > **[`next/link`と`Linkコンポーネント`](https://nextjs.org/docs/app/api-reference/components/link)**  
-> 今回は、Prefetchの機能として`next/link`と`Link`を取り上げていますが、用途・機能はPrefetchに限りません。これはPrefetchの他にもSPAのようなフルリロードせずに画面を遷移をさせたり、スクロール制御をしたり、遷移のフックを制御したり、遷移中の状態を取得したり、Hookを提供したりなどをしています。色々な機能を有していますが、わかりやすくまとめると名前の通り、Next.jsにおいてリンク（遷移）するという機能を詰め合わせたようなAPIになります。その中の1機能・役割としてPrefetchがあるわけです。今回は、そのPrefetchの部分にのみフォーカスし扱います。
+> 今回は、Prefetchの機能として`next/link`と`Link`を取り上げていますが、用途・機能はPrefetchに限りません。これはPrefetchの他にもSPAのようなフルリロードせずに画面遷移させたり、スクロール制御をしたり、遷移のフックを制御したり、遷移中の状態を取得したり、Hookを提供したりなどをしています。色々な機能を有していますが、わかりやすくまとめると名前の通り、Next.jsにおいてリンク（遷移）するという機能を詰め合わせたようなAPIになります。その中の1機能・役割としてPrefetchがあるわけです。今回は、そのPrefetchの部分にのみフォーカスして扱います。
 
 ### どのように実現されているか
 
@@ -139,7 +139,7 @@ Next.jsのPrefetchも基本的には、ユーザー体験の向上のための�
 「優先度」と「同時接続数」は、AstroのPrefetchでは存在しないNext.js独自の概念です。
 
 - **優先度** — 何を優先的にPrefetchするかを決めるもので、`Intent > Default > Background` の3段階があります。
-- **同時接続数** — 一度にどれくらいリクエストを飛ばせるかの上限で、Intentでは上限12本、Defaultでは上限4本が設定されています。
+- **同時接続数** — 一度にどれくらいリクエストを飛ばせるかの上限で、（Next.js v16.1.6 の実装では）Intentでは上限12本、Defaultでは上限4本が設定されています。
 
 Next.jsではRSCのセグメント単位でフェッチを行うため、1リンクのプリフェッチで複数リクエストが発生しがちです。この接続上限がないと、ブラウザのネットワークキューがつまる可能性があります。一番重要なのはユーザーが実際に飛ぶリンクを先読みすること（100%の精度は難しいですが）なので、不要な取得でアプリのパフォーマンスが低下することは望ましくありません。
 
@@ -177,13 +177,22 @@ export default function Page() {
 | | Astro | Next.js |
 |--------|-------|---------|
 | どのようにPrefetchを実現しているか | ブラウザAPIの拡張（Speculation Rules API（実験的機能有効時） → `<link rel="prefetch">` → fetch APIのフォールバック） | 独自のロジック（Router内部でfetch APIを使用） |
-| Prefetchのトリガーや制御 | デフォルトhover、他にtap/viewport/loadのOptionあり | デフォルトViewport、`prefetch` propでtrue/falseの設定のみ |
+| Prefetchのトリガーや制御 | デフォルトhover、他にtap/viewport/loadのOptionあり | デフォルトは `prefetch="auto"`（省略時は同等）。`prefetch` propで `true` / `false` も指定可能 |
 | Prefetch対象（単位） | HTML（ページ単位） | RSC Payload（レイアウトセグメント単位） |
 | ネットワーク状態への配慮 | あり（低速回線・データセーバー時にtapへ自動フォールバック） | 限定的（データセーバー有効時にPrefetchを抑制） |
 
 表を見ていただければ分かる通り、Prefetchの実現の仕方・トリガー制御など開発者が管理できる自由度・先読みの仕方（データの取得方法）・ネットワーク状態への配慮などを軸に比較してきましたが、多々違いがありました。
 
-特にPrefetch対象の違いは、ネットワーク負荷にも影響します。Astroは次ページのHTML全体を1リクエストで取得するため、シンプルですがページサイズがそのまま通信量になります。一方Next.jsは、RSC Payloadをレイアウトセグメント単位で取得するため、共通レイアウト部分を省略でき、差分のみの効率的な先読みが可能です。ただし、セグメントごとに複数リクエストが発生するため、前述の同時接続数制御が重要になります。
+特にPrefetch対象の違いは、ネットワーク負荷にも影響します。Astroはページ単位（主にHTML）で先読みするため、設計はシンプルでページサイズが通信量に直結します。一方Next.jsは、RSC Payloadをレイアウトセグメント単位で取得するため、共通レイアウト部分を省略しつつ先読みできます。ただし、状況によってはセグメントごとに複数リクエストが発生するため、前述の同時接続数制御が重要になります。
+
+以下1枚目がAstro、2枚目がNext.jsのPrefetchの様子です。
+
+<div class="grid gap-4 grid-cols-1 md:grid-cols-2">
+  <img class="w-full h-auto" src="/images/blog/img_astro-prefetch-data.jpg"
+alt="Astro Prefetch の様子" />
+  <img class="w-full h-auto" src="/images/blog/img_next-prefetch-data.jpg"
+alt="Next.js Prefetch の様子" />
+</div>
 
 AstroとNext.jsはそれぞれアプローチが異なるものの、如何にアプリのパフォーマンスとユーザー体験の両輪を最大限良くするかにフォーカスしているように感じます。
 
