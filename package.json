@@ -92,6 +92,9 @@
       "wrangler": "4.59.1",
       "undici": "7.18.2",
       "lodash": "4.17.23"
+    },
+    "patchedDependencies": {
+      "remark-link-card@1.3.1": "patches/remark-link-card@1.3.1.patch"
     }
   },
   "description": "このプロジェクトは、Astroを使用して構築された個人ブログサイトです。",

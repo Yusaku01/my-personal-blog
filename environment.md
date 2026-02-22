@@ -10,8 +10,11 @@
 │   ├── lighthouse
 │   │   └── lh_20250419.html
 │   ├── astro-component-structure.md
+│   ├── kuroco-membership-favorite-history-feasibility.md
 │   ├── public-release-checklist.md
 │   └── react-to-astro-blog-components.md
+├── patches
+│   └── remark-link-card@1.3.1.patch
 ├── public
 │   ├── fonts
 │   │   ├── zen-kaku-gothic-new-jp-400.woff2
@@ -76,6 +79,7 @@
 ├── astro.config.mjs
 ├── CLAUDE.md
 ├── environment.md
+├── eslint.config.mjs
 ├── package.json
 ├── pnpm-lock.yaml
 ├── pnpm-workspace.yaml
@@ -84,7 +88,7 @@
 ├── tsconfig.json
 └── uno.config.ts
 
-36 directories, 42 files
+37 directories, 45 files
 
 ```
 
