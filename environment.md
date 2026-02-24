@@ -55,6 +55,7 @@
 │   ├── content
 │   │   ├── blog
 │   │   ├── findsFeed
+│   │   ├── profile
 │   │   └── config.ts
 │   ├── layouts
 │   │   └── Layout.astro
@@ -78,6 +79,7 @@
 │   └── env.d.ts
 ├── tests
 │   ├── remark-admonition.test.mjs
+│   ├── remark-code-filename.test.mjs
 │   └── remark-list-link-card-guard.test.mjs
 ├── AGENTS.md
 ├── astro.config.mjs
@@ -92,7 +94,7 @@
 ├── tsconfig.json
 └── uno.config.ts
 
-39 directories, 47 files
+40 directories, 48 files
 
 ```
 

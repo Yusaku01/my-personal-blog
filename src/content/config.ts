@@ -28,7 +28,26 @@ const findsFeed = defineCollection({
   }),
 });
 
+const profile = defineCollection({
+  type: 'data',
+  schema: z.object({
+    name: z.string(),
+    role: z.string(),
+    bio: z.string(),
+    socialLinks: z.array(
+      z.object({
+        name: z.string(),
+        url: z.string(),
+        iconLight: z.string(),
+        iconDark: z.string(),
+        class: z.string().optional(),
+      })
+    ),
+  }),
+});
+
 export const collections = {
   blog,
   findsFeed,
+  profile,
 };

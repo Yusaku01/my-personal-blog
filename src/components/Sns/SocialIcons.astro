@@ -1,5 +1,5 @@
 ---
-import { ProfileContent } from '../../lib/utils/profileData';
+import { getEntry } from 'astro:content';
 
 interface Props {
   class?: string;
@@ -39,7 +39,13 @@ const iconClasses = {
 };
 
 // 単一ソース
-const allLinks = ProfileContent.socialLinks;
+const profileEntry = await getEntry('profile', 'main');
+
+if (!profileEntry) {
+  throw new Error('Profile entry not found: src/content/profile/main.json');
+}
+
+const allLinks = profileEntry.data.socialLinks;
 
 // include/networks → 絞り込み対象
 const includeSet = new Set((include ?? networks ?? allLinks.map((s) => s.name)) as string[]);

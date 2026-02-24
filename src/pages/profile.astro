@@ -2,12 +2,20 @@
 import Layout from '../layouts/Layout.astro';
 import HeroSection from '../components/Hero/HeroSection.astro';
 import ProfileSection from '../components/Profile/ProfileSection.astro';
-import { ProfileContent } from '../lib/utils/profileData';
+import { getEntry } from 'astro:content';
 
 export const transition = { name: 'fade' };
 
 import { Image } from 'astro:assets';
 import myImage from '../assets/img/img_profile.png';
+
+const profileEntry = await getEntry('profile', 'main');
+
+if (!profileEntry) {
+  throw new Error('Profile entry not found: src/content/profile/main.json');
+}
+
+const profile = profileEntry.data;
 ---
 
 <Layout title="プロフィール | SAKUSPACE">
@@ -34,17 +42,15 @@ import myImage from '../assets/img/img_profile.png';
             <!-- 名前と肩書き -->
             <div class="text-center md:text-left">
               <p class="text-xl font-bold lg:text-2xl text-gray-900 dark:text-white">
-                {ProfileContent.name}
+                {profile.name}
               </p>
-              <p class="text-md text-gray-600 dark:text-gray-300 mt-1">{ProfileContent.role}</p>
+              <p class="text-md text-gray-600 dark:text-gray-300 mt-1">{profile.role}</p>
             </div>
           </div>
 
           <!-- 自己紹介セクション -->
           <ProfileSection title="自己紹介" className="mb-10">
-            <p class="text-gray-700 dark:text-gray-300 leading-relaxed">
-              {ProfileContent.bio}
-            </p>
+            <p class="text-gray-700 dark:text-gray-300 leading-relaxed">{profile.bio}</p>
           </ProfileSection>
 
           <!-- スキルセクション -->
