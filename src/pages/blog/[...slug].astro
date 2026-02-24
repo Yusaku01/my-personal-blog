@@ -4,6 +4,7 @@ import Layout from '../../layouts/Layout.astro';
 import TableOfContents from '../../components/Blog/TableOfContents.astro';
 import ShareButtons from '../../components/Sns/ShareButtons.astro';
 import { format } from 'date-fns';
+import { getEstimatedReadingTimeMinutes } from '../../lib/blog/readingTime';
 
 export const transition = { name: 'fade' };
 
@@ -17,6 +18,7 @@ export async function getStaticPaths() {
 
 const { post } = Astro.props;
 const { Content, headings } = await post.render();
+const estimatedReadingTimeMinutes = getEstimatedReadingTimeMinutes(post.body);
 ---
 
 <Layout title={`${post.data.title} | SAKUSPACE`} blogTitle={post.data.title}>
@@ -55,9 +57,26 @@ const { Content, headings } = await post.render();
         }
 
         <!-- 4. Publish Date and Author -->
-        <div class="flex items-center gap-4 text-gray-600 dark:text-gray-400 mb-8 text-sm">
-          <span>{format(post.data.publishDate, 'yyyy年MM月dd日')}</span>
-          {post.data.author && <span>{post.data.author}</span>}
+        <div
+          class="flex flex-wrap items-center gap-x-5 gap-y-1 text-gray-600 dark:text-gray-400 mb-8 text-sm"
+        >
+          <span class="blog-article-meta-item">
+            <span class="blog-article-meta-icon i-ic-round-calendar-today" aria-hidden="true"
+            ></span>
+            <span>{format(post.data.publishDate, 'yyyy年MM月dd日')}</span>
+          </span>
+          {
+            post.data.author && (
+              <span class="blog-article-meta-item">
+                <span class="blog-article-meta-prefix">written by</span>
+                <span>{post.data.author}</span>
+              </span>
+            )
+          }
+          <span class="blog-article-meta-item">
+            <span class="blog-article-meta-icon i-ic-round-schedule" aria-hidden="true"></span>
+            <span>読了目安 約{estimatedReadingTimeMinutes}分</span>
+          </span>
         </div>
 
         <!-- 5. Table of Contents -->
@@ -124,15 +143,381 @@ const { Content, headings } = await post.render();
     word-break: break-word;
   }
 
+  .blog-article-meta-item {
+    align-items: center;
+    display: inline-flex;
+    gap: 0.4rem;
+    white-space: nowrap;
+  }
+
+  .blog-article-meta-icon {
+    color: currentColor;
+    display: inline-flex;
+    flex-shrink: 0;
+    height: 1rem;
+    opacity: 0.85;
+    width: 1rem;
+  }
+
+  .blog-article-meta-prefix {
+    font-size: 0.78rem;
+    letter-spacing: 0.04em;
+    opacity: 0.78;
+  }
+
   .prose table {
+    border-collapse: collapse;
+    border: 1px solid #d1d5db;
+    border-spacing: 0;
     table-layout: fixed;
     width: 100%;
   }
 
+  html.dark .prose table {
+    border-color: #4b5563;
+  }
+
   .prose th,
   .prose td {
+    border: 1px solid #d1d5db;
     overflow-wrap: break-word;
+    padding: 0.625rem 0.875rem;
     word-break: break-word;
+  }
+
+  html.dark .prose th,
+  html.dark .prose td {
+    border-color: #4b5563;
+  }
+
+  .blog-article-content :where(ul ul, ul ol, ol ul, ol ol) {
+    margin-top: 0.75rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .blog-article-content .code-block-wrapper {
+    margin-top: 1.5rem;
+    margin-bottom: 1.5rem;
+    position: relative;
+  }
+
+  .blog-article-content .code-file-label {
+    align-items: center;
+    background: #e5e7eb;
+    border-bottom-right-radius: 0.88rem;
+    border-top-left-radius: 0.75rem;
+    box-shadow: 0 1px 0 rgb(15 23 42 / 0.08);
+    color: #1f2937;
+    display: inline-flex;
+    font-size: 0.94rem;
+    font-weight: 700;
+    left: 0;
+    letter-spacing: 0.01em;
+    line-height: 1;
+    max-width: calc(100% - 4.8rem);
+    overflow: hidden;
+    padding: 0.48rem 0.95rem;
+    pointer-events: none;
+    position: absolute;
+    text-overflow: ellipsis;
+    top: 0;
+    white-space: nowrap;
+    z-index: 1;
+  }
+
+  .blog-article-content .code-copy-live {
+    border: 0;
+    clip-path: inset(50%);
+    clip: rect(0 0 0 0);
+    height: 1px;
+    margin: -1px;
+    overflow: hidden;
+    padding: 0;
+    position: absolute;
+    white-space: nowrap;
+    width: 1px;
+  }
+
+  .blog-article-content .code-copy-button {
+    align-items: center;
+    background: rgb(18 34 61 / 0.92);
+    border: 1px solid rgb(103 137 197 / 0.55);
+    border-radius: 0.72rem;
+    box-shadow:
+      0 0 0 1px rgb(148 163 184 / 0.2),
+      0 8px 20px rgb(15 23 42 / 0.25);
+    color: #e2e8f0;
+    cursor: pointer;
+    display: inline-flex;
+    height: 2.2rem;
+    justify-content: center;
+    line-height: 1;
+    opacity: 0;
+    padding: 0;
+    pointer-events: none;
+    position: absolute;
+    right: 0.7rem;
+    top: 0.7rem;
+    transform: translateY(-2px) scale(0.96);
+    transition:
+      border-color 180ms ease,
+      box-shadow 180ms ease,
+      color 180ms ease,
+      opacity 180ms ease,
+      transform 180ms ease,
+      visibility 0s linear 180ms;
+    visibility: hidden;
+    width: 2.2rem;
+    z-index: 2;
+  }
+
+  .blog-article-content .code-copy-button[data-copy-visible='true'] {
+    opacity: 1;
+    pointer-events: auto;
+    transform: translateY(0) scale(1);
+    transition-delay: 0s;
+    visibility: visible;
+  }
+
+  .blog-article-content .code-copy-button::after {
+    background: #0f172a;
+    border-radius: 0.45rem;
+    color: #f8fafc;
+    content: attr(data-copy-feedback);
+    font-size: 0.7rem;
+    font-weight: 600;
+    left: 50%;
+    opacity: 0;
+    padding: 0.22rem 0.45rem;
+    pointer-events: none;
+    position: absolute;
+    top: calc(100% + 0.35rem);
+    transform: translate(-50%, -4px);
+    transition:
+      opacity 160ms ease,
+      transform 160ms ease;
+    white-space: nowrap;
+  }
+
+  .blog-article-content .code-copy-button:hover {
+    border-color: #93c5fd;
+    box-shadow:
+      0 0 0 1px rgb(148 163 184 / 0.28),
+      0 10px 24px rgb(15 23 42 / 0.32);
+    transform: translateY(-1px);
+  }
+
+  .blog-article-content .code-copy-button:focus-visible {
+    outline: 2px solid #38bdf8;
+    outline-offset: 2px;
+  }
+
+  .blog-article-content .code-copy-button[data-copy-state='success'],
+  .blog-article-content .code-copy-button[data-copy-state='error'] {
+    transform: translateY(-1px);
+  }
+
+  .blog-article-content .code-copy-button[data-copy-state='success'] {
+    border-color: #22d3ee;
+    color: #67e8f9;
+  }
+
+  .blog-article-content .code-copy-button[data-copy-state='error'] {
+    border-color: #f87171;
+    color: #fecaca;
+  }
+
+  .blog-article-content .code-copy-button[data-copy-state='success']::after,
+  .blog-article-content .code-copy-button[data-copy-state='error']::after {
+    opacity: 1;
+    transform: translate(-50%, 0);
+  }
+
+  .blog-article-content .code-copy-icon {
+    font-size: 1.12rem;
+    line-height: 1;
+    position: absolute;
+    transition:
+      opacity 150ms ease,
+      transform 150ms ease;
+  }
+
+  .blog-article-content .code-copy-icon--success {
+    opacity: 0;
+    transform: scale(0.75);
+  }
+
+  .blog-article-content .code-copy-button[data-copy-state='success'] .code-copy-icon--copy {
+    opacity: 0;
+    transform: scale(0.72);
+  }
+
+  .blog-article-content .code-copy-button[data-copy-state='success'] .code-copy-icon--success {
+    opacity: 1;
+    transform: scale(1);
+  }
+
+  .blog-article-content pre.astro-code {
+    --code-line-number-gap: 1.4rem;
+    --code-line-height: 0;
+    --code-line-number-width: 2.35rem;
+    --code-column-divider-color: rgb(148 163 184 / 0.35);
+    --code-column-divider-x: calc(
+      var(--code-line-number-width) + (var(--code-line-number-gap) * 0.5)
+    );
+    --code-column-divider-extra-height: 20px;
+    --code-column-divider-height: calc(100% + var(--code-column-divider-extra-height));
+    --code-column-divider-top: calc(var(--code-column-divider-extra-height) / -2);
+    background: var(--shiki-dark-bg, #111827) !important;
+    border: 1px solid #4b5563;
+    border-radius: 0.75rem;
+    color: var(--shiki-dark, #e5e7eb) !important;
+    margin-top: 0 !important;
+    margin-bottom: 0 !important;
+    overflow-x: auto;
+    padding: 2.4rem 0.85rem !important;
+  }
+
+  .blog-article-content pre.astro-code[data-code-filename] {
+    padding-top: 3rem !important;
+  }
+
+  .blog-article-content pre.astro-code code {
+    counter-reset: code-line;
+    display: block;
+    min-width: max-content;
+    position: relative;
+  }
+
+  .blog-article-content pre.astro-code code::before {
+    background: var(--code-column-divider-color);
+    content: '';
+    height: var(--code-column-divider-height, 100%) !important;
+    left: var(--code-column-divider-x);
+    pointer-events: none;
+    position: absolute;
+    top: var(--code-column-divider-top, 0);
+    width: 1px;
+  }
+
+  .blog-article-content pre.astro-code code > span.line {
+    display: block;
+    line-height: var(--code-line-height);
+    min-height: calc(1em * var(--code-line-height));
+    padding-left: calc(var(--code-line-number-width) + var(--code-line-number-gap));
+    position: relative;
+  }
+
+  .blog-article-content pre.astro-code code > span.line::before {
+    color: #94a3b8;
+    content: counter(code-line);
+    counter-increment: code-line;
+    font-size: 0.78rem;
+    font-variant-numeric: tabular-nums;
+    left: 0;
+    line-height: var(--code-line-height);
+    opacity: 0.8;
+    pointer-events: none;
+    position: absolute;
+    text-align: right;
+    user-select: none;
+    width: var(--code-line-number-width);
+  }
+
+  .blog-article-content pre.astro-code span {
+    color: var(--shiki-dark) !important;
+  }
+
+  .blog-article-content pre.astro-code span[style*='--shiki-dark'] {
+    color: var(--shiki-dark) !important;
+  }
+
+  html.dark .blog-article-content .code-copy-button {
+    background: rgb(15 23 42 / 0.9);
+    border-color: rgb(71 85 105 / 0.9);
+    box-shadow:
+      0 0 0 1px rgb(100 116 139 / 0.3),
+      0 10px 24px rgb(2 6 23 / 0.55);
+    color: #e2e8f0;
+  }
+
+  html.dark .blog-article-content .code-copy-button:hover {
+    border-color: #7dd3fc;
+  }
+
+  html.dark .blog-article-content .code-copy-button[data-copy-state='success'] {
+    border-color: #22d3ee;
+    color: #a5f3fc;
+  }
+
+  html.dark .blog-article-content .code-copy-button[data-copy-state='error'] {
+    border-color: #fb7185;
+    color: #fecdd3;
+  }
+
+  html.dark .blog-article-content .code-file-label {
+    background: #dbe3ee;
+    color: #0f172a;
+    box-shadow: 0 1px 0 rgb(15 23 42 / 0.15);
+  }
+
+  .blog-article-content .admonition {
+    border: 1px solid #d1d5db;
+    border-radius: 0.75rem;
+    margin: 1.5rem 0;
+    padding: 0.875rem 1rem 1rem;
+  }
+
+  .blog-article-content .admonition__title {
+    font-size: 0.95rem;
+    font-weight: 700;
+    margin: 0;
+  }
+
+  .blog-article-content .admonition__content {
+    margin-top: 0.5rem;
+  }
+
+  .blog-article-content .admonition__content > :first-child {
+    margin-top: 0;
+  }
+
+  .blog-article-content .admonition__content > :last-child {
+    margin-bottom: 0;
+  }
+
+  .blog-article-content .admonition--note {
+    background: #f0fdf4;
+    border-color: #86efac;
+  }
+
+  .blog-article-content .admonition--caution {
+    background: #fffbeb;
+    border-color: #fcd34d;
+  }
+
+  .blog-article-content .admonition--danger {
+    background: #fef2f2;
+    border-color: #fca5a5;
+  }
+
+  html.dark .blog-article-content .admonition {
+    border-color: #4b5563;
+  }
+
+  html.dark .blog-article-content .admonition--note {
+    background: #052e16;
+    border-color: #15803d;
+  }
+
+  html.dark .blog-article-content .admonition--caution {
+    background: #422006;
+    border-color: #b45309;
+  }
+
+  html.dark .blog-article-content .admonition--danger {
+    background: #450a0a;
+    border-color: #b91c1c;
   }
 
   .prose .rlc-container:hover {
@@ -215,7 +600,9 @@ const { Content, headings } = await post.render();
 </style>
 
 <script>
+  import { bindCodeCopy } from '@/scripts/code-copy';
   import { bindImageZoom } from '@/scripts/image-zoom';
 
+  bindCodeCopy();
   bindImageZoom();
 </script>

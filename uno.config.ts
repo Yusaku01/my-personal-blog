@@ -4,6 +4,7 @@ import transformerVariantGroup from '@unocss/transformer-variant-group';
 import transformerDirectives from '@unocss/transformer-directives';
 
 export default defineConfig({
+  safelist: ['i-ic-round-content-copy', 'i-ic-round-check'],
   presets: [
     presetWind3(), // Tailwind互換の基本機能
     presetAttributify(), // 属性ベースのユーティリティ

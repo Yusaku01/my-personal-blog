@@ -42,7 +42,9 @@ https://docs.astro.build/en/guides/prefetch/
 
 説明が重複するかもしれませんが、Astroのプリフェッチは「**MPAの次ページをユーザー操作前に先読みして、遷移体感を速くするためのオプトイン機能**」です。実態としては、data-astro-prefetch を付けたサイト内リンクを対象に、hover/tap/viewport/load の各トリガーポイントで先読みし、低速回線時は節約寄りに動く設計です。
 
-> 上記の**次のページ**を取得するという部分ですが、同じPrefetchでもAstroとNext.jsで次のページ（画面）の先読み方法が異なるので、ここはフォーカスしておきたいところです。
+:::note
+上記の**次のページ**を取得するという部分ですが、同じPrefetchでもAstroとNext.jsで次のページ（画面）の先読み方法が異なるので、ここはフォーカスしておきたいところです。
+:::
 
 ### どのように実現されているか
 
@@ -50,11 +52,10 @@ AstroのPrefetchは、ブラウザのPrefetch APIを拡張する形で実装さ�
 
 1. URL の正規化
 2. ユーザーのデータ状況やオリジンの確認などを行い、プリフェッチ可能かのチェック
-3. 2 の上で、プリフェッチ可能であれば、以下 3 つに分岐する（a > b > c の順でフォールバックする）
-  
-a. Speculation Rules API に対応している場合は、`<script type="speculationrules">` を挿入する。  
-b. `<link rel="prefetch">` を挿入する。  
-c. `fetch()` を実行する。  
+3. 2のフローの上で、プリフェッチ可能であれば、以下 3 つに分岐する（以下1 > 2 > 3の順にフォールバックする）
+    1. Speculation Rules API に対応している場合は、`<script type="speculationrules">` を挿入する。
+    2. `<link rel="prefetch">` を挿入する。
+    3. `fetch()` を実行する。
 
 ここで注目すべきは、AstroはブラウザのAPIを拡張する形でPrefetchを実現している点です。Speculation Rules APIなどを活用することで、ブラウザの最適化や制御の恩恵を受けることができます。
 
@@ -63,7 +64,7 @@ c. `fetch()` を実行する。
 
 また、既知かもしれませんが、AstroのPrefetchは、以下のようにAstroのconfigファイルで `prefetch: true` を設定することで有効化されます。
 
-```js
+```astro.config.js
 import { defineConfig } from "astro/config";
 
 export default defineConfig({
@@ -79,7 +80,7 @@ export default defineConfig({
 
 プロジェクト内の全ての要素にPrefetchを適用したい場合は、configファイルの `prefetch` 内に、`prefetchAll: true` という設定を加えれば、全てのサイト内リンクがPrefetchの対象になります。
 
-```js
+```astro.config.js
 import { defineConfig } from "astro/config";
 
 export default defineConfig({
@@ -105,25 +106,30 @@ Prefetchをtrueにしつつも、できる限り不要な通信を避けたい�
 - viewport → IntersectionObserverで対象を監視し、300ms交差継続でprefetch（外れたらキャンセル、実行後はunobserve）
 - load → onPageLoad後に対象リンクを順にprefetch
 
-> **トリガーオプションの裏側ロジック参考資料**  
-> - [hover](https://github.com/withastro/astro/blob/main/packages/astro/src/prefetch/index.ts#L74-L122)  
-> - [tap](https://github.com/withastro/astro/blob/main/packages/astro/src/prefetch/index.ts#L57-L69)  
-> - [viewport](https://github.com/withastro/astro/blob/main/packages/astro/src/prefetch/index.ts#L127-L174)  
-> - [load](https://github.com/withastro/astro/blob/main/packages/astro/src/prefetch/index.ts#L179-L188)  
+:::note
+**トリガーオプションの裏側ロジック参考資料**  
+- [hover](https://github.com/withastro/astro/blob/main/packages/astro/src/prefetch/index.ts#L74-L122)  
+- [tap](https://github.com/withastro/astro/blob/main/packages/astro/src/prefetch/index.ts#L57-L69)  
+- [viewport](https://github.com/withastro/astro/blob/main/packages/astro/src/prefetch/index.ts#L127-L174)  
+- [load](https://github.com/withastro/astro/blob/main/packages/astro/src/prefetch/index.ts#L179-L188) 
+::: 
 
 また、余談で、かつ実験的サポートですが、Speculation Rules APIの活用機能も存在します。
-前述したように、AstroのPrefetchは、configファイル`prefetch`を設定して機能させますが[`clientPrerender`](https://docs.astro.build/en/reference/experimental-flags/client-prerender/)をtrueにすることで、Speculation Rules APIを活用したPrefetchも有効化されます。
+前述したように、AstroのPrefetchは、configファイルで`prefetch`を設定して機能させますが[`clientPrerender`](https://docs.astro.build/en/reference/experimental-flags/client-prerender/)をtrueにすることで、Speculation Rules APIを活用したPrefetchも有効化されます。
 
-> **Speculation Rules APIとは**  
-> Speculation Rules APIは、ユーザーが次に遷移しそうなページを「先回りで用意」するためのブラウザ標準の仕組みです。
-
+:::note
+**Speculation Rules APIとは**  
+Speculation Rules APIは、ユーザーが次に遷移しそうなページを「先回りで用意」するためのブラウザ標準の仕組みです。
+:::
 
 ## Next.jsのPrefetchとは
 
 Next.jsのPrefetchも基本的には、ユーザー体験の向上のための機能です。ただし、Astroとはアプローチが異なります。Next.jsのPrefetchは、主に`next/link`コンポーネントを使用して行います。`next/link`を使用し、ユーザーがリンクに近づいたとき、またはhoverした時にページのコードやデータを先読みすることで、遷移を高速化します。
 
-> **[`next/link`と`Linkコンポーネント`](https://nextjs.org/docs/app/api-reference/components/link)**  
-> 今回は、Prefetchの機能として`next/link`と`Link`を取り上げていますが、用途・機能はPrefetchに限りません。これはPrefetchの他にもSPAのようなフルリロードせずに画面遷移させたり、スクロール制御をしたり、遷移のフックを制御したり、遷移中の状態を取得したり、Hookを提供したりなどをしています。色々な機能を有していますが、わかりやすくまとめると名前の通り、Next.jsにおいてリンク（遷移）するという機能を詰め合わせたようなAPIになります。その中の1機能・役割としてPrefetchがあるわけです。今回は、そのPrefetchの部分にのみフォーカスして扱います。
+:::caution
+**[`next/link`と`Linkコンポーネント`](https://nextjs.org/docs/app/api-reference/components/link)**  
+今回は、Prefetchの機能として`next/link`と`Link`を取り上げていますが、用途・機能はPrefetchに限りません。これはPrefetchの他にもSPAのようなフルリロードせずに画面遷移させたり、スクロール制御をしたり、遷移のフックを制御したり、遷移中の状態を取得したり、Hookを提供したりなどをしています。色々な機能を有していますが、わかりやすくまとめると名前の通り、Next.jsにおいてリンク（遷移）するという機能を詰め合わせたようなAPIになります。その中の1機能・役割としてPrefetchがあるわけです。今回は、そのPrefetchの部分にのみフォーカスして扱います。
+:::
 
 ### どのように実現されているか
 
