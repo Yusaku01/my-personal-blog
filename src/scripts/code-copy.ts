@@ -2,6 +2,7 @@ let cleanupCodeCopy: (() => void) | null = null;
 
 type CopyState = 'idle' | 'success' | 'error';
 const COPY_BUTTON_REVEAL_DELAY_MS = 250;
+const TOUCH_BUTTON_VISIBLE_DURATION_MS = 2200;
 
 const COPY_MESSAGES: Record<CopyState, string> = {
   idle: 'コードをコピー',
@@ -114,6 +115,48 @@ const getCodeText = (preElement: HTMLElement): string => {
   return preElement.textContent ?? '';
 };
 
+const fallbackCopyText = (text: string): boolean => {
+  const textarea = document.createElement('textarea');
+  textarea.value = text;
+  textarea.setAttribute('readonly', 'true');
+  textarea.setAttribute('aria-hidden', 'true');
+  textarea.style.position = 'fixed';
+  textarea.style.top = '-9999px';
+  textarea.style.left = '-9999px';
+
+  document.body.appendChild(textarea);
+  textarea.focus();
+  textarea.select();
+  textarea.setSelectionRange(0, textarea.value.length);
+
+  let copied = false;
+
+  try {
+    copied = document.execCommand('copy');
+  } finally {
+    textarea.remove();
+  }
+
+  return copied;
+};
+
+const copyCodeText = async (code: string): Promise<boolean> => {
+  if (!code) {
+    return false;
+  }
+
+  if (navigator.clipboard?.writeText) {
+    try {
+      await navigator.clipboard.writeText(code);
+      return true;
+    } catch {
+      // fall through to legacy copy path
+    }
+  }
+
+  return fallbackCopyText(code);
+};
+
 const initCodeCopy = (): (() => void) => {
   const contentRoot = document.querySelector<HTMLElement>('[data-blog-content]');
   if (!contentRoot) {
@@ -134,6 +177,7 @@ const initCodeCopy = (): (() => void) => {
     const button = ensureCopyButton(preElement);
     let resetTimer: number | undefined;
     let revealTimer: number | undefined;
+    let touchHideTimer: number | undefined;
     const wrapper = button.parentElement;
 
     if (!(wrapper instanceof HTMLElement)) {
@@ -154,6 +198,14 @@ const initCodeCopy = (): (() => void) => {
       }
     };
 
+    const clearTouchHideTimer = () => {
+      if (typeof touchHideTimer === 'number') {
+        window.clearTimeout(touchHideTimer);
+        resetTimers.delete(touchHideTimer);
+        touchHideTimer = undefined;
+      }
+    };
+
     const scheduleButtonReveal = () => {
       clearRevealTimer();
       revealTimer = window.setTimeout(() => {
@@ -168,11 +220,42 @@ const initCodeCopy = (): (() => void) => {
 
     const hideButton = () => {
       clearRevealTimer();
+      clearTouchHideTimer();
       updateButtonVisibility(button, false);
     };
 
     wrapper.addEventListener('pointerenter', scheduleButtonReveal, { signal });
-    wrapper.addEventListener('pointerleave', hideButton, { signal });
+    wrapper.addEventListener(
+      'pointerleave',
+      (event) => {
+        if (event.pointerType === 'mouse') {
+          hideButton();
+        }
+      },
+      { signal }
+    );
+    wrapper.addEventListener(
+      'pointerdown',
+      (event) => {
+        if (event.pointerType === 'mouse') {
+          return;
+        }
+
+        clearRevealTimer();
+        clearTouchHideTimer();
+        updateButtonVisibility(button, true);
+
+        touchHideTimer = window.setTimeout(() => {
+          updateButtonVisibility(button, false);
+          if (typeof touchHideTimer === 'number') {
+            resetTimers.delete(touchHideTimer);
+            touchHideTimer = undefined;
+          }
+        }, TOUCH_BUTTON_VISIBLE_DURATION_MS);
+        resetTimers.add(touchHideTimer);
+      },
+      { signal }
+    );
     wrapper.addEventListener('focusin', scheduleButtonReveal, { signal });
     wrapper.addEventListener(
       'focusout',
@@ -198,11 +281,11 @@ const initCodeCopy = (): (() => void) => {
         }
 
         try {
-          if (!navigator.clipboard?.writeText) {
-            throw new Error('Clipboard API unavailable');
+          const copied = await copyCodeText(code);
+          if (!copied) {
+            throw new Error('Clipboard unavailable');
           }
 
-          await navigator.clipboard.writeText(code);
           updateButtonState(button, 'success', COPY_MESSAGES.success, liveRegion);
         } catch {
           updateButtonState(button, 'error', COPY_MESSAGES.error, liveRegion);
