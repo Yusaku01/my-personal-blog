@@ -279,6 +279,16 @@ const estimatedReadingTimeMinutes = getEstimatedReadingTimeMinutes(post.body);
     visibility: visible;
   }
 
+  @media (hover: none), (pointer: coarse) {
+    .blog-article-content .code-copy-button {
+      height: 2.5rem;
+      opacity: 1;
+      pointer-events: auto;
+      visibility: visible;
+      width: 2.5rem;
+    }
+  }
+
   .blog-article-content .code-copy-button::after {
     background: #0f172a;
     border-radius: 0.45rem;
