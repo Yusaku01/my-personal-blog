@@ -2,6 +2,7 @@ let cleanupCodeCopy: (() => void) | null = null;
 
 type CopyState = 'idle' | 'success' | 'error';
 const COPY_BUTTON_REVEAL_DELAY_MS = 250;
+const TOUCH_BUTTON_VISIBLE_DURATION_MS = 2200;
 
 const COPY_MESSAGES: Record<CopyState, string> = {
   idle: 'コードをコピー',
@@ -176,6 +177,7 @@ const initCodeCopy = (): (() => void) => {
     const button = ensureCopyButton(preElement);
     let resetTimer: number | undefined;
     let revealTimer: number | undefined;
+    let touchHideTimer: number | undefined;
     const wrapper = button.parentElement;
 
     if (!(wrapper instanceof HTMLElement)) {
@@ -196,6 +198,14 @@ const initCodeCopy = (): (() => void) => {
       }
     };
 
+    const clearTouchHideTimer = () => {
+      if (typeof touchHideTimer === 'number') {
+        window.clearTimeout(touchHideTimer);
+        resetTimers.delete(touchHideTimer);
+        touchHideTimer = undefined;
+      }
+    };
+
     const scheduleButtonReveal = () => {
       clearRevealTimer();
       revealTimer = window.setTimeout(() => {
@@ -210,16 +220,39 @@ const initCodeCopy = (): (() => void) => {
 
     const hideButton = () => {
       clearRevealTimer();
+      clearTouchHideTimer();
       updateButtonVisibility(button, false);
     };
 
     wrapper.addEventListener('pointerenter', scheduleButtonReveal, { signal });
-    wrapper.addEventListener('pointerleave', hideButton, { signal });
+    wrapper.addEventListener(
+      'pointerleave',
+      (event) => {
+        if (event.pointerType === 'mouse') {
+          hideButton();
+        }
+      },
+      { signal }
+    );
     wrapper.addEventListener(
       'pointerdown',
-      () => {
+      (event) => {
+        if (event.pointerType === 'mouse') {
+          return;
+        }
+
         clearRevealTimer();
+        clearTouchHideTimer();
         updateButtonVisibility(button, true);
+
+        touchHideTimer = window.setTimeout(() => {
+          updateButtonVisibility(button, false);
+          if (typeof touchHideTimer === 'number') {
+            resetTimers.delete(touchHideTimer);
+            touchHideTimer = undefined;
+          }
+        }, TOUCH_BUTTON_VISIBLE_DURATION_MS);
+        resetTimers.add(touchHideTimer);
       },
       { signal }
     );
