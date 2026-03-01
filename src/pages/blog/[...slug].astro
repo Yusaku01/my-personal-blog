@@ -679,7 +679,7 @@ const estimatedReadingTimeMinutes = getEstimatedReadingTimeMinutes(post.body);
     border-bottom: 1px solid #e5e7eb;
     display: flex;
     align-items: center;
-    justify-content: space-between;
+    justify-content: flex-end;
     padding: 0 1rem;
     height: 2.75rem;
     transition: transform 0.3s;
@@ -692,20 +692,6 @@ const estimatedReadingTimeMinutes = getEstimatedReadingTimeMinutes(post.body);
 
   .toc-mobile-bar--hidden {
     transform: translateY(calc(-100% - 4rem));
-  }
-
-  .toc-mobile-current {
-    font-size: 0.8125rem;
-    color: #374151;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    min-width: 0;
-    flex: 1;
-  }
-
-  html.dark .toc-mobile-current {
-    color: #d1d5db;
   }
 
   .toc-mobile-btn {
