@@ -8,7 +8,6 @@ interface TocHeading {
 
 const HEADER_HEIGHT = 64;
 const SCROLL_THRESHOLD = 80;
-const LIVE_REGION_DEBOUNCE_MS = 500;
 
 const prefersReducedMotion = (): boolean =>
   window.matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -114,7 +113,6 @@ const initTocNavigation = (): (() => void) => {
   const bar = document.createElement('div');
   bar.className = 'toc-mobile-bar';
   bar.innerHTML = `
-    <span class="toc-mobile-current" data-toc-current-label aria-live="polite"></span>
     <button
       class="toc-mobile-btn"
       type="button"
@@ -129,7 +127,6 @@ const initTocNavigation = (): (() => void) => {
   `;
   mobileMount.appendChild(bar);
 
-  const currentLabel = bar.querySelector<HTMLElement>('[data-toc-current-label]')!;
   const openBtn = bar.querySelector<HTMLButtonElement>('[data-toc-open-btn]')!;
 
   // ── Slide-in panel ──────────────────────────────────────────────────
@@ -273,8 +270,6 @@ const initTocNavigation = (): (() => void) => {
   }
 
   // ── IntersectionObserver: active heading tracking ───────────────────
-  let liveDebounceTimer: number | undefined;
-
   const setActiveHeading = (slug: string): void => {
     if (slug === activeSlug) return;
     activeSlug = slug;
@@ -293,27 +288,6 @@ const initTocNavigation = (): (() => void) => {
     for (const link of panelLinks) {
       link.classList.toggle('is-active', link.getAttribute('data-toc-panel-link') === slug);
     }
-
-    // Update mobile bar label (debounced for screen readers)
-    const heading = headings.find((h) => h.slug === slug);
-    if (heading) {
-      currentLabel.textContent = heading.text;
-    }
-
-    // Debounce aria-live announcement
-    if (typeof liveDebounceTimer === 'number') {
-      window.clearTimeout(liveDebounceTimer);
-      timers.delete(liveDebounceTimer);
-    }
-    liveDebounceTimer = window.setTimeout(() => {
-      // The textContent change is already handled above;
-      // aria-live="polite" will announce after the debounce period
-      if (typeof liveDebounceTimer === 'number') {
-        timers.delete(liveDebounceTimer);
-        liveDebounceTimer = undefined;
-      }
-    }, LIVE_REGION_DEBOUNCE_MS);
-    timers.add(liveDebounceTimer);
   };
 
   // Set initial active heading
