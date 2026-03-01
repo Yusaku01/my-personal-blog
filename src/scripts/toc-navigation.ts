@@ -165,6 +165,7 @@ const initTocNavigation = (): (() => void) => {
 
   // ── Panel open / close ──────────────────────────────────────────────
   const openPanel = (): void => {
+    window.dispatchEvent(new CustomEvent('header-menu:close'));
     isPanelOpen = true;
     panel.classList.add('toc-panel--open');
     backdrop.classList.add('toc-panel-backdrop--visible');
@@ -185,6 +186,7 @@ const initTocNavigation = (): (() => void) => {
   openBtn.addEventListener('click', openPanel, { signal });
   closeBtn.addEventListener('click', closePanel, { signal });
   backdrop.addEventListener('click', closePanel, { signal });
+  window.addEventListener('toc-panel:close', closePanel, { signal });
 
   document.addEventListener(
     'keydown',
