@@ -171,6 +171,7 @@ const isActiveLink = (href: string) => {
 
     if (menuButton && closeButton && mobileMenu) {
       const openMenu = () => {
+        window.dispatchEvent(new CustomEvent('toc-panel:close'));
         mobileMenu.classList.remove('translate-x-full');
         document.body.style.overflow = 'hidden';
       };
@@ -182,6 +183,7 @@ const isActiveLink = (href: string) => {
 
       menuButton.addEventListener('click', openMenu, { signal });
       closeButton.addEventListener('click', closeMenu, { signal });
+      window.addEventListener('header-menu:close', closeMenu, { signal });
     }
 
     const themeToggle = document.getElementById('themeToggle');
