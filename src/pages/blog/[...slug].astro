@@ -22,7 +22,10 @@ const estimatedReadingTimeMinutes = getEstimatedReadingTimeMinutes(post.body);
 ---
 
 <Layout title={`${post.data.title} | SAKUSPACE`} blogTitle={post.data.title}>
-  <div class="bg-gray-50 dark:bg-gray-800 py-25" data-toc-page>
+  <div
+    class="bg-gray-50 dark:bg-gray-800 pb-25 pt-[calc(4rem+2.75rem+1rem)] xl:pt-25"
+    data-toc-page
+  >
     <div class="xl:flex xl:justify-center xl:gap-6 xl:px-6">
       <div class="container-md container-base xl:mx-0 xl:flex-shrink-0">
         <article>
@@ -683,6 +686,7 @@ const estimatedReadingTimeMinutes = getEstimatedReadingTimeMinutes(post.body);
     justify-content: flex-end;
     padding: 0 1rem;
     height: 2.75rem;
+    cursor: pointer;
     transition: transform 0.3s;
   }
 
@@ -705,26 +709,15 @@ const estimatedReadingTimeMinutes = getEstimatedReadingTimeMinutes(post.body);
     font-weight: 600;
     color: #374151;
     background: none;
-    border: 1px solid #d1d5db;
+    border: none;
     border-radius: 0.375rem;
-    cursor: pointer;
     flex-shrink: 0;
     min-height: 2rem;
     min-width: 2.75rem;
-    transition: background-color 0.15s;
-  }
-
-  .toc-mobile-btn:hover {
-    background: #f3f4f6;
   }
 
   html.dark .toc-mobile-btn {
     color: #d1d5db;
-    border-color: #4b5563;
-  }
-
-  html.dark .toc-mobile-btn:hover {
-    background: #374151;
   }
 
   @media (min-width: 1280px) {

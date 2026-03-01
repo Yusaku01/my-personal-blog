@@ -112,22 +112,18 @@ const initTocNavigation = (): (() => void) => {
   // ── Mobile TOC bar ──────────────────────────────────────────────────
   const bar = document.createElement('div');
   bar.className = 'toc-mobile-bar';
+  bar.setAttribute('role', 'button');
+  bar.setAttribute('tabindex', '0');
+  bar.setAttribute('aria-expanded', 'false');
+  bar.setAttribute('aria-controls', 'toc-slide-panel');
+  bar.setAttribute('aria-label', '目次を開く');
   bar.innerHTML = `
-    <button
-      class="toc-mobile-btn"
-      type="button"
-      aria-expanded="false"
-      aria-controls="toc-slide-panel"
-      aria-label="目次を開く"
-      data-toc-open-btn
-    >
+    <span class="toc-mobile-btn" data-toc-open-btn>
       <span class="i-ic-round-list" aria-hidden="true"></span>
       <span>目次</span>
-    </button>
+    </span>
   `;
   mobileMount.appendChild(bar);
-
-  const openBtn = bar.querySelector<HTMLButtonElement>('[data-toc-open-btn]')!;
 
   // ── Slide-in panel ──────────────────────────────────────────────────
   const backdrop = document.createElement('div');
@@ -169,7 +165,7 @@ const initTocNavigation = (): (() => void) => {
     isPanelOpen = true;
     panel.classList.add('toc-panel--open');
     backdrop.classList.add('toc-panel-backdrop--visible');
-    openBtn.setAttribute('aria-expanded', 'true');
+    bar.setAttribute('aria-expanded', 'true');
     document.body.style.overflow = 'hidden';
     closeBtn.focus();
   };
@@ -178,12 +174,22 @@ const initTocNavigation = (): (() => void) => {
     isPanelOpen = false;
     panel.classList.remove('toc-panel--open');
     backdrop.classList.remove('toc-panel-backdrop--visible');
-    openBtn.setAttribute('aria-expanded', 'false');
+    bar.setAttribute('aria-expanded', 'false');
     document.body.style.overflow = '';
-    openBtn.focus();
+    bar.focus();
   };
 
-  openBtn.addEventListener('click', openPanel, { signal });
+  bar.addEventListener('click', openPanel, { signal });
+  bar.addEventListener(
+    'keydown',
+    (e) => {
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        openPanel();
+      }
+    },
+    { signal }
+  );
   closeBtn.addEventListener('click', closePanel, { signal });
   backdrop.addEventListener('click', closePanel, { signal });
   window.addEventListener('toc-panel:close', closePanel, { signal });
