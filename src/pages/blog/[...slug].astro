@@ -1,7 +1,7 @@
 ---
 import { getCollection } from 'astro:content';
 import Layout from '../../layouts/Layout.astro';
-import TableOfContents from '../../components/Blog/TableOfContents.astro';
+import TocSidebar from '../../components/Blog/TocSidebar.astro';
 import ShareButtons from '../../components/Sns/ShareButtons.astro';
 import { format } from 'date-fns';
 import { getEstimatedReadingTimeMinutes } from '../../lib/blog/readingTime';
@@ -22,104 +22,105 @@ const estimatedReadingTimeMinutes = getEstimatedReadingTimeMinutes(post.body);
 ---
 
 <Layout title={`${post.data.title} | SAKUSPACE`} blogTitle={post.data.title}>
-  <div class="bg-gray-50 dark:bg-gray-800 py-25">
-    <div class="container-md container-base">
-      <article>
-        <!-- 1. Title -->
-        <h1 class="heading-h1 lg:text-4xl mb-6">{post.data.title}</h1>
+  <div class="bg-gray-50 dark:bg-gray-800 py-25" data-toc-page>
+    <div class="xl:flex xl:justify-center xl:gap-6 xl:px-6">
+      <div class="container-md container-base xl:mx-0 xl:flex-shrink-0">
+        <article>
+          <!-- 1. Title -->
+          <h1 class="heading-h1 lg:text-4xl mb-6">{post.data.title}</h1>
 
-        <!-- 2. Thumbnail Image -->
-        {
-          post.data.image && (
-            <div class="mb-6">
-              <img
-                src={post.data.image}
-                alt={post.data.title}
-                class="aspect-[16/9] object-cover rounded-lg"
-              />
-            </div>
-          )
-        }
-
-        <!-- 3. Tags -->
-        {
-          post.data.tags && post.data.tags.length > 0 && (
-            <div class="mb-5">
-              <div class="flex flex-wrap gap-2">
-                {post.data.tags.map((tag) => (
-                  <span class="border border-gray-900 dark:border-gray-200 text-gray-700 dark:text-gray-200 px-3 py-1 rounded-full text-sm font-medium">
-                    {tag}
-                  </span>
-                ))}
-              </div>
-            </div>
-          )
-        }
-
-        <!-- 4. Publish Date and Author -->
-        <div
-          class="flex flex-wrap items-center gap-x-5 gap-y-1 text-gray-600 dark:text-gray-400 mb-8 text-sm"
-        >
-          <span class="blog-article-meta-item">
-            <span class="blog-article-meta-icon i-ic-round-calendar-today" aria-hidden="true"
-            ></span>
-            <span>{format(post.data.publishDate, 'yyyy年MM月dd日')}</span>
-          </span>
+          <!-- 2. Thumbnail Image -->
           {
-            post.data.author && (
-              <span class="blog-article-meta-item">
-                <span class="blog-article-meta-prefix">written by</span>
-                <span>{post.data.author}</span>
-              </span>
+            post.data.image && (
+              <div class="mb-6">
+                <img
+                  src={post.data.image}
+                  alt={post.data.title}
+                  class="aspect-[16/9] object-cover rounded-lg"
+                />
+              </div>
             )
           }
-          <span class="blog-article-meta-item">
-            <span class="blog-article-meta-icon i-ic-round-schedule" aria-hidden="true"></span>
-            <span>読了目安 約{estimatedReadingTimeMinutes}分</span>
-          </span>
-        </div>
 
-        <!-- 5. Table of Contents -->
-        <TableOfContents headings={headings} />
+          <!-- 3. Tags -->
+          {
+            post.data.tags && post.data.tags.length > 0 && (
+              <div class="mb-5">
+                <div class="flex flex-wrap gap-2">
+                  {post.data.tags.map((tag) => (
+                    <span class="border border-gray-900 dark:border-gray-200 text-gray-700 dark:text-gray-200 px-3 py-1 rounded-full text-sm font-medium">
+                      {tag}
+                    </span>
+                  ))}
+                </div>
+              </div>
+            )
+          }
 
-        <!-- 6. Content -->
-        <div
-          class="blog-article-content prose prose-lg max-w-none prose-headings:font-bold prose-a:text-sky-600 prose-a:underline-offset-4 hover:prose-a:underline dark:prose-invert dark:prose-a:text-sky-300 dark:hover:prose-a:text-sky-200 prose-img:rounded-lg mt-8"
-          data-blog-content
-        >
-          <Content />
-        </div>
-
-        <div
-          id="blog-image-modal"
-          class="blog-image-modal fixed inset-0 z-50 flex items-center justify-center bg-black/70 p-4"
-          aria-hidden="true"
-        >
-          <button
-            type="button"
-            class="absolute top-6 right-6 text-white text-3xl leading-none"
-            data-modal-close
-            aria-label="画像モーダルを閉じる"
+          <!-- 4. Publish Date and Author -->
+          <div
+            class="flex flex-wrap items-center gap-x-5 gap-y-1 text-gray-600 dark:text-gray-400 mb-8 text-sm"
           >
-            ×
-          </button>
-          <img
-            id="blog-image-modal-img"
-            class="max-h-[90vh] max-w-[90vw] rounded-lg shadow-2xl"
-            alt=""
-          />
-        </div>
+            <span class="blog-article-meta-item">
+              <span class="blog-article-meta-icon i-ic-round-calendar-today" aria-hidden="true"
+              ></span>
+              <span>{format(post.data.publishDate, 'yyyy年MM月dd日')}</span>
+            </span>
+            {
+              post.data.author && (
+                <span class="blog-article-meta-item">
+                  <span class="blog-article-meta-prefix">written by</span>
+                  <span>{post.data.author}</span>
+                </span>
+              )
+            }
+            <span class="blog-article-meta-item">
+              <span class="blog-article-meta-icon i-ic-round-schedule" aria-hidden="true"></span>
+              <span>読了目安 約{estimatedReadingTimeMinutes}分</span>
+            </span>
+          </div>
 
-        <!-- SNS Share Buttons -->
-        <div class="mt-16 pt-8">
-          <ShareButtons
-            url={new URL(Astro.url.pathname, Astro.site).toString()}
-            title={post.data.title}
-            class="justify-center md:justify-start"
-          />
-        </div>
-      </article>
+          <!-- 5. Content -->
+          <div
+            class="blog-article-content prose prose-lg max-w-none prose-headings:font-bold prose-a:text-sky-600 prose-a:underline-offset-4 hover:prose-a:underline dark:prose-invert dark:prose-a:text-sky-300 dark:hover:prose-a:text-sky-200 prose-img:rounded-lg mt-8"
+            data-blog-content
+          >
+            <Content />
+          </div>
+
+          <div
+            id="blog-image-modal"
+            class="blog-image-modal fixed inset-0 z-50 flex items-center justify-center bg-black/70 p-4"
+            aria-hidden="true"
+          >
+            <button
+              type="button"
+              class="absolute top-6 right-6 text-white text-3xl leading-none"
+              data-modal-close
+              aria-label="画像モーダルを閉じる"
+            >
+              ×
+            </button>
+            <img
+              id="blog-image-modal-img"
+              class="max-h-[90vh] max-w-[90vw] rounded-lg shadow-2xl"
+              alt=""
+            />
+          </div>
+
+          <!-- SNS Share Buttons -->
+          <div class="mt-16 pt-8">
+            <ShareButtons
+              url={new URL(Astro.url.pathname, Astro.site).toString()}
+              title={post.data.title}
+              class="justify-center md:justify-start"
+            />
+          </div>
+        </article>
+      </div>
+      <TocSidebar headings={headings} />
     </div>
+    <div data-toc-mobile></div>
   </div>
 </Layout>
 
@@ -593,6 +594,318 @@ const estimatedReadingTimeMinutes = getEstimatedReadingTimeMinutes(post.body);
     opacity: 1;
   }
 
+  /* ===== TOC Sidebar (xl+) ===== */
+  .toc-sidebar {
+    width: 14rem;
+    flex-shrink: 0;
+    align-self: start;
+  }
+
+  .toc-sidebar-nav {
+    position: sticky;
+    top: 5rem;
+    max-height: calc(100vh - 6rem);
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    padding: 0.25rem 0;
+  }
+
+  .toc-sidebar-title {
+    font-size: 0.875rem;
+    font-weight: 700;
+    color: #111827;
+    margin-bottom: 0.75rem;
+    padding-left: 0.75rem;
+  }
+
+  html.dark .toc-sidebar-title {
+    color: #f3f4f6;
+  }
+
+  .toc-sidebar-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  .toc-sidebar-list .toc-sidebar-list {
+    padding-left: 0.75rem;
+  }
+
+  .toc-sidebar-link {
+    display: block;
+    padding: 0.25rem 0.75rem;
+    font-size: 0.8125rem;
+    line-height: 1.5;
+    color: #6b7280;
+    text-decoration: none;
+    border-left: 2px solid transparent;
+    transition:
+      color 0.15s,
+      border-color 0.15s;
+  }
+
+  .toc-sidebar-link:hover {
+    color: #374151;
+  }
+
+  html.dark .toc-sidebar-link {
+    color: #9ca3af;
+  }
+
+  html.dark .toc-sidebar-link:hover {
+    color: #d1d5db;
+  }
+
+  .toc-sidebar-link.is-active {
+    color: #111827;
+    font-weight: 600;
+    border-left-color: #111827;
+  }
+
+  html.dark .toc-sidebar-link.is-active {
+    color: #f3f4f6;
+    border-left-color: #f3f4f6;
+  }
+
+  /* ===== Mobile TOC Bar ===== */
+  .toc-mobile-bar {
+    position: fixed;
+    top: 4rem;
+    left: 0;
+    right: 0;
+    z-index: 40;
+    background: #f9fafb;
+    border-bottom: 1px solid #e5e7eb;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 1rem;
+    height: 2.75rem;
+    transition: transform 0.3s;
+  }
+
+  html.dark .toc-mobile-bar {
+    background: #1f2937;
+    border-bottom-color: #374151;
+  }
+
+  .toc-mobile-bar--hidden {
+    transform: translateY(calc(-100% - 4rem));
+  }
+
+  .toc-mobile-current {
+    font-size: 0.8125rem;
+    color: #374151;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    min-width: 0;
+    flex: 1;
+  }
+
+  html.dark .toc-mobile-current {
+    color: #d1d5db;
+  }
+
+  .toc-mobile-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.375rem;
+    padding: 0.375rem 0.75rem;
+    font-size: 0.8125rem;
+    font-weight: 600;
+    color: #374151;
+    background: none;
+    border: 1px solid #d1d5db;
+    border-radius: 0.375rem;
+    cursor: pointer;
+    flex-shrink: 0;
+    min-height: 2rem;
+    min-width: 2.75rem;
+    transition: background-color 0.15s;
+  }
+
+  .toc-mobile-btn:hover {
+    background: #f3f4f6;
+  }
+
+  html.dark .toc-mobile-btn {
+    color: #d1d5db;
+    border-color: #4b5563;
+  }
+
+  html.dark .toc-mobile-btn:hover {
+    background: #374151;
+  }
+
+  @media (min-width: 1280px) {
+    .toc-mobile-bar {
+      display: none !important;
+    }
+  }
+
+  /* ===== Slide-in TOC Panel ===== */
+  .toc-panel-backdrop {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.4);
+    z-index: 44;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.25s ease;
+  }
+
+  .toc-panel-backdrop--visible {
+    opacity: 1;
+    pointer-events: auto;
+  }
+
+  .toc-panel {
+    position: fixed;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    z-index: 45;
+    width: min(20rem, 85vw);
+    background: white;
+    transform: translateX(-100%);
+    transition: transform 0.3s ease;
+    display: flex;
+    flex-direction: column;
+  }
+
+  html.dark .toc-panel {
+    background: #1f2937;
+  }
+
+  .toc-panel--open {
+    transform: translateX(0);
+  }
+
+  .toc-panel-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1rem 1.25rem;
+    border-bottom: 1px solid #e5e7eb;
+    flex-shrink: 0;
+  }
+
+  html.dark .toc-panel-header {
+    border-bottom-color: #374151;
+  }
+
+  .toc-panel-title {
+    font-size: 1rem;
+    font-weight: 700;
+    color: #111827;
+  }
+
+  html.dark .toc-panel-title {
+    color: #f3f4f6;
+  }
+
+  .toc-panel-close {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 2.75rem;
+    height: 2.75rem;
+    background: none;
+    border: none;
+    color: #6b7280;
+    cursor: pointer;
+    border-radius: 0.375rem;
+    transition: background-color 0.15s;
+  }
+
+  .toc-panel-close:hover {
+    background: #f3f4f6;
+  }
+
+  html.dark .toc-panel-close {
+    color: #9ca3af;
+  }
+
+  html.dark .toc-panel-close:hover {
+    background: #374151;
+  }
+
+  .toc-panel-body {
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    padding: 0.75rem 1.25rem 1.5rem;
+    flex: 1;
+  }
+
+  .toc-panel-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  .toc-panel-list .toc-panel-list {
+    padding-left: 0.75rem;
+  }
+
+  .toc-panel-link {
+    display: block;
+    padding: 0.5rem 0.75rem;
+    font-size: 0.875rem;
+    line-height: 1.5;
+    color: #6b7280;
+    text-decoration: none;
+    border-left: 2px solid transparent;
+    border-radius: 0 0.25rem 0.25rem 0;
+    transition:
+      color 0.15s,
+      border-color 0.15s,
+      background-color 0.15s;
+  }
+
+  .toc-panel-link:hover {
+    color: #374151;
+    background: #f3f4f6;
+  }
+
+  html.dark .toc-panel-link {
+    color: #9ca3af;
+  }
+
+  html.dark .toc-panel-link:hover {
+    color: #d1d5db;
+    background: #374151;
+  }
+
+  .toc-panel-link.is-active {
+    color: #111827;
+    font-weight: 600;
+    border-left-color: #111827;
+  }
+
+  html.dark .toc-panel-link.is-active {
+    color: #f3f4f6;
+    border-left-color: #f3f4f6;
+  }
+
+  @media (min-width: 1280px) {
+    .toc-panel,
+    .toc-panel-backdrop {
+      display: none !important;
+    }
+  }
+
+  /* ===== Reduced motion ===== */
+  @media (prefers-reduced-motion: reduce) {
+    .toc-mobile-bar,
+    .toc-panel,
+    .toc-panel-backdrop,
+    .toc-sidebar-link {
+      transition: none;
+    }
+  }
+
   /* 必要であればフットノート内のリンクスタイルも調整 */
   /* .footnotes a {
     @apply text-brand hover:underline;
@@ -602,7 +915,9 @@ const estimatedReadingTimeMinutes = getEstimatedReadingTimeMinutes(post.body);
 <script>
   import { bindCodeCopy } from '@/scripts/code-copy';
   import { bindImageZoom } from '@/scripts/image-zoom';
+  import { bindTocNavigation } from '@/scripts/toc-navigation';
 
   bindCodeCopy();
   bindImageZoom();
+  bindTocNavigation();
 </script>
