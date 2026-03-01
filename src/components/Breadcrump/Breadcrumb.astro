@@ -36,15 +36,13 @@ let breadcrumbItems = [
 
 // 現在のページがホームの場合はパンくずリストを表示しない
 const isHomePage = pathname === '/';
-const isBlogPostPage = pathSegments[0] === 'blog' && Boolean(blogTitle);
-const breadcrumbPaddingClass = isBlogPostPage ? 'pt-29 xl:pt-18' : 'pt-18';
 ---
 
 {
   !isHomePage && (
     <nav
       aria-label="パンくずリスト"
-      class:list={[breadcrumbPaddingClass, 'pb-2 text-sm bg-white dark:bg-gray-900']}
+      class="border-t border-gray-200 dark:border-gray-700 py-3 text-sm bg-white dark:bg-gray-900"
     >
       <div class="container-lg mx-auto px-4">
         <ol class="flex flex-wrap items-center gap-2">
