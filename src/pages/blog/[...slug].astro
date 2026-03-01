@@ -22,7 +22,7 @@ const estimatedReadingTimeMinutes = getEstimatedReadingTimeMinutes(post.body);
 ---
 
 <Layout title={`${post.data.title} | SAKUSPACE`} blogTitle={post.data.title}>
-  <div class="bg-gray-50 dark:bg-gray-800 py-25" data-toc-page>
+  <div class="bg-gray-50 dark:bg-gray-800 pb-25 pt-36 xl:pt-25" data-toc-page>
     <div class="xl:flex xl:justify-center xl:gap-6 xl:px-6">
       <div class="container-md container-base xl:mx-0 xl:flex-shrink-0">
         <article>
@@ -726,18 +726,8 @@ const estimatedReadingTimeMinutes = getEstimatedReadingTimeMinutes(post.body);
   }
 
   @media (min-width: 1280px) {
-    [data-toc-page] {
-      padding-top: 6.25rem;
-    }
-
     .toc-mobile-bar {
       display: none !important;
-    }
-  }
-
-  @media (max-width: 1279px) {
-    [data-toc-page] {
-      padding-top: 9rem;
     }
   }
 
