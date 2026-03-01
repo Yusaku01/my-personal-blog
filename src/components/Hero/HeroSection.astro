@@ -10,13 +10,7 @@ const { showHero = true, title = 'SAKUSPACE', isHome = false } = Astro.props;
 
 {
   showHero && (
-    <div
-      class:list={[
-        'relative bg-white dark:bg-gray-900',
-        isHome ? 'py-40 sm:py-65' : 'py-24 sm:py-34',
-      ]}
-      role="banner"
-    >
+    <div class:list={['relative bg-white dark:bg-gray-900 py-40 sm:py-65']} role="banner">
       <div class="container-md container-base text-center">
         <h1 class="text-3xl sm:text-4xl font-bold tracking-[0.2em] text-gray-900 dark:text-white">
           {title}
