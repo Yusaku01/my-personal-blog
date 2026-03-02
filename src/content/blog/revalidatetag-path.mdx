@@ -77,7 +77,7 @@ Pathの名の通り、以下のようなものを無効化できます。
 - レイアウト
 - Route Handler
 
-個人的には、以下のようにRoute Handlerでページや特定のURLなどのキャッシュ無効化と再検証などに使用することが多いです。
+個人的には、以下のようにRoute HandlerでCMSなどのWebhookをトリガーとしてページや特定のURLなどのキャッシュ無効化と再検証などに使用することが多いです。
 
 ```app/webhook-revalidate/route.ts
 import { revalidatePath } from 'next/cache'
