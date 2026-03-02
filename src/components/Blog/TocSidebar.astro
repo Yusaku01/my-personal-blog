@@ -73,7 +73,7 @@ const hasEnoughHeadings = filteredHeadings.length >= 2;
         filteredHeadings.map((h) => ({ slug: h.slug, text: h.text, depth: h.depth }))
       )}
     >
-      <nav class="toc-sidebar-nav" aria-label="目次">
+      <nav class="toc-sidebar-nav" aria-label="目次" data-toc-sidebar-nav>
         <p class="toc-sidebar-title">目次</p>
         {/* eslint-disable-next-line astro/no-set-html-directive */}
         <div set:html={tocHtml} />

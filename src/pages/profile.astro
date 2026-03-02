@@ -2,7 +2,7 @@
 import Layout from '../layouts/Layout.astro';
 import HeroSection from '../components/Hero/HeroSection.astro';
 import ProfileSection from '../components/Profile/ProfileSection.astro';
-import { getEntry } from 'astro:content';
+import { getEntry, render } from 'astro:content';
 
 export const transition = { name: 'fade' };
 
@@ -12,10 +12,11 @@ import myImage from '../assets/img/img_profile.png';
 const profileEntry = await getEntry('profile', 'main');
 
 if (!profileEntry) {
-  throw new Error('Profile entry not found: src/content/profile/main.json');
+  throw new Error('Profile entry not found: src/content/profile/main.mdx');
 }
 
 const profile = profileEntry.data;
+const { Content } = await render(profileEntry);
 ---
 
 <Layout title="プロフィール | SAKUSPACE">
@@ -50,7 +51,9 @@ const profile = profileEntry.data;
 
           <!-- 自己紹介セクション -->
           <ProfileSection title="自己紹介" className="mb-10">
-            <p class="text-gray-700 dark:text-gray-300 leading-relaxed">{profile.bio}</p>
+            <div class="text-gray-700 dark:text-gray-300 leading-relaxed">
+              <Content />
+            </div>
           </ProfileSection>
 
           <!-- スキルセクション -->

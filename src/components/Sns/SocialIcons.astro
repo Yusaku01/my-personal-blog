@@ -42,7 +42,7 @@ const iconClasses = {
 const profileEntry = await getEntry('profile', 'main');
 
 if (!profileEntry) {
-  throw new Error('Profile entry not found: src/content/profile/main.json');
+  throw new Error('Profile entry not found: src/content/profile/main.mdx');
 }
 
 const allLinks = profileEntry.data.socialLinks;

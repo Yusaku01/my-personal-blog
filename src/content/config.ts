@@ -29,11 +29,10 @@ const findsFeed = defineCollection({
 });
 
 const profile = defineCollection({
-  type: 'data',
+  type: 'content',
   schema: z.object({
     name: z.string(),
     role: z.string(),
-    bio: z.string(),
     socialLinks: z.array(
       z.object({
         name: z.string(),

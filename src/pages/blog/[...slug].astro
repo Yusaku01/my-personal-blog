@@ -473,7 +473,7 @@ const estimatedReadingTimeMinutes = getEstimatedReadingTimeMinutes(post.body);
   }
 
   .blog-article-content .admonition__title {
-    font-size: 0.95rem;
+    font-size: 1.2rem;
     font-weight: 700;
     margin: 0;
   }
@@ -599,15 +599,18 @@ const estimatedReadingTimeMinutes = getEstimatedReadingTimeMinutes(post.body);
 
   /* ===== TOC Sidebar (xl+) ===== */
   .toc-sidebar {
+    --toc-sidebar-top: clamp(6.5rem, 35vh, 12.5rem);
     width: 14rem;
     flex-shrink: 0;
     align-self: start;
+    position: sticky;
+    top: var(--toc-sidebar-top);
+    max-height: calc(100vh - var(--toc-sidebar-top) - 1.5rem);
   }
 
   .toc-sidebar-nav {
-    position: sticky;
-    top: 5rem;
-    max-height: calc(100vh - 6rem);
+    position: static;
+    max-height: 100%;
     overflow-y: auto;
     overscroll-behavior: contain;
     padding: 0.25rem 0;

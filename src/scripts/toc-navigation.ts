@@ -8,11 +8,15 @@ interface TocHeading {
 
 const HEADER_HEIGHT = 64;
 const SCROLL_THRESHOLD = 80;
+const DESKTOP_BREAKPOINT = '(min-width: 1280px)';
+const SIDEBAR_SCROLL_MARGIN = 8;
 
 const prefersReducedMotion = (): boolean =>
   window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
 const scrollBehavior = (): ScrollBehavior => (prefersReducedMotion() ? 'auto' : 'smooth');
+
+const isDesktopViewport = (): boolean => window.matchMedia(DESKTOP_BREAKPOINT).matches;
 
 // ── Build nested TOC HTML (reusable for panel) ──────────────────────────
 const buildPanelTocHtml = (headings: TocHeading[]): string => {
@@ -73,6 +77,7 @@ const initTocNavigation = (): (() => void) => {
   const contentRoot = document.querySelector<HTMLElement>('[data-blog-content]');
   const sidebar = document.querySelector<HTMLElement>('[data-toc-sidebar]');
   const mobileMount = document.querySelector<HTMLElement>('[data-toc-mobile]');
+  const sidebarNav = sidebar?.querySelector<HTMLElement>('[data-toc-sidebar-nav]');
 
   if (!contentRoot || !mobileMount) {
     return () => {};
@@ -278,6 +283,36 @@ const initTocNavigation = (): (() => void) => {
   }
 
   // ── IntersectionObserver: active heading tracking ───────────────────
+  const scrollSidebarNavToActiveLink = (link: HTMLElement): void => {
+    if (!sidebarNav || !isDesktopViewport() || sidebarNav.offsetParent === null) {
+      return;
+    }
+
+    if (sidebarNav.scrollHeight <= sidebarNav.clientHeight) {
+      return;
+    }
+
+    const navRect = sidebarNav.getBoundingClientRect();
+    const linkRect = link.getBoundingClientRect();
+
+    if (linkRect.top < navRect.top + SIDEBAR_SCROLL_MARGIN) {
+      const delta = linkRect.top - navRect.top - SIDEBAR_SCROLL_MARGIN;
+      sidebarNav.scrollTo({
+        top: sidebarNav.scrollTop + delta,
+        behavior: scrollBehavior(),
+      });
+      return;
+    }
+
+    if (linkRect.bottom > navRect.bottom - SIDEBAR_SCROLL_MARGIN) {
+      const delta = linkRect.bottom - navRect.bottom + SIDEBAR_SCROLL_MARGIN;
+      sidebarNav.scrollTo({
+        top: sidebarNav.scrollTop + delta,
+        behavior: scrollBehavior(),
+      });
+    }
+  };
+
   const setActiveHeading = (slug: string): void => {
     if (slug === activeSlug) return;
     activeSlug = slug;
@@ -288,8 +323,9 @@ const initTocNavigation = (): (() => void) => {
       prev?.classList.remove('is-active');
       const next = sidebar.querySelector<HTMLElement>(`[data-toc-link="${slug}"]`);
       next?.classList.add('is-active');
-      // Auto-scroll sidebar to keep active link visible
-      next?.scrollIntoView({ block: 'nearest', behavior: scrollBehavior() });
+      if (next) {
+        scrollSidebarNavToActiveLink(next);
+      }
     }
 
     // Update panel
