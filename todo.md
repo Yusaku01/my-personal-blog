@@ -55,6 +55,7 @@
 - Prefetchの観点からServer islandを観察する
 - revalidateTagとrevalidatePath
 - Webhookについて
+- :::構文をどのように実装したか
 
 # How
 
