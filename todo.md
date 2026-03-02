@@ -53,6 +53,8 @@
 - ローディングUIの歴史
 - ReactからPreactに移行する
 - Prefetchの観点からServer islandを観察する
+- revalidateTagとrevalidatePath
+- Webhookについて
 
 # How
 

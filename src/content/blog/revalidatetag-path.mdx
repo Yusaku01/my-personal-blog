@@ -1,0 +1,100 @@
+---
+title: 'メモ：revalidateTagとrevalidatePath、あとupdateTagについて'
+description: 'Next.jsのrevalidate関連APIのメモです。'
+publishDate: 2026-03-02
+author: 'Saku'
+image: '/images/blog/common/image_thumnail-4.png'
+tags: ['個人ブログ', 'キャッシュ', 'Cache-Control' , 'Next.js', 'ISR']
+---
+
+このページは、Next.jsのrevalidateTagとrevalidatePathに関する整理メモです。
+
+## 前提として押さえておきたい情報
+
+そもそもrevalidateというのは、Webに昔からある概念。
+詳細を深ぼると[Cache-Control ヘッダー](https://developer.mozilla.org/ja/docs/Web/HTTP/Reference/Headers/Cache-Control)や[キャッシュ](https://developer.mozilla.org/ja/docs/Web/HTTP/Guides/Caching)の議論にも行き着く。
+
+:::note
+**（HTTP）キャッシュ**  
+リクエストとレスポンスを保存する仕組み。過去のやりとりを保存しておくことで、再度同じ条件のリクエストをした時に、保存したレスポンスの内容を再利用（または再検証）して、表示の高速化や通信量削減・サーバ負荷軽減などを行う仕組み。
+
+具体的には、
+- リクエスト情報をキーにし、対応するレスポンスを保存する
+- ブラウザキャッシュであれば、ユーザーのPC内 > 各ブラウザ指定のディスクなどに保存される
+- キャッシュにもいくつか種類があり、それぞれ仕様が異なる（共有/プライベートなど）
+- そのレスポンスがキャッシュ可能かどうかも関係ある
+- 後述するCache-Controlなども関係する
+:::
+
+:::note
+**Cache-Control ヘッダー**  
+ブラウザーや共有キャッシュ（プロキシーや CDN など）において、HTTPキャッシュを制御する仕組み。
+
+`Cache-control: max-age=180, public`のように、`Cache-Control: <ディレクティブ>, <ディレクティブ>, ...`のような形で書かれる。
+
+リクエスト側・レスポンス側それぞれで[使えるディレクティブ](https://developer.mozilla.org/ja/docs/Web/HTTP/Reference/Headers/Cache-Control#%E3%82%AD%E3%83%A3%E3%83%83%E3%82%B7%E3%83%A5%E3%83%87%E3%82%A3%E3%83%AC%E3%82%AF%E3%83%86%E3%82%A3%E3%83%96)が決まっている。
+
+`no-store`でキャッシュ保存しないようにしたり、`max-age`と`must-revalidate`などで時間（キャッシュの鮮度）的に検証したり、文字通りキャッシュをコントロールするための指示を司っている。
+:::
+
+
+上記のNoteに示した通り、このCache-Controlで使用できるディレクティブの中には、、*-revalidateのようなものがある。ここでは詳細には書かないが、これらはいわゆる再検証を意味し、`must-revalidate`であれば、`max-age`とともに併用され、キャッシュの時間的鮮度に応じて再検証の必須（再検証しないと再利用不可）を意味し、`stale-while-revalidate`であれば、キャッシュが古くなった場合に再検証必要になった場合、設定した期間分古いキャッシュを再利用できます。
+
+このように、revalidateは再検証および・これまでの古いキャッシュの扱い（再利用・破棄）に関連する概念といえると思います。
+
+## Next.jsのISR
+
+ISRとは、Next.jsが提唱したIncremental Static Regenerationの略です。今回は端的に表現するとSSGやSSRのデメリットを解決できるかもしれない仕組みとします。
+
+デメリットというのは、たとえばSSGだと基本的にプロジェクト全体を再ビルドすることで、HTMLファイルなどを生成します。WebhookによるSSGワークフローであれば、hook受信後にプロジェクト全体を再ビルドしCDNなどにキャッシュすることに、無事ブラウザに描画するためのファイルを届けています。
+
+しかし、プロジェクトの規模が肥大化すればするほど、プロジェクト全体を再ビルドするとビルドに時間がかかったり、サーバーに負担がかかったりする可能性があります。
+
+SSRは、パーソナライズする画面やリアルタイムでのコンテンツ描画が必要な場合に用いられます。これも非常に便利な仕組みですが、リクエスト数によっては、サーバーに負荷が膨大にかかります。
+
+その上で、既存のレンダリング（SSG/SSRなど）のデメリットを、場合によっては代替できる仕組みとしてISRというものがあると思っています。
+
+感じ方には個人差あると思いますが、どちらかというと多少の遅延が許されるSSGで実現するような静的寄りなプロジェクトをより効率よく運用する仕組みとしてISRは非常に便利だなと個人的には感じています。（よくWebhookを用いてOn-demand ISR（後述）を実装したりします）
+
+そしてISRには、大きく分けて以下の2つが存在します。
+
+- Time-based revalidation
+- On-demand revalidation
+
+ざっくり説明すると、
+Time-basedは、時間的に再検証（ブラウザ標準の`max-age`のように7日とか、設定するイメージ）を促すISR、On-demandは、何かしらのトリガー（たとえば、CMSからのWebhook通知とかのイメージ）をもとにライブで再検証を促すISRになります。
+
+今回整理する、`revalidateTag`と`revalidatePath`の2つは、後者のOn-demand revalidationのような実装時に使用できるNext.jsのAPIになります。
+
+## revalidatePath
+
+[revalidatePath](https://nextjs.org/docs/app/api-reference/functions/revalidatePath)は、ルートごとにキャッシュを無効化する仕組みです。
+
+Server ActionおよびRoute Handlerで呼び出すことができます。（基本的にサーバーで処理されるので、クライアントでは使えません）
+
+Pathの名の通り、以下のようなものを無効化できます。
+- ページ
+- レイアウト
+- Route Handler
+
+個人的には、以下のようにRoute Handlerでページや特定のURLなどのキャッシュ無効化と再検証などに使用することが多いです。
+
+```app/webhook-revalidate/route.ts
+import { revalidatePath } from 'next/cache'
+
+revalidatePath('/blog/post-1')
+```
+
+## revalidateTag
+
+[revalidateTag](https://nextjs.org/docs/app/api-reference/functions/revalidateTag)は、キャッシュタグが付与されたコンテンツのキャッシュを無効化する仕組みです。
+
+疲れたので一旦休憩。
+
+また、[updateTag](https://nextjs.org/docs/app/api-reference/functions/updateTag)というのもありますが、後ほど調べて書き加えておきます。
+
+## 参考資料
+- [Caching and Revalidating | Next.js公式Docs](https://nextjs.org/docs/app/getting-started/caching-and-revalidating)
+- [Cache-Control ヘッダー | MDN](https://developer.mozilla.org/ja/docs/Web/HTTP/Reference/Headers/Cache-Control)
+- [キャッシュ | MDN](https://developer.mozilla.org/ja/docs/Web/HTTP/Guides/Caching)
+- [キャッシュディレクティブ（Cache-Control） | MDN](https://developer.mozilla.org/ja/docs/Web/HTTP/Reference/Headers/Cache-Control#%E3%82%AD%E3%83%A3%E3%83%83%E3%82%B7%E3%83%A5%E3%83%87%E3%82%A3%E3%83%AC%E3%82%AF%E3%83%86%E3%82%A3%E3%83%96)
