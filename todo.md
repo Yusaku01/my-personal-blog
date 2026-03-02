@@ -43,6 +43,17 @@
 - [ ] ヘッドレスCMSと接続し、記事の編集をAPI経由で可能にする
 - [ ] Cloudflare Browser Insightの設定追加
 
+# BLOG
+
+- pnpmの基礎を理解する
+- npmからpnpmへの移行
+- 目次UIに全てをかける
+- rehype/remarkについて
+- メニューとハンバーガーメニューの戦い
+- ローディングUIの歴史
+- ReactからPreactに移行する
+- Prefetchの観点からServer islandを観察する
+
 # How
 
 1. 現状の調査
