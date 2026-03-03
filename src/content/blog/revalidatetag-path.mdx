@@ -1,21 +1,21 @@
 ---
-title: 'メモ：revalidateTagとrevalidatePath、あとupdateTagについて'
-description: 'Next.jsのrevalidate関連APIのメモです。'
+title: '今更整理する Next.jsの`revalidateTag``revalidatePath``updateTag`'
+description: 'Next.jsのrevalidate関連APIの整理メモ。'
 publishDate: 2026-03-02
 author: 'Saku'
 image: '/images/blog/common/image_thumnail-4.png'
 tags: ['個人ブログ', 'キャッシュ', 'Cache-Control' , 'Next.js', 'ISR']
 ---
 
-このページは、Next.jsのrevalidateTagとrevalidatePathに関する整理メモです。
+このページは、Next.jsのrevalidateTagとrevalidatePath、updateTagに関する整理メモである。
 
 ## 前提として押さえておきたい情報
 
-そもそもrevalidateというのは、Webに昔からある概念。
-詳細を深ぼると[Cache-Control ヘッダー](https://developer.mozilla.org/ja/docs/Web/HTTP/Reference/Headers/Cache-Control)や[キャッシュ](https://developer.mozilla.org/ja/docs/Web/HTTP/Guides/Caching)の議論にも行き着く。
+そもそもrevalidateは、Webに昔からある概念である。
+詳細を深掘りすると、[Cache-Control ヘッダー](https://developer.mozilla.org/ja/docs/Web/HTTP/Reference/Headers/Cache-Control)や[キャッシュ](https://developer.mozilla.org/ja/docs/Web/HTTP/Guides/Caching)の議論にも行き着く。
 
-:::note
-**（HTTP）キャッシュ**  
+
+### （HTTP）キャッシュ
 リクエストとレスポンスを保存する仕組み。過去のやりとりを保存しておくことで、再度同じ条件のリクエストをした時に、保存したレスポンスの内容を再利用（または再検証）して、表示の高速化や通信量削減・サーバ負荷軽減などを行う仕組み。
 
 具体的には、
@@ -24,10 +24,8 @@ tags: ['個人ブログ', 'キャッシュ', 'Cache-Control' , 'Next.js', 'ISR']
 - キャッシュにもいくつか種類があり、それぞれ仕様が異なる（共有/プライベートなど）
 - そのレスポンスがキャッシュ可能かどうかも関係ある
 - 後述するCache-Controlなども関係する
-:::
 
-:::note
-**Cache-Control ヘッダー**  
+### Cache-Control ヘッダー
 ブラウザーや共有キャッシュ（プロキシーや CDN など）において、HTTPキャッシュを制御する仕組み。
 
 `Cache-control: max-age=180, public`のように、`Cache-Control: <ディレクティブ>, <ディレクティブ>, ...`のような形で書かれる。
@@ -35,49 +33,81 @@ tags: ['個人ブログ', 'キャッシュ', 'Cache-Control' , 'Next.js', 'ISR']
 リクエスト側・レスポンス側それぞれで[使えるディレクティブ](https://developer.mozilla.org/ja/docs/Web/HTTP/Reference/Headers/Cache-Control#%E3%82%AD%E3%83%A3%E3%83%83%E3%82%B7%E3%83%A5%E3%83%87%E3%82%A3%E3%83%AC%E3%82%AF%E3%83%86%E3%82%A3%E3%83%96)が決まっている。
 
 `no-store`でキャッシュ保存しないようにしたり、`max-age`と`must-revalidate`などで時間（キャッシュの鮮度）的に検証したり、文字通りキャッシュをコントロールするための指示を司っている。
-:::
 
+---
 
-上記のNoteに示した通り、このCache-Controlで使用できるディレクティブの中には、、*-revalidateのようなものがある。ここでは詳細には書かないが、これらはいわゆる再検証を意味し、`must-revalidate`であれば、`max-age`とともに併用され、キャッシュの時間的鮮度に応じて再検証の必須（再検証しないと再利用不可）を意味し、`stale-while-revalidate`であれば、キャッシュが古くなった場合に再検証必要になった場合、設定した期間分古いキャッシュを再利用できます。
+上記に示した通り、このCache-Controlで使用できるディレクティブの中には、`*-revalidate` のようなものがある。ここでは詳細には書かないが、これらはいわゆる再検証を意味する。`must-revalidate`であれば、`max-age`とともに併用され、キャッシュの時間的鮮度に応じて再検証を必須化する（再検証しないと再利用不可）。`stale-while-revalidate`であれば、キャッシュが古くなって再検証が必要な場合でも、設定した期間分は古いキャッシュを再利用できる。
 
-このように、revalidateは再検証および・これまでの古いキャッシュの扱い（再利用・破棄）に関連する概念といえると思います。
+このように、revalidateは再検証および古いキャッシュの扱い（再利用・破棄）に関連する概念である。
 
 ## Next.jsのISR
 
-ISRとは、Next.jsが提唱したIncremental Static Regenerationの略です。今回は端的に表現するとSSGやSSRのデメリットを解決できるかもしれない仕組みとします。
+ISRとは、Next.jsが提唱したIncremental Static Regenerationの略である。ここでは端的に、SSGやSSRのデメリットを解決できる可能性がある仕組みとして扱う。
 
-デメリットというのは、たとえばSSGだと基本的にプロジェクト全体を再ビルドすることで、HTMLファイルなどを生成します。WebhookによるSSGワークフローであれば、hook受信後にプロジェクト全体を再ビルドしCDNなどにキャッシュすることに、無事ブラウザに描画するためのファイルを届けています。
+たとえばSSGでは、基本的にプロジェクト全体を再ビルドすることでHTMLファイルなどを生成する。WebhookによるSSGワークフローであれば、Webhook受信後にプロジェクト全体を再ビルドし、CDNなどへキャッシュされた成果物を配信することで、ブラウザ描画に必要なファイルを届ける。
 
-しかし、プロジェクトの規模が肥大化すればするほど、プロジェクト全体を再ビルドするとビルドに時間がかかったり、サーバーに負担がかかったりする可能性があります。
+しかし、プロジェクトの規模が肥大化するほど、プロジェクト全体の再ビルドには時間がかかり、サーバー負荷も高まる可能性がある。
 
-SSRは、パーソナライズする画面やリアルタイムでのコンテンツ描画が必要な場合に用いられます。これも非常に便利な仕組みですが、リクエスト数によっては、サーバーに負荷が膨大にかかります。
+SSRは、パーソナライズ画面やリアルタイム描画が必要な場合に用いられる。これも非常に便利な仕組みだが、リクエスト数によってはサーバー負荷が膨大になる。
 
-その上で、既存のレンダリング（SSG/SSRなど）のデメリットを、場合によっては代替できる仕組みとしてISRというものがあると思っています。
+その上で、既存のレンダリング（SSG/SSRなど）のデメリットを、場合によっては代替できる仕組みとしてISRがある。基本的な仕組みは、キャッシュ + CDN + トリガー（Webhookや時間など）で構成されているものであり、トリガーを起点に、キャッシュうまく保存・再利用・再検証することで、CDNからいつでも素早くユーザーにコンテンツをお届けすると言うもの。
 
-感じ方には個人差あると思いますが、どちらかというと多少の遅延が許されるSSGで実現するような静的寄りなプロジェクトをより効率よく運用する仕組みとしてISRは非常に便利だなと個人的には感じています。（よくWebhookを用いてOn-demand ISR（後述）を実装したりします）
+感じ方には個人差があるが、どちらかというと多少の遅延が許される静的寄りのプロジェクトを、効率よく運用する仕組みとしてISRは非常に便利だと感じる（よくWebhookを用いてOn-demand ISRを実装する）。
 
-そしてISRには、大きく分けて以下の2つが存在します。
+そしてISRには、大きく分けて以下の2つがある。
 
 - Time-based revalidation
 - On-demand revalidation
 
-ざっくり説明すると、
-Time-basedは、時間的に再検証（ブラウザ標準の`max-age`のように7日とか、設定するイメージ）を促すISR、On-demandは、何かしらのトリガー（たとえば、CMSからのWebhook通知とかのイメージ）をもとにライブで再検証を促すISRになります。
+ざっくり説明すると、Time-basedは時間経過をトリガーに再検証を促すISRであり、On-demandは何かしらのイベント（たとえばCMSからのWebhook通知）をトリガーに再検証を促すISRである。
 
-今回整理する、`revalidateTag`と`revalidatePath`の2つは、後者のOn-demand revalidationのような実装時に使用できるNext.jsのAPIになります。
+今回整理する `revalidateTag` と `revalidatePath` は、後者のOn-demand revalidation実装時に使用できるNext.js APIである。
 
 ## revalidatePath
 
-[revalidatePath](https://nextjs.org/docs/app/api-reference/functions/revalidatePath)は、ルートごとにキャッシュを無効化する仕組みです。
+[revalidatePath](https://nextjs.org/docs/app/api-reference/functions/revalidatePath)は、ルートごとにキャッシュを無効化する仕組みである。
 
-Server ActionおよびRoute Handlerで呼び出すことができます。（基本的にサーバーで処理されるので、クライアントでは使えません）
+Server Action[^server-action]およびRoute Handler[^route-handler]で呼び出せる（基本的にサーバーで処理されるため、クライアントでは使えない）。
 
-Pathの名の通り、以下のようなものを無効化できます。
-- ページ
-- レイアウト
-- Route Handler
+Pathの名の通り、以下のようなものを無効化できる。
+- ページ（指定ページのキャッシュ）
+- レイアウト（レイアウト配下のネストされたレイアウト/ページ）
+- Route Handler[^route-handler]（Handler内で参照されたデータなど）
 
-個人的には、以下のようにRoute HandlerでCMSなどのWebhookをトリガーとしてページや特定のURLなどのキャッシュ無効化と再検証などに使用することが多いです。
+基本的な構文は以下の通り。
+
+```ts
+import { revalidatePath } from 'next/cache';
+
+revalidatePath(path: string, type?: 'page' | 'layout'): void;
+```
+
+`revalidatePath()` のシグネチャは以下の通り。
+
+**`path`** には、具体のURL（例: `/posts/1`）やルートパターン（例: `/posts/[id]`）を指定する。
+
+**`type`** には `page` または `layout` を指定する。動的セグメント（`xxx/[slug]`など）を含むパターン指定時は必須であり、それ以外ではオプションである。
+
+:::note
+**typeのpageとlayout**
+概念は紛らわしいが、基本的に `type` は動的セグメント（動的ルート）で使う。
+
+例として `blog/[slug]` を考える。Next.jsでは `/blog/[slug]` 画面を配信する時、以下のようなディレクトリ構造やファイル配置になる。
+
+`app/blog/[slug]`
+- `layout.tsx`
+- `page.tsx`
+- その他ファイル
+
+静的セグメントを対象にする場合は、そもそも `type` は不要である。動的セグメントでも、`[slug]` 部分に一致する特定URL（例: `blog/post-1`、`blog/post-2`）を対象にしたい場合は `page` を指定する。
+
+動的セグメントかつ特定パスより深いネストまで対象にする場合は `layout` を使用する。これは `blog/post-1` だけでなく、`blog/post-1/*` や `blog/post-1/*/*` など `blog/[slug]` 以下の画面も再検証対象となる。
+
+イメージの補助になれば幸いである。
+:::
+
+個人的には、以下のようにRoute Handler[^route-handler]でCMSなどのWebhookをトリガーとして、ページや特定URLのキャッシュ無効化・再検証に使うことが多い。
+以下のような場合、指定したパスは次回訪問時にキャッシュ再検証される。
 
 ```app/webhook-revalidate/route.ts
 import { revalidatePath } from 'next/cache'
@@ -87,14 +117,179 @@ revalidatePath('/blog/post-1')
 
 ## revalidateTag
 
-[revalidateTag](https://nextjs.org/docs/app/api-reference/functions/revalidateTag)は、キャッシュタグが付与されたコンテンツのキャッシュを無効化する仕組みです。
+[revalidateTag](https://nextjs.org/docs/app/api-reference/functions/revalidateTag)は、キャッシュタグが付与されたコンテンツのキャッシュを無効化する仕組みである。
 
-疲れたので一旦休憩。
+Server Action[^server-action]およびRoute Handler[^route-handler]でのみ呼び出せる点は、revalidatePathと同様である（基本的にサーバーで処理されるため、クライアントでは使えない）。
 
-また、[updateTag](https://nextjs.org/docs/app/api-reference/functions/updateTag)というのもありますが、後ほど調べて書き加えておきます。
+Tagという名前の通り、以下のようにタグ付けされているモノのキャッシュを無効化できる。
+- `fetch(..., { next: { tags: [...] } })` でタグ付けしたData Cache
+- `'use cache'` + `cacheTag(...)` でタグ付けしたキャッシュ
+
+:::note
+**Tagとは**  
+Tagを無効化して次回訪問時の再検証を促せるのがrevalidateTagだが、そもそもここでの **Tag** とは何か。また、破棄できるということは、どこかでTagが付与されているはずである。
+
+Tagは「**キャッシュエントリをまとめて識別するための文字列ラベル**」である。  
+同じTagを付けたデータは、`revalidateTag('posts', 'max')` のように1回で横断的に再検証対象にできる。
+
+Tagの付与は主に2パターンである。  
+- `fetch` で `next.tags` を指定する（例: `fetch(url, { next: { tags: ['posts'] } })`）  
+- `'use cache'` を使う関数/コンポーネント内で `cacheTag('posts')` を呼ぶ  
+:::
+
+基本的な構文は以下の通り。
+
+```ts
+import { revalidateTag } from 'next/cache';
+
+revalidateTag(tag: string, profile: string | { expire?: number }): void;
+```
+
+`revalidateTag()` のシグネチャは以下の通り。
+
+**`tag`** には対象タグを指定する。
+
+**`profile`** には、`max`（stale-while-revalidate）またはカスタムのcacheLifeプロファイル名、即時失効のための `{ expire: 0 }` などを指定できる。
+
+:::note
+**`max` と `{ expire: 0 }` の違い**  
+`max` は stale-while-revalidate の挙動で、まず古いキャッシュを返しつつ、裏側で再検証してキャッシュを新しくする。  
+`{ expire: 0 }` は対象タグを即時失効させるため、次リクエストでは stale を返さず新規取得完了まで待つ。  
+Server Action[^server-action] 内で「更新直後の本人には必ず新しい内容を返したい」場合は、`updateTag` を使う方が意図に合う。
+:::
+
+:::note
+**cacheLifeとは**  
+cacheLife は、`'use cache'` 系のキャッシュ寿命を名前付きプロファイルとして定義する `next.config` 設定である。  
+具体的には `stale`・`revalidate`・`expire` を1セットにし、`revalidateTag()` の第2引数でそのプロファイル名を指定できる。
+
+```ts
+import type { NextConfig } from 'next';
+
+const nextConfig: NextConfig = {
+  cacheComponents: true,
+  cacheLife: {
+    blog: {
+      stale: 300,
+      revalidate: 900,
+      expire: 3600,
+    },
+  },
+};
+
+export default nextConfig;
+```
+
+上記のように定義すると、`revalidateTag('posts', 'blog')` のようにプロファイル名で挙動を指定できるため、再検証ポリシーの共通化がしやすい。
+:::
+
+実運用では、データ取得側でTagを付与し、更新イベント側（Webhook受信用Route Handler[^route-handler]など）で `revalidateTag` を呼ぶ構成にすることが多い。
+
+```app/posts/page.tsx
+const posts = await fetch('https://api.example.com/posts', {
+  next: { tags: ['posts'] },
+}).then((res) => res.json());
+```
+
+```app/api/revalidate/route.ts
+import { revalidateTag } from 'next/cache';
+import { NextResponse } from 'next/server';
+
+export async function POST(request: Request) {
+  const body = await request.json();
+
+  if (body.secret !== process.env.REVALIDATE_SECRET) {
+    return NextResponse.json({ ok: false }, { status: 401 });
+  }
+
+  revalidateTag('posts', 'max');
+  return NextResponse.json({ ok: true });
+}
+```
+
+このようにしておくと、CMS更新をトリガーに `posts` タグ付きキャッシュを再検証対象にできる。`profile: 'max'` を使えば stale-while-revalidate で更新されるため、即時全体再計算を避けつつ整合性を保ちやすい。
+
+## updateTag
+
+revalidatePath・revalidateTag以外にも、[updateTag](https://nextjs.org/docs/app/api-reference/functions/updateTag) というAPIも存在する。
+
+updateTag は、タグ付きキャッシュを**即時失効**させるAPIである。`revalidateTag('tag', 'max')` と異なり stale を返さず、次の読み取りでfreshデータ取得を待つのが特徴である。  
+公式ブログのNext.js v16 リリース（2025年10月21日公開）で `updateTag()(new)`として追加が明記されており、利用前提はNext.js v16以降である。
+
+基本的な構文は以下の通り。
+
+```ts
+import { updateTag } from 'next/cache';
+
+updateTag(tag: string): void;
+```
+
+`updateTag()`は**Server Actions**[^server-action]でのみ呼び出せる（Route Handler[^route-handler]内で使用しようとするとエラーになる）。  
+これにより、「更新した本人には直後に必ず新しいデータを見せたい」というread-your-own-writesの要件を満たしやすくなる。  
+read-your-own-writes とは、**自分が書き込んだ更新結果を直後の読み取りで必ず自分が観測できる**一貫性の考え方である。たとえば投稿作成直後に一覧へ戻った時、作成した投稿がすぐ表示される状態を担保したい場合に重要になる。
+
+具体例としては、投稿作成や編集のServer Action[^server-action]でDB更新直後に`updateTag`を呼ぶケースが分かりやすい。
+
+```ts
+'use server';
+
+import { updateTag } from 'next/cache';
+import { redirect } from 'next/navigation';
+import { db } from '@/lib/db';
+
+export async function createPostAction(formData: FormData) {
+  const title = String(formData.get('title') ?? '');
+  const post = await db.post.create({ data: { title } });
+
+  updateTag('posts');
+  updateTag(`post-${post.id}`);
+
+  redirect(`/posts/${post.id}`);
+}
+```
+
+このようにしておくと、更新直後の一覧・詳細画面で古いキャッシュを返しにくくなる。
+
+## 3つそれぞれの比較
+
+| API | 一言概要 | 無効化スコープ | 対象キャッシュ | 呼び出せる場所 | 次回表示時の挙動 | 向いているユースケース |
+| --- | --- | --- | --- | --- | --- | --- |
+| `revalidatePath` | パス単位で再検証 | 指定ページ/レイアウト/Route Handler[^route-handler]パス | 主にData Cache + その再レンダリング結果 | Server Functions[^server-functions] / Route Handlers[^route-handler] | Pathに対して次回訪問で再検証（Server Function時は表示中UIへ即時反映あり） | 「このページ群だけ」更新したい時 |
+| `revalidateTag` | タグ単位で再検証 | 同じタグを使う全ページ横断 | タグ付きData Cache | Server Functions[^server-functions] / Route Handlers[^route-handler] | `profile: 'max'` なら stale-while-revalidate | 共有データを複数画面で使う時、Webhook連携 |
+| `updateTag` | タグ単位で即時失効 | 同じタグを使う全ページ横断 | タグ付きData Cache | Server Actions[^server-action]のみ | 次リクエストはfresh取得を待つ（staleを返さない） | read-your-own-writesを厳密に担保したい時 |
+
+### revalidatePathとrevalidateTagの違い
+- 粒度が違う  
+  - `revalidatePath`: ルート（URL/ルートパターン）起点
+  - `revalidateTag`: データタグ起点
+- 影響範囲が違う  
+  - `revalidatePath`: 指定したパスに紐づく表示更新が中心
+  - `revalidateTag`: 同タグを使う別ページにも横断的に影響
+- 設計の使い分け  
+  - ページ/レイアウト単位で明確に更新したいなら `revalidatePath`
+  - データソース単位で複数画面をまとめて整合させたいなら `revalidateTag`
+
+### revalidateTagとupdateTagの違い
+- 更新ポリシーが違う  
+  - `revalidateTag(tag, 'max')`: stale-while-revalidate（ユーザーに古い内容を返しつつ裏で更新）
+  - `updateTag(tag)`: 即時失効（次リクエストはfresh取得を待つ）
+- 呼び出し可能コンテキストが違う  
+  - `revalidateTag`: Server Functions[^server-functions] / Route Handlers[^route-handler]
+  - `updateTag`: Server Actions[^server-action]のみ
+- 使い分けの基準  
+  - 多少の遅延許容・負荷平準化重視なら `revalidateTag('tag', 'max')`
+  - 「更新した本人には直後に必ず新しい結果を見せる」なら `updateTag`
+
+[^route-handler]: Route Handlerとは: https://nextjs.org/docs/app/getting-started/route-handlers
+[^server-action]: Server Actionとは: https://nextjs.org/docs/app/getting-started/updating-data
+[^server-functions]: Server Functionsとは（`'use server'` で定義し、サーバー実行関数を使用できる。内部の実態は、[Reactの機能](https://react.dev/reference/rsc/server-functions)）: https://nextjs.org/docs/app/api-reference/directives/use-server#server-functions
 
 ## 参考資料
 - [Caching and Revalidating | Next.js公式Docs](https://nextjs.org/docs/app/getting-started/caching-and-revalidating)
+- [cacheLife | Next.js公式Docs](https://nextjs.org/docs/app/api-reference/config/next-config-js/cacheLife)
+- [revalidateTag | Next.js公式Docs](https://nextjs.org/docs/app/api-reference/functions/revalidateTag)
+- [updateTag | Next.js公式Docs](https://nextjs.org/docs/app/api-reference/functions/updateTag)
+- [Next.js 16 | Next.js公式ブログ](https://nextjs.org/blog/next-16)
 - [Cache-Control ヘッダー | MDN](https://developer.mozilla.org/ja/docs/Web/HTTP/Reference/Headers/Cache-Control)
 - [キャッシュ | MDN](https://developer.mozilla.org/ja/docs/Web/HTTP/Guides/Caching)
 - [キャッシュディレクティブ（Cache-Control） | MDN](https://developer.mozilla.org/ja/docs/Web/HTTP/Reference/Headers/Cache-Control#%E3%82%AD%E3%83%A3%E3%83%83%E3%82%B7%E3%83%A5%E3%83%87%E3%82%A3%E3%83%AC%E3%82%AF%E3%83%86%E3%82%A3%E3%83%96)
