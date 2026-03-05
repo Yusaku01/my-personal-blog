@@ -188,10 +188,18 @@ const gaId = import.meta.env.PUBLIC_GOOGLE_ANALYTICS_ID;
         --font-body:
           'Zen Kaku Gothic New', 'Zen Kaku Gothic New Fallback', system-ui, -apple-system,
           'Hiragino Kaku Gothic ProN', 'Yu Gothic', Meiryo, sans-serif;
+        --fs-body: clamp(1rem, calc(0.98rem + 0.12vw), 1.0625rem);
+        --fs-h1: clamp(1.875rem, calc(1.72rem + 0.78vw), 2.25rem);
+        --fs-h2: clamp(1.5rem, calc(1.26rem + 1.17vw), 2.25rem);
+        --fs-h3: clamp(1.25rem, calc(1.1rem + 0.73vw), 1.875rem);
+        --fs-h4: clamp(1.125rem, calc(1.04rem + 0.42vw), 1.5rem);
+        --fs-h5: clamp(1rem, calc(0.95rem + 0.24vw), 1.25rem);
+        --fs-h6: clamp(1rem, calc(0.99rem + 0.05vw), 1.125rem);
       }
 
       body {
         font-family: var(--font-body);
+        font-size: var(--fs-body);
         font-synthesis-weight: none;
       }
 

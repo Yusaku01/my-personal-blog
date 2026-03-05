@@ -8,7 +8,31 @@ export default defineConfig({
   presets: [
     presetWind3(), // Tailwind互換の基本機能
     presetAttributify(), // 属性ベースのユーティリティ
-    presetTypography(), // Tailwindの@tailwindcss/typographyの代替
+    presetTypography({
+      cssExtend: {
+        p: {
+          'font-size': 'var(--fs-body)',
+        },
+        h1: {
+          'font-size': 'var(--fs-h1)',
+        },
+        h2: {
+          'font-size': 'var(--fs-h2)',
+        },
+        h3: {
+          'font-size': 'var(--fs-h3)',
+        },
+        h4: {
+          'font-size': 'var(--fs-h4)',
+        },
+        h5: {
+          'font-size': 'var(--fs-h5)',
+        },
+        h6: {
+          'font-size': 'var(--fs-h6)',
+        },
+      },
+    }), // Tailwindの@tailwindcss/typographyの代替
     presetIcons({
       scale: 1.2,
       mode: 'auto',
@@ -94,12 +118,12 @@ export default defineConfig({
 
     // 見出し用の省略形
     'heading-base': 'font-semibold text-gray-900 dark:text-white',
-    'heading-h1': 'text-3xl lg:text-5xl',
-    'heading-h2': 'text-2xl lg:text-4xl',
-    'heading-h3': 'text-xl lg:text-3xl',
-    'heading-h4': 'text-lg lg:text-2xl',
-    'heading-h5': 'text-base lg:text-xl',
-    'heading-h6': 'text-base',
+    'heading-h1': '[font-size:var(--fs-h1)]',
+    'heading-h2': '[font-size:var(--fs-h2)]',
+    'heading-h3': '[font-size:var(--fs-h3)]',
+    'heading-h4': '[font-size:var(--fs-h4)]',
+    'heading-h5': '[font-size:var(--fs-h5)]',
+    'heading-h6': '[font-size:var(--fs-h6)]',
 
     // ブログ関連の省略形
     'blog-search-form': 'mb-8 max-w-xl mx-auto relative',
