@@ -8,9 +8,10 @@
 2. 以下の値を最新の本番向けクレデンシャルに置き換える。
    - `PUBLIC_CONTACT_FORM_ENDPOINT`
    - `PUBLIC_GOOGLE_ANALYTICS_ID`
-   - `PUBLIC_GOOGLE_RECAPTCHA_SITE_KEY`
+   - `PUBLIC_GOOGLE_RECAPTCHA_SITE_KEY`（reCAPTCHA v2 checkbox のサイトキー）
    - Qiita / Zenn のユーザー名（任意）
-3. `pnpm run dev` で起動し、フォーム送信やダークモード切替など主要機能を確認する。
+3. reCAPTCHA 管理画面でサイトキーの許可ドメインに `saku-space.com` と `localhost` が含まれることを確認する。
+4. `pnpm run dev` で起動し、フォーム送信やダークモード切替など主要機能を確認する。
 
 ## 2. デプロイ環境のシークレット設定
 
