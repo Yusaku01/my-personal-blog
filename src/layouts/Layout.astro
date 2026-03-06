@@ -195,6 +195,10 @@ const gaId = import.meta.env.PUBLIC_GOOGLE_ANALYTICS_ID;
         --fs-h4: clamp(1.125rem, calc(1.04rem + 0.42vw), 1.5rem);
         --fs-h5: clamp(1rem, calc(0.95rem + 0.24vw), 1.25rem);
         --fs-h6: clamp(1rem, calc(0.99rem + 0.05vw), 1.125rem);
+        --cards-min: clamp(15rem, 27vw, 16rem);
+        --cards-gap: clamp(0.875rem, 1.2vw, 1.5rem);
+        --cards-min-compact: clamp(18rem, 40vw, 20rem);
+        --cards-gap-compact: clamp(0.75rem, 1vw, 1.25rem);
       }
 
       body {
@@ -205,6 +209,18 @@ const gaId = import.meta.env.PUBLIC_GOOGLE_ANALYTICS_ID;
 
       img {
         content-visibility: auto;
+      }
+
+      .grid-fluid-cards {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(min(100%, var(--cards-min)), 1fr));
+        gap: var(--cards-gap);
+      }
+
+      .grid-fluid-cards-compact {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(min(100%, var(--cards-min-compact)), 1fr));
+        gap: var(--cards-gap-compact);
       }
 
       /* Metrics-compatible fallback to reduce FOUT layout shift */

@@ -30,7 +30,7 @@ const feeds = feedEntries.flatMap((entry) => entry.data.feeds).filter((feed) => 
 
       <section class="mb-6">
         <SectionHeading title="Feeds I Follow" className="heading-h2 tracking-widest" />
-        <div class="mt-6 grid gap-4 md:grid-cols-2">
+        <div class="mt-6 grid-fluid-cards-compact">
           {
             feeds.map((feed) => (
               <div class="rounded-md border border-gray-200 dark:border-gray-700 p-4 bg-white dark:bg-gray-900">
