@@ -1,0 +1,57 @@
+---
+title: 'OXC系Toolchainメモ'
+description: 'OXC系Toolchainの検証メモです。'
+publishDate: 2026-03-09
+author: 'Saku'
+image: '/images/blog/common/image_thumnail-4.png'
+tags: ['OXC', '個人ブログ', 'メモ']
+---
+
+これは、OXC系Toolchainのメモです。
+※ 随時更新するかもです。
+
+## OXCとは何かをざっくり
+
+Oxc compiler stack 上に構築された、JS/TS向けのOSSツール
+
+:::note
+OSSではあるが、開発元は、VoidZero Inc.
+VoidZero Incは、確かVueやViteの作成者であるEvan氏が作った企業？だったはずなので、その辺のOSSとの親和性が最も高い（はず）
+:::
+
+公式Docsを簡単に参照した感じだと以下のようなツールがある。
+
+- Oxlint
+- Oxfmt
+- Parser
+- Transformer
+- Minifier
+- Resolver
+
+全てを把握できているわけではないが、
+恐らく流行っているのは、以下あたりが要因なのかな？と
+
+- 駆動速度
+- アーキテクチャ
+- AIや大規模プロジェクト、CI周りとの親和性
+
+## Oxlint
+
+最近私がやっと検証し始めたツール。
+いわゆるLinter系のツールであり、分類的にはESLintと近い。
+
+TSコンパイラー（tsgo/TS 7）のネイティブGoポートを活用し、完全なTypeScript互換性と、TypeScript自体に期待されるのと同じ型システム動作を提供する。
+
+一方、この点Biomeは対照的で、TSのコンパイラーには深くは依存せず、独自に型推論などを行なうようにしている。
+
+### 体感メモ
+
+大規模プロジェクトでは、試せてはいないし、他ツールとの細かい比較はできていないと言う前置きをしつつ、以下を感じた。
+
+- 検出速度が鬼早い
+- 検出されたエラー内容が見やすい
+- Zero Configでも使える
+- .astroの`<script>`なども検出できる
+- あくまでJS/TS向きのツールなので、a11yやhtmlなどのチェックには向かないかも
+
+
