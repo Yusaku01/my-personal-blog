@@ -9,12 +9,14 @@ interface Props {
   title: string;
   description?: string;
   blogTitle?: string; // ブログ記事のタイトルを渡すためのプロパティを追加
+  robots?: string;
 }
 
 const {
   title,
   description = 'SAKUSPACE（サクスペース）は、フロントエンド開発〜デザイン領域のことを中心に、アウトプットする場として運営しているブログサイトです。',
   blogTitle, // ブログタイトルを受け取る
+  robots = 'index, follow',
 } = Astro.props;
 
 // OGP画像パスを動的に設定
@@ -78,7 +80,7 @@ const gaId = import.meta.env.PUBLIC_GOOGLE_ANALYTICS_ID;
     <link rel="alternate" type="application/rss+xml" title="RSS" href="/rss.xml" />
     <meta name="generator" content={Astro.generator} />
     <meta name="description" content={description} />
-    <meta name="robots" content="index, follow" />
+    <meta name="robots" content={robots} />
     <title>{title}</title>
     <ClientRouter fallback="animate" />
     <!-- テーマ切り替え -->
@@ -215,6 +217,11 @@ const gaId = import.meta.env.PUBLIC_GOOGLE_ANALYTICS_ID;
         display: grid;
         grid-template-columns: repeat(auto-fit, minmax(min(100%, var(--cards-min)), 1fr));
         gap: var(--cards-gap);
+      }
+
+      .grid-fluid-cards-blog {
+        grid-template-columns: repeat(auto-fill, minmax(min(100%, var(--cards-min)), 1fr));
+        justify-content: start;
       }
 
       .grid-fluid-cards-compact {
