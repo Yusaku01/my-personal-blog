@@ -1,31 +1,233 @@
 <!-- ---
 import Layout from '../layouts/Layout.astro';
 import HeroSection from '../components/Hero/HeroSection.astro';
-import SuspenseContactForm from '../components/Contact/SuspenseContactForm';
+import { actions } from 'astro:actions';
+import type { ContactForm } from '../types';
 
+export const prerender = false;
 export const transition = { name: 'fade' };
-const recaptchaSiteKey = import.meta.env.PUBLIC_GOOGLE_RECAPTCHA_SITE_KEY?.trim();
+
+const recaptchaSiteKey = import.meta.env.PUBLIC_GOOGLE_RECAPTCHA_SITE_KEY?.trim() ?? '';
+const sent = Astro.url.searchParams.get('sent') === '1';
+const actionResult = Astro.getActionResult(actions.contact);
+
+if (actionResult?.data?.ok) {
+  return Astro.redirect('/contact?sent=1');
+}
+
+const defaultValues: ContactForm = {
+  name: '',
+  email: '',
+  subject: '',
+  message: '',
+};
+
+const failedSubmission = actionResult?.data && !actionResult.data.ok ? actionResult.data : null;
+const values = failedSubmission?.values ?? defaultValues;
+const fieldErrors = failedSubmission?.fieldErrors ?? {};
+const formError = failedSubmission?.message ?? null;
+
+const fieldIds = {
+  name: 'contact-name',
+  email: 'contact-email',
+  subject: 'contact-subject',
+  message: 'contact-message',
+} as const;
 ---
 
 <Layout title="お問い合わせ | SAKUSPACE">
   {
     recaptchaSiteKey && (
-      <script
-        slot="head"
-        is:inline
-        src="https://www.google.com/recaptcha/api.js?onload=recaptchaOnload&render=explicit"
-        async
-        defer
-      />
+      <script slot="head" is:inline src="https://www.google.com/recaptcha/api.js" async defer />
     )
   }
+
   <HeroSection title="CONTACT" isHome={false} />
 
   <div class="py-12">
     <div class="container-md">
       <div class="lg:px-8">
-        <SuspenseContactForm client:only="react" />
+        {
+          sent && (
+            <div class="mb-8 rounded-lg border border-green-200 bg-green-50 p-6 text-center text-green-800">
+              <h2 class="mb-2 text-xl font-bold">送信完了</h2>
+              <p>お問い合わせありがとうございます。できるだけ早くご返信いたします。</p>
+            </div>
+          )
+        }
+
+        <p class="mb-8 text-center text-gray-800 dark:text-white">
+          ご質問やお問い合わせがありましたら、以下のフォームからご連絡ください。
+          <br />
+          可能な限り早くご返信いたします。
+        </p>
+
+        <form
+          method="POST"
+          action={actions.contact}
+          data-contact-form
+          class="mx-auto max-w-2xl space-y-6"
+        >
+          <div>
+            <label for={fieldIds.name} class="block">
+              <span class="mb-2 flex items-center gap-2">
+                <span class="font-bold text-gray-700 dark:text-white">お名前</span>
+                <span class="rounded-md bg-gray-200 px-2 py-0.5 text-xs font-bold text-gray-700">
+                  必須
+                </span>
+              </span>
+              <input
+                id={fieldIds.name}
+                name="name"
+                type="text"
+                value={values.name}
+                required
+                transition:persist
+                aria-invalid={fieldErrors.name?.length ? 'true' : 'false'}
+                aria-describedby={fieldErrors.name?.length ? `${fieldIds.name}-error` : undefined}
+                class="w-full rounded-md border p-3 focus:outline-none focus:ring-2 focus:ring-[#333] dark:text-gray-900"
+              />
+            </label>
+            {
+              fieldErrors.name?.length ? (
+                <p id={`${fieldIds.name}-error`} class="mt-1 text-sm text-red-600">
+                  {fieldErrors.name.join('、')}
+                </p>
+              ) : null
+            }
+          </div>
+
+          <div>
+            <label for={fieldIds.email} class="block">
+              <span class="mb-2 flex items-center gap-2">
+                <span class="font-bold text-gray-700 dark:text-white">メールアドレス</span>
+                <span class="rounded-md bg-gray-200 px-2 py-0.5 text-xs font-bold text-gray-700">
+                  必須
+                </span>
+              </span>
+              <input
+                id={fieldIds.email}
+                name="email"
+                type="email"
+                value={values.email}
+                required
+                transition:persist
+                aria-invalid={fieldErrors.email?.length ? 'true' : 'false'}
+                aria-describedby={fieldErrors.email?.length ? `${fieldIds.email}-error` : undefined}
+                class="w-full rounded-md border p-3 focus:outline-none focus:ring-2 focus:ring-[#333] dark:text-gray-900"
+              />
+            </label>
+            {
+              fieldErrors.email?.length ? (
+                <p id={`${fieldIds.email}-error`} class="mt-1 text-sm text-red-600">
+                  {fieldErrors.email.join('、')}
+                </p>
+              ) : null
+            }
+          </div>
+
+          <div>
+            <label for={fieldIds.subject} class="block">
+              <span class="mb-2 flex items-center gap-2">
+                <span class="font-bold text-gray-700 dark:text-white">件名</span>
+                <span class="rounded-md bg-gray-200 px-2 py-0.5 text-xs font-bold text-gray-700">
+                  必須
+                </span>
+              </span>
+              <input
+                id={fieldIds.subject}
+                name="subject"
+                type="text"
+                value={values.subject}
+                required
+                transition:persist
+                aria-invalid={fieldErrors.subject?.length ? 'true' : 'false'}
+                aria-describedby={fieldErrors.subject?.length
+                  ? `${fieldIds.subject}-error`
+                  : undefined}
+                class="w-full rounded-md border p-3 focus:outline-none focus:ring-2 focus:ring-[#333] dark:text-gray-900"
+              />
+            </label>
+            {
+              fieldErrors.subject?.length ? (
+                <p id={`${fieldIds.subject}-error`} class="mt-1 text-sm text-red-600">
+                  {fieldErrors.subject.join('、')}
+                </p>
+              ) : null
+            }
+          </div>
+
+          <div>
+            <label for={fieldIds.message} class="block">
+              <span class="mb-2 flex items-center gap-2">
+                <span class="font-bold text-gray-700 dark:text-white">メッセージ</span>
+                <span class="rounded-md bg-gray-200 px-2 py-0.5 text-xs font-bold text-gray-700">
+                  必須
+                </span>
+              </span>
+              <textarea
+                id={fieldIds.message}
+                name="message"
+                rows={8}
+                required
+                transition:persist
+                aria-invalid={fieldErrors.message?.length ? 'true' : 'false'}
+                aria-describedby={fieldErrors.message?.length
+                  ? `${fieldIds.message}-error`
+                  : undefined}
+                class="max-h-80 w-full rounded-md border p-3 focus:outline-none focus:ring-2 focus:ring-[#333] dark:text-gray-900"
+                >{values.message}</textarea
+              >
+            </label>
+            {
+              fieldErrors.message?.length ? (
+                <p id={`${fieldIds.message}-error`} class="mt-1 text-sm text-red-600">
+                  {fieldErrors.message.join('、')}
+                </p>
+              ) : null
+            }
+          </div>
+
+          {
+            recaptchaSiteKey ? (
+              <div class="grid justify-center">
+                <div class="g-recaptcha" data-sitekey={recaptchaSiteKey} />
+              </div>
+            ) : (
+              <p class="rounded-md border border-amber-200 bg-amber-50 p-3 text-sm text-amber-700">
+                reCAPTCHA のサイトキーが未設定です。設定後に送信を有効化してください。
+              </p>
+            )
+          }
+
+          {
+            formError && (
+              <p class="rounded-md border border-red-200 bg-red-50 p-3 text-sm text-red-700">
+                {formError}
+              </p>
+            )
+          }
+
+          <div class="text-center">
+            <button
+              type="submit"
+              data-contact-submit
+              data-default-label="送信する"
+              data-pending-label="送信中..."
+              class="btn-primary disabled:cursor-not-allowed disabled:opacity-70"
+              disabled={!recaptchaSiteKey}
+            >
+              送信する
+            </button>
+          </div>
+        </form>
       </div>
     </div>
   </div>
-</Layout> -->
+</Layout>
+
+<script>
+  import { installContactFormEnhancements } from '../lib/contact/formEnhancements';
+
+  installContactFormEnhancements();
+</script> -->
