@@ -3,6 +3,7 @@ import { getOGPImage } from '../utils/ogp';
 
 const CACHE_DURATION = 60 * 60 * 1000; // 1時間
 const cache = new Map<string, { data: ExternalPost[]; timestamp: number }>();
+const warnedMessages = new Set<string>();
 
 interface QiitaPost {
   title: string;
@@ -18,6 +19,33 @@ function parseDate(dateStr: string): Date {
   } catch {
     return new Date();
   }
+}
+
+function summarizeFetchError(error: unknown): string {
+  if (error instanceof Error) {
+    const cause = error.cause;
+    if (
+      typeof cause === 'object' &&
+      cause !== null &&
+      'code' in cause &&
+      typeof cause.code === 'string'
+    ) {
+      return cause.code;
+    }
+
+    return error.message;
+  }
+
+  return 'unknown error';
+}
+
+function warnOnce(message: string) {
+  if (warnedMessages.has(message)) {
+    return;
+  }
+
+  warnedMessages.add(message);
+  console.warn(message);
 }
 
 export async function getQiitaPosts(username?: string): Promise<ExternalPost[]> {
@@ -68,7 +96,11 @@ export async function getQiitaPosts(username?: string): Promise<ExternalPost[]> 
 
     return posts;
   } catch (error) {
-    console.error('Failed to fetch Qiita posts:', error);
+    warnOnce(
+      `[blog] Failed to fetch Qiita posts (${summarizeFetchError(
+        error
+      )}). Using cached or empty results.`
+    );
 
     if (cachedData) {
       return cachedData.data;

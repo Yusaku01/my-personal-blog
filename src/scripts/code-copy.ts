@@ -115,46 +115,21 @@ const getCodeText = (preElement: HTMLElement): string => {
   return preElement.textContent ?? '';
 };
 
-const fallbackCopyText = (text: string): boolean => {
-  const textarea = document.createElement('textarea');
-  textarea.value = text;
-  textarea.setAttribute('readonly', 'true');
-  textarea.setAttribute('aria-hidden', 'true');
-  textarea.style.position = 'fixed';
-  textarea.style.top = '-9999px';
-  textarea.style.left = '-9999px';
-
-  document.body.appendChild(textarea);
-  textarea.focus();
-  textarea.select();
-  textarea.setSelectionRange(0, textarea.value.length);
-
-  let copied = false;
-
-  try {
-    copied = document.execCommand('copy');
-  } finally {
-    textarea.remove();
-  }
-
-  return copied;
-};
-
 const copyCodeText = async (code: string): Promise<boolean> => {
   if (!code) {
     return false;
   }
 
-  if (navigator.clipboard?.writeText) {
-    try {
-      await navigator.clipboard.writeText(code);
-      return true;
-    } catch {
-      // fall through to legacy copy path
-    }
+  if (!navigator.clipboard?.writeText) {
+    return false;
   }
 
-  return fallbackCopyText(code);
+  try {
+    await navigator.clipboard.writeText(code);
+    return true;
+  } catch {
+    return false;
+  }
 };
 
 const initCodeCopy = (): (() => void) => {

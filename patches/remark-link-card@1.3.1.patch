@@ -1,5 +1,5 @@
 diff --git a/index.js b/index.js
-index 5de58d63759383c8644e1a982b63eb85f838a19b..3d78d39675c40cbf210d0abdd7a81fa3f9e8f61f 100644
+index 5de58d63759383c8644e1a982b63eb85f838a19b..ef0134ea7421bba27d108b93b0bc6f74a06ee182 100644
 --- a/index.js
 +++ b/index.js
 @@ -12,7 +12,7 @@ const defaultOutputDirectory = '/remark-link-card/';
@@ -11,7 +11,7 @@ index 5de58d63759383c8644e1a982b63eb85f838a19b..3d78d39675c40cbf210d0abdd7a81fa3
        if (paragraphNode.children.length !== 1) {
          return tree;
        }
-@@ -39,7 +39,11 @@ const rlc = (options) => {
+@@ -39,16 +39,19 @@ const rlc = (options) => {
              };
  
              // Replace paragraph node with linkCardNode
@@ -24,3 +24,27 @@ index 5de58d63759383c8644e1a982b63eb85f838a19b..3d78d39675c40cbf210d0abdd7a81fa3
            });
          }
        });
+     });
+ 
+     try {
+       await Promise.all(transformers.map((t) => t()));
+-    } catch (error) {
+-      console.error(`[remark-link-card] Error: ${error}`);
++    } catch {
++      // Keep markdown rendering resilient when metadata fetches fail.
+     }
+ 
+     return tree;
+@@ -57,10 +60,7 @@ const rlc = (options) => {
+ const getOpenGraph = async (targetUrl) => {
+   try {
+     const { result } = await ogs({ url: targetUrl, timeout: 10000 });
+     return result;
+-  } catch (error) {
+-    console.error(
+-      `[remark-link-card] Error: Failed to get the Open Graph data of ${error.result.requestUrl} due to ${error.result.error}.`
+-    );
++  } catch {
+     return undefined;
+   }
+ };

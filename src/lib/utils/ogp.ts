@@ -108,8 +108,7 @@ export async function getOGPImage(url: string): Promise<string> {
     await saveCache(cache);
 
     return createOptimizedImageUrl(imageUrl);
-  } catch (error) {
-    console.error(`Failed to fetch OGP image for ${url}:`, error);
+  } catch {
     if (cached) {
       return createOptimizedImageUrl(cached.imageUrl);
     }

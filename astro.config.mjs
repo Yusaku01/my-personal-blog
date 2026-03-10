@@ -134,6 +134,7 @@ export default defineConfig({
       cssCodeSplit: true,
     },
     ssr: {
+      external: ['fs/promises', 'path', 'node:fs/promises', 'node:path'],
       noExternal: ['date-fns'],
     },
   },
