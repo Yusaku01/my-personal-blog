@@ -38,3 +38,7 @@ export type Post = {
 
 // For external posts (e.g., Qiita)
 export type ExternalPost = Extract<Post, { isExternal: true }>;
+
+export type SearchablePost = Post & {
+  searchText: string;
+};

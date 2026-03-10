@@ -1,13 +1,15 @@
 ---
-import type { Post } from '../../types/index';
+import type { SearchablePost } from '../../types/index';
 import PostCard from './PostCard.astro';
+import { buildBlogTabHref } from '../../lib/blog/search';
 
 interface BlogControlsProps {
-  posts: Post[];
+  posts: SearchablePost[];
   currentPath: string;
+  currentQuery?: string;
 }
 
-const { posts, currentPath } = Astro.props as BlogControlsProps;
+const { posts, currentPath, currentQuery = '' } = Astro.props as BlogControlsProps;
 const initialPostCount = 12;
 const hasMorePosts = posts.length > initialPostCount;
 
@@ -22,23 +24,44 @@ const tabs = [
 ];
 ---
 
-<div>
-  <form class="mb-8 max-w-xl mx-auto relative" id="blog-search-form">
-    <div class="w-full">
+<div
+  data-blog-search-root
+  data-initial-post-count={String(initialPostCount)}
+  data-initial-query={currentQuery}
+  data-search-index-url="/search-index.json"
+>
+  <form class="mb-8 max-w-xl mx-auto relative" data-blog-search-form>
+    <label class="block w-full">
+      <span class="sr-only">記事を検索する</span>
       <input
         type="search"
         id="blog-search-input"
+        data-blog-search-input
         placeholder="記事を検索する"
+        autocomplete="off"
         class="w-full px-2 py-2 border border-gray-200 rounded-md focus:outline-none focus:ring-2 focus:ring-[#333] bg-white dark:bg-white dark:border-none dark:text-[#222]"
       />
-    </div>
+    </label>
     <button
       type="submit"
       class="absolute top-0 right-0 px-4 py-2 text-sm bg-[#333] text-white lg:hover:opacity-70 transition-all duration-300 rounded-r-md h-full font-bold leading-loose dark:border-none grid align-center text-[16px]"
     >
       検索する
     </button>
+    <div
+      data-blog-search-history
+      class="absolute left-0 right-0 z-10 mt-2 hidden overflow-hidden rounded-md border border-gray-200 bg-white shadow-lg dark:border-gray-700 dark:bg-gray-900"
+      aria-label="検索履歴"
+    >
+    </div>
   </form>
+  <p
+    data-blog-search-error
+    class="mx-auto mb-4 hidden max-w-xl text-sm text-red-600 dark:text-red-400"
+    role="status"
+  >
+    検索データの読み込みに失敗しました。時間をおいて再度お試しください。
+  </p>
 
   <div class="flex flex-wrap justify-center gap-3 mb-8 text-sm">
     {
@@ -46,7 +69,9 @@ const tabs = [
         const isActive = activePath === normalizePath(tab.href);
         return (
           <a
-            href={tab.href}
+            href={buildBlogTabHref(tab.href, currentQuery)}
+            data-blog-tab
+            data-blog-base-href={tab.href}
             class={`px-4 py-2 rounded-full border transition-colors ${
               isActive
                 ? 'bg-[#333] text-white border-[#333]'
@@ -84,16 +109,21 @@ const tabs = [
     </a>
   </div>
 
-  <div id="blog-empty" class="text-center py-12 hidden">
+  <div data-blog-empty class="text-center py-12 hidden">
     <p class="text-gray-600 dark:text-gray-400 text-lg">
       検索条件に一致する記事が見つかりませんでした。
     </p>
   </div>
 
-  <div class="grid-fluid-cards" id="blog-post-grid">
+  <div class="grid-fluid-cards grid-fluid-cards-blog" id="blog-post-grid">
     {
       posts.map((post, index) => (
-        <div data-post-wrapper data-index={index} class={index >= initialPostCount ? 'hidden' : ''}>
+        <div
+          data-post-wrapper
+          data-index={index}
+          data-post-url={post.url}
+          class={index >= initialPostCount ? 'hidden' : ''}
+        >
           <PostCard {...post} index={index} />
         </div>
       ))
@@ -102,9 +132,9 @@ const tabs = [
 
   {
     hasMorePosts && (
-      <div class="text-center mt-12" id="blog-load-more-container">
+      <div class="text-center mt-12" data-blog-load-more-container>
         <button
-          id="blog-load-more"
+          data-blog-load-more
           class="px-6 py-2 bg-[#333] text-white rounded-md lg:hover:opacity-70 transition-all duration-300 dark:bg-white dark:text-[#333] font-bold leading-loose"
           type="button"
         >
@@ -115,88 +145,8 @@ const tabs = [
   }
 </div>
 
-<script is:inline define:vars={{ initialPostCount }}>
-  const initBlogControls = () => {
-    if (window.__blogControlsAbort) {
-      window.__blogControlsAbort.abort();
-    }
+<script>
+  import { installBlogSearch } from '../../lib/blog/searchController';
 
-    const controller = new AbortController();
-    window.__blogControlsAbort = controller;
-
-    const searchInput = document.querySelector('#blog-search-input');
-    const postWrappers = Array.from(document.querySelectorAll('[data-post-wrapper]'));
-    const emptyEl = document.querySelector('#blog-empty');
-    const loadMoreBtn = document.querySelector('#blog-load-more');
-    const loadMoreContainer = document.querySelector('#blog-load-more-container');
-
-    let showAll = false;
-
-    const applyFilter = () => {
-      const query = (searchInput?.value || '').trim().toLowerCase();
-      let matched = 0;
-
-      postWrappers.forEach((wrapper, index) => {
-        const card = wrapper.querySelector('[data-post-card]');
-        const title = card?.getAttribute('data-title') || '';
-        const tags = card?.getAttribute('data-tags') || '';
-        const isMatch = title.includes(query) || tags.includes(query);
-
-        if (!isMatch) {
-          wrapper.classList.add('hidden');
-          return;
-        }
-
-        matched += 1;
-
-        if (!query && !showAll && index >= initialPostCount) {
-          wrapper.classList.add('hidden');
-        } else {
-          wrapper.classList.remove('hidden');
-        }
-      });
-
-      if (emptyEl) {
-        emptyEl.classList.toggle('hidden', matched > 0);
-      }
-
-      if (loadMoreContainer) {
-        const shouldHideLoadMore =
-          !!query || showAll || matched <= initialPostCount || loadMoreBtn === null;
-        loadMoreContainer.classList.toggle('hidden', shouldHideLoadMore);
-      }
-    };
-
-    searchInput?.addEventListener(
-      'input',
-      () => {
-        showAll = false;
-        applyFilter();
-      },
-      { signal: controller.signal }
-    );
-
-    document.getElementById('blog-search-form')?.addEventListener(
-      'submit',
-      (e) => {
-        e.preventDefault();
-        applyFilter();
-      },
-      { signal: controller.signal }
-    );
-
-    loadMoreBtn?.addEventListener(
-      'click',
-      () => {
-        showAll = true;
-        applyFilter();
-      },
-      { signal: controller.signal }
-    );
-
-    applyFilter();
-  };
-
-  document.addEventListener('astro:after-swap', initBlogControls);
-  initBlogControls();
+  installBlogSearch();
 </script>

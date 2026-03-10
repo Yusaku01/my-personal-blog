@@ -38,6 +38,10 @@ const primaryThumbnailImage = primaryThumbnail
   }
   <HeroSection title="BLOG" isHome={false} />
   <div class="container-lg container-lg py-14">
-    <BlogControls posts={sortedPosts} currentPath={Astro.url.pathname} />
+    <BlogControls
+      posts={sortedPosts}
+      currentPath={Astro.url.pathname}
+      currentQuery={Astro.url.searchParams.get('q') ?? ''}
+    />
   </div>
 </Layout>
