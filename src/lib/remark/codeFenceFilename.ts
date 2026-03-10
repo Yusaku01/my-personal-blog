@@ -6,6 +6,8 @@ type CodeNode = {
   meta?: string | null;
 };
 
+type VisitTree = Parameters<typeof visit>[0];
+
 const EXTENSION_TO_LANGUAGE: Record<string, string> = {
   astro: 'astro',
   bash: 'bash',
@@ -110,14 +112,10 @@ const appendFilenameMeta = (meta: string | null | undefined, filename: string): 
 };
 
 const codeFenceFilename = () => {
-  return (tree: unknown) => {
-    visit(tree, 'code', (node: unknown) => {
-      if (typeof node !== 'object' || node === null) {
-        return;
-      }
-
+  return (tree: VisitTree) => {
+    visit(tree, 'code', (node) => {
       const codeNode = node as CodeNode;
-      if (typeof codeNode.lang !== 'string') {
+      if (!codeNode.lang || typeof codeNode.lang !== 'string') {
         return;
       }
 

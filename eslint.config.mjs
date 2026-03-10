@@ -73,6 +73,8 @@ export default [
           // Astroファイルではclassを使うので無効化
           'react/no-unknown-property': 'off',
           'jsx-a11y/html-has-lang': 'off',
+          // eslint-plugin-jsx-a11y が Astro lint 時に minimatch 互換で落ちるため無効化
+          'jsx-a11y/label-has-associated-control': 'off',
           // MapでJSX使う場合のkey警告を無効化
           'react/jsx-key': 'off',
           // Prettierのルールを緩和

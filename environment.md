@@ -10,11 +10,17 @@
 │   ├── lighthouse
 │   │   └── lh_20250419.html
 │   ├── astro-component-structure.md
+│   ├── blog-search-contact-improvement-plan.md
+│   ├── blog-search-test-cases.md
+│   ├── contact-submissions-schema.sql
+│   ├── contact-test-cases.md
+│   ├── fluid-layout-hybrid-implementation-summary.md
 │   ├── fluid-typography-implementation-summary.md
 │   ├── kuroco-membership-favorite-history-feasibility.md
 │   ├── public-release-checklist.md
 │   ├── react-to-astro-blog-components.md
-│   └── report.md
+│   ├── report.md
+│   └── test.md
 ├── patches
 │   └── remark-link-card@1.3.1.patch
 ├── public
@@ -39,6 +45,8 @@
 │   ├── favicon.ico
 │   └── favicon.svg
 ├── src
+│   ├── actions
+│   │   └── index.ts
 │   ├── assets
 │   │   └── img
 │   ├── components
@@ -57,29 +65,42 @@
 │   ├── content
 │   │   ├── blog
 │   │   ├── findsFeed
-│   │   ├── profile
-│   │   └── config.ts
+│   │   └── profile
 │   ├── layouts
 │   │   └── Layout.astro
 │   ├── lib
 │   │   ├── api-clients
 │   │   ├── blog
+│   │   ├── contact
+│   │   ├── markdown
 │   │   ├── rehype
 │   │   ├── remark
 │   │   └── utils
 │   ├── pages
 │   │   ├── blog
+│   │   ├── 404.astro
 │   │   ├── contact.astro
 │   │   ├── finds.astro
 │   │   ├── index.astro
 │   │   ├── profile.astro
-│   │   └── rss.xml.ts
+│   │   ├── rss.xml.ts
+│   │   └── search-index.json.ts
 │   ├── styles
 │   │   └── unoVariants.ts
 │   ├── types
 │   │   └── index.ts
+│   ├── content.config.ts
 │   └── env.d.ts
 ├── tests
+│   ├── blog-search-controller.test.ts
+│   ├── blog-search-history.test.ts
+│   ├── blog-search-index.test.ts
+│   ├── blog-search-layout.test.ts
+│   ├── blog-search.test.ts
+│   ├── contact-action.test.ts
+│   ├── contact-form-enhancements.test.ts
+│   ├── contact-service.test.ts
+│   ├── mermaid-config.test.ts
 │   ├── remark-admonition.test.mjs
 │   ├── remark-code-filename.test.mjs
 │   └── remark-list-link-card-guard.test.mjs
@@ -94,9 +115,10 @@
 ├── README.md
 ├── todo.md
 ├── tsconfig.json
-└── uno.config.ts
+├── uno.config.ts
+└── vitest.config.ts
 
-40 directories, 50 files
+43 directories, 69 files
 
 ```
 
