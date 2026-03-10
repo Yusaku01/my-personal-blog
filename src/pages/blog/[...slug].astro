@@ -1,5 +1,5 @@
 ---
-import { getCollection } from 'astro:content';
+import { getCollection, render } from 'astro:content';
 import Layout from '../../layouts/Layout.astro';
 import TocSidebar from '../../components/Blog/TocSidebar.astro';
 import ShareButtons from '../../components/Sns/ShareButtons.astro';
@@ -11,14 +11,14 @@ export const transition = { name: 'fade' };
 export async function getStaticPaths() {
   const posts = await getCollection('blog');
   return posts.map((post) => ({
-    params: { slug: post.slug },
+    params: { slug: post.id },
     props: { post },
   }));
 }
 
 const { post } = Astro.props;
-const { Content, headings } = await post.render();
-const estimatedReadingTimeMinutes = getEstimatedReadingTimeMinutes(post.body);
+const { Content, headings } = await render(post);
+const estimatedReadingTimeMinutes = getEstimatedReadingTimeMinutes(post.body ?? '');
 ---
 
 <Layout title={`${post.data.title} | SAKUSPACE`} blogTitle={post.data.title}>
@@ -564,6 +564,25 @@ const estimatedReadingTimeMinutes = getEstimatedReadingTimeMinutes(post.body);
   .blog-article-content img {
     cursor: zoom-in;
     -webkit-touch-callout: none;
+  }
+
+  .blog-article-content picture {
+    display: block;
+  }
+
+  .blog-article-content picture:has(> img[id^='mermaid-diagram']) {
+    margin: 2rem 0;
+    max-width: 100%;
+    width: fit-content;
+  }
+
+  .blog-article-content img[id^='mermaid-diagram'] {
+    cursor: default;
+    display: block;
+    height: auto;
+    margin: 0 auto;
+    max-width: 100%;
+    width: min(28rem, 100%);
   }
 
   .blog-image-modal {

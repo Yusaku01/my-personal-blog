@@ -13,15 +13,14 @@ export const GET: APIRoute = async ({ params }) => {
   try {
     // コンテンツコレクションから該当する記事を検索
     const posts = await getCollection('blog');
-    const post = posts.find((p) => p.slug === slug);
+    const post = posts.find((p) => p.id === slug);
 
-    if (!post) {
+    if (!post?.filePath) {
       return new Response('Not Found', { status: 404 });
     }
 
     // MDXファイルのパスを構築
-    const contentDir = path.join(process.cwd(), 'src', 'content', 'blog');
-    const filePath = path.join(contentDir, `${post.id}`);
+    const filePath = path.join(process.cwd(), post.filePath);
 
     // ファイルの生のコンテンツを読み込む
     const rawContent = await fs.readFile(filePath, 'utf-8');
@@ -48,6 +47,6 @@ export const GET: APIRoute = async ({ params }) => {
 export async function getStaticPaths() {
   const posts = await getCollection('blog');
   return posts.map((post) => ({
-    params: { slug: post.slug },
+    params: { slug: post.id },
   }));
 }

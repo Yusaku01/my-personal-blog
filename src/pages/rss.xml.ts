@@ -9,7 +9,7 @@ export async function GET(context: APIContext) {
   const blog = await getCollection('blog');
 
   // _で始まるファイルは下書きとして扱う
-  const posts = blog.filter((post) => !post.slug.startsWith('_'));
+  const posts = blog.filter((post) => !post.id.startsWith('_'));
 
   return rss({
     title: SITE_TITLE,
@@ -19,7 +19,7 @@ export async function GET(context: APIContext) {
       title: post.data.title,
       pubDate: post.data.publishDate,
       description: post.data.description,
-      link: `/blog/${post.slug}/`,
+      link: `/blog/${post.id}/`,
       categories: post.data.tags,
     })),
     customData: `<language>ja</language>`,
