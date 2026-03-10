@@ -1,4 +1,8 @@
 let cleanupImageZoom: (() => void) | null = null;
+const MERMAID_IMAGE_ID_PREFIX = 'mermaid-diagram';
+
+const isMermaidDiagramImage = (image: HTMLImageElement): boolean =>
+  image.id.startsWith(MERMAID_IMAGE_ID_PREFIX);
 
 const initImageZoom = (): (() => void) => {
   const contentRoot = document.querySelector<HTMLElement>('[data-blog-content]');
@@ -33,6 +37,7 @@ const initImageZoom = (): (() => void) => {
     (event) => {
       const target = event.target;
       if (!(target instanceof HTMLImageElement)) return;
+      if (isMermaidDiagramImage(target)) return;
       event.preventDefault();
       openModal(target);
     },

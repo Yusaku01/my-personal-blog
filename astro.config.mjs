@@ -1,17 +1,18 @@
 import { defineConfig } from 'astro/config';
-// もしSSRにするときは、以下コメントアウトを解除
-// import cloudflare from '@astrojs/cloudflare';
+import cloudflare from '@astrojs/cloudflare';
 import mdx from '@astrojs/mdx';
 import react from '@astrojs/react';
 import UnoCSS from 'unocss/astro';
 import sitemap from '@astrojs/sitemap';
 import remarkDirective from 'remark-directive';
 import remarkLinkCard from 'remark-link-card';
-import externalLinkIcon from './src/lib/rehype/externalLinkIcon';
-import footnoteBackrefIcon from './src/lib/rehype/footnoteBackrefIcon';
 import remarkAdmonition from './src/lib/remark/admonition.ts';
 import codeFenceFilename from './src/lib/remark/codeFenceFilename.ts';
 import disableLinkCardInList from './src/lib/remark/disableLinkCardInList.ts';
+import {
+  markdownRehypePlugins,
+  markdownSyntaxHighlight,
+} from './src/lib/markdown/mermaidConfig.ts';
 
 const readMetaAttribute = (meta, attributeName) => {
   if (typeof meta !== 'string' || meta.length === 0) {
@@ -50,7 +51,11 @@ const codeFilenameMetaTransformer = {
 export default defineConfig({
   site: 'https://saku-space.com',
   cacheDir: './.astro-cache',
+  adapter: cloudflare(),
   output: 'static',
+  redirects: {
+    '/bookmark': '/finds',
+  },
   image: {
     domains: [
       'qiita-user-contents.imgix.net',
@@ -83,7 +88,7 @@ export default defineConfig({
       injectReset: true, // CSSリセットを注入
     }),
     mdx({
-      rehypePlugins: [[externalLinkIcon, { site: 'https://saku-space.com' }], footnoteBackrefIcon],
+      rehypePlugins: markdownRehypePlugins,
     }),
     react(),
     sitemap({
@@ -105,7 +110,8 @@ export default defineConfig({
       codeFenceFilename,
       [remarkLinkCard, { shortenUrl: true }],
     ],
-    rehypePlugins: [[externalLinkIcon, { site: 'https://saku-space.com' }], footnoteBackrefIcon],
+    rehypePlugins: markdownRehypePlugins,
+    syntaxHighlight: markdownSyntaxHighlight,
     shikiConfig: {
       themes: {
         light: 'github-light',

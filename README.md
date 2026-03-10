@@ -66,12 +66,36 @@ pnpm run dev
 
 ## 📝 コマンド
 
-| コマンド           | 説明                                   |
-| :----------------- | :------------------------------------- |
-| `pnpm install`     | 依存関係をインストール                 |
-| `pnpm run dev`     | 開発サーバーを起動（`localhost:4321`） |
-| `pnpm run build`   | 本番用ビルドを生成（`./dist/`）        |
-| `pnpm run preview` | ビルドしたサイトをプレビュー           |
+| コマンド                           | 説明                                                     |
+| :--------------------------------- | :------------------------------------------------------- |
+| `pnpm install`                     | 依存関係をインストール                                   |
+| `pnpm run dev`                     | 開発サーバーを起動（`localhost:4321`）                   |
+| `pnpm run build`                   | 本番用ビルドを生成（`./dist/`）                          |
+| `pnpm run preview`                 | ビルドしたサイトをプレビュー                             |
+| `pnpm run mermaid:install-browser` | Mermaid のビルド時描画に必要な Chromium をローカルへ導入 |
+
+## Mermaid 図のローカル検証
+
+このプロジェクトでは、`mermaid` のコードフェンスを build-time に SVG へ変換します。` ```mermaid ` を書けば常に描画対象になります。
+
+1. Chromium をローカルへ導入
+
+```bash
+pnpm run mermaid:install-browser
+```
+
+2. その状態で `pnpm run dev` または `pnpm run build` を実行
+
+````md
+```mermaid
+graph TD
+  A[Start] --> B{Build-time render?}
+  B -->|yes| C[SVG output]
+  B -->|no| D[Code block]
+```
+````
+
+Mermaid は build-time の `img-svg` 戦略で描画され、ダークモード時は `picture` 要素経由でダーク向け SVG が使われます。CI や本番 build でも Mermaid を使う場合は、ローカルと同様に Chromium を導入した状態で build してください。
 
 ## 🔄 自動更新
 
