@@ -1,6 +1,6 @@
 import rehypeMermaid from 'rehype-mermaid';
-import externalLinkIcon from '../rehype/externalLinkIcon';
-import footnoteBackrefIcon from '../rehype/footnoteBackrefIcon';
+import externalLinkIcon from '../rehype/externalLinkIcon.ts';
+import footnoteBackrefIcon from '../rehype/footnoteBackrefIcon.ts';
 
 export const markdownSyntaxHighlight = {
   type: 'shiki',

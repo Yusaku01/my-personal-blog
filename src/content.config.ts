@@ -27,8 +27,8 @@ const findsFeed = defineCollection({
     feeds: z.array(
       z.object({
         name: z.string(),
-        nameUrl: z.string().url().optional(),
-        url: z.string().url(),
+        nameUrl: z.url().optional(),
+        url: z.url(),
         description: z.string().optional(),
         tags: z.array(z.string()).default([]),
         enabled: z.boolean().default(true),

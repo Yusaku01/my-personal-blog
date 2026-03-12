@@ -17,6 +17,8 @@ pnpm-debug.log*
 # cache
 .eslintcache
 .astro-cache/
+.astro-v6-cache/
+.wrangler/
 
 # environment variables
 .env

@@ -1,48 +1,31 @@
-/// <reference path="../.astro/types.d.ts" />
-/* Astro types import */
-import type {} from '../.astro/types';
-/// <reference types="astro/client" />
+declare module 'he' {
+  const he: {
+    encode(value: string): string;
+  };
 
-// Window 拡張
-type DataLayerEvent = unknown;
-interface Window {
-  dataLayer: DataLayerEvent[];
+  export default he;
 }
 
-// gtag関数をグローバルに追加
-declare global {
-  function gtag(...args: unknown[]): void;
-}
+declare module 'open-graph-scraper' {
+  type OpenGraphImage = {
+    url?: string;
+    alt?: string;
+  };
 
-// Google Analytics IDを環境変数から取得
-interface ImportMetaEnv {
-  readonly PUBLIC_GOOGLE_ANALYTICS_ID: string;
-}
+  type OpenGraphResult = {
+    ogTitle?: string;
+    ogDescription?: string;
+    ogImage?: OpenGraphImage;
+  };
 
-// ImportMetaEnvをグローバルに追加
-interface ImportMeta {
-  readonly env: ImportMetaEnv;
-}
+  type OpenGraphOptions = {
+    url: string;
+    timeout?: number;
+  };
 
-// React HTML要素の型定義を拡張
-declare module 'react' {
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  interface ImgHTMLAttributes<T> {
-    fetchPriority?: 'high' | 'low' | 'auto';
-  }
-}
+  type OpenGraphResponse = {
+    result: OpenGraphResult;
+  };
 
-// reCAPTCHA の型定義
-interface ReCaptchaInstance {
-  render: (container: HTMLElement | string, parameters: any) => number;
-  getResponse: (widgetId: number) => string;
-  reset: (widgetId: number) => void;
-  ready?: (cb: () => void) => void;
-}
-
-declare global {
-  interface Window {
-    grecaptcha?: ReCaptchaInstance;
-    recaptchaOnload?: () => void;
-  }
+  export default function ogs(options: OpenGraphOptions): Promise<OpenGraphResponse>;
 }

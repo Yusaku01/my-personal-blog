@@ -21,11 +21,16 @@ const mockLinkCard = () => {
       }
 
       const [child] = node.children;
-      if (child.type !== 'text' || typeof child.value !== 'string') {
+      const url =
+        child.type === 'text' && typeof child.value === 'string'
+          ? child.value.trim()
+          : child.type === 'link' && typeof child.url === 'string'
+            ? child.url.trim()
+            : null;
+      if (!url) {
         return;
       }
 
-      const url = child.value.trim();
       if (!URL_ONLY_PATTERN.test(url)) {
         return;
       }

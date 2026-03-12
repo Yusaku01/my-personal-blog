@@ -1,9 +1,9 @@
 ---
 import { ClientRouter } from 'astro:transitions';
+import { Font } from 'astro:assets';
 import Header from '../components/Header/Header.astro';
 import Footer from '../components/Footer/Footer.astro';
 import Breadcrumb from '../components/Breadcrump/Breadcrumb.astro';
-// Self-host fonts via public/fonts; see scripts/copy-fonts.js
 
 interface Props {
   title: string;
@@ -135,15 +135,7 @@ const gaId = import.meta.env.PUBLIC_GOOGLE_ANALYTICS_ID;
     <meta name="twitter:image" content={new URL(ogImageUrl, Astro.site).toString()} />
     <meta name="twitter:site" content="@sakuspace" />
 
-    <!-- Web fonts (self-hosted) -->
-    <!-- Preload the most impactful font only to minimize unused-preload warnings -->
-    <link
-      rel="preload"
-      href="/fonts/zen-kaku-gothic-new-jp-700.woff2"
-      as="font"
-      type="font/woff2"
-      crossorigin="anonymous"
-    />
+    <Font cssVariable="--font-zen-kaku-gothic-new" preload={[{ weight: 700 }]} />
 
     <!-- Google Analytics (gtag.js): only when ID is provided -->
     <script is:inline define:vars={{ gaId }}>
@@ -188,8 +180,8 @@ const gaId = import.meta.env.PUBLIC_GOOGLE_ANALYTICS_ID;
           white 60%
         );
         --font-body:
-          'Zen Kaku Gothic New', 'Zen Kaku Gothic New Fallback', system-ui, -apple-system,
-          'Hiragino Kaku Gothic ProN', 'Yu Gothic', Meiryo, sans-serif;
+          var(--font-zen-kaku-gothic-new), system-ui, -apple-system, 'Hiragino Kaku Gothic ProN',
+          'Yu Gothic', Meiryo, sans-serif;
         --fs-body: clamp(1rem, calc(0.98rem + 0.12vw), 1.0625rem);
         --fs-h1: clamp(1.875rem, calc(1.72rem + 0.78vw), 2.25rem);
         --fs-h2: clamp(1.5rem, calc(1.26rem + 1.17vw), 2.25rem);
@@ -222,6 +214,12 @@ const gaId = import.meta.env.PUBLIC_GOOGLE_ANALYTICS_ID;
       .grid-fluid-cards-blog {
         grid-template-columns: repeat(auto-fill, minmax(min(100%, var(--cards-min)), 1fr));
         justify-content: start;
+      }
+
+      .grid-fluid-cards-compact {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(min(100%, var(--cards-min-compact)), 1fr));
+        gap: var(--cards-gap-compact);
       }
 
       .prose .rlc-container {
@@ -324,42 +322,6 @@ const gaId = import.meta.env.PUBLIC_GOOGLE_ANALYTICS_ID;
         height: 100%;
         object-fit: cover;
         width: 100%;
-      }
-
-      .grid-fluid-cards-compact {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(min(100%, var(--cards-min-compact)), 1fr));
-        gap: var(--cards-gap-compact);
-      }
-
-      /* Metrics-compatible fallback to reduce FOUT layout shift */
-      @font-face {
-        font-family: 'Zen Kaku Gothic New Fallback';
-        /* Use common JP system fonts as stand-ins */
-        src:
-          local('Hiragino Kaku Gothic ProN'), local('Yu Gothic Medium'), local('Yu Gothic'),
-          local('Meiryo'), local('Noto Sans CJK JP');
-        /* Tweak metrics to better match Zen Kaku Gothic New */
-        size-adjust: 100%;
-        ascent-override: 90%;
-        descent-override: 22%;
-        line-gap-override: 0%;
-      }
-
-      /* Self-hosted Zen Kaku Gothic New */
-      @font-face {
-        font-family: 'Zen Kaku Gothic New';
-        font-style: normal;
-        font-weight: 400;
-        font-display: optional; /* prefer no-swap for body text */
-        src: url('/fonts/zen-kaku-gothic-new-jp-400.woff2') format('woff2');
-      }
-      @font-face {
-        font-family: 'Zen Kaku Gothic New';
-        font-style: normal;
-        font-weight: 700;
-        font-display: swap; /* headings: keep immediate swap */
-        src: url('/fonts/zen-kaku-gothic-new-jp-700.woff2') format('woff2');
       }
     </style>
   </body>

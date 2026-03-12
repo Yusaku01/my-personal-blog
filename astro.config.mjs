@@ -1,18 +1,13 @@
-import { defineConfig } from 'astro/config';
+import { defineConfig, fontProviders } from 'astro/config';
 import cloudflare from '@astrojs/cloudflare';
 import mdx from '@astrojs/mdx';
-import react from '@astrojs/react';
 import UnoCSS from 'unocss/astro';
 import sitemap from '@astrojs/sitemap';
-import remarkDirective from 'remark-directive';
-import remarkLinkCard from 'remark-link-card';
-import remarkAdmonition from './src/lib/remark/admonition.ts';
-import codeFenceFilename from './src/lib/remark/codeFenceFilename.ts';
-import disableLinkCardInList from './src/lib/remark/disableLinkCardInList.ts';
 import {
   markdownRehypePlugins,
   markdownSyntaxHighlight,
-} from './src/lib/markdown/mermaidConfig.ts';
+  sharedRemarkPlugins,
+} from './src/lib/markdown/pluginPipelines.ts';
 
 const readMetaAttribute = (meta, attributeName) => {
   if (typeof meta !== 'string' || meta.length === 0) {
@@ -50,9 +45,22 @@ const codeFilenameMetaTransformer = {
 
 export default defineConfig({
   site: 'https://saku-space.com',
-  cacheDir: './.astro-cache',
+  cacheDir: './.astro-v6-cache',
   adapter: cloudflare(),
   output: 'static',
+  fonts: [
+    {
+      name: 'Zen Kaku Gothic New',
+      cssVariable: '--font-zen-kaku-gothic-new',
+      provider: fontProviders.fontsource(),
+      weights: [400, 700],
+      styles: ['normal'],
+      subsets: ['japanese'],
+      formats: ['woff2'],
+      display: 'optional',
+      fallbacks: [],
+    },
+  ],
   redirects: {
     '/bookmark': '/finds',
   },
@@ -88,9 +96,9 @@ export default defineConfig({
       injectReset: true, // CSSリセットを注入
     }),
     mdx({
+      remarkPlugins: sharedRemarkPlugins,
       rehypePlugins: markdownRehypePlugins,
     }),
-    react(),
     sitemap({
       i18n: {
         defaultLocale: 'ja',
@@ -103,13 +111,7 @@ export default defineConfig({
     }),
   ],
   markdown: {
-    remarkPlugins: [
-      remarkDirective,
-      remarkAdmonition,
-      disableLinkCardInList,
-      codeFenceFilename,
-      [remarkLinkCard, { shortenUrl: true }],
-    ],
+    remarkPlugins: sharedRemarkPlugins,
     rehypePlugins: markdownRehypePlugins,
     syntaxHighlight: markdownSyntaxHighlight,
     shikiConfig: {

@@ -1,7 +1,5 @@
 import type { APIRoute } from 'astro';
 import { getCollection } from 'astro:content';
-import fs from 'node:fs/promises';
-import path from 'node:path';
 
 export const GET: APIRoute = async ({ params }) => {
   const slug = params.slug;
@@ -15,22 +13,12 @@ export const GET: APIRoute = async ({ params }) => {
     const posts = await getCollection('blog');
     const post = posts.find((p) => p.id === slug);
 
-    if (!post?.filePath) {
+    if (!post?.body) {
       return new Response('Not Found', { status: 404 });
     }
 
-    // MDXファイルのパスを構築
-    const filePath = path.join(process.cwd(), post.filePath);
-
-    // ファイルの生のコンテンツを読み込む
-    const rawContent = await fs.readFile(filePath, 'utf-8');
-
-    // フロントマターを除去（最初の---から2番目の---まで）
-    const contentMatch = rawContent.match(/^---\n[\s\S]*?\n---\n([\s\S]*)$/);
-    const markdownContent = contentMatch ? contentMatch[1].trim() : rawContent;
-
     // Markdownコンテンツを返す
-    return new Response(markdownContent, {
+    return new Response(post.body.trim(), {
       status: 200,
       headers: {
         'Content-Type': 'text/markdown; charset=utf-8',
