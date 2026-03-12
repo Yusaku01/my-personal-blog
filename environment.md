@@ -9,6 +9,8 @@
 ├── docs
 │   ├── lighthouse
 │   │   └── lh_20250419.html
+│   ├── perf
+│   │   └── astro6-fonts
 │   ├── astro-component-structure.md
 │   ├── blog-search-contact-improvement-plan.md
 │   ├── blog-search-test-cases.md
@@ -21,12 +23,7 @@
 │   ├── react-to-astro-blog-components.md
 │   ├── report.md
 │   └── test.md
-├── patches
-│   └── remark-link-card@1.3.1.patch
 ├── public
-│   ├── fonts
-│   │   ├── zen-kaku-gothic-new-jp-400.woff2
-│   │   └── zen-kaku-gothic-new-jp-700.woff2
 │   ├── images
 │   │   ├── blog
 │   │   ├── ogp
@@ -51,9 +48,7 @@
 │   │   └── img
 │   ├── components
 │   │   ├── Blog
-│   │   ├── Bookmark
 │   │   ├── Breadcrump
-│   │   ├── Contact
 │   │   ├── Footer
 │   │   ├── Header
 │   │   ├── Hero
@@ -100,9 +95,11 @@
 │   ├── contact-action.test.ts
 │   ├── contact-form-enhancements.test.ts
 │   ├── contact-service.test.ts
+│   ├── markdown-plugin-pipeline.test.mjs
 │   ├── mermaid-config.test.ts
 │   ├── remark-admonition.test.mjs
 │   ├── remark-code-filename.test.mjs
+│   ├── remark-link-card-url-candidate.test.mjs
 │   └── remark-list-link-card-guard.test.mjs
 ├── AGENTS.md
 ├── astro.config.mjs
@@ -118,7 +115,7 @@
 ├── uno.config.ts
 └── vitest.config.ts
 
-43 directories, 69 files
+41 directories, 68 files
 
 ```
 
