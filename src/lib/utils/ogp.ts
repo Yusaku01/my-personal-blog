@@ -1,13 +1,9 @@
 import * as cheerio from 'cheerio';
-import fs from 'node:fs/promises';
-import path from 'node:path';
 
 const DEFAULT_OGP_IMAGE =
   'https://cdn.qiita.com/assets/qiita-fb-2887e7b4aad86fd8c25cea84846f2236.png';
 
 const CACHE_TTL_MS = 1000 * 60 * 60 * 24 * 7; // 7 days
-const CACHE_DIR = path.join(process.cwd(), '.astro-cache');
-const CACHE_FILE = path.join(CACHE_DIR, 'ogp-cache.json');
 
 const IMAGE_PROXY_BASE = 'https://images.weserv.nl';
 const OPTIMIZED_WIDTH = 600;
@@ -22,28 +18,18 @@ type OgpCacheEntry = {
 type OgpCache = Record<string, OgpCacheEntry>;
 
 let memoryCache: OgpCache | null = null;
-let writeQueue: Promise<void> = Promise.resolve();
 
 async function loadCache(): Promise<OgpCache> {
   if (memoryCache) {
     return memoryCache;
   }
 
-  try {
-    const raw = await fs.readFile(CACHE_FILE, 'utf8');
-    memoryCache = JSON.parse(raw) as OgpCache;
-  } catch {
-    memoryCache = {};
-  }
-
+  memoryCache = {};
   return memoryCache;
 }
 
 async function saveCache(cache: OgpCache): Promise<void> {
-  await fs.mkdir(CACHE_DIR, { recursive: true });
-  const data = JSON.stringify(cache, null, 2);
-  writeQueue = writeQueue.then(() => fs.writeFile(CACHE_FILE, data, 'utf8'));
-  await writeQueue;
+  memoryCache = cache;
 }
 
 function isCacheEntryFresh(entry: OgpCacheEntry): boolean {
