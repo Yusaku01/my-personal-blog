@@ -34,8 +34,6 @@ export default [
       'eslint:recommended',
       'plugin:@typescript-eslint/recommended',
       'plugin:astro/recommended',
-      'plugin:react/recommended',
-      'plugin:react-hooks/recommended',
       'plugin:jsx-a11y/recommended',
       'prettier',
     ],
@@ -45,19 +43,12 @@ export default [
       sourceType: 'module',
       project: './tsconfig.json',
     },
-    plugins: ['@typescript-eslint', 'react', 'jsx-a11y', 'prettier'],
+    plugins: ['@typescript-eslint', 'jsx-a11y', 'prettier'],
     rules: {
       'prettier/prettier': 'error',
-      'react/react-in-jsx-scope': 'off',
-      'react/prop-types': 'off',
       '@typescript-eslint/explicit-function-return-type': 'off',
       '@typescript-eslint/no-unused-vars': ['error', { argsIgnorePattern: '^_' }],
       '@typescript-eslint/no-explicit-any': 'error',
-    },
-    settings: {
-      react: {
-        version: 'detect',
-      },
     },
     overrides: [
       {
@@ -70,13 +61,9 @@ export default [
         rules: {
           'astro/no-set-html-directive': 'error',
           '@typescript-eslint/no-unused-vars': 'off',
-          // Astroファイルではclassを使うので無効化
-          'react/no-unknown-property': 'off',
           'jsx-a11y/html-has-lang': 'off',
           // eslint-plugin-jsx-a11y が Astro lint 時に minimatch 互換で落ちるため無効化
           'jsx-a11y/label-has-associated-control': 'off',
-          // MapでJSX使う場合のkey警告を無効化
-          'react/jsx-key': 'off',
           // Prettierのルールを緩和
           'prettier/prettier': 'warn',
         },
