@@ -7,8 +7,6 @@
 ```text
 .
 ├── docs
-│   ├── lighthouse
-│   │   └── lh_20250419.html
 │   ├── perf
 │   │   └── astro6-fonts
 │   ├── astro-component-structure.md
@@ -55,8 +53,7 @@
 │   │   ├── Profile
 │   │   ├── Section
 │   │   ├── Sns
-│   │   ├── Theme
-│   │   └── ViewToggle.tsx
+│   │   └── Theme
 │   ├── content
 │   │   ├── blog
 │   │   ├── findsFeed
@@ -115,7 +112,7 @@
 ├── uno.config.ts
 └── vitest.config.ts
 
-41 directories, 68 files
+40 directories, 66 files
 
 ```
 
