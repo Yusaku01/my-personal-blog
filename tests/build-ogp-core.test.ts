@@ -7,6 +7,7 @@ import {
   getPreviewTarget,
   loadFonts,
   normalizeTitle,
+  resolveFontDir,
   runBuildOgp,
 } from '../scripts/lib/build-ogp-core.js';
 
@@ -179,6 +180,41 @@ describe('getBlogEntries', () => {
 });
 
 describe('loadFonts', () => {
+  it('resolves the font directory from the package path by default', async () => {
+    const readdirImpl = vi
+      .fn()
+      .mockResolvedValueOnce(['zen-kaku-gothic-new-japanese-400-normal.woff'])
+      .mockResolvedValueOnce([
+        'zen-kaku-gothic-new-japanese-400-normal.woff',
+        'zen-kaku-gothic-new-japanese-700-normal.woff',
+        'zen-kaku-gothic-new-japanese-900-normal.woff',
+      ]);
+    const readFileImpl = vi
+      .fn()
+      .mockResolvedValueOnce(Buffer.from('regular'))
+      .mockResolvedValueOnce(Buffer.from('bold'))
+      .mockResolvedValueOnce(Buffer.from('heavy'));
+
+    await expect(
+      loadFonts({
+        readdirImpl,
+        readFileImpl,
+        resolvePackagePathImpl: vi.fn(
+          () => '/virtual/node_modules/@fontsource/zen-kaku-gothic-new/package.json'
+        ),
+      })
+    ).resolves.toHaveLength(3);
+
+    expect(readdirImpl).toHaveBeenNthCalledWith(
+      1,
+      '/virtual/node_modules/@fontsource/zen-kaku-gothic-new/files'
+    );
+    expect(readdirImpl).toHaveBeenNthCalledWith(
+      2,
+      '/virtual/node_modules/@fontsource/zen-kaku-gothic-new/files'
+    );
+  });
+
   it('prefers japanese subset font files when multiple subsets exist', async () => {
     const readdirImpl = vi.fn(async () => [
       'zen-kaku-gothic-new-10-400-normal.woff',
@@ -262,6 +298,24 @@ describe('loadFonts', () => {
     expect(readFileImpl).toHaveBeenCalledWith(
       '/virtual/fonts/zen-kaku-gothic-new-10-900-normal.woff'
     );
+  });
+});
+
+describe('resolveFontDir', () => {
+  it('logs and rethrows when the direct dependency cannot be resolved', async () => {
+    const errorSpy = vi.fn();
+
+    await expect(
+      resolveFontDir({
+        readdirImpl: vi.fn(),
+        logger: { error: errorSpy },
+        resolvePackagePathImpl: vi.fn(() => {
+          throw new Error('module not found');
+        }),
+      })
+    ).rejects.toThrow('module not found');
+
+    expect(errorSpy).toHaveBeenCalled();
   });
 });
 
