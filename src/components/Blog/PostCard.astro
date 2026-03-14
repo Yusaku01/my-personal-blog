@@ -59,18 +59,31 @@ const publishDateObj = new Date(publishDate);
     {
       thumbnail && (
         <div class={postCardStyles.imageContainer}>
-          <Image
-            src={thumbnail}
-            alt={title}
-            width={600}
-            height={315}
-            fit="cover"
-            class={postCardStyles.image}
-            loading={shouldLazyLoad ? 'lazy' : 'eager'}
-            fetchpriority={fetchPriority}
-            decoding="async"
-            sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
-          />
+          {typeof thumbnail === 'string' ? (
+            <Image
+              src={thumbnail}
+              alt={title}
+              width={600}
+              height={315}
+              class={postCardStyles.image}
+              loading={shouldLazyLoad ? 'lazy' : 'eager'}
+              fetchpriority={fetchPriority}
+              decoding="async"
+              sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
+            />
+          ) : (
+            <Image
+              src={thumbnail}
+              alt={title}
+              width={600}
+              height={315}
+              class={postCardStyles.image}
+              loading={shouldLazyLoad ? 'lazy' : 'eager'}
+              fetchpriority={fetchPriority}
+              decoding="async"
+              sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
+            />
+          )}
           <div class={postCardStyles.overlay}>
             <span class={postCardStyles.readText}>記事を読む</span>
           </div>
