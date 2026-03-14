@@ -1,3 +1,4 @@
+import type { ImageMetadata } from 'astro';
 import { z } from 'zod';
 
 // Contact Form Schema
@@ -32,7 +33,7 @@ export type Post = {
       platform?: string;
       isExternal: false;
       excerpt?: string;
-      thumbnail?: string;
+      thumbnail?: string | ImageMetadata;
     }
 );
 

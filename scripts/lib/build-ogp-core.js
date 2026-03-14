@@ -1,4 +1,5 @@
 import { readFile, readdir, mkdir, writeFile } from 'node:fs/promises';
+import { createRequire } from 'node:module';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import satori from 'satori';
@@ -10,14 +11,7 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const projectRoot = path.join(__dirname, '..', '..');
 const defaultContentDir = path.join(projectRoot, 'src', 'content', 'blog');
 const defaultOutputDir = path.join(projectRoot, 'public', 'images', 'ogp');
-const directFontDir = path.join(
-  projectRoot,
-  'node_modules',
-  '@fontsource',
-  'zen-kaku-gothic-new',
-  'files'
-);
-const pnpmStoreDir = path.join(projectRoot, 'node_modules', '.pnpm');
+const requireFromProjectRoot = createRequire(path.join(projectRoot, 'package.json'));
 
 export const WIDTH = 1200;
 export const HEIGHT = 630;
@@ -94,8 +88,14 @@ export function getPreviewTarget(argv = process.argv) {
   };
 }
 
-export async function loadFonts({ fontDir, readdirImpl = readdir, readFileImpl = readFile } = {}) {
-  const resolvedFontDir = fontDir ?? (await resolveFontDir({ readdirImpl, logger: console }));
+export async function loadFonts({
+  fontDir,
+  readdirImpl = readdir,
+  readFileImpl = readFile,
+  resolvePackagePathImpl = requireFromProjectRoot.resolve,
+} = {}) {
+  const resolvedFontDir =
+    fontDir ?? (await resolveFontDir({ readdirImpl, logger: console, resolvePackagePathImpl }));
   const filenames = await readdirImpl(resolvedFontDir);
   const resolveFontPath = (weight) => {
     const filename =
@@ -141,32 +141,12 @@ export async function loadFonts({ fontDir, readdirImpl = readdir, readFileImpl =
   ];
 }
 
-async function resolveFontDir({ readdirImpl, logger }) {
+export async function resolveFontDir({ readdirImpl, logger, resolvePackagePathImpl } = {}) {
   try {
-    await readdirImpl(directFontDir);
-    return directFontDir;
-  } catch {
-    // Fall through to pnpm's nested package layout.
-  }
-
-  try {
-    const pnpmEntries = await readdirImpl(pnpmStoreDir);
-    const fontPackageDir = pnpmEntries.find((entry) =>
-      entry.startsWith('@fontsource+zen-kaku-gothic-new@')
-    );
-
-    if (!fontPackageDir) {
-      throw new Error('Font package directory was not found in pnpm store');
-    }
-
-    return path.join(
-      pnpmStoreDir,
-      fontPackageDir,
-      'node_modules',
-      '@fontsource',
-      'zen-kaku-gothic-new',
-      'files'
-    );
+    const packageJsonPath = resolvePackagePathImpl('@fontsource/zen-kaku-gothic-new/package.json');
+    const resolvedFontDir = path.join(path.dirname(packageJsonPath), 'files');
+    await readdirImpl(resolvedFontDir);
+    return resolvedFontDir;
   } catch (error) {
     logger?.error?.('❌ OGPフォントの解決に失敗しました:', error);
     throw error;

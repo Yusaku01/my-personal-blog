@@ -8,14 +8,15 @@ const blog = defineCollection({
     base: './src/content/blog',
     retainBody: true,
   }),
-  schema: z.object({
-    title: z.string(),
-    description: z.string(),
-    publishDate: z.date(),
-    author: z.string(),
-    image: z.string().optional(),
-    tags: z.array(z.string()).default([]),
-  }),
+  schema: ({ image }) =>
+    z.object({
+      title: z.string(),
+      description: z.string(),
+      publishDate: z.date(),
+      author: z.string(),
+      image: image().optional(),
+      tags: z.array(z.string()).default([]),
+    }),
 });
 
 const findsFeed = defineCollection({
