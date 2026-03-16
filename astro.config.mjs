@@ -61,9 +61,6 @@ export default defineConfig({
       fallbacks: [],
     },
   ],
-  redirects: {
-    '/bookmark': '/finds',
-  },
   image: {
     domains: [
       'qiita-user-contents.imgix.net',

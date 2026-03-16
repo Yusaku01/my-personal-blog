@@ -43,7 +43,7 @@
 │   ├── actions
 │   │   └── index.ts
 │   ├── assets
-│   │   └── img
+│   │   └── images
 │   ├── components
 │   │   ├── Blog
 │   │   ├── Breadcrump
@@ -89,6 +89,7 @@
 │   ├── blog-search-index.test.ts
 │   ├── blog-search-layout.test.ts
 │   ├── blog-search.test.ts
+│   ├── build-ogp-core.test.ts
 │   ├── contact-action.test.ts
 │   ├── contact-form-enhancements.test.ts
 │   ├── contact-service.test.ts
@@ -103,6 +104,7 @@
 ├── CLAUDE.md
 ├── environment.md
 ├── eslint.config.mjs
+├── mise.toml
 ├── package.json
 ├── pnpm-lock.yaml
 ├── pnpm-workspace.yaml
@@ -112,7 +114,7 @@
 ├── uno.config.ts
 └── vitest.config.ts
 
-40 directories, 66 files
+40 directories, 68 files
 
 ```
 

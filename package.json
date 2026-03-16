@@ -23,13 +23,13 @@
     "build:with-ogp": "pnpm run generate-ogp && pnpm run build"
   },
   "dependencies": {
-    "@astrojs/cloudflare": "^13.0.2",
+    "@astrojs/cloudflare": "^13.1.1",
     "@astrojs/mdx": "^5.0.0",
     "@astrojs/rss": "^4.0.17",
     "@astrojs/sitemap": "^3.7.1",
     "@fontsource/zen-kaku-gothic-new": "^5.2.7",
     "@resvg/resvg-js": "^2.6.2",
-    "astro": "^6.0.2",
+    "astro": "^6.0.4",
     "budoux": "^0.7.0",
     "cheerio": "^1.0.0-rc.12",
     "date-fns": "^2.30.0",

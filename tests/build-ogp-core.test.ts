@@ -11,6 +11,28 @@ import {
   runBuildOgp,
 } from '../scripts/lib/build-ogp-core.js';
 
+function createParser(chunks: string[]) {
+  return {
+    parse: vi.fn(() => chunks),
+  };
+}
+
+function createLogger() {
+  return {
+    log: vi.fn(),
+    error: vi.fn(),
+  };
+}
+
+function createFont(name = 'Zen Kaku Gothic New', data = 'font', weight = 400) {
+  return {
+    name,
+    data: Buffer.from(data),
+    weight,
+    style: 'normal',
+  };
+}
+
 describe('normalizeTitle', () => {
   it('collapses whitespace and trims the result', () => {
     expect(normalizeTitle('  Hello \n   World\t ')).toBe('Hello World');
@@ -67,9 +89,7 @@ describe('createOgpElement', () => {
     const element = createOgpElement(
       { title: 'OGP Title', isBasicPage: false },
       {
-        parser: {
-          parse: vi.fn(() => ['OGP', ' ', 'Title']),
-        },
+        parser: createParser(['OGP', ' ', 'Title']),
       }
     );
 
@@ -101,9 +121,7 @@ describe('createOgpElement', () => {
     const element = createOgpElement(
       { title: 'Basic Page', isBasicPage: true },
       {
-        parser: {
-          parse: vi.fn(() => ['Basic Page']),
-        },
+        parser: createParser(['Basic Page']),
       }
     );
 
@@ -307,7 +325,7 @@ describe('resolveFontDir', () => {
 
     await expect(
       resolveFontDir({
-        readdirImpl: vi.fn(),
+        readdirImpl: vi.fn(async () => []),
         logger: { error: errorSpy },
         resolvePackagePathImpl: vi.fn(() => {
           throw new Error('module not found');
@@ -324,6 +342,7 @@ describe('runBuildOgp', () => {
     const mkdirImpl = vi.fn();
     const writeFileImpl = vi.fn();
     const createOgpImage = vi.fn(async () => Buffer.from('preview-png'));
+    const logger = createLogger();
     const getBlogEntries = vi.fn(async () => [
       { slug: 'first-post', filename: 'first-post', title: 'First Post', isBasicPage: false },
     ]);
@@ -333,10 +352,10 @@ describe('runBuildOgp', () => {
       outputDir: '/virtual/output',
       mkdirImpl,
       writeFileImpl,
-      loadFonts: vi.fn(async () => [{ name: 'Font' }]),
+      loadFonts: vi.fn(async () => [createFont()]),
       createOgpImage,
       getBlogEntries,
-      logger: { log: vi.fn(), error: vi.fn() },
+      logger,
     });
 
     expect(result.generatedCount).toBe(1);
@@ -359,6 +378,7 @@ describe('runBuildOgp', () => {
   it('generates default pages and blog entries in normal mode', async () => {
     const writeFileImpl = vi.fn();
     const createOgpImage = vi.fn(async (target) => Buffer.from(target.filename));
+    const logger = createLogger();
     const getBlogEntriesMock = vi.fn(async () => [
       { slug: 'first-post', filename: 'first-post', title: 'First Post', isBasicPage: false },
     ]);
@@ -368,10 +388,10 @@ describe('runBuildOgp', () => {
       outputDir: '/virtual/output',
       mkdirImpl: vi.fn(),
       writeFileImpl,
-      loadFonts: vi.fn(async () => [{ name: 'Font' }]),
+      loadFonts: vi.fn(async () => [createFont()]),
       createOgpImage,
       getBlogEntries: getBlogEntriesMock,
-      logger: { log: vi.fn(), error: vi.fn() },
+      logger,
     });
 
     expect(getBlogEntriesMock).toHaveBeenCalledOnce();

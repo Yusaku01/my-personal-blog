@@ -7,6 +7,23 @@ import { Resvg } from '@resvg/resvg-js';
 import { loadDefaultJapaneseParser } from 'budoux';
 import matter from 'gray-matter';
 
+/**
+ * @typedef {{ type: string; props: Record<string, any> & { children?: any } }} OgpNode
+ * @typedef {{ parse(text: string): string[] }} TitleParser
+ * @typedef {{ title: string; isBasicPage: boolean }} OgpCardTarget
+ * @typedef {{ slug: string; filename: string; title: string; isBasicPage: boolean }} OgpTarget
+ * @typedef {{ name: string; data: Buffer | Uint8Array; weight: number; style: string }} FontDefinition
+ * @typedef {{ name: string; isFile(): boolean }} BlogDirEntry
+ * @typedef {{ data: Record<string, unknown> }} FrontmatterResult
+ * @typedef {{ log?: (...args: unknown[]) => void; error?: (...args: unknown[]) => void }} Logger
+ * @typedef {(directory: string) => Promise<string[]>} FontDirReader
+ * @typedef {(directory: string, options: { withFileTypes: true }) => Promise<BlogDirEntry[]>} BlogDirReader
+ * @typedef {(filePath: string) => Promise<Buffer | Uint8Array>} BinaryFileReader
+ * @typedef {(filePath: string, encoding: 'utf-8') => Promise<string>} TextFileReader
+ * @typedef {(id: string) => string} PackageResolver
+ * @typedef {(source: string) => FrontmatterResult} FrontmatterParser
+ */
+
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const projectRoot = path.join(__dirname, '..', '..');
 const defaultContentDir = path.join(projectRoot, 'src', 'content', 'blog');
@@ -48,6 +65,12 @@ export function normalizeTitle(title) {
   return title.replace(/\s+/g, ' ').trim();
 }
 
+/**
+ * @param {string} type
+ * @param {Record<string, any>} [props]
+ * @param {...any} children
+ * @returns {OgpNode}
+ */
 export function createNode(type, props = {}, ...children) {
   const normalizedChildren = children.flat().filter((child) => child !== null && child !== false);
   return {
@@ -63,6 +86,11 @@ export function createNode(type, props = {}, ...children) {
   };
 }
 
+/**
+ * @param {string} title
+ * @param {{ parser?: TitleParser }} [options]
+ * @returns {OgpNode[]}
+ */
 export function createTitleNodes(title, { parser = defaultParser } = {}) {
   const normalizedTitle = normalizeTitle(title);
   const chunks = parser.parse(normalizedTitle);
@@ -88,6 +116,15 @@ export function getPreviewTarget(argv = process.argv) {
   };
 }
 
+/**
+ * @param {{
+ *   fontDir?: string;
+ *   readdirImpl?: FontDirReader;
+ *   readFileImpl?: BinaryFileReader;
+ *   resolvePackagePathImpl?: PackageResolver;
+ * }} [options]
+ * @returns {Promise<FontDefinition[]>}
+ */
 export async function loadFonts({
   fontDir,
   readdirImpl = readdir,
@@ -141,6 +178,14 @@ export async function loadFonts({
   ];
 }
 
+/**
+ * @param {{
+ *   readdirImpl?: FontDirReader;
+ *   logger?: Logger;
+ *   resolvePackagePathImpl?: PackageResolver;
+ * }} [options]
+ * @returns {Promise<string>}
+ */
 export async function resolveFontDir({ readdirImpl, logger, resolvePackagePathImpl } = {}) {
   try {
     const packageJsonPath = resolvePackagePathImpl('@fontsource/zen-kaku-gothic-new/package.json');
@@ -153,6 +198,11 @@ export async function resolveFontDir({ readdirImpl, logger, resolvePackagePathIm
   }
 }
 
+/**
+ * @param {OgpCardTarget} target
+ * @param {{ parser?: TitleParser }} [options]
+ * @returns {OgpNode}
+ */
 export function createOgpElement({ title, isBasicPage }, { parser = defaultParser } = {}) {
   const titleNodes = createTitleNodes(title, { parser });
   const baseStyle = {
@@ -201,6 +251,15 @@ export function createOgpElement({ title, isBasicPage }, { parser = defaultParse
   );
 }
 
+/**
+ * @param {OgpTarget} target
+ * @param {FontDefinition[]} fonts
+ * @param {{
+ *   parser?: TitleParser;
+ *   satoriImpl?: typeof satori;
+ *   resvgClass?: typeof Resvg;
+ * }} [options]
+ */
 export async function createOgpImage(
   target,
   fonts,
@@ -220,6 +279,16 @@ export async function createOgpImage(
   return pngData.asPng();
 }
 
+/**
+ * @param {{
+ *   contentDir?: string;
+ *   readdirImpl?: BlogDirReader;
+ *   readFileImpl?: TextFileReader;
+ *   matterImpl?: FrontmatterParser;
+ *   logger?: Logger;
+ * }} [options]
+ * @returns {Promise<OgpTarget[]>}
+ */
 export async function getBlogEntries({
   contentDir = defaultContentDir,
   readdirImpl = readdir,
@@ -240,11 +309,12 @@ export async function getBlogEntries({
       const filePath = path.join(contentDir, entry.name);
       const fileContents = await readFileImpl(filePath, 'utf-8');
       const { data } = matterImpl(fileContents);
+      const title = typeof data.title === 'string' && data.title.length > 0 ? data.title : slug;
 
       posts.push({
         slug,
         filename: slug,
-        title: data.title || slug,
+        title,
         isBasicPage: false,
       });
     }
@@ -256,6 +326,18 @@ export async function getBlogEntries({
   }
 }
 
+/**
+ * @param {{
+ *   argv?: string[];
+ *   outputDir?: string;
+ *   mkdirImpl?: typeof mkdir;
+ *   writeFileImpl?: typeof writeFile;
+ *   loadFonts?: () => Promise<FontDefinition[]>;
+ *   createOgpImage?: (target: OgpTarget, fonts: FontDefinition[]) => Promise<Buffer | Uint8Array>;
+ *   getBlogEntries?: () => Promise<OgpTarget[]>;
+ *   logger?: Logger;
+ * }} [options]
+ */
 export async function runBuildOgp({
   argv = process.argv,
   outputDir = defaultOutputDir,
