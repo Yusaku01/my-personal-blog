@@ -10,14 +10,19 @@ export const transition = { name: 'fade' };
 
 const sortedPosts = await getAllBlogPosts();
 const primaryThumbnail = sortedPosts.find((post) => Boolean(post.thumbnail))?.thumbnail;
-const primaryThumbnailImage = primaryThumbnail
-  ? await getImage({
-      src: primaryThumbnail,
-      width: 600,
-      height: 315,
-      fit: 'cover',
-    })
-  : null;
+const primaryThumbnailHref =
+  typeof primaryThumbnail === 'string'
+    ? primaryThumbnail
+    : primaryThumbnail
+      ? (
+          await getImage({
+            src: primaryThumbnail,
+            width: 600,
+            height: 320,
+            fit: 'cover',
+          })
+        ).src
+      : null;
 ---
 
 <Layout
@@ -25,12 +30,12 @@ const primaryThumbnailImage = primaryThumbnail
   description="個人ブログ、Zenn（Scrap含む）、Qiitaの投稿をまとめた記事一覧。最新順で掲載しています。"
 >
   {
-    primaryThumbnailImage && (
+    primaryThumbnailHref && (
       <link
         slot="head"
         rel="preload"
         as="image"
-        href={primaryThumbnailImage.src}
+        href={primaryThumbnailHref}
         fetchpriority="high"
         crossorigin="anonymous"
       />
