@@ -4,12 +4,15 @@ import { Font } from 'astro:assets';
 import Header from '../components/Header/Header.astro';
 import Footer from '../components/Footer/Footer.astro';
 import Breadcrumb from '../components/Breadcrump/Breadcrumb.astro';
+import { LOCALE_META, type Locale } from '@/lib/i18n/config';
+import { getLocaleFromPath, stripLocalePrefix } from '@/lib/i18n/utils';
 
 interface Props {
   title: string;
   description?: string;
   blogTitle?: string; // ブログ記事のタイトルを渡すためのプロパティを追加
   robots?: string;
+  locale?: Locale;
 }
 
 const {
@@ -17,13 +20,16 @@ const {
   description = 'SAKUSPACE（サクスペース）は、フロントエンド開発〜デザイン領域のことを中心に、アウトプットする場として運営しているブログサイトです。',
   blogTitle, // ブログタイトルを受け取る
   robots = 'index, follow',
+  locale = getLocaleFromPath(Astro.url.pathname),
 } = Astro.props;
+
+const localeMeta = LOCALE_META[locale];
 
 // OGP画像パスを動的に設定
 let ogImageUrl;
 
-// URLパス名を取得
-const pathname = Astro.url.pathname;
+// URLパス名を取得（locale prefix を除去して判定）
+const pathname = stripLocalePrefix(Astro.url.pathname);
 
 if (blogTitle) {
   // ブログ記事の場合、スラッグに基づいたOGP画像を使用
@@ -60,7 +66,7 @@ const gaId = import.meta.env.PUBLIC_GOOGLE_ANALYTICS_ID;
 ---
 
 <!doctype html>
-<html lang="ja">
+<html lang={localeMeta.lang}>
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
@@ -126,7 +132,7 @@ const gaId = import.meta.env.PUBLIC_GOOGLE_ANALYTICS_ID;
     <meta property="og:url" content={new URL(Astro.url.pathname, Astro.site).toString()} />
     <meta property="og:image" content={new URL(ogImageUrl, Astro.site).toString()} />
     <meta property="og:site_name" content="SAKUSPACE" />
-    <meta property="og:locale" content="ja_JP" />
+    <meta property="og:locale" content={localeMeta.ogLocale} />
 
     <!-- Twitter Card -->
     <meta name="twitter:card" content="summary_large_image" />

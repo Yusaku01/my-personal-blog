@@ -46,6 +46,13 @@ export default defineConfig({
   site: 'https://saku-space.com',
   cacheDir: './.astro-v6-cache',
   output: 'static',
+  i18n: {
+    defaultLocale: 'ja',
+    locales: ['ja', 'en'],
+    routing: {
+      prefixDefaultLocale: false,
+    },
+  },
   fonts: [
     {
       name: 'Zen Kaku Gothic New',
@@ -99,6 +106,7 @@ export default defineConfig({
         defaultLocale: 'ja',
         locales: {
           ja: 'ja-JP',
+          en: 'en-US',
         },
       },
       // サイトマップから除外したいページを指定
