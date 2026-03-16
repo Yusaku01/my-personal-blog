@@ -5,6 +5,8 @@ import type { APIContext } from 'astro';
 const SITE_TITLE = 'saku-space';
 const SITE_DESCRIPTION = 'sakuのブログ - Web開発とデザインの記録';
 
+export const prerender = true;
+
 export async function GET(context: APIContext) {
   const blog = await getCollection('blog');
 

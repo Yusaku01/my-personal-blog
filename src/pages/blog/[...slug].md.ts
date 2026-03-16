@@ -1,6 +1,8 @@
 import type { APIRoute } from 'astro';
 import { getCollection } from 'astro:content';
 
+export const prerender = true;
+
 export const GET: APIRoute = async ({ params }) => {
   const slug = params.slug;
 

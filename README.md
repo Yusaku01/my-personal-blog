@@ -74,6 +74,8 @@ pnpm run dev
 | `pnpm run preview`                 | ビルドしたサイトをプレビュー                             |
 | `pnpm run mermaid:install-browser` | Mermaid のビルド時描画に必要な Chromium をローカルへ導入 |
 
+Cloudflare Pages にデプロイする場合は、Build output directory を `dist` に設定してください。
+
 ## Mermaid 図のローカル検証
 
 このプロジェクトでは、`mermaid` のコードフェンスを build-time に SVG へ変換します。` ```mermaid ` を書けば常に描画対象になります。

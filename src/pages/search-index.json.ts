@@ -1,6 +1,8 @@
 import type { APIRoute } from 'astro';
 import { getSearchIndexEntries } from '../lib/blog/posts';
 
+export const prerender = true;
+
 export const GET: APIRoute = async () => {
   const entries = await getSearchIndexEntries();
 
