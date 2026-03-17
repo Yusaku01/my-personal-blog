@@ -53,7 +53,10 @@ const isActiveLink = (href: string) => {
         <!-- モバイルメニューボタン -->
         <button
           id="menuButton"
+          type="button"
           class="lg:hidden px-4 py-2 text-gray-800 dark:text-white lg:hover:bg-gray-800 lg:hover:text-white transition-colors duration-300 rounded-[21px] border dark:border-white border-gray-800"
+          aria-controls="mobileMenu"
+          aria-expanded="false"
         >
           MENU
         </button>
@@ -66,11 +69,20 @@ const isActiveLink = (href: string) => {
   <!-- モバイルメニュー -->
   <div
     id="mobileMenu"
-    class="fixed inset-0 bg-white/95 dark:bg-gray-800/95 backdrop-blur-sm transform translate-x-full transition-transform duration-300 z-50"
+    class="mobile-menu fixed inset-0 bg-white/95 dark:bg-gray-800/95 backdrop-blur-sm z-50"
+    data-state="closed"
+    role="dialog"
+    aria-modal="true"
+    aria-label="サイトメニュー"
+    aria-hidden="true"
+    inert
   >
-    <div class="mx-auto px-4 py-8 bg-white dark:bg-gray-900 z-[9999] h-screen">
+    <div
+      class="mobile-menu-panel relative mx-auto px-4 py-8 bg-white dark:bg-gray-900 z-[9999] h-screen overflow-y-auto"
+    >
       <button
         id="closeButton"
+        type="button"
         class="absolute top-4 right-4 p-2 text-gray-800 dark:text-white lg:hover:bg-gray-800 lg:hover:text-white transition-colors duration-300"
       >
         <i class="i-ic-round-close text-2xl" aria-hidden="true"></i>
@@ -133,12 +145,54 @@ const isActiveLink = (href: string) => {
     width: 100%; /* Always full width */
     transition: none; /* No transition needed for active state */
   }
+
+  .mobile-menu {
+    opacity: 0;
+    pointer-events: none;
+    transform: translateX(100%);
+    transition:
+      transform 0.3s ease,
+      opacity 0.2s ease,
+      visibility 0s linear 0.3s;
+    visibility: hidden;
+  }
+
+  .mobile-menu[data-state='open'] {
+    opacity: 1;
+    pointer-events: auto;
+    transform: translateX(0);
+    transition:
+      transform 0.3s ease,
+      opacity 0.2s ease;
+    visibility: visible;
+  }
 </style>
 
 <!-- <div class="h-16"></div> -->
 
 <script is:inline>
   let controller = new AbortController();
+
+  const getFocusableElements = (container) =>
+    Array.from(
+      container.querySelectorAll('a[href], button:not([disabled]), [tabindex]:not([tabindex="-1"])')
+    );
+
+  const trapFocus = (container, event) => {
+    const focusable = getFocusableElements(container);
+    if (focusable.length === 0) return;
+
+    const first = focusable[0];
+    const last = focusable[focusable.length - 1];
+
+    if (event.shiftKey && document.activeElement === first) {
+      event.preventDefault();
+      last.focus();
+    } else if (!event.shiftKey && document.activeElement === last) {
+      event.preventDefault();
+      first.focus();
+    }
+  };
 
   const setupHeaderInteractions = () => {
     controller.abort();
@@ -149,6 +203,7 @@ const isActiveLink = (href: string) => {
     const menuButton = document.getElementById('menuButton');
     const closeButton = document.getElementById('closeButton');
     const mobileMenu = document.getElementById('mobileMenu');
+    const mobileMenuPanel = mobileMenu?.querySelector('.mobile-menu-panel');
     let lastScroll = 0;
 
     const handleScroll = () => {
@@ -169,20 +224,82 @@ const isActiveLink = (href: string) => {
 
     window.addEventListener('scroll', handleScroll, { signal, passive: true });
 
-    if (menuButton && closeButton && mobileMenu) {
+    if (menuButton && closeButton && mobileMenu && mobileMenuPanel) {
+      let isMenuOpen = false;
+
+      const setMenuState = (open) => {
+        isMenuOpen = open;
+        mobileMenu.dataset.state = open ? 'open' : 'closed';
+        mobileMenu.setAttribute('aria-hidden', open ? 'false' : 'true');
+        menuButton.setAttribute('aria-expanded', open ? 'true' : 'false');
+
+        if (open) {
+          mobileMenu.removeAttribute('inert');
+          document.body.style.overflow = 'hidden';
+        } else {
+          mobileMenu.setAttribute('inert', '');
+          document.body.style.overflow = '';
+        }
+      };
+
       const openMenu = () => {
         window.dispatchEvent(new CustomEvent('toc-panel:close'));
-        mobileMenu.classList.remove('translate-x-full');
-        document.body.style.overflow = 'hidden';
+        setMenuState(true);
+        closeButton.focus();
       };
 
       const closeMenu = () => {
-        mobileMenu.classList.add('translate-x-full');
-        document.body.style.overflow = '';
+        if (!isMenuOpen) return;
+        setMenuState(false);
+        menuButton.focus();
       };
 
+      setMenuState(false);
       menuButton.addEventListener('click', openMenu, { signal });
       closeButton.addEventListener('click', closeMenu, { signal });
+      mobileMenu.addEventListener(
+        'click',
+        (event) => {
+          if (event.target === mobileMenu) {
+            closeMenu();
+          }
+        },
+        { signal }
+      );
+      mobileMenuPanel.addEventListener(
+        'click',
+        (event) => {
+          event.stopPropagation();
+        },
+        { signal }
+      );
+      mobileMenu.addEventListener(
+        'click',
+        (event) => {
+          const target = event.target;
+          if (target instanceof Element && target.closest('a[href]') && isMenuOpen) {
+            closeMenu();
+          }
+        },
+        { signal }
+      );
+      document.addEventListener(
+        'keydown',
+        (event) => {
+          if (!isMenuOpen) return;
+
+          if (event.key === 'Escape') {
+            event.preventDefault();
+            closeMenu();
+            return;
+          }
+
+          if (event.key === 'Tab') {
+            trapFocus(mobileMenu, event);
+          }
+        },
+        { signal }
+      );
       window.addEventListener('header-menu:close', closeMenu, { signal });
     }
 

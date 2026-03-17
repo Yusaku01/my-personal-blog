@@ -9,6 +9,8 @@
 ├── docs
 │   ├── perf
 │   │   └── astro6-fonts
+│   ├── stash
+│   │   └── contact-astro-actions
 │   ├── astro-component-structure.md
 │   ├── blog-search-contact-improvement-plan.md
 │   ├── blog-search-test-cases.md
@@ -16,6 +18,7 @@
 │   ├── contact-test-cases.md
 │   ├── fluid-layout-hybrid-implementation-summary.md
 │   ├── fluid-typography-implementation-summary.md
+│   ├── i18n-rollout-plan.md
 │   ├── kuroco-membership-favorite-history-feasibility.md
 │   ├── public-release-checklist.md
 │   ├── react-to-astro-blog-components.md
@@ -41,7 +44,6 @@
 │   └── favicon.svg
 ├── src
 │   ├── actions
-│   │   └── index.ts
 │   ├── assets
 │   │   └── images
 │   ├── components
@@ -71,7 +73,6 @@
 │   ├── pages
 │   │   ├── blog
 │   │   ├── 404.astro
-│   │   ├── contact.astro
 │   │   ├── finds.astro
 │   │   ├── index.astro
 │   │   ├── profile.astro
@@ -114,7 +115,7 @@
 ├── uno.config.ts
 └── vitest.config.ts
 
-40 directories, 68 files
+42 directories, 67 files
 
 ```
 

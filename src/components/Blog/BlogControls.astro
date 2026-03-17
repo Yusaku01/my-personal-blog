@@ -1,7 +1,7 @@
 ---
 import type { SearchablePost } from '../../types/index';
 import PostCard from './PostCard.astro';
-import { buildBlogTabHref } from '../../lib/blog/search';
+import { buildBlogTabHref, getInitialBlogSearchState } from '../../lib/blog/search';
 
 interface BlogControlsProps {
   posts: SearchablePost[];
@@ -12,6 +12,7 @@ interface BlogControlsProps {
 const { posts, currentPath, currentQuery = '' } = Astro.props as BlogControlsProps;
 const initialPostCount = 12;
 const hasMorePosts = posts.length > initialPostCount;
+const initialSearchState = getInitialBlogSearchState(posts, currentQuery, initialPostCount);
 
 const normalizePath = (path: string) => (path.endsWith('/') ? path : `${path}/`);
 const activePath = normalizePath(currentPath);
@@ -27,7 +28,7 @@ const tabs = [
 <div
   data-blog-search-root
   data-initial-post-count={String(initialPostCount)}
-  data-initial-query={currentQuery}
+  data-initial-query={initialSearchState.activeQuery}
   data-search-index-url="/search-index.json"
 >
   <form class="mb-8 max-w-xl mx-auto relative" data-blog-search-form>
@@ -39,6 +40,7 @@ const tabs = [
         data-blog-search-input
         placeholder="記事を検索する"
         autocomplete="off"
+        value={initialSearchState.activeQuery}
         class="w-full px-2 py-2 border border-gray-200 rounded-md focus:outline-none focus:ring-2 focus:ring-[#333] bg-white dark:bg-white dark:border-none dark:text-[#222]"
       />
     </label>
@@ -109,7 +111,15 @@ const tabs = [
     </a>
   </div>
 
-  <div data-blog-empty class="text-center py-12 hidden">
+  <div
+    data-blog-empty
+    class:list={[
+      'text-center py-12',
+      {
+        hidden: initialSearchState.matchedCount > 0,
+      },
+    ]}
+  >
     <p class="text-gray-600 dark:text-gray-400 text-lg">
       検索条件に一致する記事が見つかりませんでした。
     </p>
@@ -122,7 +132,9 @@ const tabs = [
           data-post-wrapper
           data-index={index}
           data-post-url={post.url}
-          class={index >= initialPostCount ? 'hidden' : ''}
+          class:list={{
+            hidden: initialSearchState.hiddenStates[index],
+          }}
         >
           <PostCard {...post} index={index} />
         </div>
@@ -132,7 +144,15 @@ const tabs = [
 
   {
     hasMorePosts && (
-      <div class="text-center mt-12" data-blog-load-more-container>
+      <div
+        class:list={[
+          'text-center mt-12',
+          {
+            hidden: !initialSearchState.shouldShowLoadMore,
+          },
+        ]}
+        data-blog-load-more-container
+      >
         <button
           data-blog-load-more
           class="px-6 py-2 bg-[#333] text-white rounded-md lg:hover:opacity-70 transition-all duration-300 dark:bg-white dark:text-[#333] font-bold leading-loose"

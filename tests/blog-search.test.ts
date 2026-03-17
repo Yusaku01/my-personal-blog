@@ -2,6 +2,7 @@ import { describe, expect, it } from 'vitest';
 import {
   buildBlogTabHref,
   buildBlogSearchText,
+  getInitialBlogSearchState,
   matchesSearchQuery,
   normalizeSearchText,
 } from '../src/lib/blog/search';
@@ -91,5 +92,43 @@ describe('buildBlogTabHref', () => {
 
   it('keeps clean href when query is empty', () => {
     expect(buildBlogTabHref('/blog/', '')).toBe('/blog/');
+  });
+});
+
+describe('getInitialBlogSearchState', () => {
+  const records = [
+    { searchText: 'astro island 本文あり' },
+    { searchText: 'プリフェッチ 比較メモ' },
+    { searchText: 'astro prefetch' },
+  ];
+
+  it('keeps pagination-only visibility when there is no active query', () => {
+    expect(getInitialBlogSearchState(records, '', 2)).toEqual({
+      activeQuery: '',
+      hasActiveQuery: false,
+      matchedCount: 3,
+      shouldShowLoadMore: true,
+      hiddenStates: [false, false, true],
+    });
+  });
+
+  it('shows only matched posts when the page loads with a query', () => {
+    expect(getInitialBlogSearchState(records, 'プリフェッチ', 2)).toEqual({
+      activeQuery: 'プリフェッチ',
+      hasActiveQuery: true,
+      matchedCount: 1,
+      shouldShowLoadMore: false,
+      hiddenStates: [true, false, true],
+    });
+  });
+
+  it('trims the query and keeps all matching posts visible', () => {
+    expect(getInitialBlogSearchState(records, '  prefetch  ', 1)).toEqual({
+      activeQuery: 'prefetch',
+      hasActiveQuery: true,
+      matchedCount: 1,
+      shouldShowLoadMore: false,
+      hiddenStates: [true, true, false],
+    });
   });
 });

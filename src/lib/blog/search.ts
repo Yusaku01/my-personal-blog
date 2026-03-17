@@ -6,6 +6,18 @@ export type BlogSearchEntry = {
   searchText: string;
 };
 
+type SearchableRecord = {
+  searchText: string;
+};
+
+export type InitialBlogSearchState = {
+  activeQuery: string;
+  hasActiveQuery: boolean;
+  matchedCount: number;
+  shouldShowLoadMore: boolean;
+  hiddenStates: boolean[];
+};
+
 type BlogSearchTextInput = {
   source: PostSource;
   title: string;
@@ -70,4 +82,34 @@ export const buildBlogTabHref = (basePath: string, query: string): string => {
   const params = new URLSearchParams();
   params.set('q', trimmedQuery);
   return `${basePath}?${params.toString()}`;
+};
+
+export const getInitialBlogSearchState = <T extends SearchableRecord>(
+  records: T[],
+  query: string,
+  initialPostCount: number
+): InitialBlogSearchState => {
+  const activeQuery = query.trim();
+  const hasActiveQuery = activeQuery.length > 0;
+  const matchStates = records.map((record) =>
+    hasActiveQuery ? matchesSearchQuery(record.searchText, activeQuery) : true
+  );
+
+  const hiddenStates = matchStates.map((isMatch, index) => {
+    if (hasActiveQuery) {
+      return !isMatch;
+    }
+
+    return index >= initialPostCount;
+  });
+
+  const matchedCount = matchStates.filter(Boolean).length;
+
+  return {
+    activeQuery,
+    hasActiveQuery,
+    matchedCount,
+    shouldShowLoadMore: !hasActiveQuery && matchedCount > initialPostCount,
+    hiddenStates,
+  };
 };

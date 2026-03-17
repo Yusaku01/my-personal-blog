@@ -148,6 +148,12 @@ const estimatedReadingTimeMinutes = getEstimatedReadingTimeMinutes(post.body ?? 
     word-break: break-word;
   }
 
+  .blog-article-content :where(:not(pre) > code) {
+    overflow-wrap: anywhere;
+    white-space: normal;
+    word-break: normal;
+  }
+
   .blog-article-meta-item {
     align-items: center;
     display: inline-flex;
@@ -537,7 +543,7 @@ const estimatedReadingTimeMinutes = getEstimatedReadingTimeMinutes(post.body ?? 
   .blog-article-content picture:has(> img[id^='mermaid-diagram']) {
     margin: 2rem 0;
     max-width: 100%;
-    width: fit-content;
+    /* width: fit-content; */
   }
 
   .blog-article-content img[id^='mermaid-diagram'] {
@@ -596,7 +602,7 @@ const estimatedReadingTimeMinutes = getEstimatedReadingTimeMinutes(post.body ?? 
     max-height: 100%;
     overflow-y: auto;
     overscroll-behavior: contain;
-    padding: 0.25rem 0;
+    padding: 0.25rem;
   }
 
   .toc-sidebar-title {
