@@ -68,7 +68,7 @@ pnpm run dev
 
 | コマンド                           | 説明                                                     |
 | :--------------------------------- | :------------------------------------------------------- |
-| `pnpm install`                     | 依存関係をインストール                                   |
+| `pnpm install`                     | 依存関係をインストール（Mermaid 用 Chromium も自動導入） |
 | `pnpm run dev`                     | 開発サーバーを起動（`localhost:4321`）                   |
 | `pnpm run build`                   | 本番用ビルドを生成（`./dist/`）                          |
 | `pnpm run preview`                 | ビルドしたサイトをプレビュー                             |
@@ -80,13 +80,19 @@ Cloudflare Pages にデプロイする場合は、Build output directory を `di
 
 このプロジェクトでは、`mermaid` のコードフェンスを build-time に SVG へ変換します。` ```mermaid ` を書けば常に描画対象になります。
 
-1. Chromium をローカルへ導入
+1. 依存関係をインストール
+
+```bash
+pnpm install
+```
+
+2. その状態で `pnpm run dev` または `pnpm run build` を実行
+
+3. もしローカルの Chromium キャッシュが壊れていたり、install 時の browser 導入をスキップしている場合は手動で再導入
 
 ```bash
 pnpm run mermaid:install-browser
 ```
-
-2. その状態で `pnpm run dev` または `pnpm run build` を実行
 
 ````md
 ```mermaid
@@ -97,7 +103,7 @@ graph TD
 ```
 ````
 
-Mermaid は build-time の `img-svg` 戦略で描画され、ダークモード時は `picture` 要素経由でダーク向け SVG が使われます。CI や本番 build でも Mermaid を使う場合は、ローカルと同様に Chromium を導入した状態で build してください。
+Mermaid は build-time の `img-svg` 戦略で描画され、ダークモード時は `picture` 要素経由でダーク向け SVG が使われます。Cloudflare Pages を含む CI / 本番 build でも `pnpm install` 時に Chromium が自動導入される前提です。必要な場合だけ `pnpm run mermaid:install-browser` で再導入してください。
 
 ## 🔄 自動更新
 
