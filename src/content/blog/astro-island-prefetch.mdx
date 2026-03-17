@@ -9,7 +9,7 @@ tags: ['Astro', 'Prefetch', 'Islands architecture', 'パフォーマンス', 'Ja
 
 AstroにはPrefetch機能とIslands architectureという仕組みがあります。
 「Prefetchは、ユーザーが次に遷移する画面を予測し、先読みする仕組み」
-「Islands architectureは、JSの有無、動的・静的の有無において、ユーザー体験がよくなるように読み込みの仕組みを制御する仕組み」
+「Islands architectureは、静的HTMLの中に、動的なUIやサーバー処理をIslandとして分離し、それぞれ最適なタイミングで読み込む仕組み」
 という感じです。
 
 ここで、1つ疑問が浮かびました。
@@ -41,7 +41,7 @@ flowchart LR
   B --> D
 ```
 
-Prefetchは、図の左部分、Islands architectureは、図の右部分をそれぞれになっています。すなわち、お互いに干渉というよりは、機能として担当領域が異なると言えると思います。
+Prefetchは図の左部分、Islands architectureは図の右部分がそれぞれの担当領域になっています。すなわち、お互いに干渉というよりは、機能として担当領域が異なると言えると思います。
 
 さてこの結論を胸に、中身を見ていきましょう。
 
@@ -122,7 +122,7 @@ MDNでも、Speculation Rules API は文書単位の `prefetch` / `prerender` �
 
 https://docs.astro.build/ja/concepts/islands/
 
-また、AstroのIslands architectureを理解するにあたり、Zennの記事も有用だと思います。このIslands Architectureは、Next.jsのPPRと表面上は似ている為、比較記事も存在します。比較しながら考えることで、理解が深まると思うので添付しておきます。筆者の方々ありがとうございます！
+また、AstroのIslands architectureを理解するにあたり、Zennの記事も有用だと思います。このIslands architectureは、Next.jsのPPRと表面上は似ている為、比較記事も存在します。比較しながら考えることで、理解が深まると思うので添付しておきます。筆者の方々ありがとうございます！
 
 https://zenn.dev/morinokami/articles/islands-architecture-with-astro
 
@@ -155,7 +155,7 @@ AstroのIslands architectureを理解する上で、最低限押さえておき�
 2. インタラクティブなUIを埋め込みたい場合など、特定の状況下ではIsland経由でハイドレーション[^1]が必要
 3. その「Island」には、ブラウザで後からhydrateされるものと、サーバー側で別タイミングに描画されるものがある
 
-Astro自体は、MPA方式のフレームワークで、**Islands Architecture**は、**AstroのデフォルトゼロJS**や**他のReactなどUIフレームワークを埋め込める特徴**とともに語られることが多いですが、これら3つの特徴は、お互いに深く関係しあっていると言えると思います。
+Astro自体は、MPA方式のフレームワークで、**Islands architecture**は、**AstroのデフォルトゼロJS**や**他のReactなどUIフレームワークを埋め込める特徴**とともに語られることが多いですが、これら3つの特徴は、お互いに深く関係しあっていると言えると思います。
 
 > 他のReactなどUIフレームワークを埋め込める特徴
 
@@ -221,7 +221,7 @@ Prefetchは、**今見ているページから、次に遷移するかもしれ�
 
 1・2部分が、Prefetch。4・5・6がIslands architectureの担当領域です。
 
-こうして見ると、通常のPrefetchとIsland Architectureは、競合というよりバトンタッチの関係です。Prefetchが「次のページを先に用意する」役割を担い、Islands architectureが「そのページのどこを、いつ、どの環境で動かすか」を担うわけです。
+こうして見ると、通常のPrefetchとIslands architectureは、競合というよりバトンタッチの関係です。Prefetchが「次のページを先に用意する」役割を担い、Islands architectureが「そのページのどこを、いつ、どの環境で動かすか」を担うわけです。
 
 :::note
 **`experimental.clientPrerender` を有効にした場合**  
@@ -240,9 +240,9 @@ PrefetchとIslands architectureは、どちらもユーザー体験を良くす�
 
 今回の件でIslands architectureについてより深く調査しましたが、以前より更にAstroの特徴として上がる理由がわかった気がします。Islands architectureは、Reactなどを埋め込む、JSハイドレーションの文脈で触れられることが多いですが、違う視点で見てみると、それらの埋め込みなどは、あくまで副産物な気もしました。
 
-今後もいろいろ観察していこうと思います。本記事を読んでいいただきありがとうございました。
+今後もいろいろ観察していこうと思います。本記事を読んでいただきありがとうございました。
 
-皆さんもLet's be a Astronaut!
+皆さんもLet's be an Astronaut!
 
 ## 参考資料
 文中で触れたものも含め、参考にした資料をまとめておきます。
