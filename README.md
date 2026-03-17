@@ -66,15 +66,16 @@ pnpm run dev
 
 ## 📝 コマンド
 
-| コマンド                           | 説明                                                     |
-| :--------------------------------- | :------------------------------------------------------- |
-| `pnpm install`                     | 依存関係をインストール（Mermaid 用 Chromium も自動導入） |
-| `pnpm run dev`                     | 開発サーバーを起動（`localhost:4321`）                   |
-| `pnpm run build`                   | 本番用ビルドを生成（`./dist/`）                          |
-| `pnpm run preview`                 | ビルドしたサイトをプレビュー                             |
-| `pnpm run mermaid:install-browser` | Mermaid のビルド時描画に必要な Chromium をローカルへ導入 |
+| コマンド                           | 説明                                                       |
+| :--------------------------------- | :--------------------------------------------------------- |
+| `pnpm install`                     | 依存関係をインストール                                     |
+| `pnpm run dev`                     | 開発サーバーを起動（`localhost:4321`）                     |
+| `pnpm run build`                   | 本番用ビルドを生成（`./dist/`）                            |
+| `pnpm run preview`                 | ビルドしたサイトをプレビュー                               |
+| `pnpm run mermaid:install-browser` | Mermaid のビルド時描画に必要な Playwright browser を導入   |
+| `pnpm run build:cloudflare`        | Cloudflare Pages 用に browser 導入後 OGP 付き build を実行 |
 
-Cloudflare Pages にデプロイする場合は、Build output directory を `dist` に設定してください。
+Cloudflare Pages にデプロイする場合は、Build command を `pnpm run build:cloudflare`、Build output directory を `dist` に設定してください。
 
 ## Mermaid 図のローカル検証
 
@@ -88,7 +89,7 @@ pnpm install
 
 2. その状態で `pnpm run dev` または `pnpm run build` を実行
 
-3. もしローカルの Chromium キャッシュが壊れていたり、install 時の browser 導入をスキップしている場合は手動で再導入
+3. もしローカルの Playwright browser キャッシュが壊れていたり、install 時の browser 導入が不足している場合は手動で再導入
 
 ```bash
 pnpm run mermaid:install-browser
@@ -103,7 +104,7 @@ graph TD
 ```
 ````
 
-Mermaid は build-time の `img-svg` 戦略で描画され、ダークモード時は `picture` 要素経由でダーク向け SVG が使われます。Cloudflare Pages を含む CI / 本番 build でも `pnpm install` 時に Chromium が自動導入される前提です。必要な場合だけ `pnpm run mermaid:install-browser` で再導入してください。
+Mermaid は build-time の `img-svg` 戦略で描画され、ダークモード時は `picture` 要素経由でダーク向け SVG が使われます。Cloudflare Pages では `pnpm run build:cloudflare` が build 前に必要な Playwright browser を導入する前提です。ローカルでも browser 導入が不足している場合は `pnpm run mermaid:install-browser` を実行してください。
 
 ## 🔄 自動更新
 
