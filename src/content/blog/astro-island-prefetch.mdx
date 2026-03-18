@@ -41,7 +41,7 @@ flowchart LR
   B --> D
 ```
 
-Prefetchは図の左部分、Islands architectureは図の右部分がそれぞれの担当領域になっています。すなわち、お互いに干渉というよりは、機能として担当領域が異なると言えると思います。
+Prefetchは図の左部分、Islands architectureは図の右部分がそれぞれの担当レイヤーになっています。すなわち、お互いに過度に干渉しているというよりは、機能として担当レイヤーが異なる、ユーザーの体験的には、担当レイヤーは連続している（Prefetch → Island処理）と言えると思います。
 
 さてこの結論を胸に、中身を見ていきましょう。
 
@@ -77,32 +77,32 @@ Astroの場合は、基本的にブラウザ標準のAPIを活用するスタン
 
 **ユーザーが遷移する画面予測のトリガー**
 
-AstroのPrefetchでは、ユーザーが「次にそのリンクを選びそうか」を判断するために、`hover` / `tap` / `viewport` / `load` の4つの戦略を選べます。デフォルトは `hover` です。つまり、速さを優先するのか、不要な通信を減らすのかを、開発者がトリガー単位で調整できるわけです。
+AstroのPrefetchでは、ユーザーが「次にそのリンクを選びそうか」を判断するために、`hover` / `tap` / `viewport` / `load`の4つの戦略を選べます。デフォルトは`hover`です。つまり、速さを優先するのか、不要な通信を減らすのかを、開発者がトリガー単位で調整できるわけです。
 
 - `hover`は、リンクにホバーした時やキーボードフォーカスが当たった時に先読みします。実装上も`mouseenter`/`focusin`を起点にし、少し待ってから実行し、離れたらキャンセルするようになっています。
-- `tap`は`touchstart` / `mousedown` のタイミングで発火します。クリック直前なので、無駄な先読みをかなり減らしやすいです。
-- `viewport`は、リンクがビューポートに入ったときに低優先度で先読みします。裏側では `IntersectionObserver` ベースで監視されています。
-- `load` は、ページの読み込み完了後に、そのページ内のリンクを順番に低優先度で先読みします。
+- `tap`は`touchstart` / `mousedown`のタイミングで発火します。クリック直前なので、無駄な先読みをかなり減らしやすいです。
+- `viewport`は、リンクがビューポートに入ったときに低優先度で先読みします。裏側では`IntersectionObserver`ベースで監視されています。
+- `load`は、ページの読み込み完了後に、そのページ内のリンクを順番に低優先度で先読みします。
 
 この4つを見てわかるように、AstroのPrefetchは「次ページをどう読むか」だけでなく、「どの瞬間をユーザーの遷移意図とみなすか」まで含めて設計されています。
 
 **先読みのロジック**
 
-では、そのトリガーで実際に何をしているのか。Astroはここでもブラウザ標準の仕組みにかなり寄り添っています。通常のPrefetchでは、対応ブラウザなら `<link rel="prefetch">` を使って次ページの文書を先読みし、Safariなどでは `fetch()` にフォールバックします。さらに `prefetch()`APIの仕様上、低速回線やData Saverが有効な環境では無理に先読みしない仕組みになっています。
+では、そのトリガーで実際に何をしているのか。Astroはここでもブラウザ標準の仕組みにかなり寄り添っています。通常のPrefetchでは、対応ブラウザなら`<link rel="prefetch">`を使って次ページの文書を先読みし、Safariなど`<link rel="prefetch">`がうまく機能しない場面では`fetch()`にフォールバックします。さらに`prefetch()`APIの仕様上、低速回線やData Saverが有効な環境では無理に先読みしない仕組みになっています。
 
-さらに、`experimental.clientPrerender` を有効にした場合は、`<link rel="prefetch">` や `fetch()` の代わりに、Speculation Rules API を使って次ページをより積極的に準備できます
+さらに、`experimental.clientPrerender`を有効にした場合は、「Speculation Rules API」を使って、Prefetchだけでなく、Prerenderまで行うことで、次ページをより積極的に準備します。この時は、いわば既存のPrefetch処理の拡張と言えると思います。
 
 :::note
 **Speculation Rules API**  
 
-MDNでも、Speculation Rules API は文書単位の `prefetch` / `prerender` を扱う仕組みとして説明されており、特に `prerender` は hidden tab でページ自体を準備するため、単にHTMLをキャッシュしておくより一段踏み込んだ先読みです。（なお、これは現時点ではChromium系ブラウザ中心の実験的なサポートです）
+MDNでも、Speculation Rules APIは文書単位の`prefetch` / `prerender`を扱う仕組みとして説明されており、特に`prerender`はhidden tabでページ自体を準備するため、単にHTMLをキャッシュしておくより一段踏み込んだ先読みです。（なお、これは現時点ではChromium系ブラウザ中心の実験的なサポートです）
 :::
 
 つまり、Astroの先読みロジックはざっくり言うと以下のように整理できます。
 
-1. 通常時は `<link rel="prefetch">` を優先する
-2. 非対応ブラウザでは `fetch()` にフォールバックする
-3. `experimental.clientPrerender` を有効にした環境では Speculation Rules API を活用する
+1. 通常時は`<link rel="prefetch">`を優先する
+2. 非対応ブラウザでは`fetch()`にフォールバックする
+3. `experimental.clientPrerender`を有効にした環境では Speculation Rules APIを活用する
 
 この「ブラウザ標準を使い、必要な時だけフォールバックする」という姿勢は、Astroの設計思想がかなり表れている部分だと思います。
 
@@ -133,7 +133,7 @@ https://zenn.dev/morinokami/articles/astro-server-islands-vs-nextjs-ppr
 
 上記を読みつつ、まとめると。Islands architectureとは、
 
-**静的HTMLの中に、必要な動的UIだけをIslandとして埋め込む仕組み**
+**静的HTMLの中に、必要な動的UIやサーバー処理をIslandとして埋め込む仕組み**
 
 この一言で表せると思います。いや、流石に、こんな単純ではないかもしれません。そもそもこのIslandという概念は、元来Astro発祥ではなく、外から取り入れられたものです。間違ったことは言えないので、以下Astroの公式ドキュメントを引用すると
 
@@ -162,7 +162,7 @@ Astro自体は、MPA方式のフレームワークで、**Islands architecture**
 の部分をSPA方式でAstroとは異なる思想により機能しているJSコードの塊としてみてみましょう。
 あら不思議、3つともJSに関わる技術だと言えると思います。そういう意味で、Astroは非常に**JavaScriptの扱い**にこだわっているように感じますし、Islands architectureは、「どこにJavaScriptが必要か」だけでなく、「いつ実行するか」「どの単位で切り離すか」を考えるための設計でもあるなと感じます。
 
-#### 余談 JavaScriptをIsland経由以外で書いたらどのように扱われるか
+#### 余談JavaScriptをIsland経由以外で書いたらどのように扱われるか
 
 Astroでは、Islandを使用せずともJavaScriptを書くことができ、仮に`.astro`を使用したプロジェクトの場合、主に以下3通りの書き方があると思います。
 
@@ -172,15 +172,15 @@ Astroでは、Islandを使用せずともJavaScriptを書くことができ、�
 
 簡潔に扱いを整理すると以下のような感じですね。
 
-**ケース1. コンポーネントスクリプトの内に書く**
+##### ケース1. コンポーネントスクリプトの内に書く
 
 コンポーネントスクリプト内に書いたJavaScriptは、ビルド時またはサーバー描画時に実行されます。HTMLを作るための処理に使われ、ブラウザには送られません。
 
-**ケース2. コンポーネントテンプレートで`<script>`タグを使用する**
+##### ケース2. コンポーネントテンプレートで`<script>`タグを使用する**
 
 テンプレート内の`<script>`は、クライアントスクリプトとしてブラウザに送られます。DOM操作やイベント処理など、ページ上の振る舞いを書く場所です。
 
-**ケース3. src配下に`*.ts`または、`*.js`ファイルを作成・配置し、.astroファイル内にて、`<script src>`でインポートする**  
+##### ケース3. src配下に`*.ts`または、`*.js`ファイルを作成・配置し、.astroファイル内にて、`<script src>`でインポートする  
 
 `src`配下の`.ts`や`.js`を`<script src>`で読み込んだ場合も、ブラウザで実行されるクライアントスクリプトとして扱われます。テンプレート直書きよりも、再利用しやすかったり、長文のコードの場合はメンテナンスしやすいのが利点です。
 
@@ -190,13 +190,13 @@ Astroのドキュメントを見ていくと、Islandと一口に言っても役
 
 #### Client Island
 
-Client Islandは、インタラクションが必要なUIを、必要なタイミングでだけブラウザ側にhydrateする考え方です。Astroでは、UIフレームワークのコンポーネントも最初はHTMLとして出力され、そのうえで `client:load` / `client:idle` / `client:visible` / `client:media` / `client:only` といったdirectiveに応じて、あとからJavaScriptを読み込んで動き出します。
+Client Islandは、インタラクションが必要なUIを、必要なタイミングでだけブラウザ側にhydrateする考え方です。Astroでは、UIフレームワークのコンポーネントも最初はHTMLとして出力され、そのうえで`client:load` / `client:idle` / `client:visible` / `client:media` / `client:only`といったdirectiveに応じて、あとからJavaScriptを読み込んで動き出します。
 
 要するに、Client Islandの関心事は「このUIをブラウザでいつ動かすか」です。ここが、後で出てくるPrefetchとの大きな違いでもあります。
 
 #### Server Island
 
-一方のServer Islandは、動的なコンテンツや重いサーバー処理を、ページ本体とは切り離して後から差し込むための仕組みです。`server:defer` を付けると、Astroはまずページ全体のHTMLを返し、その後で特別なエンドポイントにGETリクエストを送り、Server Islandの中身を別途取得します。`slot="fallback"` を用意しておけば、取得が終わるまでの仮表示も出せます。
+一方のServer Islandは、動的なコンテンツや重いサーバー処理を、ページ本体とは切り離して後から差し込むための仕組みです。`server:defer`を付けると、Astroはまずページ全体のHTMLを返し、その後で特別なエンドポイントにGETリクエストを送り、Server Islandの中身を別途取得します。`slot="fallback"`を用意しておけば、取得が終わるまでの仮表示も出せます。
 
 つまり、Server Islandの関心事は「この部分をサーバーからいつ返すか」です。Client Islandがブラウザ側のhydrateタイミングを扱うのに対して、Server Islandは**サーバー側のHTMLレスポンスタイミング**を扱う、と捉えると整理しやすいです。
 
@@ -204,7 +204,7 @@ Client Islandは、インタラクションが必要なUIを、必要なタイ�
 
 まず、両者がカバーしている範囲を分けておくとかなり理解しやすくなります。
 
-Prefetchは、**今見ているページから、次に遷移するかもしれないページをどこまで先読みしておくか** という仕組みです。つまり、主に担当している領域は、「遷移の前」です。
+Prefetchは、**今見ているページから、次に遷移するかもしれないページをどこまで先読みしておくか** という仕組みです。つまり、主に担当しているレイヤーは、「遷移の前」です。
 
 一方Islands architectureは、**遷移した先のページを、どの単位で・どのタイミングで動かすか** を扱う仕組みです。こちらの主戦場は「遷移した後のページ内部」です。
 
@@ -212,21 +212,21 @@ Prefetchは、**今見ているページから、次に遷移するかもしれ�
 
 通常のPrefetchを前提にすると、実行フローはだいたい以下の順番で整理できます。
 
-1. 現在のページ上で、Astroがリンクに対して `hover` や `tap` などのトリガーを待っている
-2. 条件が揃うと、Astroが次ページの文書を `<link rel="prefetch">` あるいは `fetch()` で先読みする
+1. 現在のページ上で、Astroがリンクに対して`hover`や`tap`などのトリガーを待っている
+2. 条件が揃うと、Astroが次ページの文書を`<link rel="prefetch">`あるいは`fetch()`で先読みする
 3. この段階では、まだユーザーは遷移していないので、次ページのClient Islandがhydrateされるわけではない
 4. 実際に遷移が起きると、先読み済みの文書を土台に次ページが表示される
-5. その後で、次ページ内のClient Islandが `client:*` の条件に従ってhydrateされる
-6. `server:defer` を使ったServer Islandがある場合は、fallbackを見せつつ別リクエストで中身が差し込まれる
+5. その後で、次ページ内のClient Islandが`client:*`の条件に従ってhydrateされる
+6. `server:defer`を使ったServer Islandがある場合は、fallbackを見せつつ別リクエストで中身が差し込まれる
 
-1・2部分が、Prefetch。4・5・6がIslands architectureの担当領域です。
+1・2部分が、Prefetch。4・5・6がIslands architectureの担当レイヤーです。
 
 こうして見ると、通常のPrefetchとIslands architectureは、競合というよりバトンタッチの関係です。Prefetchが「次のページを先に用意する」役割を担い、Islands architectureが「そのページのどこを、いつ、どの環境で動かすか」を担うわけです。
 
 :::note
-**`experimental.clientPrerender` を有効にした場合**  
+**`experimental.clientPrerender`を有効にした場合**  
 
-あくまで推測が混じりますが、`experimental.clientPrerender` を有効にした場合はフローが少し変わるのではないか？と思います。Speculation Rules API の `prerender` が使える環境では、遷移前から次ページ自体を Invisibleなhidden tabで準備（描画・実行）できるため、Client IslandのJavaScript実行や、Server Islandでのデータフェッチなどが遷移前に始まる可能性があるのではないか？と思っています。つまり、**通常のPrefetchでは役割分担がかなり明確だが、client prerenderまで有効にすると両者の実行タイミングは一部重なる**、と整理できるのではないでしょうか？
+あくまで推測が混じりますが、`experimental.clientPrerender`を有効にした場合はフローが少し変わるのではないか？と思います。Speculation Rules APIの`prerender`が使える環境では、遷移前から次ページ自体を Invisibleなhidden tabで準備（描画・実行）できるため、Client IslandのJavaScript実行や、Server Islandでのデータフェッチなどが遷移前に始まる可能性があるのではないか？と思っています。つまり、**通常のPrefetchでは役割分担がかなり明確だが、client prerenderまで有効にすると両者の実行タイミングは一部重なる**、と整理できるのではないでしょうか？
 
 もし、先に実行できるのであれば使い方によってはユーザー体験を更に向上できるかもしれない反面、開発者が実行タイミングについてもより深く把握しておく必要が出てくるので、その点は気合いでなんとかするしかないかもですね。
 :::
@@ -236,7 +236,7 @@ Prefetchは、**今見ているページから、次に遷移するかもしれ�
 今回は、PrefetchというAstroの機能を通して、Islands architectureを観察してみました。
 PrefetchとIslands architectureは、どちらもユーザー体験を良くするための仕組みですが、通常は見ているレイヤーが異なります。Prefetchは「遷移前に次ページをどう準備するか」、Islands architectureは「遷移後のページ内をどう分割し、いつ動かすか」を扱っています。
 
-なので、通常のAstro Prefetchでは、両者は干渉するというより、前後の工程を分担していると考えるのが自然です。ただし、`experimental.clientPrerender` で prerender まで踏み込むと、遷移前から次ページの実行準備が進む可能性があるため、ここで初めてIslands architectureとの重なりが増えるのではないかと思います。
+なので、通常のAstro Prefetchでは、両者は干渉するというより、前後の工程を分担していると考えるのが自然です。ただし、`experimental.clientPrerender`でprerenderまで踏み込むと、遷移前から次ページの実行準備が進む可能性があるため、ここで初めてIslands architectureとの重なりが増えるのではないかと思います。
 
 今回の件でIslands architectureについてより深く調査しましたが、以前より更にAstroの特徴として上がる理由がわかった気がします。Islands architectureは、Reactなどを埋め込む、JSハイドレーションの文脈で触れられることが多いですが、違う視点で見てみると、それらの埋め込みなどは、あくまで副産物な気もしました。
 
