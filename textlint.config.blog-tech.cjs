@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-var-requires */
 const baseConfig = require('./textlint.config.blog-base.cjs');
 
 module.exports = {
