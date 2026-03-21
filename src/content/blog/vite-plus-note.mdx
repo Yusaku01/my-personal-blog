@@ -1,0 +1,64 @@
+---
+title: 'Vite Plusを少し使ってみたのでメモる'
+description: 'Vite Plusの使用感を書いたメモ記事です。'
+publishDate: 2026-03-21
+author: 'Saku'
+image: '../../assets/images/blog/common/image_thumnail-4.png'
+tags: ['個人ブログ', 'Vite Plus', 'JavaScript', 'Toolchain']
+---
+
+Vite Plusを少し使ってみたので、メモというか、知見整理というか。
+
+:::note
+最初に感想を、Void Zeroの方々、Vite Plusを作成いただきありがとうございます！！軽く使っている感じ、体験が非常にいいです！
+EvanさんのPostで見かけた vp create void？的な感じでセットアップをものすごく簡略化できる構想もすごい気になります〜
+:::
+
+## Vite Plusとは
+Vite Plusとは、ViteやVueを作成したEvan氏および、Evan氏率いるVoid Zero社が、作成・支援するJavaScript 統合Toolchain？的なもの。
+
+そもそもフロントエンドおよび、JSエコシステムの変遷は、凄まじいものがあるが、これまで以下のように、ビルド・バンドルツールのシェアは遷移している。（厳密には、違うので、ざっくり。異論は認める）
+
+いくつものツールを自前で準備
+↓↓↓
+Webpack
+↓↓↓
+Vite
+
+このようにVite自体は、ビルドツール？と呼ばれるものであり、TSなどをJSなどブラウザで動く形に、トランスパイル（あれ使い方合ってるっけ？）&圧縮などをするツール。
+
+Vite v7台までは、Viteの中身で、ESbuild + rollupを併用することで、dev環境・production環境それぞれへのファイル生成や配信を実現していた。
+
+それが、先日でたv8から、中身がrolldown一つに置き換わる。このrolldownは、ざっくりいうと、Rust製のツールであり、ビルド処理などを高速で行える。
+
+そんなこんなでrolldown製に置き換わったこのViteを中核に添えつつ、Oxc系ツール（Oxlint/Oxfmt）やVitestのようなViteエコシステムのツールをvpコマンド一つで使えるようにしたツールが、Vite Plusというものである。
+
+## もっと詳しく
+まず、内部で何が使われているかを整理する。
+ざっくり以下ツールの連結で構成されている。
+
+- devモード：Vite
+- リンティング：Oxlint・tsdown（型チェック）
+- フォーマティング：Oxfmt
+- テスト：Vitest
+- ビルド：Rolldown
+
+上記のツール群を見ればわかるが、基本的にRustで実装されているツールが多いので、処理が鬼早い。
+
+また、上記のツール群を`vp`コマンド一つで、実行できてしまうのが、Vite Plusの一番の強みと言っても過言ではないかと思う。vpコマンドで表示させた使用可能コマンド一覧は[こちらの記事](http://saku-space.com/blog/vite-plus-commands/)を参照
+
+### 注意点？使用感？
+
+注意点というか、使って感じたことを書く。
+
+- Chainされているツールは、任意のものに置き換えはできない
+  - 例えば、フォーマッター・リンターをBiomeに置き換えるとかはできない
+- Vue・Next.js・Svelteなどには対応している
+  - 元からViteを使っているフレームワークは、そのままViteを、Next.jsなどはViteの部分はTurborepo？pack？のまま動く
+- 新規セットアップ時、迷ったら`vp`と入力すれば、あとは選択式で進めるので楽
+- 
+
+個人的にAstroにも対応してほしさはある...
+OxfmtやOxlintはAstroへの対応は限定的なので、その点の問題もあるが...
+
+色々使わせてもらって、より使いこなしていきたい。
