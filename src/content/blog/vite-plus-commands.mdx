@@ -1,0 +1,96 @@
+---
+title: ''
+description: ''
+publishDate: 2026-03-21
+author: 'Saku'
+image: '../../assets/images/blog/common/image_thumnail-4.png'
+tags: ['個人ブログ', 'Vite Plus', 'JavaScript', 'Toolchain']
+---
+
+# Vite+ CLI コマンドリファレンス
+
+Vite+ (`vp`) が提供する全コマンドの概要です。各カテゴリの詳細は個別ページを参照してください。
+
+## グローバルオプション
+
+| オプション      | 説明             |
+| --------------- | ---------------- |
+| `-V, --version` | バージョンを表示 |
+| `-h, --help`    | ヘルプを表示     |
+
+## Start
+
+プロジェクトの作成・セットアップに関するコマンド。[詳細 →](./commands-start.md)
+
+| コマンド              | 説明                                           |
+| --------------------- | ---------------------------------------------- |
+| `vp create`           | テンプレートから新規プロジェクトを作成         |
+| `vp migrate`          | 既存プロジェクトを Vite+ に移行                |
+| `vp config`           | hooks や agent 連携の設定                      |
+| `vp staged`           | ステージング済みファイルに対して linter を実行 |
+| `vp install` (`vp i`) | 依存関係のインストール、またはパッケージの追加 |
+| `vp env`              | Node.js バージョンの管理                       |
+
+## Develop
+
+開発ワークフローに関するコマンド。[詳細 →](./commands-develop.md)
+
+| コマンド   | 説明                                    |
+| ---------- | --------------------------------------- |
+| `vp dev`   | 開発サーバーの起動                      |
+| `vp check` | format, lint, type check をまとめて実行 |
+| `vp lint`  | コードの lint                           |
+| `vp fmt`   | コードのフォーマット                    |
+| `vp test`  | テストの実行                            |
+
+## Execute
+
+タスク・スクリプトの実行に関するコマンド。[詳細 →](./commands-execute.md)
+
+| コマンド   | 説明                                            |
+| ---------- | ----------------------------------------------- |
+| `vp run`   | タスクの実行                                    |
+| `vp exec`  | ローカルの node_modules/.bin からコマンドを実行 |
+| `vp dlx`   | パッケージを依存に追加せずにバイナリを実行      |
+| `vp cache` | タスクキャッシュの管理                          |
+
+## Build
+
+ビルド・プレビューに関するコマンド。[詳細 →](./commands-build.md)
+
+| コマンド     | 説明                   |
+| ------------ | ---------------------- |
+| `vp build`   | 本番用ビルド           |
+| `vp pack`    | ライブラリビルド       |
+| `vp preview` | 本番ビルドのプレビュー |
+
+## Manage Dependencies
+
+依存関係の管理に関するコマンド。[詳細 →](./commands-manage.md)
+
+| コマンド                              | 説明                                         |
+| ------------------------------------- | -------------------------------------------- |
+| `vp add`                              | パッケージを dependencies に追加             |
+| `vp remove` (`rm`, `un`, `uninstall`) | パッケージを dependencies から削除           |
+| `vp update` (`up`)                    | パッケージを最新バージョンに更新             |
+| `vp dedupe`                           | 依存関係の重複排除                           |
+| `vp outdated`                         | 古くなったパッケージの確認                   |
+| `vp list` (`ls`)                      | インストール済みパッケージの一覧             |
+| `vp why` (`explain`)                  | パッケージがインストールされている理由の表示 |
+| `vp info` (`view`, `show`)            | レジストリからパッケージ情報を表示           |
+| `vp link` (`ln`)                      | ローカル開発用にパッケージをリンク           |
+| `vp unlink`                           | パッケージのリンク解除                       |
+| `vp pm`                               | パッケージマネージャーにコマンドを転送       |
+
+## Maintain
+
+Vite+ 自体のメンテナンスに関するコマンド。[詳細 →](./commands-maintain.md)
+
+| コマンド     | 説明                          |
+| ------------ | ----------------------------- |
+| `vp upgrade` | vp 自体を最新バージョンに更新 |
+| `vp implode` | vp と関連データを削除         |
+
+## 参考
+
+- [Vite+ 公式ドキュメント](https://viteplus.dev/guide/)
