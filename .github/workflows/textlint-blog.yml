@@ -1,0 +1,89 @@
+name: Blog Textlint
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+    paths:
+      - 'src/content/blog/**/*.md'
+      - 'src/content/blog/**/*.mdx'
+      - 'package.json'
+      - 'pnpm-lock.yaml'
+      - 'textlint.config.blog-*.cjs'
+      - 'scripts/lint-blog-text.mjs'
+      - '.github/workflows/textlint-blog.yml'
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  textlint-blog:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pull-requests: read
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 10
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22.x'
+          cache: 'pnpm'
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Get changed blog articles
+        id: changes
+        uses: tj-actions/changed-files@v45
+        with:
+          files: |
+            src/content/blog/**/*.md
+            src/content/blog/**/*.mdx
+
+      - name: Short-circuit if nothing to do
+        if: steps.changes.outputs.any_changed == 'false'
+        run: echo "No changed blog articles. Skipping."
+
+      - name: List changed files
+        if: steps.changes.outputs.any_changed == 'true'
+        run: |
+          echo "Changed blog files:" ${{ steps.changes.outputs.all_changed_files }}
+
+      - name: Run textlint for changed blog articles
+        id: textlint
+        if: steps.changes.outputs.any_changed == 'true'
+        continue-on-error: true
+        run: |
+          pnpm run lint:text:ci -- --format github ${{ steps.changes.outputs.all_changed_files }}
+
+      - name: Add summary
+        if: always()
+        env:
+          CHANGED: ${{ steps.changes.outputs.any_changed }}
+          FILES: ${{ steps.changes.outputs.all_changed_files }}
+          TEXTLINT_OUTCOME: ${{ steps.textlint.outcome }}
+        run: |
+          {
+            echo "## Blog textlint"
+            echo
+
+            if [ "$CHANGED" != "true" ]; then
+              echo "- Result: skipped"
+              echo "- Reason: no changed blog articles in this pull request"
+            else
+              echo "- Result: ${TEXTLINT_OUTCOME:-skipped}"
+              echo "- Mode: notify only"
+              echo "- Files: $FILES"
+            fi
+
+            echo
+            echo "This check reports issues through GitHub annotations and does not fail the workflow."
+          } >> "$GITHUB_STEP_SUMMARY"

@@ -64,6 +64,7 @@ jobs:
             **/*.ts
             **/*.tsx
             **/*.astro
+            **/*.mdx
             **/*.css
             **/*.json
             **/*.md
