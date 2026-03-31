@@ -43,7 +43,6 @@
 │   ├── favicon.ico
 │   └── favicon.svg
 ├── src
-│   ├── actions
 │   ├── assets
 │   │   └── images
 │   ├── components
@@ -117,7 +116,7 @@
 ├── uno.config.ts
 └── vitest.config.ts
 
-42 directories, 69 files
+41 directories, 69 files
 
 ```
 
