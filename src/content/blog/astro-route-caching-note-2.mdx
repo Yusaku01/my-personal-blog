@@ -1,0 +1,165 @@
+---
+title: 'Astro route cachingについてのメモ#2'
+description: 'Astro route cachingが提起された背景とAPI設計についてのメモです'
+publishDate: 2026-03-28
+author: 'Saku'
+image: '../../assets/images/blog/common/image_thumnail-2.png'
+tags: ['個人ブログ', 'Astro', 'キャッシュ', 'SSR', 'パフォーマンス']
+---
+
+Astro route caching（Experimental）についてのメモ#2です。
+[メモ#1](https://saku-space.com/blog/astro-route-caching-note/)の続きになるので、まだ読まれていない方はこちらをどうぞ。
+
+## 前回のおさらいと導入
+
+前回は、route cachingという機能の先出しと、その前提になるAstroのレンダリングモデルを整理しました。要点だけまとめると以下の通りです。
+
+- Astroには、Prerender（SSG）だけでなく、リクエスト時にビルドなしで動的更新するためのOn-demand Render（SSR）という仕組みがあります
+- Prerenderは事前生成（= CDNなどへ配信ファイルを"キャッシュ"）しておきますが、On-demand Renderはデフォルトだとキャッシュされず、毎回リクエスト時に更新になります
+- リアルタイム性が絶対的に必要ならこのままでもよいかもしれません。しかし、多少のラグを許容してキャッシュを保持した方がユーザー体験がよくなるケースも考えられます
+- ただし、以前Astroプロジェクトでは、PaaSやCDNなどのキャッシュ機能を自分で活用するしかありませんでした
+
+この「SSRで返すレスポンスを、ホスティング依存の機能に寄せすぎずにどう扱うか」という悩みに対して、Astroが共通APIとして整備し始めたのが**route caching**です。
+
+今回は前置きはここまでにして、次の2点に絞って見ていきます。
+
+- route cachingがいつ、どのような問題意識で提起されたか
+- `cache.set()` をはじめ、どのようなAPIとして設計されているか
+
+使いどころや、どんなユースケースを想定しているのかは次のメモ#3に回します。
+
+## route caching機能の提起〜導入まで
+
+route cachingは、2025年10月15日に`withastro/roadmap`の [#1245](https://github.com/withastro/roadmap/pull/1245) として作られています。そこで最初に掲げられていた要約は、ざっくり言うと「**Web標準に寄せた、プラットフォーム非依存のSSRルートキャッシュAPI**をAstroに持たせたい」というものでした。
+
+Roadmap上でも、route cachingは何でもかんでもキャッシュする機能としては定義されていません。スコープとして意識的に切り分けられているのは次のあたりです。
+
+- 対象はあくまでOn-demand Rendering（SSR）のルートであり、Prerender済みページは対象外
+- ページ断片やコンポーネント単位の部分キャッシュではなく、ルートレスポンス単位のキャッシュ
+- 主眼はCDNやサーバー側のキャッシュ制御であり、ブラウザキャッシュそのものを全面的に置き換えるものではない
+- Node.jsでの分散キャッシュまでを最初から解決するわけではない
+
+つまりこれは、あくまで「SSRを使うときに毎回ゼロからキャッシュ戦略を書かなくてよくする」ための仕組みとして提起されたことが読み取れます。AstroでデフォルトのSSGを否定するのではなく、SSGではカバーしきれない（もしくはカバーしづらい）、更新性の領域にだけ、明示的な足し算としてキャッシュ制御を持ち込む形になっています。
+
+その後、この提案はAstro本体の [#15579](https://github.com/withastro/astro/pull/15579) で実装に進み、Astro 6.0.0でExperimentalとして入っています。公式のAstro 6リリース記事でも、「SSRレスポンスのキャッシュはホストごとにやり方が違いすぎるので、Astroから単一のAPIで扱えるようにする」という位置づけで紹介されていました。
+
+## route cachingがどのように設計されているか
+
+実際の設計を見ると、route cachingは「どこでキャッシュを処理するか」と「ルート側で何を宣言するか」を分離しているのが特徴です。
+
+まず有効化は `astro.config.mjs` 側で行います。ここではキャッシュプロバイダを設定します。
+
+```js
+import { defineConfig, memoryCache } from 'astro/config';
+import node from '@astrojs/node';
+
+export default defineConfig({
+  adapter: node({ mode: 'standalone' }),
+  experimental: {
+    cache: {
+      provider: memoryCache(),
+    },
+  },
+});
+```
+
+キャッシュの実体をどこで処理するかというのは、上記の`provider`部分で設定します。公式ドキュメントでは、プロバイダは大きく2種類に分かれていて、Astroが最初からキャッシュの処理方法を固定しない設計です。
+
+- CDN側にヘッダーを渡してキャッシュさせる**CDN provider**
+- ランタイム側でレスポンスを保持する**Runtime provider**
+
+つまり、ルートのコードは`maxAge`や`tags`のような意図だけを宣言し、最終的にそれをヘッダーへ落とすのか、ランタイム内キャッシュとして扱うのかはプロバイダ側に委ねる構造になっています。この抽象化が「platform-agnostic[^1]」と言っている部分です。
+
+[^1]: アプリコードから見たキャッシュAPIをプラットフォーム非依存にする、という意味です。
+
+その上で、各ルートでは`.astro`ページなら`Astro.cache`、API routesやmiddlewareなら`context.cache`を使います。最も基本的な例はこんな感じです。
+
+```astro
+---
+// Prerenderingを無効化するため
+export const prerender = false;
+
+// ルート単位でキャッシュの内容を設定する（route caching）
+Astro.cache.set({
+  maxAge: 120,
+  swr: 60,
+  tags: ['home'],
+});
+---
+
+<html>
+  <body>Cached page</body>
+</html>
+```
+
+この`cache.set()`が受け取る主なオプションは次の通りです。
+
+- `maxAge`: freshとして扱う秒数
+- `swr`: stale-while-revalidateの秒数
+- `tags`: 後でピンポイントに無効化するためのタグ
+- `lastModified`: 更新日時ベースの条件付きリクエスト向け情報
+- `etag`: エンティティタグ
+
+ここで個人的に理解しやすいと思うのは、Astroが独自概念を増やしすぎず、`max-age`や`stale-while-revalidate`のようなHTTPキャッシュの語彙に寄せているところです。Astro専用の謎パラメータを覚えるというより、既存のキャッシュの考え方をそのまま持ち込んでいる気がします。
+
+さらに、明示的にキャッシュさせないための`cache.set(false)`もあります。これは、設定ファイル側で広く`routeRules`をかけつつ、一部のルートだけ除外したい場合に役立てることができます。たとえばパーソナライズされたダッシュボードやCMS連携しているブログプロジェクトのプレビュー閲覧用ページなどで、使用できるのではないかと思います。
+
+設定ファイルでデフォルトのキャッシュルールと設定できる`experimental.routeRules`も、かなり重要な設計要素です。
+
+```js
+import { defineConfig, memoryCache } from 'astro/config';
+
+export default defineConfig({
+  experimental: {
+    cache: {
+      provider: memoryCache(),
+    },
+    routeRules: {
+      '/api/*': { swr: 600 },
+      '/products/*': { maxAge: 3600, tags: ['products'] },
+      '/blog/[...slug]': { maxAge: 300, swr: 60 },
+    },
+  },
+});
+```
+
+この`routeRules`と各ルート内の`cache.set()`は競合したら終わり、ではなくマージされます。公式ドキュメントでは、複数回の `cache.set()`も含めて次のように整理されています。
+
+- `maxAge`や`swr`のようなスカラー値は後勝ち
+- `lastModified`はより新しい日時が採用される
+- `tags`は積み上がる
+
+このルールのおかげで、middleware、page本体、設定ファイルがそれぞれ少しずつ責務分担しやすくなっています。全部を1箇所に押し込まなくてよいのは、Astroのレイヤー構造と相性が良さそうです。
+
+無効化APIも同じ`cache`オブジェクトに寄せられていて、タグまたはパスで invalidate できます。
+
+```ts
+export async function POST(context) {
+  await context.cache.invalidate({ tags: ['data'] });
+  await context.cache.invalidate({ path: '/api/data' });
+
+  return Response.json({ purged: true });
+}
+```
+
+`cache.set()`で付けた`tags`と`cache.invalidate()`の責務が同じオブジェクトにまとまっているので、読む側としても「このリクエストのキャッシュポリシーはここを見る」という見通しが立ちやすいです。
+
+:::note
+**dev中は実際にはキャッシュされない**
+公式ドキュメントでは、dev modeではroute cachingのAPI自体は使えるものの、実際のキャッシュ動作は行われないとされています。ローカルで挙動を確認したい場合は、`astro build`してから`astro preview`で見る必要があります。
+
+また、次の#3メモなどで書こうと思いますが、色々なホスティング環境で、SSR機能させるために、Astro公式が出している`@astro/xxx`パッケージを使用することがありますが、まだそちらのアダプタがホスティング環境でうまくキャッシュ&キャッシュの活用を可能にできていない部分があるので、一旦試したほうがいいかもしれません。
+:::
+
+## 中締め
+
+ここまでで、route cachingが「なぜ必要とされたか」と「どんなAPIとして切られているか」はだいぶ整理できたかなと思います。まとめるとSSRのキャッシュをAstro流に無理なく扱えるようにした、という印象ですかね〜。
+
+次のメモ#3では、ここで見たAPIが実際にどんな用途を想定しているのか、逆にどんなケースでは使わない方がよさそうかを掘っていこうと思います。
+
+## 参考資料
+
+- [Experimental route caching | Astro Docs](https://docs.astro.build/en/reference/experimental-flags/route-caching/)
+- [Astro 6.0 | Astro Blog](https://astro.build/blog/astro-6/)
+- [feat: route caching | Astro](https://github.com/withastro/astro/pull/15579)
+- [Route Caching | Roadmap](https://github.com/withastro/roadmap/pull/1245)

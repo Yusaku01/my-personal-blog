@@ -1,17 +1,17 @@
 ---
-title: 'Astro Route Cachingについてのメモ#1'
-description: 'Astro Route Cachingについてのメモです'
+title: 'Astro route cachingについてのメモ#1'
+description: 'Astro route cachingについてのメモです'
 publishDate: 2026-03-25
 author: 'Saku'
 image: '../../assets/images/blog/common/image_thumnail-2.png'
 tags: ['個人ブログ', 'Astro', 'キャッシュ', 'SSR', 'パフォーマンス']
 ---
 
-Astro Route Caching（Experimental）についてのメモです。
+Astro route caching（Experimental）についてのメモです。
 
-## 先出し：Astro Route Cachingとは
+## 先出し：Astro route cachingとは
 
-[**Route Caching**](https://docs.astro.build/en/reference/experimental-flags/route-caching/)は、[On-demand Rendering（SSR）](https://docs.astro.build/en/guides/on-demand-rendering/)のレスポンスをAstroの共通APIでキャッシュ管理できるようにする機能で、Astro v6.0系からExperimentalとして導入されました。この機能が何を解決するのかを理解するために、まずAstroのレンダリングモデルを整理しておきます。
+[**route caching**](https://docs.astro.build/en/reference/experimental-flags/route-caching/)は、[On-demand Rendering（SSR）](https://docs.astro.build/en/guides/on-demand-rendering/)のレスポンスをAstroの共通APIでキャッシュ管理できるようにする機能で、Astro v6.0系からExperimentalとして導入されました。この機能が何を解決するのかを理解するために、まずAstroのレンダリングモデルを整理しておきます。
 
 前提として、Astroはコンテンツ駆動 + ブラウザや言語（HTMLなど）などのWeb標準を尊重し、拡張して使いやすくする傾向にあります。静的サイト + SSG向きだと謳われていますし、その類のプロジェクトに向いているという声には共感します。しかし、コンテンツをパーソナライズ[^1]したり、動的に更新したい場面があるのも確かにあります。こうしたケースに対応するため、AstroではOn-demand Renderingというレンダリングもサポートしています。
 
@@ -48,8 +48,9 @@ AstroはIslands architectureに見られる「必要ならJSを追加してね�
 - リアルタイム性が絶対的に必要ならこのままでもよいかもしれません。しかし、多少のラグを許容してキャッシュを保持した方がユーザー体験がよくなるケースも考えられます
 - ただし、以前までは、PaaSやCDNなどのキャッシュ機能を自分で活用するしかありませんでした
 
-こんなOn-demand Rendering特有の悩みを解決すべく、Astro開発者が使いやすく、キャッシュ管理をできるように共通APIとして提供を進めているのが、**Route Caching**という機能です。
+こんなOn-demand Rendering特有の悩みを解決すべく、Astro開発者が使いやすく、キャッシュ管理をできるように共通APIとして提供を進めているのが、**route caching**という機能です。
 
 ## 中締め
 
-一旦疲れたので、#2メモ記事へ（近日中に書きます）
+一旦疲れたので、~~#2メモ記事へ（近日中に書きます）~~
+[#2メモ記事](https://saku-space.com/blog/astro-route-caching-note-2/)を書いたので、続きはこちらへ。
