@@ -30,11 +30,15 @@ Astro route caching（Experimental）についてのメモ#2です。
 
 ## route caching機能の提起〜導入まで
 
+### Discussion #181 （2022年〜）
+
 route cachingに直接つながる議論を辿ると、かなり早い段階では2022年4月26日のDiscussion[#181](https://github.com/withastro/roadmap/discussions/181)まで遡れます。この時点でのテーマは「SSR向けのキャッシュヘッダーは分かりづらいので、Astro側で高レベルなAPIを用意できないか」というものでした。提案内容も`Astro.cache()`で`maxAge`や`revalidate`、`private`などを宣言する、どちらかと言うと**header helper**に近い色味が強かったように見えます。
 
 ただ、この初期のDiscussionを読むと、単なるヘッダー補助だけでは収まらない雰囲気も見えてきます。返信では「それだと実際にサーバー側でキャッシュしてくれるのかと誤解しやすい」という反応があり、Next.jsなどとの機能比較も出ていました。まだ後のroute cachingのように`invalidation`、`provider`、Nodeのランタイム内キャッシュまで明確ではないものの、「ヘッダーを楽に書けるだけでは足りないのでは」という空気はすでにあったように感じます。
 
-そこから大きく方向性が固まったのが、2025年2月28日のDiscussion[#1131](https://github.com/withastro/roadmap/discussions/1131)と、同年3月19日のStage 2 proposalであるissue[#1140](https://github.com/withastro/roadmap/issues/1140)です。ここでは要約として、**platform-agnosticなroute caching APIをAstro SSR pagesに導入し、ルートごとの宣言的な設定、middlewareやAPI handlersからの上書き、Node.js / Vercel / Netlify / Cloudflareをまたいだ一貫したDX、path/tagによるinvalidation**まで含めた構想が示されています。2022年のheader helper的な議論から、一気に包括的なキャッシュ機能へ昇華したことが分かります。
+### Discussion #1131 / Issue #1140（2025年〜）
+
+大きく方向性が固まったのが、2025年2月28日のDiscussion[#1131](https://github.com/withastro/roadmap/discussions/1131)と、同年3月19日のStage 2 proposalであるissue[#1140](https://github.com/withastro/roadmap/issues/1140)です。ここでは要約として、**platform-agnosticなroute caching APIをAstro SSR pagesに導入し、ルートごとの宣言的な設定、middlewareやAPI handlersからの上書き、Node.js / Vercel / Netlify / Cloudflareをまたいだ一貫したDX、path/tagによるinvalidation**まで含めた構想が示されています。2022年のheader helper的な議論から、一気に包括的なキャッシュ機能へ昇華したことが分かります。
 
 さらにこの段階ではnon-goalsもかなり明確に書かれていて、route cachingが何でもかんでもを対象にする機能ではないことも早い時点で線引きされています。スコープとして意識的に切り分けられているのは次のあたりです。
 
@@ -44,6 +48,8 @@ route cachingに直接つながる議論を辿ると、かなり早い段階で�
 - Node.jsでの分散キャッシュまでを最初から解決するわけではない
 
 つまりStage 2の時点で、Astroがやろうとしているのは「SSRを使うときに毎回ゼロからキャッシュ戦略を書かなくてよくする」ための仕組みであり、同時に「どこまでをroute cachingの責務にして、どこから先をCDNやホスティングサービスに委ねるか」を明確にしようとしていたことが読み取れます。SSGを否定するのではなく、SSGではカバーしきれない更新性の領域にだけ、明示的な足し算としてキャッシュ制御を持ち込む形です。
+
+### RoadmapへのPR #1245 （2025年〜）
 
 その後、この構想は2025年10月15日のStage 3 proposalであるPR[#1245](https://github.com/withastro/roadmap/pull/1245)でさらに具体化されています。この段階では、`Astro.cache()`のようなcallableな形ではなく`Astro.cache.set()` / `Astro.cache.invalidate()`を持つオブジェクトとして整理されたり、複数回の`cache.set()`のマージ挙動、`cache.set(false)`による明示的な無効化、`provider`の整理、configとroute codeの優先順位など、実際に使うときのディテールがかなり詰められています。Stage 2で大きな方向性を固め、Stage 3でAPIの細部と責務分界を磨いた、という流れで見るのが自然そうです。
 
