@@ -4,7 +4,6 @@
   "version": "0.0.1",
   "private": true,
   "scripts": {
-    "predev": "node scripts/update-environment.js",
     "prepare": "simple-git-hooks",
     "dev": "astro dev",
     "start": "astro dev",
