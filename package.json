@@ -29,13 +29,13 @@
     "build:cloudflare": "pnpm exec playwright install chromium chromium-headless-shell && pnpm run build:with-ogp"
   },
   "dependencies": {
-    "@astrojs/cloudflare": "^13.1.4",
-    "@astrojs/mdx": "^5.0.3",
+    "@astrojs/cloudflare": "^13.3.0",
+    "@astrojs/mdx": "^5.0.4",
     "@astrojs/rss": "^4.0.18",
-    "@astrojs/sitemap": "^3.7.1",
+    "@astrojs/sitemap": "^3.7.2",
     "@fontsource/zen-kaku-gothic-new": "^5.2.7",
     "@resvg/resvg-js": "^2.6.2",
-    "astro": "^6.1.1",
+    "astro": "^6.2.1",
     "budoux": "^0.7.0",
     "cheerio": "^1.0.0-rc.12",
     "date-fns": "^2.30.0",
@@ -50,7 +50,7 @@
     "zod": "^3.24.2"
   },
   "devDependencies": {
-    "@astrojs/check": "^0.9.8",
+    "@astrojs/check": "^0.9.9",
     "@eslint/eslintrc": "3.3.3",
     "@eslint/js": "10.0.1",
     "@iconify-json/ic": "^1.2.2",
@@ -94,7 +94,7 @@
     "unified": "^11.0.5",
     "unocss": "^66.6.7",
     "vitest": "^4.1.2",
-    "wrangler": "4.78.0"
+    "wrangler": "4.87.0"
   },
   "simple-git-hooks": {
     "pre-commit": "pnpm exec lint-staged",
