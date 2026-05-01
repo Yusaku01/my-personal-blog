@@ -44,7 +44,7 @@ const codeFilenameMetaTransformer = {
 
 export default defineConfig({
   site: 'https://saku-space.com',
-  cacheDir: './.astro-v6-cache',
+  cacheDir: './.astro-cache',
   output: 'static',
   fonts: [
     {

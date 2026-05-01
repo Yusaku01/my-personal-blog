@@ -106,10 +106,6 @@ graph TD
 
 Mermaid は build-time の `img-svg` 戦略で描画され、ダークモード時は `picture` 要素経由でダーク向け SVG が使われます。Cloudflare Pages では `pnpm run build:cloudflare` が build 前に必要な Playwright browser を導入する前提です。ローカルでも browser 導入が不足している場合は `pnpm run mermaid:install-browser` を実行してください。
 
-## 🔄 自動更新
-
-環境構成の詳細は `environment.md` に記載されており、プロジェクトの構造が変更されると自動的に更新されます。
-
 公開リポジトリ向けの環境変数設定とセキュリティチェックは `docs/public-release-checklist.md` を参照してください。
 
 ## 📄 ライセンス
