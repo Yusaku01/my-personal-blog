@@ -99,12 +99,20 @@ export default defineConfig({
         defaultLocale: 'ja',
         locales: {
           ja: 'ja-JP',
+          en: 'en-US',
         },
       },
       // サイトマップから除外したいページを指定
       filter: (page) => !page.includes('/admin/') && !page.includes('/api/'),
     }),
   ],
+  i18n: {
+    locales: ['ja', 'en'],
+    defaultLocale: 'ja',
+    routing: {
+      prefixDefaultLocale: false,
+    },
+  },
   markdown: {
     remarkPlugins: sharedRemarkPlugins,
     rehypePlugins: markdownRehypePlugins,

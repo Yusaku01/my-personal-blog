@@ -3,12 +3,14 @@ import Layout from '../layouts/Layout.astro';
 import HeroSection from '../components/Hero/HeroSection.astro';
 import ProfileSection from '../components/Profile/ProfileSection.astro';
 import { getEntry, render } from 'astro:content';
+import { uiText } from '../lib/i18n';
 
 export const transition = { name: 'fade' };
 
 import { Image } from 'astro:assets';
 import myImage from '../assets/images/img_profile.png';
 
+const locale = 'ja';
 const profileEntry = await getEntry('profile', 'main');
 
 if (!profileEntry) {
@@ -19,7 +21,11 @@ const profile = profileEntry.data;
 const { Content } = await render(profileEntry);
 ---
 
-<Layout title="プロフィール | SAKUSPACE">
+<Layout
+  title="プロフィール | SAKUSPACE"
+  description="SAKUSPACEを運営するサックのプロフィール、自己紹介、関心領域を掲載しています。"
+  locale={locale}
+>
   <HeroSection title="PROFILE" />
 
   <div class="py-8">
@@ -34,7 +40,7 @@ const { Content } = await render(profileEntry);
             >
               <Image
                 src={myImage}
-                alt="プロフィール画像"
+                alt={uiText.profile.imageAlt[locale]}
                 class="w-full h-full object-cover"
                 width="160"
                 height="160"
@@ -50,7 +56,7 @@ const { Content } = await render(profileEntry);
           </div>
 
           <!-- 自己紹介セクション -->
-          <ProfileSection title="自己紹介" className="mb-10">
+          <ProfileSection title={uiText.profile.aboutTitle[locale]} className="mb-10">
             <div class="text-gray-700 dark:text-gray-300 leading-relaxed">
               <Content />
             </div>

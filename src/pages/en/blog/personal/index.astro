@@ -1,13 +1,13 @@
 ---
-import Layout from '../../../layouts/Layout.astro';
-import BlogControls from '../../../components/Blog/BlogControls.astro';
-import HeroSection from '../../../components/Hero/HeroSection.astro';
-import { getAllBlogPosts } from '../../../lib/blog/posts';
 import { getImage } from 'astro:assets';
+import Layout from '../../../../layouts/Layout.astro';
+import BlogControls from '../../../../components/Blog/BlogControls.astro';
+import HeroSection from '../../../../components/Hero/HeroSection.astro';
+import { getAllBlogPosts } from '../../../../lib/blog/posts';
 
 export const transition = { name: 'fade' };
 
-const locale = 'ja';
+const locale = 'en';
 const allPosts = await getAllBlogPosts(locale);
 const filteredPosts = allPosts.filter((post) => post.source === 'personal');
 const primaryThumbnail = filteredPosts.find((post) => Boolean(post.thumbnail))?.thumbnail;
@@ -22,8 +22,9 @@ const primaryThumbnailImage = primaryThumbnail
 ---
 
 <Layout
-  title="BLOG（個人ブログ）| SAKUSPACE"
-  description="SAKUSPACEの個人ブログ記事一覧。最新順で個人ブログのみを掲載しています。"
+  title="Personal Blog | SAKUSPACE"
+  description="Personal SAKUSPACE blog posts in chronological order. English translations are planned, and Japanese posts are shown for now."
+  locale={locale}
 >
   {
     primaryThumbnailImage && (

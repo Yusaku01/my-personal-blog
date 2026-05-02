@@ -8,7 +8,8 @@ import { getImage } from 'astro:assets';
 
 export const transition = { name: 'fade' };
 
-const sortedPosts = await getAllBlogPosts();
+const locale = 'ja';
+const sortedPosts = await getAllBlogPosts(locale);
 const primaryThumbnail = sortedPosts.find((post) => Boolean(post.thumbnail))?.thumbnail;
 const primaryThumbnailHref =
   typeof primaryThumbnail === 'string'
@@ -47,6 +48,7 @@ const primaryThumbnailHref =
       posts={sortedPosts}
       currentPath={Astro.url.pathname}
       currentQuery={Astro.url.searchParams.get('q') ?? ''}
+      locale={locale}
     />
   </div>
 </Layout>

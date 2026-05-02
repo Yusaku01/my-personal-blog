@@ -6,6 +6,7 @@ import TocSidebar from '../../components/Blog/TocSidebar.astro';
 import ShareButtons from '../../components/Sns/ShareButtons.astro';
 import { format } from 'date-fns';
 import { getEstimatedReadingTimeMinutes } from '../../lib/blog/readingTime';
+import { uiText } from '../../lib/i18n';
 
 export const transition = { name: 'fade' };
 
@@ -20,9 +21,15 @@ export async function getStaticPaths() {
 const { post } = Astro.props;
 const { Content, headings } = await render(post);
 const estimatedReadingTimeMinutes = getEstimatedReadingTimeMinutes(post.body ?? '');
+const locale = 'ja';
 ---
 
-<Layout title={`${post.data.title} | SAKUSPACE`} blogTitle={post.data.title}>
+<Layout
+  title={`${post.data.title} | SAKUSPACE`}
+  description={post.data.description}
+  blogTitle={post.data.title}
+  locale={locale}
+>
   <div
     class="bg-gray-50 dark:bg-gray-800 pb-25 pt-[calc(4rem+2.75rem+3rem)] xl:pt-30"
     data-toc-page
@@ -84,7 +91,7 @@ const estimatedReadingTimeMinutes = getEstimatedReadingTimeMinutes(post.body ?? 
             }
             <span class="blog-article-meta-item">
               <span class="blog-article-meta-icon i-ic-round-schedule" aria-hidden="true"></span>
-              <span>読了目安 約{estimatedReadingTimeMinutes}分</span>
+              <span>{uiText.blog.readingTime[locale](estimatedReadingTimeMinutes)}</span>
             </span>
           </div>
 

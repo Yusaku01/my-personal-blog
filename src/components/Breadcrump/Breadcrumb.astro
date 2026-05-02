@@ -1,23 +1,29 @@
 ---
 // パスの情報を取得
+import { getLocaleFromPathname, localizedPath, uiText, type Locale } from '../../lib/i18n';
+
 const { pathname } = Astro.url;
 
 // ブログ記事のタイトルをpropsとして受け取る
 interface Props {
   blogTitle?: string;
+  locale?: Locale;
 }
 
-const { blogTitle } = Astro.props;
+const { blogTitle, locale = getLocaleFromPathname(pathname) } = Astro.props;
 
 // パスを分割して配列に変換（最初の空要素を除去）
-const pathSegments = pathname.split('/').filter(Boolean);
+const pathSegments = pathname
+  .split('/')
+  .filter(Boolean)
+  .filter((segment, index) => !(index === 0 && segment === 'en'));
 
 // パンくずリストの項目を生成
 let breadcrumbItems = [
-  { label: 'ホーム', path: '/' },
+  { label: uiText.breadcrumbHome[locale], path: localizedPath('/', locale) },
   ...pathSegments.map((segment, index) => {
     // パスを構築
-    const path = `/${pathSegments.slice(0, index + 1).join('/')}`;
+    const path = localizedPath(`/${pathSegments.slice(0, index + 1).join('/')}`, locale);
 
     // ラベルをフォーマット（最初の文字を大文字に、ハイフンをスペースに）
     let label = segment
@@ -36,12 +42,13 @@ let breadcrumbItems = [
 
 // 現在のページがホームの場合はパンくずリストを表示しない
 const isHomePage = pathname === '/';
+const isLocalizedHomePage = pathname === '/en' || pathname === '/en/';
 ---
 
 {
-  !isHomePage && (
+  !isHomePage && !isLocalizedHomePage && (
     <nav
-      aria-label="パンくずリスト"
+      aria-label={locale === 'ja' ? 'パンくずリスト' : 'Breadcrumb'}
       class="border-t border-gray-200 dark:border-gray-700 py-3 text-sm bg-white dark:bg-gray-900"
     >
       <div class="container-lg mx-auto px-4">
@@ -58,7 +65,7 @@ const isHomePage = pathname === '/';
                   href={item.path}
                   class="inline-flex items-center text-gray-600 lg:hover:text-gray-900 dark:text-gray-400 dark:lg:hover:text-gray-200 lg:hover:underline transition-colors"
                 >
-                  {item.path === '/' && (
+                  {item.path === localizedPath('/', locale) && (
                     <span class="i-ic-home mr-1 text-base" aria-hidden="true" />
                   )}
                   {item.label}

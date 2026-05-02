@@ -1,15 +1,23 @@
 ---
 import ThemeToggle from '../Theme/ThemeToggle.astro';
 import SocialIcons from '../Sns/SocialIcons.astro';
+import {
+  getLanguageSwitchHref,
+  getLocaleFromPathname,
+  localeMeta,
+  navItemsForLocale,
+  uiText,
+  localizedPath,
+  type Locale,
+} from '../../lib/i18n';
 
 const { pathname } = Astro.url;
+const { locale = getLocaleFromPathname(pathname) } = Astro.props as { locale?: Locale };
 
-const navItems = [
-  { href: '/', text: 'HOME' },
-  { href: '/blog', text: 'BLOG' },
-  { href: '/finds', text: 'FINDS' },
-  { href: '/profile', text: 'PROFILE' },
-  // { href: '/contact', text: 'CONTACT' },
+const navItems = navItemsForLocale(locale);
+const languageItems = [
+  { locale: 'ja' as const, href: getLanguageSwitchHref(pathname, 'ja', Astro.url.search) },
+  { locale: 'en' as const, href: getLanguageSwitchHref(pathname, 'en', Astro.url.search) },
 ];
 
 // アクティブなリンクかどうかを判定する関数
@@ -24,7 +32,10 @@ const isActiveLink = (href: string) => {
 >
   <div class="container-lg mx-auto px-4">
     <div class="flex items-center justify-between h-16">
-      <a href="/" class="text-xl font-bold tracking-[0.3em] text-gray-900 dark:text-white">
+      <a
+        href={localizedPath('/', locale)}
+        class="text-xl font-bold tracking-[0.3em] text-gray-800 dark:text-white"
+      >
         SAKUSPACE
       </a>
 
@@ -50,6 +61,33 @@ const isActiveLink = (href: string) => {
           }
         </div>
 
+        <div
+          class="hidden lg:flex items-center gap-2 border-l border-gray-300 pl-4 text-sm font-bold tracking-wider text-gray-800 dark:border-gray-600 dark:text-white"
+          aria-label="Language switcher"
+        >
+          {
+            languageItems.map((item, index) => (
+              <>
+                {index > 0 && <span class="text-gray-400 dark:text-gray-500">|</span>}
+                <a
+                  href={item.href}
+                  class:list={[
+                    'px-1 underline-offset-4 transition-colors hover:underline',
+                    {
+                      'opacity-100': item.locale === locale,
+                      'opacity-55': item.locale !== locale,
+                    },
+                  ]}
+                  aria-current={item.locale === locale ? 'page' : undefined}
+                  lang={localeMeta[item.locale].htmlLang}
+                >
+                  {localeMeta[item.locale].label}
+                </a>
+              </>
+            ))
+          }
+        </div>
+
         <!-- モバイルメニューボタン -->
         <button
           id="menuButton"
@@ -58,7 +96,7 @@ const isActiveLink = (href: string) => {
           aria-controls="mobileMenu"
           aria-expanded="false"
         >
-          MENU
+          {uiText.menu.button}
         </button>
 
         <ThemeToggle />
@@ -73,7 +111,7 @@ const isActiveLink = (href: string) => {
     data-state="closed"
     role="dialog"
     aria-modal="true"
-    aria-label="サイトメニュー"
+    aria-label={uiText.menu.label[locale]}
     aria-hidden="true"
     inert
   >
@@ -86,7 +124,7 @@ const isActiveLink = (href: string) => {
         class="absolute top-4 right-4 p-2 text-gray-800 dark:text-white lg:hover:bg-gray-800 lg:hover:text-white transition-colors duration-300"
       >
         <i class="i-ic-round-close text-2xl" aria-hidden="true"></i>
-        <span class="sr-only">メニューを閉じる</span>
+        <span class="sr-only">{uiText.menu.close[locale]}</span>
       </button>
       <div
         class="flex flex-col items-center gap-6 mt-16 min-h-[calc(100vh-12rem)] max-h-[calc(100vh-4rem)]"
@@ -103,8 +141,34 @@ const isActiveLink = (href: string) => {
             ))
           }
         </div>
+        <div
+          class="flex items-center gap-3 text-lg font-bold tracking-wider text-gray-800 dark:text-white"
+          aria-label="Language switcher"
+        >
+          {
+            languageItems.map((item, index) => (
+              <>
+                {index > 0 && <span class="text-gray-400 dark:text-gray-500">|</span>}
+                <a
+                  href={item.href}
+                  class:list={[
+                    'px-2 py-1 underline-offset-4',
+                    {
+                      'opacity-100 underline': item.locale === locale,
+                      'opacity-55': item.locale !== locale,
+                    },
+                  ]}
+                  aria-current={item.locale === locale ? 'page' : undefined}
+                  lang={localeMeta[item.locale].htmlLang}
+                >
+                  {localeMeta[item.locale].label}
+                </a>
+              </>
+            ))
+          }
+        </div>
         <div class="my-8">
-          <p class="text-center text-gray-800 dark:text-white mb-3">Follow me on</p>
+          <p class="text-center text-gray-800 dark:text-white mb-3">{uiText.menu.follow}</p>
           <SocialIcons variant="default" class="justify-center" iconClass="h-7 w-7" />
         </div>
       </div>

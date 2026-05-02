@@ -1,23 +1,21 @@
 ---
-import Layout from '../layouts/Layout.astro';
-import HeroSection from '../components/Hero/HeroSection.astro';
-import PostCard from '../components/Blog/PostCard.astro';
-import SectionHeading from '../components/Section/SectionHeading.astro';
-import { getAllBlogPosts } from '../lib/blog/posts';
-import { localizedPath, uiText } from '../lib/i18n';
+import { Image } from 'astro:assets';
+import Layout from '../../layouts/Layout.astro';
+import HeroSection from '../../components/Hero/HeroSection.astro';
+import PostCard from '../../components/Blog/PostCard.astro';
+import SectionHeading from '../../components/Section/SectionHeading.astro';
+import { getAllBlogPosts } from '../../lib/blog/posts';
+import { localizedPath, siteDescription, uiText } from '../../lib/i18n';
+import myImage from '../../assets/images/img_profile.png';
 
 export const transition = { name: 'fade' };
 
-const locale = 'ja';
+const locale = 'en';
 const allPosts = await getAllBlogPosts(locale);
-
 const POSTS_PER_SECTION = 4;
-
-import { Image } from 'astro:assets';
-import myImage from '../assets/images/img_profile.png';
 ---
 
-<Layout title="SAKUSPACE" locale={locale}>
+<Layout title="SAKUSPACE" description={siteDescription[locale]} locale={locale}>
   <HeroSection title="SAKUSPACE" />
   <div class="py-16">
     <div class="container-lg container-base">

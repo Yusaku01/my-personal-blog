@@ -4,19 +4,28 @@ import { Font } from 'astro:assets';
 import Header from '../components/Header/Header.astro';
 import Footer from '../components/Footer/Footer.astro';
 import Breadcrumb from '../components/Breadcrump/Breadcrumb.astro';
+import {
+  getLanguageSwitchHref,
+  getLocaleFromPathname,
+  localeMeta,
+  siteDescription,
+  type Locale,
+} from '../lib/i18n';
 
 interface Props {
   title: string;
   description?: string;
   blogTitle?: string; // ブログ記事のタイトルを渡すためのプロパティを追加
   robots?: string;
+  locale?: Locale;
 }
 
 const {
   title,
-  description = 'SAKUSPACE（サクスペース）は、フロントエンド開発〜デザイン領域のことを中心に、アウトプットする場として運営しているブログサイトです。',
+  description,
   blogTitle, // ブログタイトルを受け取る
   robots = 'index, follow',
+  locale: localeProp,
 } = Astro.props;
 
 // OGP画像パスを動的に設定
@@ -24,30 +33,41 @@ let ogImageUrl;
 
 // URLパス名を取得
 const pathname = Astro.url.pathname;
+const locale = localeProp ?? getLocaleFromPathname(pathname);
+const localizedDescription = description ?? siteDescription[locale];
+const canonicalUrl = new URL(Astro.url.pathname, Astro.site).toString();
+const alternateJaUrl = new URL(getLanguageSwitchHref(pathname, 'ja'), Astro.site).toString();
+const alternateEnUrl = new URL(getLanguageSwitchHref(pathname, 'en'), Astro.site).toString();
+const ogpPathname =
+  pathname === '/en' || pathname === '/en/'
+    ? '/'
+    : pathname.startsWith('/en/')
+      ? pathname.slice(3)
+      : pathname;
 
 if (blogTitle) {
   // ブログ記事の場合、スラッグに基づいたOGP画像を使用
   const slug = Astro.url.pathname.split('/').filter(Boolean).pop() || 'index';
   ogImageUrl = `/images/ogp/${slug}.png`;
-} else if (pathname === '/' || pathname === '') {
+} else if (ogpPathname === '/' || ogpPathname === '') {
   // トップページ
   ogImageUrl = '/images/ogp/default.png';
-} else if (pathname === '/blog' || pathname === '/blog/') {
+} else if (ogpPathname === '/blog' || ogpPathname === '/blog/') {
   // ブログ一覧ページ
   ogImageUrl = '/images/ogp/blog.png';
-} else if (pathname === '/blog/personal' || pathname === '/blog/personal/') {
+} else if (ogpPathname === '/blog/personal' || ogpPathname === '/blog/personal/') {
   ogImageUrl = '/images/ogp/blog-personal.png';
-} else if (pathname === '/blog/zenn' || pathname === '/blog/zenn/') {
+} else if (ogpPathname === '/blog/zenn' || ogpPathname === '/blog/zenn/') {
   ogImageUrl = '/images/ogp/blog-zenn.png';
-} else if (pathname === '/blog/qiita' || pathname === '/blog/qiita/') {
+} else if (ogpPathname === '/blog/qiita' || ogpPathname === '/blog/qiita/') {
   ogImageUrl = '/images/ogp/blog-qiita.png';
-} else if (pathname === '/finds' || pathname === '/finds/') {
+} else if (ogpPathname === '/finds' || ogpPathname === '/finds/') {
   // ファインズページ
   ogImageUrl = '/images/ogp/finds.png';
-} else if (pathname === '/profile' || pathname === '/profile/') {
+} else if (ogpPathname === '/profile' || ogpPathname === '/profile/') {
   // プロフィールページ
   ogImageUrl = '/images/ogp/profile.png';
-} else if (pathname === '/contact' || pathname === '/contact/') {
+} else if (ogpPathname === '/contact' || ogpPathname === '/contact/') {
   // お問い合わせページ
   ogImageUrl = '/images/ogp/contact.png';
 } else {
@@ -60,7 +80,7 @@ const gaId = import.meta.env.PUBLIC_GOOGLE_ANALYTICS_ID;
 ---
 
 <!doctype html>
-<html lang="ja">
+<html lang={localeMeta[locale].htmlLang}>
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
@@ -68,7 +88,10 @@ const gaId = import.meta.env.PUBLIC_GOOGLE_ANALYTICS_ID;
     <link rel="icon" type="image/x-icon" href="/favicon.ico" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
-    <link rel="canonical" href={new URL(Astro.url.pathname, Astro.site).toString()} />
+    <link rel="canonical" href={canonicalUrl} />
+    <link rel="alternate" hreflang="ja" href={alternateJaUrl} />
+    <link rel="alternate" hreflang="en" href={alternateEnUrl} />
+    <link rel="alternate" hreflang="x-default" href={alternateJaUrl} />
     <link rel="dns-prefetch" href="https://images.weserv.nl" />
     <link rel="dns-prefetch" href="https://www.googletagmanager.com" />
     <link rel="dns-prefetch" href="https://www.google.com" />
@@ -79,7 +102,7 @@ const gaId = import.meta.env.PUBLIC_GOOGLE_ANALYTICS_ID;
     <link rel="preconnect" href="https://static.cloudflareinsights.com" crossorigin="anonymous" />
     <link rel="alternate" type="application/rss+xml" title="RSS" href="/rss.xml" />
     <meta name="generator" content={Astro.generator} />
-    <meta name="description" content={description} />
+    <meta name="description" content={localizedDescription} />
     <meta name="robots" content={robots} />
     <title>{title}</title>
     <ClientRouter fallback="animate" />
@@ -121,17 +144,17 @@ const gaId = import.meta.env.PUBLIC_GOOGLE_ANALYTICS_ID;
     </script>
     <!-- OGP 基本設定 -->
     <meta property="og:title" content={title} />
-    <meta property="og:description" content={description} />
+    <meta property="og:description" content={localizedDescription} />
     <meta property="og:type" content={blogTitle ? 'article' : 'website'} />
-    <meta property="og:url" content={new URL(Astro.url.pathname, Astro.site).toString()} />
+    <meta property="og:url" content={canonicalUrl} />
     <meta property="og:image" content={new URL(ogImageUrl, Astro.site).toString()} />
     <meta property="og:site_name" content="SAKUSPACE" />
-    <meta property="og:locale" content="ja_JP" />
+    <meta property="og:locale" content={localeMeta[locale].ogLocale} />
 
     <!-- Twitter Card -->
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content={title} />
-    <meta name="twitter:description" content={description} />
+    <meta name="twitter:description" content={localizedDescription} />
     <meta name="twitter:image" content={new URL(ogImageUrl, Astro.site).toString()} />
     <meta name="twitter:site" content="@sakuspace" />
 
@@ -160,14 +183,14 @@ const gaId = import.meta.env.PUBLIC_GOOGLE_ANALYTICS_ID;
   </head>
 
   <body
-    class="min-h-screen flex flex-col text-gray-900 dark:text-gray-100 transition-colors overscroll-none"
+    class="min-h-screen flex flex-col text-gray-800 dark:text-gray-100 transition-colors overscroll-none"
   >
-    <Header />
+    <Header locale={locale} />
     <main class="flex-grow bg-gray-100 dark:bg-gray-800">
       <slot />
     </main>
-    <Breadcrumb blogTitle={blogTitle} />
-    <Footer />
+    <Breadcrumb blogTitle={blogTitle} locale={locale} />
+    <Footer locale={locale} />
     <style is:global>
       :root {
         --accent: 136, 58, 234;

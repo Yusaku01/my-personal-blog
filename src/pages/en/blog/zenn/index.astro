@@ -1,15 +1,17 @@
 ---
-import Layout from '../../../layouts/Layout.astro';
-import BlogControls from '../../../components/Blog/BlogControls.astro';
-import HeroSection from '../../../components/Hero/HeroSection.astro';
-import { getAllBlogPosts } from '../../../lib/blog/posts';
 import { getImage } from 'astro:assets';
+import Layout from '../../../../layouts/Layout.astro';
+import BlogControls from '../../../../components/Blog/BlogControls.astro';
+import HeroSection from '../../../../components/Hero/HeroSection.astro';
+import { getAllBlogPosts } from '../../../../lib/blog/posts';
 
 export const transition = { name: 'fade' };
 
-const locale = 'ja';
+const locale = 'en';
 const allPosts = await getAllBlogPosts(locale);
-const filteredPosts = allPosts.filter((post) => post.source === 'qiita');
+const filteredPosts = allPosts.filter(
+  (post) => post.source === 'zenn' || post.source === 'zennScrap'
+);
 const primaryThumbnail = filteredPosts.find((post) => Boolean(post.thumbnail))?.thumbnail;
 const primaryThumbnailHref =
   typeof primaryThumbnail === 'string'
@@ -27,8 +29,9 @@ const primaryThumbnailHref =
 ---
 
 <Layout
-  title="BLOG（Qiita）| SAKUSPACE"
-  description="Qiitaに投稿した記事一覧。最新順でQiita投稿のみを掲載しています。"
+  title="Zenn Posts | SAKUSPACE"
+  description="Zenn posts and scraps by SAKUSPACE in chronological order."
+  locale={locale}
 >
   {
     primaryThumbnailHref && (

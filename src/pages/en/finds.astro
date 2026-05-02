@@ -1,18 +1,22 @@
 ---
-import Layout from '../layouts/Layout.astro';
-import HeroSection from '../components/Hero/HeroSection.astro';
-import SectionHeading from '../components/Section/SectionHeading.astro';
+import Layout from '../../layouts/Layout.astro';
+import HeroSection from '../../components/Hero/HeroSection.astro';
+import SectionHeading from '../../components/Section/SectionHeading.astro';
 import { getCollection } from 'astro:content';
-import { uiText } from '../lib/i18n';
+import { uiText } from '../../lib/i18n';
 
 export const transition = { name: 'fade' };
 
-const locale = 'ja';
+const locale = 'en';
 const feedEntries = await getCollection('findsFeed');
 const feeds = feedEntries.flatMap((entry) => entry.data.feeds).filter((feed) => feed.enabled);
 ---
 
-<Layout title="FINDS | SAKUSPACE" locale={locale}>
+<Layout
+  title="Finds | SAKUSPACE"
+  description="RSS feeds and articles followed and recommended by SAKUSPACE."
+  locale={locale}
+>
   <HeroSection title="FINDS" />
 
   <div class="py-10">

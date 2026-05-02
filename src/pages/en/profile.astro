@@ -1,0 +1,56 @@
+---
+import { Image } from 'astro:assets';
+import Layout from '../../layouts/Layout.astro';
+import HeroSection from '../../components/Hero/HeroSection.astro';
+import ProfileSection from '../../components/Profile/ProfileSection.astro';
+import { uiText } from '../../lib/i18n';
+import myImage from '../../assets/images/img_profile.png';
+
+export const transition = { name: 'fade' };
+
+const locale = 'en';
+---
+
+<Layout
+  title="Profile | SAKUSPACE"
+  description="Profile of Sakku, the frontend engineer and designer behind SAKUSPACE."
+  locale={locale}
+>
+  <HeroSection title="PROFILE" />
+
+  <div class="py-8">
+    <div class="container-md">
+      <div class="rounded-md overflow-hidden">
+        <div class="px-2 py-8">
+          <div class="flex flex-col md:flex-row items-center gap-6 mb-8">
+            <div
+              class="w-40 h-40 rounded-full overflow-hidden relative z-10 bg-white dark:bg-gray-700"
+            >
+              <Image
+                src={myImage}
+                alt={uiText.profile.imageAlt[locale]}
+                class="w-full h-full object-cover"
+                width="160"
+                height="160"
+              />
+            </div>
+            <div class="text-center md:text-left">
+              <p class="text-xl font-bold lg:text-2xl text-gray-900 dark:text-white">
+                {uiText.profile.name[locale]}
+              </p>
+              <p class="text-md text-gray-600 dark:text-gray-300 mt-1">
+                {uiText.profile.role[locale]}
+              </p>
+            </div>
+          </div>
+
+          <ProfileSection title={uiText.profile.aboutTitle[locale]} className="mb-10">
+            <div class="text-gray-700 dark:text-gray-300 leading-relaxed space-y-4">
+              {uiText.profile.aboutBody.en.map((paragraph) => <p>{paragraph}</p>)}
+            </div>
+          </ProfileSection>
+        </div>
+      </div>
+    </div>
+  </div>
+</Layout>

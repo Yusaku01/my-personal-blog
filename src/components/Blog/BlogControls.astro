@@ -2,14 +2,16 @@
 import type { SearchablePost } from '../../types/index';
 import PostCard from './PostCard.astro';
 import { buildBlogTabHref, getInitialBlogSearchState } from '../../lib/blog/search';
+import { localizedPath, uiText, type Locale } from '../../lib/i18n';
 
 interface BlogControlsProps {
   posts: SearchablePost[];
   currentPath: string;
   currentQuery?: string;
+  locale?: Locale;
 }
 
-const { posts, currentPath, currentQuery = '' } = Astro.props as BlogControlsProps;
+const { posts, currentPath, currentQuery = '', locale = 'ja' } = Astro.props as BlogControlsProps;
 const initialPostCount = 12;
 const hasMorePosts = posts.length > initialPostCount;
 const initialSearchState = getInitialBlogSearchState(posts, currentQuery, initialPostCount);
@@ -18,27 +20,29 @@ const normalizePath = (path: string) => (path.endsWith('/') ? path : `${path}/`)
 const activePath = normalizePath(currentPath);
 
 const tabs = [
-  { label: '全て', href: '/blog/' },
-  { label: '個人ブログ', href: '/blog/personal/' },
-  { label: 'Zenn（Scrap含む）', href: '/blog/zenn/' },
-  { label: 'Qiita', href: '/blog/qiita/' },
+  { label: uiText.blog.tabs.all[locale], href: localizedPath('/blog/', locale) },
+  { label: uiText.blog.tabs.personal[locale], href: localizedPath('/blog/personal/', locale) },
+  { label: uiText.blog.tabs.zenn[locale], href: localizedPath('/blog/zenn/', locale) },
+  { label: uiText.blog.tabs.qiita[locale], href: localizedPath('/blog/qiita/', locale) },
 ];
+
+const searchIndexUrl = localizedPath('/search-index.json', locale);
 ---
 
 <div
   data-blog-search-root
   data-initial-post-count={String(initialPostCount)}
   data-initial-query={initialSearchState.activeQuery}
-  data-search-index-url="/search-index.json"
+  data-search-index-url={searchIndexUrl}
 >
   <form class="mb-8 max-w-xl mx-auto relative" data-blog-search-form>
     <label class="block w-full">
-      <span class="sr-only">記事を検索する</span>
+      <span class="sr-only">{uiText.blog.searchLabel[locale]}</span>
       <input
         type="search"
         id="blog-search-input"
         data-blog-search-input
-        placeholder="記事を検索する"
+        placeholder={uiText.blog.searchLabel[locale]}
         autocomplete="off"
         value={initialSearchState.activeQuery}
         class="w-full px-2 py-2 border border-gray-200 rounded-md focus:outline-none focus:ring-2 focus:ring-[#333] bg-white dark:bg-white dark:border-none dark:text-[#222]"
@@ -48,12 +52,12 @@ const tabs = [
       type="submit"
       class="absolute top-0 right-0 px-4 py-2 text-sm bg-[#333] text-white lg:hover:opacity-70 transition-all duration-300 rounded-r-md h-full font-bold leading-loose dark:border-none grid align-center text-[16px]"
     >
-      検索する
+      {uiText.blog.searchButton[locale]}
     </button>
     <div
       data-blog-search-history
       class="absolute left-0 right-0 z-10 mt-2 hidden overflow-hidden rounded-md border border-gray-200 bg-white shadow-lg dark:border-gray-700 dark:bg-gray-900"
-      aria-label="検索履歴"
+      aria-label={uiText.blog.searchHistory[locale]}
     >
     </div>
   </form>
@@ -62,7 +66,7 @@ const tabs = [
     class="mx-auto mb-4 hidden max-w-xl text-sm text-red-600 dark:text-red-400"
     role="status"
   >
-    検索データの読み込みに失敗しました。時間をおいて再度お試しください。
+    {uiText.blog.searchError[locale]}
   </p>
 
   <div class="flex flex-wrap justify-center gap-3 mb-8 text-sm">
@@ -107,7 +111,7 @@ const tabs = [
           d="M5.5 12a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zm-3-8.5a1 1 0 0 1 1-1c5.523 0 10 4.477 10 10a1 1 0 1 1-2 0 8 8 0 0 0-8-8 1 1 0 0 1-1-1zm0 4a1 1 0 0 1 1-1 6 6 0 0 1 6 6 1 1 0 1 1-2 0 4 4 0 0 0-4-4 1 1 0 0 1-1-1z"
         ></path>
       </svg>
-      RSSフィードで購読
+      {uiText.blog.rss[locale]}
     </a>
   </div>
 
@@ -121,7 +125,7 @@ const tabs = [
     ]}
   >
     <p class="text-gray-600 dark:text-gray-400 text-lg">
-      検索条件に一致する記事が見つかりませんでした。
+      {uiText.blog.empty[locale]}
     </p>
   </div>
 
@@ -136,7 +140,7 @@ const tabs = [
             hidden: initialSearchState.hiddenStates[index],
           }}
         >
-          <PostCard {...post} index={index} />
+          <PostCard {...post} index={index} locale={locale} />
         </div>
       ))
     }
@@ -158,7 +162,7 @@ const tabs = [
           class="px-6 py-2 bg-[#333] text-white rounded-md lg:hover:opacity-70 transition-all duration-300 dark:bg-white dark:text-[#333] font-bold leading-loose"
           type="button"
         >
-          過去の記事を見る
+          {uiText.blog.loadMore[locale]}
         </button>
       </div>
     )

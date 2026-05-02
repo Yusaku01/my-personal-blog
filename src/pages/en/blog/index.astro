@@ -1,16 +1,15 @@
 ---
+import { getImage } from 'astro:assets';
 import Layout from '../../../layouts/Layout.astro';
 import BlogControls from '../../../components/Blog/BlogControls.astro';
 import HeroSection from '../../../components/Hero/HeroSection.astro';
 import { getAllBlogPosts } from '../../../lib/blog/posts';
-import { getImage } from 'astro:assets';
 
 export const transition = { name: 'fade' };
 
-const locale = 'ja';
-const allPosts = await getAllBlogPosts(locale);
-const filteredPosts = allPosts.filter((post) => post.source === 'qiita');
-const primaryThumbnail = filteredPosts.find((post) => Boolean(post.thumbnail))?.thumbnail;
+const locale = 'en';
+const sortedPosts = await getAllBlogPosts(locale);
+const primaryThumbnail = sortedPosts.find((post) => Boolean(post.thumbnail))?.thumbnail;
 const primaryThumbnailHref =
   typeof primaryThumbnail === 'string'
     ? primaryThumbnail
@@ -27,8 +26,9 @@ const primaryThumbnailHref =
 ---
 
 <Layout
-  title="BLOG（Qiita）| SAKUSPACE"
-  description="Qiitaに投稿した記事一覧。最新順でQiita投稿のみを掲載しています。"
+  title="Blog | SAKUSPACE"
+  description="A chronological archive of SAKUSPACE posts, plus Zenn and Qiita articles. English article translations are planned, and Japanese posts are shown for now."
+  locale={locale}
 >
   {
     primaryThumbnailHref && (
@@ -45,7 +45,7 @@ const primaryThumbnailHref =
   <HeroSection title="BLOG" />
   <div class="container-lg container-lg py-14">
     <BlogControls
-      posts={filteredPosts}
+      posts={sortedPosts}
       currentPath={Astro.url.pathname}
       currentQuery={Astro.url.searchParams.get('q') ?? ''}
       locale={locale}

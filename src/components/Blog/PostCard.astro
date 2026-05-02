@@ -1,10 +1,12 @@
 ---
 import type { Post } from '../../types/index';
 import { Image } from 'astro:assets';
+import { uiText, type Locale } from '../../lib/i18n';
 
 type PostCardProps = Post & {
   showTags?: boolean;
   index?: number;
+  locale?: Locale;
 };
 
 const {
@@ -17,6 +19,7 @@ const {
   showTags = true,
   index,
   platform,
+  locale = 'ja',
 } = Astro.props as PostCardProps;
 
 // 最初の8枚はlazyしない・1枚目のみfetchpriorityをhighに
@@ -87,7 +90,7 @@ const publishDateObj = new Date(publishDate);
             />
           ) : null}
           <div class={postCardStyles.overlay}>
-            <span class={postCardStyles.readText}>記事を読む</span>
+            <span class={postCardStyles.readText}>{uiText.blog.readArticle[locale]}</span>
           </div>
         </div>
       )
@@ -96,11 +99,14 @@ const publishDateObj = new Date(publishDate);
       <h2 class={postCardStyles.title}>{title}</h2>
       <div class="space-y-2">
         <time datetime={publishDateObj.toISOString()} class={postCardStyles.date}>
-          {publishDateObj.toLocaleDateString('ja-JP')}
-          {isExternal && platform && ` ${platform} 投稿`}
+          {publishDateObj.toLocaleDateString(locale === 'ja' ? 'ja-JP' : 'en-US')}
+          {isExternal && platform && ` ${platform} ${uiText.blog.externalPostSuffix[locale]}`}
           {
             isExternal && (
-              <span class="i-ic-open-in-new text-3.5 ml-1 align-middle" aria-label="外部リンク" />
+              <span
+                class="i-ic-open-in-new text-3.5 ml-1 align-middle"
+                aria-label={uiText.blog.externalLinkLabel[locale]}
+              />
             )
           }
         </time>
