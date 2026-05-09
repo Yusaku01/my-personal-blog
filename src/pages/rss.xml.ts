@@ -1,6 +1,6 @@
 import rss from '@astrojs/rss';
-import { getCollection } from 'astro:content';
 import type { APIContext } from 'astro';
+import { getBlogEntriesForLocale, getBlogEntrySlug } from '../lib/blog/posts';
 
 const SITE_TITLE = 'saku-space';
 const SITE_DESCRIPTION = 'sakuのブログ - Web開発とデザインの記録';
@@ -8,10 +8,7 @@ const SITE_DESCRIPTION = 'sakuのブログ - Web開発とデザインの記録';
 export const prerender = true;
 
 export async function GET(context: APIContext) {
-  const blog = await getCollection('blog');
-
-  // _で始まるファイルは下書きとして扱う
-  const posts = blog.filter((post) => !post.id.startsWith('_'));
+  const posts = await getBlogEntriesForLocale('ja');
 
   return rss({
     title: SITE_TITLE,
@@ -21,7 +18,7 @@ export async function GET(context: APIContext) {
       title: post.data.title,
       pubDate: post.data.publishDate,
       description: post.data.description,
-      link: `/blog/${post.id}/`,
+      link: `/blog/${getBlogEntrySlug(post)}/`,
       categories: post.data.tags,
     })),
     customData: `<language>ja</language>`,

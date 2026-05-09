@@ -1,5 +1,5 @@
 import type { APIRoute } from 'astro';
-import { getCollection } from 'astro:content';
+import { getBlogEntriesForLocale, getBlogEntrySlug } from '../../lib/blog/posts';
 
 export const prerender = true;
 
@@ -11,9 +11,8 @@ export const GET: APIRoute = async ({ params }) => {
   }
 
   try {
-    // コンテンツコレクションから該当する記事を検索
-    const posts = await getCollection('blog');
-    const post = posts.find((p) => p.id === slug);
+    const posts = await getBlogEntriesForLocale('ja');
+    const post = posts.find((p) => getBlogEntrySlug(p) === slug);
 
     if (!post?.body) {
       return new Response('Not Found', { status: 404 });
@@ -35,8 +34,8 @@ export const GET: APIRoute = async ({ params }) => {
 
 // 静的パスの生成
 export async function getStaticPaths() {
-  const posts = await getCollection('blog');
+  const posts = await getBlogEntriesForLocale('ja');
   return posts.map((post) => ({
-    params: { slug: post.id },
+    params: { slug: getBlogEntrySlug(post) },
   }));
 }

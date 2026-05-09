@@ -1,5 +1,5 @@
 ---
-import { getCollection, render } from 'astro:content';
+import { render } from 'astro:content';
 import { Image } from 'astro:assets';
 import Layout from '../../layouts/Layout.astro';
 import TocSidebar from '../../components/Blog/TocSidebar.astro';
@@ -7,13 +7,14 @@ import ShareButtons from '../../components/Sns/ShareButtons.astro';
 import { format } from 'date-fns';
 import { getEstimatedReadingTimeMinutes } from '../../lib/blog/readingTime';
 import { uiText } from '../../lib/i18n';
+import { getBlogEntriesForLocale, getBlogEntrySlug } from '../../lib/blog/posts';
 
 export const transition = { name: 'fade' };
 
 export async function getStaticPaths() {
-  const posts = await getCollection('blog');
+  const posts = await getBlogEntriesForLocale('ja');
   return posts.map((post) => ({
-    params: { slug: post.id },
+    params: { slug: getBlogEntrySlug(post) },
     props: { post },
   }));
 }
