@@ -129,12 +129,13 @@ const locale = 'ja';
             <ShareButtons
               url={new URL(Astro.url.pathname, Astro.site).toString()}
               title={post.data.title}
+              locale={locale}
               class="justify-center md:justify-start"
             />
           </div>
         </article>
       </div>
-      <TocSidebar headings={headings} />
+      <TocSidebar headings={headings} locale={locale} />
     </div>
     <div data-toc-mobile></div>
   </div>
@@ -614,7 +615,7 @@ const locale = 'ja';
   }
 
   .toc-sidebar-title {
-    font-size: 0.875rem;
+    font-size: 1rem;
     font-weight: 700;
     color: #111827;
     margin-bottom: 0.75rem;

@@ -1,6 +1,7 @@
 ---
 import type { Post } from '../../types/index';
 import { Image } from 'astro:assets';
+import { format } from 'date-fns';
 import { uiText, type Locale } from '../../lib/i18n';
 
 type PostCardProps = Post & {
@@ -99,7 +100,7 @@ const publishDateObj = new Date(publishDate);
       <h2 class={postCardStyles.title}>{title}</h2>
       <div class="space-y-2">
         <time datetime={publishDateObj.toISOString()} class={postCardStyles.date}>
-          {publishDateObj.toLocaleDateString(locale === 'ja' ? 'ja-JP' : 'en-US')}
+          {format(publishDateObj, 'yyyy/MM/dd')}
           {isExternal && platform && ` ${platform} ${uiText.blog.externalPostSuffix[locale]}`}
           {
             isExternal && (

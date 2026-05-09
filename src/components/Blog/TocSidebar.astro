@@ -1,4 +1,6 @@
 ---
+import { type Locale } from '../../lib/i18n';
+
 interface Heading {
   depth: number;
   slug: string;
@@ -7,13 +9,26 @@ interface Heading {
 
 interface Props {
   headings: Heading[];
+  locale?: Locale;
 }
 
 interface TocNode extends Heading {
   children: TocNode[];
 }
 
-const { headings } = Astro.props;
+const { headings, locale = 'ja' } = Astro.props;
+const tocText = {
+  ja: {
+    label: '目次',
+    openLabel: '目次を開く',
+    closeLabel: '目次を閉じる',
+  },
+  en: {
+    label: 'Table of contents',
+    openLabel: 'Open table of contents',
+    closeLabel: 'Close table of contents',
+  },
+} satisfies Record<Locale, { label: string; openLabel: string; closeLabel: string }>;
 
 function buildTocTree(headings: Heading[]): TocNode[] {
   const root: TocNode = { depth: 0, slug: '', text: '', children: [] };
@@ -72,9 +87,12 @@ const hasEnoughHeadings = filteredHeadings.length >= 2;
       data-toc-headings={JSON.stringify(
         filteredHeadings.map((h) => ({ slug: h.slug, text: h.text, depth: h.depth }))
       )}
+      data-toc-label={tocText[locale].label}
+      data-toc-open-label={tocText[locale].openLabel}
+      data-toc-close-label={tocText[locale].closeLabel}
     >
-      <nav class="toc-sidebar-nav" aria-label="目次" data-toc-sidebar-nav>
-        <p class="toc-sidebar-title">目次</p>
+      <nav class="toc-sidebar-nav" aria-label={tocText[locale].label} data-toc-sidebar-nav>
+        <p class="toc-sidebar-title">{tocText[locale].label}</p>
         {/* eslint-disable-next-line astro/no-set-html-directive */}
         <div set:html={tocHtml} />
       </nav>

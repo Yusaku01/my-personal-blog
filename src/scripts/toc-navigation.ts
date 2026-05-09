@@ -78,6 +78,9 @@ const initTocNavigation = (): (() => void) => {
   const sidebar = document.querySelector<HTMLElement>('[data-toc-sidebar]');
   const mobileMount = document.querySelector<HTMLElement>('[data-toc-mobile]');
   const sidebarNav = sidebar?.querySelector<HTMLElement>('[data-toc-sidebar-nav]');
+  const tocLabel = sidebar?.dataset.tocLabel ?? '目次';
+  const tocOpenLabel = sidebar?.dataset.tocOpenLabel ?? '目次を開く';
+  const tocCloseLabel = sidebar?.dataset.tocCloseLabel ?? '目次を閉じる';
 
   if (!contentRoot || !mobileMount) {
     return () => {};
@@ -121,11 +124,11 @@ const initTocNavigation = (): (() => void) => {
   bar.setAttribute('tabindex', '0');
   bar.setAttribute('aria-expanded', 'false');
   bar.setAttribute('aria-controls', 'toc-slide-panel');
-  bar.setAttribute('aria-label', '目次を開く');
+  bar.setAttribute('aria-label', tocOpenLabel);
   bar.innerHTML = `
     <span class="toc-mobile-btn" data-toc-open-btn>
       <span class="i-ic-round-list" aria-hidden="true"></span>
-      <span>目次</span>
+      <span>${tocLabel}</span>
     </span>
   `;
   mobileMount.appendChild(bar);
@@ -140,20 +143,20 @@ const initTocNavigation = (): (() => void) => {
   panel.id = 'toc-slide-panel';
   panel.setAttribute('role', 'dialog');
   panel.setAttribute('aria-modal', 'true');
-  panel.setAttribute('aria-label', '目次');
+  panel.setAttribute('aria-label', tocLabel);
   panel.innerHTML = `
     <div class="toc-panel-header">
-      <span class="toc-panel-title">目次</span>
+      <span class="toc-panel-title">${tocLabel}</span>
       <button
         class="toc-panel-close"
         type="button"
-        aria-label="目次を閉じる"
+        aria-label="${tocCloseLabel}"
         data-toc-close-btn
       >
         <span class="i-ic-round-close" aria-hidden="true"></span>
       </button>
     </div>
-    <nav class="toc-panel-body" aria-label="目次">
+    <nav class="toc-panel-body" aria-label="${tocLabel}">
       ${buildPanelTocHtml(headings)}
     </nav>
   `;
