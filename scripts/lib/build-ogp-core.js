@@ -13,7 +13,7 @@ import matter from 'gray-matter';
  * @typedef {{ title: string; isBasicPage: boolean }} OgpCardTarget
  * @typedef {{ slug: string; filename: string; title: string; isBasicPage: boolean }} OgpTarget
  * @typedef {{ name: string; data: Buffer | Uint8Array; weight: number; style: string }} FontDefinition
- * @typedef {{ name: string; isFile(): boolean }} BlogDirEntry
+ * @typedef {{ name: string; isFile(): boolean; isDirectory?(): boolean }} BlogDirEntry
  * @typedef {{ data: Record<string, unknown> }} FrontmatterResult
  * @typedef {{ log?: (...args: unknown[]) => void; error?: (...args: unknown[]) => void }} Logger
  * @typedef {(directory: string) => Promise<string[]>} FontDirReader
@@ -297,26 +297,36 @@ export async function getBlogEntries({
   logger = console,
 } = {}) {
   try {
-    const entries = await readdirImpl(contentDir, { withFileTypes: true });
+    const localeDirs = await readdirImpl(contentDir, { withFileTypes: true });
     const posts = [];
 
-    for (const entry of entries) {
-      if (!entry.isFile()) continue;
-      if (!entry.name.endsWith('.md') && !entry.name.endsWith('.mdx')) continue;
-      if (entry.name.startsWith('_')) continue;
+    for (const localeDir of localeDirs) {
+      const locale = localeDir.name;
+      const isLocaleDirectory =
+        (locale === 'ja' || locale === 'en') && localeDir.isDirectory?.() === true;
 
-      const slug = entry.name.replace(/\.mdx?$/, '');
-      const filePath = path.join(contentDir, entry.name);
-      const fileContents = await readFileImpl(filePath, 'utf-8');
-      const { data } = matterImpl(fileContents);
-      const title = typeof data.title === 'string' && data.title.length > 0 ? data.title : slug;
+      if (!isLocaleDirectory) continue;
 
-      posts.push({
-        slug,
-        filename: slug,
-        title,
-        isBasicPage: false,
-      });
+      const entries = await readdirImpl(path.join(contentDir, locale), { withFileTypes: true });
+
+      for (const entry of entries) {
+        if (!entry.isFile()) continue;
+        if (!entry.name.endsWith('.md') && !entry.name.endsWith('.mdx')) continue;
+        if (entry.name.startsWith('_')) continue;
+
+        const slug = entry.name.replace(/\.mdx?$/, '');
+        const filePath = path.join(contentDir, locale, entry.name);
+        const fileContents = await readFileImpl(filePath, 'utf-8');
+        const { data } = matterImpl(fileContents);
+        const title = typeof data.title === 'string' && data.title.length > 0 ? data.title : slug;
+
+        posts.push({
+          slug,
+          filename: locale === 'en' ? `en/${slug}` : slug,
+          title,
+          isBasicPage: false,
+        });
+      }
     }
 
     return posts;
@@ -371,7 +381,9 @@ export async function runBuildOgp({
     }
 
     const png = await createOgpImageImpl(target, fonts);
-    await writeFileImpl(path.join(outputDir, `${target.filename}.png`), png);
+    const outputPath = path.join(outputDir, `${target.filename}.png`);
+    await mkdirImpl(path.dirname(outputPath), { recursive: true });
+    await writeFileImpl(outputPath, png);
     logger.log(`  ✓ ${target.filename}.png を保存しました`);
   }
 

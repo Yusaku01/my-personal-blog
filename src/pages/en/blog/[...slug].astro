@@ -25,7 +25,8 @@ export async function getStaticPaths() {
 
 const { post } = Astro.props;
 const locale = 'en';
-const isFallbackJapanesePost = getBlogEntryLocale(post) !== locale;
+const blogContentLocale = getBlogEntryLocale(post) ?? 'ja';
+const isFallbackJapanesePost = blogContentLocale !== locale;
 
 const { Content, headings } = await render(post);
 const estimatedReadingTimeMinutes = getEstimatedReadingTimeMinutes(post.body ?? '');
@@ -35,6 +36,7 @@ const estimatedReadingTimeMinutes = getEstimatedReadingTimeMinutes(post.body ?? 
   title={`${post.data.title} | SAKUSPACE`}
   description={post.data.description}
   blogTitle={post.data.title}
+  blogContentLocale={blogContentLocale}
   locale={locale}
 >
   <div

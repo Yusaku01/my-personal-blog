@@ -140,22 +140,35 @@ describe('createOgpElement', () => {
 });
 
 describe('getBlogEntries', () => {
-  it('collects md and mdx files, skips underscored entries, and falls back to the slug', async () => {
-    const readdirImpl = vi.fn(async () => [
-      { name: 'first-post.mdx', isFile: () => true },
-      { name: 'second-post.md', isFile: () => true },
-      { name: '_draft-post.mdx', isFile: () => true },
-      { name: 'images', isFile: () => false },
-      { name: 'notes.txt', isFile: () => true },
-    ]);
+  it('collects localized md and mdx files, skips underscored entries, and falls back to the slug', async () => {
+    const readdirImpl = vi
+      .fn()
+      .mockResolvedValueOnce([
+        { name: 'ja', isFile: () => false, isDirectory: () => true },
+        { name: 'en', isFile: () => false, isDirectory: () => true },
+        { name: 'notes.txt', isFile: () => true, isDirectory: () => false },
+      ])
+      .mockResolvedValueOnce([
+        { name: 'first-post.mdx', isFile: () => true },
+        { name: 'second-post.md', isFile: () => true },
+        { name: '_draft-post.mdx', isFile: () => true },
+        { name: 'images', isFile: () => false },
+        { name: 'notes.txt', isFile: () => true },
+      ])
+      .mockResolvedValueOnce([
+        { name: 'first-post.mdx', isFile: () => true },
+        { name: '_english-draft.mdx', isFile: () => true },
+      ]);
     const readFileImpl = vi
       .fn()
       .mockResolvedValueOnce('---\ntitle: First Post\n---')
-      .mockResolvedValueOnce('---\ndescription: No title\n---');
+      .mockResolvedValueOnce('---\ndescription: No title\n---')
+      .mockResolvedValueOnce('---\ntitle: First Post in English\n---');
     const matterImpl = vi
       .fn()
       .mockReturnValueOnce({ data: { title: 'First Post' } })
-      .mockReturnValueOnce({ data: {} });
+      .mockReturnValueOnce({ data: {} })
+      .mockReturnValueOnce({ data: { title: 'First Post in English' } });
 
     await expect(
       getBlogEntries({
@@ -177,7 +190,16 @@ describe('getBlogEntries', () => {
         title: 'second-post',
         isBasicPage: false,
       },
+      {
+        slug: 'first-post',
+        filename: 'en/first-post',
+        title: 'First Post in English',
+        isBasicPage: false,
+      },
     ]);
+
+    expect(readFileImpl).toHaveBeenCalledWith('/virtual/blog/ja/first-post.mdx', 'utf-8');
+    expect(readFileImpl).toHaveBeenCalledWith('/virtual/blog/en/first-post.mdx', 'utf-8');
   });
 
   it('returns an empty list when reading blog entries fails', async () => {
@@ -375,18 +397,25 @@ describe('runBuildOgp', () => {
     );
   });
 
-  it('generates default pages and blog entries in normal mode', async () => {
+  it('generates default pages and blog entries in normal mode, including nested output paths', async () => {
     const writeFileImpl = vi.fn();
+    const mkdirImpl = vi.fn();
     const createOgpImage = vi.fn(async (target) => Buffer.from(target.filename));
     const logger = createLogger();
     const getBlogEntriesMock = vi.fn(async () => [
       { slug: 'first-post', filename: 'first-post', title: 'First Post', isBasicPage: false },
+      {
+        slug: 'first-post',
+        filename: 'en/first-post',
+        title: 'First Post in English',
+        isBasicPage: false,
+      },
     ]);
 
     const result = await runBuildOgp({
       argv: ['node', 'scripts/build-ogp.js'],
       outputDir: '/virtual/output',
-      mkdirImpl: vi.fn(),
+      mkdirImpl,
       writeFileImpl,
       loadFonts: vi.fn(async () => [createFont()]),
       createOgpImage,
@@ -395,13 +424,15 @@ describe('runBuildOgp', () => {
     });
 
     expect(getBlogEntriesMock).toHaveBeenCalledOnce();
-    expect(result.generatedCount).toBe(basicPages.length + 1);
+    expect(result.generatedCount).toBe(basicPages.length + 2);
     expect(result.targets.at(-1)).toEqual({
       slug: 'first-post',
-      filename: 'first-post',
-      title: 'First Post',
+      filename: 'en/first-post',
+      title: 'First Post in English',
       isBasicPage: false,
     });
+    expect(mkdirImpl).toHaveBeenCalledWith('/virtual/output', { recursive: true });
+    expect(mkdirImpl).toHaveBeenCalledWith('/virtual/output/en', { recursive: true });
     expect(writeFileImpl).toHaveBeenCalledWith(
       '/virtual/output/default.png',
       Buffer.from('default')
@@ -409,6 +440,10 @@ describe('runBuildOgp', () => {
     expect(writeFileImpl).toHaveBeenCalledWith(
       '/virtual/output/first-post.png',
       Buffer.from('first-post')
+    );
+    expect(writeFileImpl).toHaveBeenCalledWith(
+      '/virtual/output/en/first-post.png',
+      Buffer.from('en/first-post')
     );
   });
 });

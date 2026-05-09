@@ -16,6 +16,7 @@ interface Props {
   title: string;
   description?: string;
   blogTitle?: string; // ブログ記事のタイトルを渡すためのプロパティを追加
+  blogContentLocale?: Locale;
   robots?: string;
   locale?: Locale;
 }
@@ -24,6 +25,7 @@ const {
   title,
   description,
   blogTitle, // ブログタイトルを受け取る
+  blogContentLocale,
   robots = 'index, follow',
   locale: localeProp,
 } = Astro.props;
@@ -48,7 +50,8 @@ const ogpPathname =
 if (blogTitle) {
   // ブログ記事の場合、スラッグに基づいたOGP画像を使用
   const slug = Astro.url.pathname.split('/').filter(Boolean).pop() || 'index';
-  ogImageUrl = `/images/ogp/${slug}.png`;
+  ogImageUrl =
+    blogContentLocale === 'en' ? `/images/ogp/en/${slug}.png` : `/images/ogp/${slug}.png`;
 } else if (ogpPathname === '/' || ogpPathname === '') {
   // トップページ
   ogImageUrl = '/images/ogp/default.png';
