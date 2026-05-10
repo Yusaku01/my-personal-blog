@@ -9,6 +9,13 @@ import { defaultLocale, locales, localizedPath, type Locale } from '../i18n';
 
 type BlogEntry = CollectionEntry<'blog'>;
 
+type BlogEntryOptions = {
+  includeDrafts?: boolean;
+};
+
+const shouldIncludeDraftEntries = (includeDrafts?: boolean): boolean =>
+  includeDrafts ?? import.meta.env.DEV;
+
 export const getBlogEntryLocale = (entry: BlogEntry): Locale | null => {
   const [locale] = entry.id.split('/');
   return locales.includes(locale as Locale) ? (locale as Locale) : null;
@@ -23,10 +30,14 @@ export const isDraftBlogEntry = (entry: BlogEntry): boolean =>
   getBlogEntrySlug(entry).startsWith('_');
 
 export async function getBlogEntriesForLocale(
-  locale: Locale = defaultLocale
+  locale: Locale = defaultLocale,
+  { includeDrafts }: BlogEntryOptions = {}
 ): Promise<BlogEntry[]> {
   const posts = await getCollection('blog');
-  const publishedPosts = posts.filter((post) => !isDraftBlogEntry(post));
+  const includeDraftEntries = shouldIncludeDraftEntries(includeDrafts);
+  const publishedPosts = includeDraftEntries
+    ? posts
+    : posts.filter((post) => !isDraftBlogEntry(post));
   const jaPosts = publishedPosts.filter((post) => getBlogEntryLocale(post) === defaultLocale);
 
   if (locale === defaultLocale) {
