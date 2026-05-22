@@ -52,16 +52,38 @@ function buildTocTree(headings: Heading[]): TocNode[] {
   return root.children;
 }
 
+function escapeHtml(value: string): string {
+  return value.replace(/[&<>"']/g, (char) => {
+    switch (char) {
+      case '&':
+        return '&amp;';
+      case '<':
+        return '&lt;';
+      case '>':
+        return '&gt;';
+      case '"':
+        return '&quot;';
+      case "'":
+        return '&#39;';
+      default:
+        return char;
+    }
+  });
+}
+
 function renderTocList(nodes: TocNode[]): string {
   if (!nodes || nodes.length === 0) {
     return '';
   }
 
-  let html = '<ol class="toc-sidebar-list">';
+  let html = '<ol class="toc-list">';
 
   for (const node of nodes) {
+    const slug = escapeHtml(node.slug);
+    const text = escapeHtml(node.text);
+
     html += '<li>';
-    html += `<a href="#${node.slug}" class="toc-sidebar-link" data-toc-link="${node.slug}">${node.text}</a>`;
+    html += `<a href="#${slug}" class="toc-link" data-toc-link="${slug}">${text}</a>`;
 
     if (node.children.length > 0) {
       html += renderTocList(node.children);
@@ -77,25 +99,53 @@ const filteredHeadings = headings.filter((h) => h.depth >= 2 && h.depth <= 3);
 const tocTree = buildTocTree(filteredHeadings);
 const tocHtml = renderTocList(tocTree);
 const hasEnoughHeadings = filteredHeadings.length >= 2;
+const panelId = `blog-toc-panel-${locale}`;
 ---
 
 {
   hasEnoughHeadings && (
-    <aside
-      class="toc-sidebar hidden xl:block"
-      data-toc-sidebar
-      data-toc-headings={JSON.stringify(
-        filteredHeadings.map((h) => ({ slug: h.slug, text: h.text, depth: h.depth }))
-      )}
+    <div
+      class="toc-root"
+      data-toc-root
       data-toc-label={tocText[locale].label}
       data-toc-open-label={tocText[locale].openLabel}
       data-toc-close-label={tocText[locale].closeLabel}
     >
-      <nav class="toc-sidebar-nav" aria-label={tocText[locale].label} data-toc-sidebar-nav>
-        <p class="toc-sidebar-title">{tocText[locale].label}</p>
-        {/* eslint-disable-next-line astro/no-set-html-directive */}
-        <div set:html={tocHtml} />
-      </nav>
-    </aside>
+      <button
+        class="toc-mobile-bar"
+        type="button"
+        aria-expanded="false"
+        aria-controls={panelId}
+        aria-label={tocText[locale].openLabel}
+        data-toc-toggle
+      >
+        <span class="toc-mobile-btn">
+          <span class="i-ic-round-list" aria-hidden="true" />
+          <span>{tocText[locale].label}</span>
+        </span>
+      </button>
+
+      <div class="toc-panel-backdrop" aria-hidden="true" data-toc-backdrop />
+
+      <div class="toc-panel" id={panelId} data-toc-panel>
+        <div class="toc-panel-header">
+          <span class="toc-panel-title">{tocText[locale].label}</span>
+          <button
+            class="toc-panel-close"
+            type="button"
+            aria-label={tocText[locale].closeLabel}
+            data-toc-close
+          >
+            <span class="i-ic-round-close" aria-hidden="true" />
+          </button>
+        </div>
+
+        <nav class="toc-panel-body" aria-label={tocText[locale].label} data-toc-nav>
+          <p class="toc-desktop-title">{tocText[locale].label}</p>
+          {/* eslint-disable-next-line astro/no-set-html-directive */}
+          <div set:html={tocHtml} />
+        </nav>
+      </div>
+    </div>
   )
 }

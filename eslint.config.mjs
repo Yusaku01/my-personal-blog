@@ -1,6 +1,7 @@
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { createRequire } from 'node:module';
+import css from '@eslint/css';
 
 const require = createRequire(import.meta.url);
 
@@ -24,57 +25,72 @@ export default [
   {
     ignores: ['dist/**/*', 'node_modules/**/*', '.astro/**/*'],
   },
-  ...compat.config({
-    env: {
-      node: true,
-      browser: true,
-      es2022: true,
+  {
+    files: ['**/*.css'],
+    plugins: {
+      css,
     },
-    extends: [
-      'eslint:recommended',
-      'plugin:@typescript-eslint/recommended',
-      'plugin:astro/recommended',
-      'plugin:jsx-a11y/recommended',
-      'prettier',
-    ],
-    parser: '@typescript-eslint/parser',
-    parserOptions: {
-      ecmaVersion: 'latest',
-      sourceType: 'module',
-      project: './tsconfig.json',
-    },
-    plugins: ['@typescript-eslint', 'jsx-a11y', 'prettier'],
+    language: 'css/css',
     rules: {
-      'prettier/prettier': 'error',
-      '@typescript-eslint/explicit-function-return-type': 'off',
-      '@typescript-eslint/no-unused-vars': ['error', { argsIgnorePattern: '^_' }],
-      '@typescript-eslint/no-explicit-any': 'error',
+      'css/use-baseline': ['warn', { available: 'newly' }],
     },
-    overrides: [
-      {
-        files: ['*.astro'],
-        parser: 'astro-eslint-parser',
-        parserOptions: {
-          parser: '@typescript-eslint/parser',
-          extraFileExtensions: ['.astro'],
-        },
-        rules: {
-          'astro/no-set-html-directive': 'error',
-          '@typescript-eslint/no-unused-vars': 'off',
-          'jsx-a11y/html-has-lang': 'off',
-          // eslint-plugin-jsx-a11y が Astro lint 時に minimatch 互換で落ちるため無効化
-          'jsx-a11y/label-has-associated-control': 'off',
-          // Prettierのルールを緩和
-          'prettier/prettier': 'warn',
-        },
+  },
+  ...compat
+    .config({
+      env: {
+        node: true,
+        browser: true,
+        es2022: true,
       },
-      {
-        files: ['src/env.d.ts'],
-        rules: {
-          '@typescript-eslint/triple-slash-reference': 'off',
-          '@typescript-eslint/no-explicit-any': 'off',
-        },
+      extends: [
+        'eslint:recommended',
+        'plugin:@typescript-eslint/recommended',
+        'plugin:astro/recommended',
+        'plugin:jsx-a11y/recommended',
+        'prettier',
+      ],
+      parser: '@typescript-eslint/parser',
+      parserOptions: {
+        ecmaVersion: 'latest',
+        sourceType: 'module',
+        project: './tsconfig.json',
       },
-    ],
-  }),
+      plugins: ['@typescript-eslint', 'jsx-a11y', 'prettier'],
+      rules: {
+        'prettier/prettier': 'error',
+        '@typescript-eslint/explicit-function-return-type': 'off',
+        '@typescript-eslint/no-unused-vars': ['error', { argsIgnorePattern: '^_' }],
+        '@typescript-eslint/no-explicit-any': 'error',
+      },
+      overrides: [
+        {
+          files: ['*.astro'],
+          parser: 'astro-eslint-parser',
+          parserOptions: {
+            parser: '@typescript-eslint/parser',
+            extraFileExtensions: ['.astro'],
+          },
+          rules: {
+            'astro/no-set-html-directive': 'error',
+            '@typescript-eslint/no-unused-vars': 'off',
+            'jsx-a11y/html-has-lang': 'off',
+            // eslint-plugin-jsx-a11y が Astro lint 時に minimatch 互換で落ちるため無効化
+            'jsx-a11y/label-has-associated-control': 'off',
+            // Prettierのルールを緩和
+            'prettier/prettier': 'warn',
+          },
+        },
+        {
+          files: ['src/env.d.ts'],
+          rules: {
+            '@typescript-eslint/triple-slash-reference': 'off',
+            '@typescript-eslint/no-explicit-any': 'off',
+          },
+        },
+      ],
+    })
+    .map((config) => ({
+      ...config,
+      ignores: [...(config.ignores ?? []), '**/*.css'],
+    })),
 ];

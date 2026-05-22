@@ -111,7 +111,7 @@ jobs:
         id: eslint_check
         continue-on-error: true
         run: |
-          npx eslint --ext .js,.jsx,.ts,.tsx,.astro ${{ steps.changes.outputs.all_changed_files }} --format compact 2>&1 | tee $RUNNER_TEMP/eslint.out
+          npx eslint --ext .js,.jsx,.ts,.tsx,.astro,.css ${{ steps.changes.outputs.all_changed_files }} 2>&1 | tee $RUNNER_TEMP/eslint.out
 
       - name: Prepare failure report
         id: report

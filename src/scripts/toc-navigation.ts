@@ -1,11 +1,5 @@
 let cleanupTocNavigation: (() => void) | null = null;
 
-interface TocHeading {
-  slug: string;
-  text: string;
-  depth: number;
-}
-
 const HEADER_HEIGHT = 64;
 const SCROLL_THRESHOLD = 80;
 const DESKTOP_BREAKPOINT = '(min-width: 1280px)';
@@ -18,42 +12,6 @@ const scrollBehavior = (): ScrollBehavior => (prefersReducedMotion() ? 'auto' : 
 
 const isDesktopViewport = (): boolean => window.matchMedia(DESKTOP_BREAKPOINT).matches;
 
-// ── Build nested TOC HTML (reusable for panel) ──────────────────────────
-const buildPanelTocHtml = (headings: TocHeading[]): string => {
-  interface Node {
-    heading: TocHeading;
-    children: Node[];
-  }
-
-  const root: { children: Node[] } = { children: [] };
-  const stack: { depth: number; children: Node[] }[] = [{ depth: 0, children: root.children }];
-
-  for (const h of headings) {
-    const node: Node = { heading: h, children: [] };
-    while (stack.length > 1 && h.depth <= stack[stack.length - 1].depth) {
-      stack.pop();
-    }
-    stack[stack.length - 1].children.push(node);
-    stack.push({ depth: h.depth, children: node.children });
-  }
-
-  const render = (nodes: Node[]): string => {
-    if (nodes.length === 0) return '';
-    let html = '<ol class="toc-panel-list">';
-    for (const n of nodes) {
-      html += '<li>';
-      html += `<a href="#${n.heading.slug}" class="toc-panel-link" data-toc-panel-link="${n.heading.slug}">${n.heading.text}</a>`;
-      html += render(n.children);
-      html += '</li>';
-    }
-    html += '</ol>';
-    return html;
-  };
-
-  return render(root.children);
-};
-
-// ── Focus trap helper ───────────────────────────────────────────────────
 const trapFocus = (container: HTMLElement, e: KeyboardEvent): void => {
   const focusable = container.querySelectorAll<HTMLElement>(
     'a[href], button:not([disabled]), [tabindex]:not([tabindex="-1"])'
@@ -72,236 +30,115 @@ const trapFocus = (container: HTMLElement, e: KeyboardEvent): void => {
   }
 };
 
-// ── Main init ───────────────────────────────────────────────────────────
 const initTocNavigation = (): (() => void) => {
   const contentRoot = document.querySelector<HTMLElement>('[data-blog-content]');
-  const sidebar = document.querySelector<HTMLElement>('[data-toc-sidebar]');
-  const mobileMount = document.querySelector<HTMLElement>('[data-toc-mobile]');
-  const sidebarNav = sidebar?.querySelector<HTMLElement>('[data-toc-sidebar-nav]');
-  const tocLabel = sidebar?.dataset.tocLabel ?? '目次';
-  const tocOpenLabel = sidebar?.dataset.tocOpenLabel ?? '目次を開く';
-  const tocCloseLabel = sidebar?.dataset.tocCloseLabel ?? '目次を閉じる';
+  const root = document.querySelector<HTMLElement>('[data-toc-root]');
+  const toggle = root?.querySelector<HTMLButtonElement>('[data-toc-toggle]');
+  const panel = root?.querySelector<HTMLElement>('[data-toc-panel]');
+  const backdrop = root?.querySelector<HTMLElement>('[data-toc-backdrop]');
+  const closeBtn = root?.querySelector<HTMLButtonElement>('[data-toc-close]');
+  const nav = root?.querySelector<HTMLElement>('[data-toc-nav]');
 
-  if (!contentRoot || !mobileMount) {
+  if (!contentRoot || !root || !toggle || !panel || !backdrop || !closeBtn || !nav) {
     return () => {};
   }
 
-  // Gather heading elements from rendered content
   const headingEls = Array.from(contentRoot.querySelectorAll<HTMLElement>('h2, h3'));
-  if (headingEls.length < 2) {
-    return () => {};
-  }
-
-  // Read heading data from sidebar data attribute or from DOM
-  let headings: TocHeading[];
-  if (sidebar) {
-    const raw = sidebar.getAttribute('data-toc-headings');
-    headings = raw ? (JSON.parse(raw) as TocHeading[]) : [];
-  } else {
-    headings = headingEls.map((el) => ({
-      slug: el.id,
-      text: el.textContent?.trim() ?? '',
-      depth: parseInt(el.tagName[1], 10),
-    }));
-  }
-
-  if (headings.length < 2) {
+  const tocLinks = Array.from(root.querySelectorAll<HTMLAnchorElement>('[data-toc-link]'));
+  if (headingEls.length < 2 || tocLinks.length < 2) {
     return () => {};
   }
 
   const controller = new AbortController();
   const { signal } = controller;
   const timers = new Set<number>();
+  const tocOpenLabel = root.dataset.tocOpenLabel ?? '目次を開く';
+  const tocCloseLabel = root.dataset.tocCloseLabel ?? '目次を閉じる';
 
-  // ── State ───────────────────────────────────────────────────────────
   let activeSlug: string | null = null;
   let isPanelOpen = false;
+  let lastScroll = 0;
 
-  // ── Mobile TOC bar ──────────────────────────────────────────────────
-  const bar = document.createElement('div');
-  bar.className = 'toc-mobile-bar';
-  bar.setAttribute('role', 'button');
-  bar.setAttribute('tabindex', '0');
-  bar.setAttribute('aria-expanded', 'false');
-  bar.setAttribute('aria-controls', 'toc-slide-panel');
-  bar.setAttribute('aria-label', tocOpenLabel);
-  bar.innerHTML = `
-    <span class="toc-mobile-btn" data-toc-open-btn>
-      <span class="i-ic-round-list" aria-hidden="true"></span>
-      <span>${tocLabel}</span>
-    </span>
-  `;
-  mobileMount.appendChild(bar);
+  const applyPanelA11yState = (): void => {
+    if (isDesktopViewport()) {
+      panel.removeAttribute('role');
+      panel.removeAttribute('aria-modal');
+      panel.removeAttribute('aria-hidden');
+      return;
+    }
 
-  // ── Slide-in panel ──────────────────────────────────────────────────
-  const backdrop = document.createElement('div');
-  backdrop.className = 'toc-panel-backdrop';
-  backdrop.setAttribute('aria-hidden', 'true');
+    panel.setAttribute('role', 'dialog');
+    panel.setAttribute('aria-modal', 'true');
+    panel.setAttribute('aria-hidden', isPanelOpen ? 'false' : 'true');
+  };
 
-  const panel = document.createElement('div');
-  panel.className = 'toc-panel';
-  panel.id = 'toc-slide-panel';
-  panel.setAttribute('role', 'dialog');
-  panel.setAttribute('aria-modal', 'true');
-  panel.setAttribute('aria-label', tocLabel);
-  panel.innerHTML = `
-    <div class="toc-panel-header">
-      <span class="toc-panel-title">${tocLabel}</span>
-      <button
-        class="toc-panel-close"
-        type="button"
-        aria-label="${tocCloseLabel}"
-        data-toc-close-btn
-      >
-        <span class="i-ic-round-close" aria-hidden="true"></span>
-      </button>
-    </div>
-    <nav class="toc-panel-body" aria-label="${tocLabel}">
-      ${buildPanelTocHtml(headings)}
-    </nav>
-  `;
-
-  mobileMount.appendChild(backdrop);
-  mobileMount.appendChild(panel);
-
-  const closeBtn = panel.querySelector<HTMLButtonElement>('[data-toc-close-btn]')!;
-  const panelLinks = Array.from(panel.querySelectorAll<HTMLAnchorElement>('[data-toc-panel-link]'));
-
-  // ── Panel open / close ──────────────────────────────────────────────
   const openPanel = (): void => {
+    if (isDesktopViewport()) return;
+
     window.dispatchEvent(new CustomEvent('header-menu:close'));
     isPanelOpen = true;
+    root.classList.add('toc-root--open');
     panel.classList.add('toc-panel--open');
     backdrop.classList.add('toc-panel-backdrop--visible');
-    bar.setAttribute('aria-expanded', 'true');
+    toggle.setAttribute('aria-expanded', 'true');
+    toggle.setAttribute('aria-label', tocCloseLabel);
     document.body.style.overflow = 'hidden';
+    applyPanelA11yState();
     closeBtn.focus();
   };
 
-  const closePanel = (): void => {
+  const closePanel = (options: { restoreFocus?: boolean } = {}): void => {
     isPanelOpen = false;
+    root.classList.remove('toc-root--open');
     panel.classList.remove('toc-panel--open');
     backdrop.classList.remove('toc-panel-backdrop--visible');
-    bar.setAttribute('aria-expanded', 'false');
+    toggle.setAttribute('aria-expanded', 'false');
+    toggle.setAttribute('aria-label', tocOpenLabel);
     document.body.style.overflow = '';
-    bar.focus();
+    applyPanelA11yState();
+
+    if (options.restoreFocus) {
+      toggle.focus();
+    }
   };
 
-  bar.addEventListener('click', openPanel, { signal });
-  bar.addEventListener(
-    'keydown',
-    (e) => {
-      if (e.key === 'Enter' || e.key === ' ') {
-        e.preventDefault();
-        openPanel();
-      }
-    },
-    { signal }
-  );
-  closeBtn.addEventListener('click', closePanel, { signal });
-  backdrop.addEventListener('click', closePanel, { signal });
-  window.addEventListener('toc-panel:close', closePanel, { signal });
-
-  document.addEventListener(
-    'keydown',
-    (e) => {
-      if (!isPanelOpen) return;
-      if (e.key === 'Escape') {
-        e.preventDefault();
-        closePanel();
-      }
-      if (e.key === 'Tab') {
-        trapFocus(panel, e);
-      }
-    },
-    { signal }
-  );
-
-  // ── Scroll: sync mobile bar with header ─────────────────────────────
-  let lastScroll = 0;
-
   const handleBarScroll = (): void => {
-    if (isPanelOpen) return;
+    if (isPanelOpen || isDesktopViewport()) return;
     const currentScroll = window.scrollY;
 
     if (currentScroll <= 0) {
-      bar.classList.remove('toc-mobile-bar--hidden');
+      toggle.classList.remove('toc-mobile-bar--hidden');
     } else if (currentScroll > lastScroll && currentScroll > SCROLL_THRESHOLD) {
-      bar.classList.add('toc-mobile-bar--hidden');
+      toggle.classList.add('toc-mobile-bar--hidden');
     } else {
-      bar.classList.remove('toc-mobile-bar--hidden');
+      toggle.classList.remove('toc-mobile-bar--hidden');
     }
 
     lastScroll = currentScroll;
   };
 
-  window.addEventListener('scroll', handleBarScroll, { signal, passive: true });
-
-  // ── Smooth scroll on TOC link click ─────────────────────────────────
   const scrollToHeading = (slug: string): void => {
     const target = document.getElementById(slug);
     if (!target) return;
 
-    const barHeight = window.innerWidth < 1280 ? bar.offsetHeight : 0;
+    const barHeight = !isDesktopViewport() ? toggle.offsetHeight : 0;
     const offset = HEADER_HEIGHT + barHeight + 16;
     const top = target.getBoundingClientRect().top + window.scrollY - offset;
     window.scrollTo({ top, behavior: scrollBehavior() });
   };
 
-  // Sidebar links (SSR-rendered)
-  if (sidebar) {
-    const sidebarLinks = Array.from(sidebar.querySelectorAll<HTMLAnchorElement>('[data-toc-link]'));
-    for (const link of sidebarLinks) {
-      link.addEventListener(
-        'click',
-        (e) => {
-          e.preventDefault();
-          const slug = link.getAttribute('data-toc-link');
-          if (slug) scrollToHeading(slug);
-        },
-        { signal }
-      );
-    }
-  }
-
-  // Panel links
-  for (const link of panelLinks) {
-    link.addEventListener(
-      'click',
-      (e) => {
-        e.preventDefault();
-        const slug = link.getAttribute('data-toc-panel-link');
-        closePanel();
-        if (slug) {
-          // Small delay so the panel close animation doesn't interfere
-          const t = window.setTimeout(() => {
-            scrollToHeading(slug);
-            timers.delete(t);
-          }, 50);
-          timers.add(t);
-        }
-      },
-      { signal }
-    );
-  }
-
-  // ── IntersectionObserver: active heading tracking ───────────────────
-  const scrollSidebarNavToActiveLink = (link: HTMLElement): void => {
-    if (!sidebarNav || !isDesktopViewport() || sidebarNav.offsetParent === null) {
+  const scrollNavToActiveLink = (link: HTMLElement): void => {
+    if (!isDesktopViewport() || nav.offsetParent === null || nav.scrollHeight <= nav.clientHeight) {
       return;
     }
 
-    if (sidebarNav.scrollHeight <= sidebarNav.clientHeight) {
-      return;
-    }
-
-    const navRect = sidebarNav.getBoundingClientRect();
+    const navRect = nav.getBoundingClientRect();
     const linkRect = link.getBoundingClientRect();
 
     if (linkRect.top < navRect.top + SIDEBAR_SCROLL_MARGIN) {
       const delta = linkRect.top - navRect.top - SIDEBAR_SCROLL_MARGIN;
-      sidebarNav.scrollTo({
-        top: sidebarNav.scrollTop + delta,
+      nav.scrollTo({
+        top: nav.scrollTop + delta,
         behavior: scrollBehavior(),
       });
       return;
@@ -309,8 +146,8 @@ const initTocNavigation = (): (() => void) => {
 
     if (linkRect.bottom > navRect.bottom - SIDEBAR_SCROLL_MARGIN) {
       const delta = linkRect.bottom - navRect.bottom + SIDEBAR_SCROLL_MARGIN;
-      sidebarNav.scrollTo({
-        top: sidebarNav.scrollTop + delta,
+      nav.scrollTo({
+        top: nav.scrollTop + delta,
         behavior: scrollBehavior(),
       });
     }
@@ -320,31 +157,90 @@ const initTocNavigation = (): (() => void) => {
     if (slug === activeSlug) return;
     activeSlug = slug;
 
-    // Update sidebar
-    if (sidebar) {
-      const prev = sidebar.querySelector('.toc-sidebar-link.is-active');
-      prev?.classList.remove('is-active');
-      const next = sidebar.querySelector<HTMLElement>(`[data-toc-link="${slug}"]`);
-      next?.classList.add('is-active');
-      if (next) {
-        scrollSidebarNavToActiveLink(next);
+    for (const link of tocLinks) {
+      const isActive = link.getAttribute('data-toc-link') === slug;
+      link.classList.toggle('is-active', isActive);
+      if (isActive) {
+        scrollNavToActiveLink(link);
       }
-    }
-
-    // Update panel
-    for (const link of panelLinks) {
-      link.classList.toggle('is-active', link.getAttribute('data-toc-panel-link') === slug);
     }
   };
 
-  // Set initial active heading
-  if (headings.length > 0) {
-    setActiveHeading(headings[0].slug);
+  toggle.addEventListener(
+    'click',
+    () => {
+      if (isPanelOpen) {
+        closePanel({ restoreFocus: true });
+      } else {
+        openPanel();
+      }
+    },
+    { signal }
+  );
+  closeBtn.addEventListener('click', () => closePanel({ restoreFocus: true }), { signal });
+  backdrop.addEventListener('click', () => closePanel(), { signal });
+  window.addEventListener('toc-panel:close', () => closePanel(), { signal });
+  window.addEventListener('scroll', handleBarScroll, { signal, passive: true });
+  window.addEventListener(
+    'resize',
+    () => {
+      if (isPanelOpen && isDesktopViewport()) {
+        closePanel();
+      } else {
+        applyPanelA11yState();
+      }
+    },
+    { signal }
+  );
+
+  document.addEventListener(
+    'keydown',
+    (e) => {
+      if (!isPanelOpen) return;
+      if (e.key === 'Escape') {
+        e.preventDefault();
+        closePanel({ restoreFocus: true });
+      }
+      if (e.key === 'Tab') {
+        trapFocus(panel, e);
+      }
+    },
+    { signal }
+  );
+
+  for (const link of tocLinks) {
+    link.addEventListener(
+      'click',
+      (e) => {
+        e.preventDefault();
+        const slug = link.getAttribute('data-toc-link');
+        if (!slug) return;
+
+        if (isPanelOpen) {
+          closePanel();
+          const timer = window.setTimeout(() => {
+            scrollToHeading(slug);
+            timers.delete(timer);
+          }, 50);
+          timers.add(timer);
+          return;
+        }
+
+        scrollToHeading(slug);
+      },
+      { signal }
+    );
+  }
+
+  if (tocLinks.length > 0) {
+    const firstSlug = tocLinks[0].getAttribute('data-toc-link');
+    if (firstSlug) {
+      setActiveHeading(firstSlug);
+    }
   }
 
   const observer = new IntersectionObserver(
     (entries) => {
-      // Find the topmost intersecting heading
       const intersecting = entries
         .filter((e) => e.isIntersecting)
         .sort((a, b) => a.boundingClientRect.top - b.boundingClientRect.top);
@@ -367,18 +263,16 @@ const initTocNavigation = (): (() => void) => {
     observer.observe(el);
   }
 
-  // ── Cleanup ─────────────────────────────────────────────────────────
+  applyPanelA11yState();
+  handleBarScroll();
+
   return () => {
     controller.abort();
     observer.disconnect();
-    timers.forEach((t) => window.clearTimeout(t));
+    timers.forEach((timer) => window.clearTimeout(timer));
     timers.clear();
     document.body.style.overflow = '';
-
-    // Remove dynamically created elements
-    bar.remove();
-    backdrop.remove();
-    panel.remove();
+    closePanel();
   };
 };
 

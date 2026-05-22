@@ -2,11 +2,14 @@ import { defineConfig, fontProviders } from 'astro/config';
 import mdx from '@astrojs/mdx';
 import UnoCSS from 'unocss/astro';
 import sitemap from '@astrojs/sitemap';
+import { visualizer } from 'rollup-plugin-visualizer';
 import {
   markdownRehypePlugins,
   markdownSyntaxHighlight,
   sharedRemarkPlugins,
 } from './src/lib/markdown/pluginPipelines.ts';
+
+const analyzeBundle = process.env.ANALYZE === 'true';
 
 const readMetaAttribute = (meta, attributeName) => {
   if (typeof meta !== 'string' || meta.length === 0) {
@@ -134,6 +137,15 @@ export default defineConfig({
     inlineStylesheets: 'auto',
   },
   vite: {
+    plugins: analyzeBundle
+      ? [
+          visualizer({
+            filename: 'dist/stats.html',
+            gzipSize: true,
+            brotliSize: true,
+          }),
+        ]
+      : [],
     build: {
       manifest: true,
       cssCodeSplit: true,
