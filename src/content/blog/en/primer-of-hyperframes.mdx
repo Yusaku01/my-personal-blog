@@ -1,0 +1,94 @@
+---
+title: 'Primer of HyperFrames. Making Videos HTML-first'
+description: 'I used to feel some distance from video editing. Here is what I felt after trying HTML-first video creation with HyperFrames.'
+publishDate: 2026-05-23
+author: 'Saku'
+image: '../../../assets/images/blog/common/image_thumnail.png'
+tags: ['AI agents', 'Video', 'HTML', 'HyperFrames']
+---
+
+In this article, I will share my experience trying HTML-first video creation with HyperFrames.
+
+## The Barrier to Video Editing
+
+In the past, I have lightly tried Final Cut Pro, Adobe Premiere Pro, and iMovie.
+
+They were all fun to use, and even just moving video or sound a little gave me the feeling that I was creating something with my own hands. At the same time, it felt overwhelming because the number of things to consider suddenly increased: timelines, asset management, audio, captions, exporting, and more.
+
+Recently, these video editing tools probably include AI features and AI integrations too. I think there are also more situations where tools like GPT can help.
+
+Even so, I still feel a certain distance from video creation. I have two conflicting feelings at the same time: "I would like to make something quickly" and "but making it properly seems difficult."
+
+## How I Came Across HyperFrames
+
+I had come across the name HyperFrames a few times on social media and in various articles.
+
+Later, I noticed that HyperFrames was available as a plugin in the Codex app. Since it seemed like something I could try within my usual workflow, I decided to give it a quick try.
+
+I didn't intend to dive deep into it right away. I just wanted to take a quick look and see what it was all about.
+
+## What Is HyperFrames?
+
+> **HyperFrames**  
+> A tool for creating videos from HTML and rendering them as MP4 files.
+
+On the official site, HyperFrames is described as an engine that turns HTML into video. It also emphasizes its ease of use for developers and AI agents[^1].
+
+My impression is that it is closer to a "video-as-code" tool than a GUI video editing application. Since previewing, inspection, and rendering can be done via the CLI, it allows you to handle video in a workflow that feels similar to standard development work[^2].
+
+In this article, I don't intend to cover all of HyperFrames' features comprehensively. Instead, I will focus on the low barrier to entry I experienced after trying it out.
+
+## Asking AI to Create a Video Using Prompts
+
+This time, I asked an AI to create a promotional video of sorts for SAKUSPACE.
+
+Initially, I created a roughly 20-second video based on HTML. I also tried a workflow where the video was built as an extension of a website, making it compatible with the Astro pages and components I use for my blog.
+
+What I found interesting was that I could approach video creation from the context of HTML and Astro, rather than opening video editing software and directly manipulating a timeline.
+
+The rendered video is below.
+
+<video
+  class="w-full h-auto"
+  controls
+  playsInline
+  preload="metadata"
+  poster="/images/blog/img_hyperframes-pipeline.png"
+>
+  <source src="/videos/blog/sakuspace-promo-astro.mp4" type="video/mp4" />
+  Your browser does not support the video tag.
+</video>
+
+Of course, making a high-quality video requires knowledge of video design and structure. You also need to consider motion and sound. Being able to write in HTML does not automatically mean you can make a good video.
+
+Even so, it was helpful for me that the first step existed as an extension of the Web tools I usually work with.
+
+## The Feeling of HTML-first
+
+Remotion is another option for creating videos with code. It is well-known as a tool for creating videos with React[^3].
+
+On the other hand, what left an impression on me was that HyperFrames leans toward being "HTML-first."
+
+That said, I have not used Remotion or HyperFrames deeply enough to compare them in detail. To be honest, I do not know which one is better. Even if you want to make a video using a Web service repository as material, the better fit will likely depend on whether that service is built with React or an HTML-based framework such as Astro.
+
+For me, HTML felt more approachable than a completely new video editing interface. If you have even a little experience with HTML and CSS, you may find that you can start from a point much closer than the phrase "make a video" might suggest.
+
+I cannot say for sure how easy HTML is for AI to handle. Still, a setup where an AI agent can write HTML and then use the CLI to inspect and render it seemed AI-friendly to me.
+
+## I Want to Keep Exploring
+
+I have not used HyperFrames extensively yet.
+
+So I will not say that HyperFrames is universal or that it is the best choice for everyone. If I tried to build something more polished, I am sure I would run into difficulties specific to video creation.
+
+Even so, I did feel that it helped reduce the distance I had felt from video production.
+
+Especially for people who are familiar with HTML or Web frontend development but feel some distance from video production, it seems worth trying.
+
+I want to keep exploring this tool a little more. I would like to organize the actual usage flow, the trial workflow, how it feels when combined with Astro, and security considerations in separate articles.
+
+[^1]: HyperFrames official site: https://hyperframes.video/
+
+[^2]: HyperFrames CLI documentation: https://hyperframes.app/en/docs/5-packages/cli
+
+[^3]: Remotion official site: https://www.remotion.dev/
