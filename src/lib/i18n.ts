@@ -91,12 +91,12 @@ export const uiText = {
         en: 'All',
       },
       personal: {
-        ja: '個人ブログ',
-        en: 'Personal blog',
+        ja: '個人',
+        en: 'Blog',
       },
       zenn: {
-        ja: 'Zenn（Scrap含む）',
-        en: 'Zenn and Scraps',
+        ja: 'Zenn',
+        en: 'Zenn',
       },
       qiita: {
         ja: 'Qiita',
