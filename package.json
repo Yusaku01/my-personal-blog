@@ -31,13 +31,13 @@
     "analyze": "ANALYZE=true astro build"
   },
   "dependencies": {
-    "@astrojs/cloudflare": "^13.3.0",
-    "@astrojs/mdx": "^5.0.4",
+    "@astrojs/cloudflare": "^13.5.5",
+    "@astrojs/mdx": "^5.0.6",
     "@astrojs/rss": "^4.0.18",
-    "@astrojs/sitemap": "^3.7.2",
+    "@astrojs/sitemap": "^3.7.3",
     "@fontsource/zen-kaku-gothic-new": "^5.2.7",
     "@resvg/resvg-js": "^2.6.2",
-    "astro": "^6.2.1",
+    "astro": "^6.3.8",
     "budoux": "^0.7.0",
     "cheerio": "^1.0.0-rc.12",
     "date-fns": "^2.30.0",
@@ -99,7 +99,7 @@
     "unified": "^11.0.5",
     "unocss": "^66.6.7",
     "vitest": "^4.1.2",
-    "wrangler": "4.87.0"
+    "wrangler": "4.95.0"
   },
   "simple-git-hooks": {
     "pre-commit": "pnpm exec lint-staged",
@@ -129,8 +129,5 @@
   },
   "keywords": [],
   "author": "",
-  "license": "ISC",
-  "volta": {
-    "node": "22.20.0"
-  }
+  "license": "ISC"
 }
