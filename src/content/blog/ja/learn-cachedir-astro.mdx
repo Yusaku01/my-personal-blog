@@ -1,0 +1,122 @@
+---
+title: 'cacheDirからみるAstroプロジェクト運用最適化の仕組み'
+description: ''
+publishDate: 2026-05-30
+author: 'Saku'
+image: '../../../assets/images/blog/common/image_thumnail.png'
+tags: ['個人ブログ', 'cacheDir', 'Astro', 'cache', 'Vite']
+---
+
+import { Image } from 'astro:assets';
+import cacheDirFlowImage from '../../../assets/images/blog/learn-cachedir-astro/cache-dir-flow.png';
+import generatedFilesMapImage from '../../../assets/images/blog/learn-cachedir-astro/generated-files-map.png';
+
+この記事では、AstroのcacheDirおよびキャッシュに関連する機能？について学びます。というか整理します。
+
+:::caution
+前段として、**キャッシュ**についてイメージを持っておく必要があります。
+ここでいうキャッシュとは、再計算・再変換を避けるために、前回の処理結果をローカルのファイルシステムに保存しておくもの。すなわち同じ作業をなるべく効率化するための仕組みです。
+
+基本的にHTTPキャッシュについては触れず、より広義の意味でのキャッシュをメインで扱います。
+:::
+
+## cacheDirという概念
+
+<Image
+  src={cacheDirFlowImage}
+  alt="srcからcacheを経由してdistへ出力する流れを、ヒヤオが途中メモを置く様子で表した図"
+  class="w-full h-auto"
+/>
+
+AstroのcacheDirは、キャッシュを保存するディレクトリのことです。デフォルトでは、`node_modules/.astro`に保存されます。
+
+ここに保存されるキャッシュとは、次回以降のビルドを速くするためのビルドアーティファクトです。代表例としては、処理済み画像、Content Layerのデータストア、フォント関連キャッシュなどがあります。`dist/`に出力される配信用ファイルとは別物です。
+
+Astroでは、astro.config.jsファイルに、cacheDirという設定項目が用意されています。キャッシュを保存したいディレクトリを開発者が任意に選択できます。
+
+```astro.config.js
+export default {
+  cacheDir: './astro-cache',
+};
+```
+
+このcacheDirによるキャッシュ保存とビルド時間の最適化は、ローカル開発時だけでなく、ホスティングサービス側のCI/CDパイプラインでも利用できます。
+
+例えば、Cloudflareでは、設定項目からビルドキャッシュを**有効**にすると、pnpm storeやAstro既定の`node_modules/.astro`などにデータを保存・再利用し、ビルドを高速化できます。
+
+基本的に、AstroのcacheDirに保存されるキャッシュは、ローカルではディレクトリが残っている限り再利用されます。Astro側に「何日で必ず削除される」という一律の有効期限があるわけではありません。
+
+ただし、CI/CDやホスティングサービス側のビルドキャッシュには保存期限があります。たとえばCloudflareでは、最後に読まれてから7日後などの条件で削除されます。
+
+## Astroプロジェクトで生成・保存されるもの
+
+Astroでプロジェクトを構築する場合、共通で生成・保存されるデータやディレクトリがあります。
+
+例えばWebサイトを実装する場合、HTML・CSS・JS・画像アセットなどはそのプロジェクト独自の状態になります。このセクションでは、プロジェクト固有のデータではなく、Astroプロジェクトのbuild時・dev時に自動生成、保存されることが多いものを整理します。
+
+<Image
+  src={generatedFilesMapImage}
+  alt="distは配信用ファイル、.astroやcacheDirや.viteは開発やビルドの作業用データとして分けて整理した図"
+  class="w-full h-auto"
+/>
+
+一部astro.configによる設定や使用するパッケージマネージャーによって異なる部分はあると思いますが、チートシート代わりにお役立ていただければと思います。
+
+**今回整理するディレクトリ**
+
+```text
+my-astro-project/
+├─ dist/                    # build後に公開される最終成果物
+│  └─ _astro/               # 配信用のCSS・JS・最適化済みアセット
+├─ .astro/                  # dev/check向けの型定義やschema
+├─ .astro-cache/            # このブログで指定しているcacheDir
+├─ node_modules/
+│  ├─ .astro/               # Astro既定のcacheDir
+│  ├─ .vite/                # Viteの依存関係キャッシュ
+│  ├─ astro/                # Astro本体
+│  └─ .pnpm/                # pnpmのvirtual store (pnpm使ってる場合)
+└─ astro.config.mjs
+```
+
+### `dist/`
+- `astro build`の最終出力先です。(他フレームワークでも共通だったりするので、説明不要かもですが...)
+- 静的サイト配信用のHTML、CSS、JS、画像などがここに生成されます。
+
+### `dist/_astro/`
+- `dist/`の中でも、Astro/Viteが生成したCSS・JS・最適化済みアセットなどが入る場所です。
+- ブラウザに配信される本番用ファイルで、`node_modules/.astro/`のようなビルド用キャッシュとは別物です。
+
+### `node_modules/.astro/`（cacheDirとしてのデフォルト配置箇所）
+- Astroのビルド時キャッシュ置き場です。
+- 画像変換結果、Content collections[^2]のデータストア、フォント関連キャッシュなど、次回以降のビルドを速くするための中間データが保存されます。
+- astro.config.js内にcacheDirの設定がある場合は、そちらが優先されます。
+
+### `.astro/`
+- Astroの開発用メタデータ置き場です。
+- 主にAstroが生成する型定義やContent collectionsのschemaなど、開発時に使う作業用ファイルが入ります。
+- Content Layerの`data-store.json`[^1]は、実行や設定によってcacheDir側にも生成されます。
+
+### `node_modules/.vite/`
+- Viteの依存関係最適化キャッシュ置き場です。
+- npmパッケージやAstroランタイム周辺を事前バンドルしたものが入り、次回以降の開発サーバー起動や初回アクセスを速くします。
+
+### `node_modules/astro/`
+- インストールされたAstro本体のパッケージです。
+- `astro build`や`astro dev`で実行されるフレームワーク側のコードがここにあります。
+
+### `.pnpm/v11`
+- pnpmが依存パッケージを管理する内部ディレクトリの一部です。
+- Astro固有ではなく、pnpmがパッケージ解決や実体管理のために使う領域なのです。
+
+[^1]: `data-store.json`は、Content collectionsが読み込んだ記事やメタデータをAstro内部で扱いやすくするための保存先です。通常は開発者が直接編集するものではなく、元の`.md`や`.mdx`を編集します。
+[^2]: Content collectionsは、AstroでMarkdownやMDXなどのコンテンツを型安全に管理するための仕組みです。公式ドキュメント: [Content collections | Astro Docs](https://docs.astro.build/ja/guides/content-collections/)
+
+## 参考資料
+
+- [Configuration Reference | Astro Docs](https://docs.astro.build/ja/reference/configuration-reference/#cachedir)
+- [Images: Asset caching | Astro Docs](https://docs.astro.build/ja/guides/images/#asset-caching)
+- [Content collections | Astro Docs](https://docs.astro.build/ja/guides/content-collections/)
+- [Build caching | Cloudflare Docs](https://developers.cloudflare.com/pages/configuration/build-caching/)
+- [Dependency Pre-Bundling | Vite](https://vite.dev/guide/dep-pre-bundling)
+- [pnpm store | pnpm](https://pnpm.io/cli/store)
+- [Symlinked node_modules structure | pnpm](https://pnpm.io/symlinked-node-modules-structure)
