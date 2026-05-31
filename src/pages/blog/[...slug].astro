@@ -573,9 +573,15 @@ const locale = 'ja';
   .blog-article-content pre.mermaid {
     background: transparent;
     margin: 2rem 0;
+    min-height: 12rem;
     overflow-x: auto;
     padding: 0;
     text-align: center;
+  }
+
+  html.js .blog-article-content pre.mermaid:not([data-processed='true']) {
+    color: transparent;
+    visibility: hidden;
   }
 
   .blog-article-content pre.mermaid svg {

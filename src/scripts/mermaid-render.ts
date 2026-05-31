@@ -1,12 +1,15 @@
 type MermaidModule = typeof import('mermaid');
 
 let mermaidModule: MermaidModule | undefined;
+let isMermaidPageLoadBound = false;
 
 const getMermaidTheme = () =>
   document.documentElement.classList.contains('dark') ? 'dark' : 'default';
 
-export const bindMermaidDiagrams = async () => {
-  const diagrams = Array.from(document.querySelectorAll<HTMLElement>('pre.mermaid'));
+const renderMermaidDiagrams = async () => {
+  const diagrams = Array.from(
+    document.querySelectorAll<HTMLElement>('pre.mermaid:not([data-processed="true"])')
+  );
 
   if (diagrams.length === 0) {
     return;
@@ -22,4 +25,17 @@ export const bindMermaidDiagrams = async () => {
   });
 
   await mermaid.run({ nodes: diagrams });
+};
+
+export const bindMermaidDiagrams = () => {
+  void renderMermaidDiagrams();
+
+  if (isMermaidPageLoadBound) {
+    return;
+  }
+
+  document.addEventListener('astro:page-load', () => {
+    void renderMermaidDiagrams();
+  });
+  isMermaidPageLoadBound = true;
 };

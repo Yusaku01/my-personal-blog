@@ -113,6 +113,8 @@ const gaId = import.meta.env.PUBLIC_GOOGLE_ANALYTICS_ID;
     <script is:inline data-astro-rerun>
       // Wrap in an IIFE to avoid leaking identifiers across reruns/navigation.
       (() => {
+        document.documentElement.classList.add('js');
+
         const STORAGE_KEY = 'theme';
 
         const resolveTheme = () => {
@@ -132,6 +134,7 @@ const gaId = import.meta.env.PUBLIC_GOOGLE_ANALYTICS_ID;
         if (!window.__astroThemeSync) {
           document.addEventListener('astro:before-swap', (event) => {
             const theme = resolveTheme();
+            event.newDocument.documentElement.classList.add('js');
             event.newDocument.documentElement.classList.toggle('dark', theme === 'dark');
           });
 
