@@ -585,6 +585,22 @@ const estimatedReadingTimeMinutes = getEstimatedReadingTimeMinutes(post.body ?? 
     width: min(28rem, 100%);
   }
 
+  .blog-article-content pre.mermaid {
+    background: transparent;
+    margin: 2rem 0;
+    overflow-x: auto;
+    padding: 0;
+    text-align: center;
+  }
+
+  .blog-article-content pre.mermaid svg {
+    display: block;
+    height: auto;
+    margin: 0 auto;
+    max-width: 100%;
+    width: min(28rem, 100%);
+  }
+
   .blog-image-modal {
     opacity: 0;
     pointer-events: none;
@@ -898,9 +914,11 @@ const estimatedReadingTimeMinutes = getEstimatedReadingTimeMinutes(post.body ?? 
 <script>
   import { bindCodeCopy } from '@/scripts/code-copy';
   import { bindImageZoom } from '@/scripts/image-zoom';
+  import { bindMermaidDiagrams } from '@/scripts/mermaid-render';
   import { bindTocNavigation } from '@/scripts/toc-navigation';
 
   bindCodeCopy();
   bindImageZoom();
+  bindMermaidDiagrams();
   bindTocNavigation();
 </script>

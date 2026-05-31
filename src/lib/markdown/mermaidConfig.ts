@@ -12,13 +12,20 @@ export const sharedRehypePlugins = [
   footnoteBackrefIcon,
 ];
 
-export const mermaidRehypePlugin = [
-  rehypeMermaid,
-  {
-    strategy: 'img-svg',
-    dark: true,
-    prefix: 'mermaid-diagram',
-  },
-] as const;
+export const shouldRenderMermaidOnClient = (): boolean =>
+  process.env.WORKERS_CI === '1' || process.env.ASTRO_MERMAID_STRATEGY === 'pre-mermaid';
+
+const mermaidRehypeOptions = shouldRenderMermaidOnClient()
+  ? {
+      strategy: 'pre-mermaid',
+      prefix: 'mermaid-diagram',
+    }
+  : {
+      strategy: 'img-svg',
+      dark: true,
+      prefix: 'mermaid-diagram',
+    };
+
+export const mermaidRehypePlugin = [rehypeMermaid, mermaidRehypeOptions] as const;
 
 export const markdownRehypePlugins = [...sharedRehypePlugins, mermaidRehypePlugin];

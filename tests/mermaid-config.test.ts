@@ -3,6 +3,7 @@ import {
   markdownRehypePlugins,
   markdownSyntaxHighlight,
   mermaidRehypePlugin,
+  shouldRenderMermaidOnClient,
 } from '../src/lib/markdown/mermaidConfig';
 
 describe('mermaid markdown config', () => {
@@ -22,5 +23,15 @@ describe('mermaid markdown config', () => {
       dark: true,
       prefix: 'mermaid-diagram',
     });
+  });
+
+  it('uses client-side Mermaid rendering in Workers Builds', () => {
+    process.env.WORKERS_CI = '1';
+
+    try {
+      expect(shouldRenderMermaidOnClient()).toBe(true);
+    } finally {
+      delete process.env.WORKERS_CI;
+    }
   });
 });

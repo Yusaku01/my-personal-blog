@@ -27,7 +27,7 @@
     "mermaid:install-browser": "playwright install chromium chromium-headless-shell",
     "generate-ogp": "node scripts/build-ogp.js",
     "build:with-ogp": "pnpm run generate-ogp && pnpm run build",
-    "build:cloudflare": "pnpm exec playwright install chromium chromium-headless-shell && pnpm run build:with-ogp",
+    "build:cloudflare": "ASTRO_MERMAID_STRATEGY=pre-mermaid pnpm run build:with-ogp",
     "analyze": "ANALYZE=true astro build",
     "db:migrate:local": "wrangler d1 migrations apply CONTACT_DB --local",
     "db:migrate:remote": "wrangler d1 migrations apply CONTACT_DB --remote"
@@ -45,6 +45,7 @@
     "date-fns": "^2.30.0",
     "gray-matter": "^4.0.3",
     "he": "^1.2.0",
+    "mermaid": "^11.12.3",
     "open-graph-scraper": "^4.8.1",
     "remark-directive": "^4.0.0",
     "sanitize-filename": "^1.6.3",
