@@ -21,7 +21,7 @@ describe('createContactActionHandler', () => {
         email: 'invalid-email',
         subject: '',
         message: '',
-        'g-recaptcha-response': '',
+        'cf-turnstile-response': '',
       })
     );
 
@@ -39,7 +39,7 @@ describe('createContactActionHandler', () => {
     const handler = createContactActionHandler({
       submitContactSubmission: vi.fn().mockResolvedValue({
         submissionId: 'submission-1',
-        provider: 'resend',
+        provider: 'cloudflare-email',
         providerMessageId: 'email-1',
       }),
     });
@@ -51,7 +51,7 @@ describe('createContactActionHandler', () => {
           email: 'saku@example.com',
           subject: 'Hello',
           message: 'World',
-          'g-recaptcha-response': 'token',
+          'cf-turnstile-response': 'token',
         })
       )
     ).resolves.toEqual({
@@ -71,7 +71,7 @@ describe('createContactActionHandler', () => {
         email: 'saku@example.com',
         subject: 'Hello',
         message: 'World',
-        'g-recaptcha-response': 'token',
+        'cf-turnstile-response': 'token',
       })
     );
 

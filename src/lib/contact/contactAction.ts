@@ -1,3 +1,4 @@
+import { z } from 'astro/zod';
 import { contactFormSchema } from '../../types';
 import type { ContactForm } from '../../types';
 import { ContactSubmissionError } from './contactService';
@@ -21,6 +22,10 @@ type ContactActionDependencies = {
   submitContactSubmission: (input: ContactSubmissionInput) => Promise<{ submissionId: string }>;
 };
 
+type ContactActionOptions = {
+  remoteIp?: string;
+};
+
 const readFormValue = (formData: FormData, key: string): string => {
   const value = formData.get(key);
   return typeof value === 'string' ? value : '';
@@ -36,7 +41,10 @@ export const extractContactFormValues = (formData: FormData): ContactForm => ({
 export const createContactActionHandler = ({
   submitContactSubmission,
 }: ContactActionDependencies) => {
-  return async (formData: FormData): Promise<ContactActionResult> => {
+  return async (
+    formData: FormData,
+    { remoteIp }: ContactActionOptions = {}
+  ): Promise<ContactActionResult> => {
     const values = extractContactFormValues(formData);
     const parsed = contactFormSchema.safeParse(values);
 
@@ -44,7 +52,7 @@ export const createContactActionHandler = ({
       return {
         ok: false,
         values,
-        fieldErrors: parsed.error.flatten().fieldErrors,
+        fieldErrors: z.flattenError(parsed.error).fieldErrors,
         message: '入力内容を確認してください。',
       };
     }
@@ -52,7 +60,8 @@ export const createContactActionHandler = ({
     try {
       const result = await submitContactSubmission({
         ...parsed.data,
-        recaptchaToken: readFormValue(formData, 'g-recaptcha-response'),
+        turnstileToken: readFormValue(formData, 'cf-turnstile-response'),
+        remoteIp,
       });
 
       return {

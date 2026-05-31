@@ -1,4 +1,5 @@
 import { defineConfig, fontProviders } from 'astro/config';
+import cloudflare from '@astrojs/cloudflare';
 import mdx from '@astrojs/mdx';
 import UnoCSS from 'unocss/astro';
 import sitemap from '@astrojs/sitemap';
@@ -48,7 +49,11 @@ const codeFilenameMetaTransformer = {
 export default defineConfig({
   site: 'https://saku-space.com',
   cacheDir: './.astro-cache',
-  output: 'static',
+  output: 'server',
+  adapter: cloudflare({
+    imageService: 'compile',
+    prerenderEnvironment: 'node',
+  }),
   fonts: [
     {
       name: 'Zen Kaku Gothic New',

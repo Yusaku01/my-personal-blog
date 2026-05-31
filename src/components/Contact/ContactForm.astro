@@ -1,0 +1,391 @@
+---
+import type { ContactActionResult } from '../../lib/contact/contactAction';
+import type { Locale } from '../../lib/i18n';
+
+type ContactFormText = {
+  intro: string;
+  introSub: string;
+  sentTitle: string;
+  sentBody: string;
+  sentAction: string;
+  name: string;
+  email: string;
+  subject: string;
+  message: string;
+  required: string;
+  submit: string;
+  submitting: string;
+  retry: string;
+  turnstileMissing: string;
+  genericError: string;
+};
+
+type Props = {
+  action: string;
+  locale: Locale;
+  sent: boolean;
+  turnstileSiteKey: string;
+  result?: { data?: ContactActionResult; error?: unknown } | undefined;
+};
+
+const { action, locale, sent, turnstileSiteKey, result } = Astro.props;
+
+const text: Record<Locale, ContactFormText> = {
+  ja: {
+    intro: 'ご質問やお問い合わせがありましたら、以下のフォームからご連絡ください。',
+    introSub: '可能な限り早くご返信いたします。',
+    sentTitle: '送信完了',
+    sentBody: 'お問い合わせありがとうございます。できるだけ早くご返信いたします。',
+    sentAction: '新しく問い合わせる',
+    name: 'お名前',
+    email: 'メールアドレス',
+    subject: '件名',
+    message: 'メッセージ',
+    required: '必須',
+    submit: '送信する',
+    submitting: '送信中...',
+    retry: '入力内容を確認してください。',
+    turnstileMissing: 'Turnstile のサイトキーが未設定です。設定後に送信を有効化してください。',
+    genericError: '送信に失敗しました。時間をおいて再度お試しください。',
+  },
+  en: {
+    intro: 'If you have a question or inquiry, please use the form below.',
+    introSub: 'I will reply as soon as I can.',
+    sentTitle: 'Message sent',
+    sentBody: 'Thank you for your message. I will reply as soon as I can.',
+    sentAction: 'Send another message',
+    name: 'Name',
+    email: 'Email',
+    subject: 'Subject',
+    message: 'Message',
+    required: 'Required',
+    submit: 'Send',
+    submitting: 'Sending...',
+    retry: 'Please check your input.',
+    turnstileMissing:
+      'Turnstile site key is not configured. Submissions will be enabled after setup.',
+    genericError: 'Could not send your message. Please try again later.',
+  },
+};
+
+const t = text[locale];
+const contactPath = locale === 'ja' ? '/contact' : '/en/contact';
+const failedSubmission = result?.data && !result.data.ok ? result.data : null;
+const values = failedSubmission?.values ?? {
+  name: '',
+  email: '',
+  subject: '',
+  message: '',
+};
+const fieldErrors = failedSubmission?.fieldErrors ?? {};
+const formError = failedSubmission?.message ?? (result?.error ? t.genericError : null);
+
+const fields = {
+  name: {
+    id: 'contact-name',
+    label: t.name,
+    type: 'text',
+    autocomplete: 'name',
+    value: values.name,
+    error: fieldErrors.name?.join(locale === 'ja' ? '、' : ', '),
+    maxlength: 80,
+  },
+  email: {
+    id: 'contact-email',
+    label: t.email,
+    type: 'email',
+    autocomplete: 'email',
+    value: values.email,
+    error: fieldErrors.email?.join(locale === 'ja' ? '、' : ', '),
+    maxlength: 254,
+  },
+  subject: {
+    id: 'contact-subject',
+    label: t.subject,
+    type: 'text',
+    autocomplete: 'off',
+    value: values.subject,
+    error: fieldErrors.subject?.join(locale === 'ja' ? '、' : ', '),
+    maxlength: 120,
+  },
+} as const;
+
+const messageError = fieldErrors.message?.join(locale === 'ja' ? '、' : ', ');
+---
+
+<div class="lg:px-8">
+  {
+    sent && (
+      <div
+        class="contact-sent mx-auto max-w-2xl rounded-md border p-8 text-center"
+        role="status"
+        aria-live="polite"
+      >
+        <h2 class="mb-3 text-2xl font-bold">{t.sentTitle}</h2>
+        <p class="leading-relaxed">{t.sentBody}</p>
+        <a class="contact-sent-action mt-6 inline-flex" href={contactPath}>
+          {t.sentAction}
+        </a>
+      </div>
+    )
+  }
+
+  {
+    !sent && (
+      <>
+        <p class="mb-8 text-center leading-relaxed text-gray-700 dark:text-gray-200">
+          {t.intro}
+          <br class="hidden sm:block" />
+          {t.introSub}
+        </p>
+
+        <form
+          method="POST"
+          action={action}
+          data-contact-form
+          novalidate
+          class="mx-auto max-w-2xl space-y-6"
+        >
+          <div
+            data-contact-status
+            class="sr-only"
+            role="status"
+            aria-live="polite"
+            aria-atomic="true"
+          />
+
+          {formError && (
+            <p data-contact-error-summary class="contact-error-summary" role="alert">
+              {formError}
+            </p>
+          )}
+          {!formError && (
+            <p data-contact-error-summary hidden class="contact-error-summary" role="alert" />
+          )}
+
+          {Object.entries(fields).map(([name, field]) => (
+            <div class="contact-field">
+              <label for={field.id} class="mb-2 flex items-center gap-2">
+                <span class="font-bold text-gray-700 dark:text-white">{field.label}</span>
+                <span class="rounded-md bg-gray-200 px-2 py-0.5 text-xs font-bold text-gray-700">
+                  {t.required}
+                </span>
+              </label>
+              <input
+                id={field.id}
+                name={name}
+                type={field.type}
+                autocomplete={field.autocomplete}
+                maxlength={field.maxlength}
+                value={field.value}
+                required
+                data-contact-control
+                data-contact-label={field.label}
+                aria-invalid={field.error ? 'true' : undefined}
+                aria-describedby={`${field.id}-error`}
+                aria-errormessage={`${field.id}-error`}
+                class="contact-control"
+              />
+              <p id={`${field.id}-error`} class="contact-error" data-contact-field-error>
+                {field.error}
+              </p>
+            </div>
+          ))}
+
+          <div class="contact-field">
+            <label for="contact-message" class="mb-2 flex items-center gap-2">
+              <span class="font-bold text-gray-700 dark:text-white">{t.message}</span>
+              <span class="rounded-md bg-gray-200 px-2 py-0.5 text-xs font-bold text-gray-700">
+                {t.required}
+              </span>
+            </label>
+            <textarea
+              id="contact-message"
+              name="message"
+              rows="8"
+              maxlength="4000"
+              required
+              data-contact-control
+              data-contact-label={t.message}
+              aria-invalid={messageError ? 'true' : undefined}
+              aria-describedby="contact-message-error contact-message-count"
+              aria-errormessage="contact-message-error"
+              class="contact-control max-h-80 min-h-48 resize-y"
+            >
+              {values.message}
+            </textarea>
+            <div class="mt-1 flex items-start justify-between gap-4">
+              <p id="contact-message-error" class="contact-error" data-contact-field-error>
+                {messageError}
+              </p>
+              <p id="contact-message-count" class="text-xs text-gray-500 dark:text-gray-400">
+                <span data-contact-message-count>{values.message.length}</span>/4000
+              </p>
+            </div>
+          </div>
+
+          {turnstileSiteKey ? (
+            <div class="grid justify-center">
+              <div class="cf-turnstile" data-sitekey={turnstileSiteKey} />
+            </div>
+          ) : (
+            <p class="rounded-md border border-amber-200 bg-amber-50 p-3 text-sm text-amber-700">
+              {t.turnstileMissing}
+            </p>
+          )}
+
+          <div class="text-center">
+            <button
+              type="submit"
+              data-contact-submit
+              data-default-label={t.submit}
+              data-pending-label={t.submitting}
+              data-invalid-message={t.retry}
+              data-turnstile-message={t.turnstileMissing}
+              class="btn-primary disabled:cursor-not-allowed disabled:opacity-70"
+              disabled={!turnstileSiteKey}
+            >
+              {t.submit}
+            </button>
+          </div>
+        </form>
+      </>
+    )
+  }
+</div>
+
+<style>
+  .contact-control {
+    width: 100%;
+    border: 1px solid rgb(209 213 219);
+    border-radius: 0.375rem;
+    background: rgb(255 255 255);
+    color: rgb(17 24 39);
+    font-size: 1rem;
+    min-height: 3rem;
+    padding: 0.75rem;
+    transition:
+      border-color 160ms ease,
+      outline-color 160ms ease,
+      background-color 160ms ease;
+  }
+
+  .contact-control:focus-visible {
+    border-color: rgb(75 85 99);
+    outline: 2px solid rgb(75 85 99 / 0.62);
+    outline-offset: 2px;
+  }
+
+  .contact-control[aria-invalid='true'] {
+    border-color: rgb(220 38 38);
+    background-color: rgb(254 242 242);
+    outline: 2px solid rgb(220 38 38 / 0.55);
+    outline-offset: 2px;
+  }
+
+  .contact-control[aria-invalid='true']:focus-visible {
+    border-color: rgb(220 38 38);
+    outline-color: rgb(220 38 38);
+  }
+
+  .contact-error-summary {
+    border: 1px solid rgb(254 202 202);
+    border-radius: 0.375rem;
+    background: rgb(254 242 242);
+    color: rgb(185 28 28);
+    font-size: 0.875rem;
+    padding: 1rem;
+  }
+
+  .contact-error {
+    color: rgb(220 38 38);
+    font-size: 0.875rem;
+    margin-top: 0.25rem;
+  }
+
+  .contact-error:empty {
+    display: none;
+  }
+
+  :global(html.dark) .contact-control {
+    border-color: rgb(75 85 99);
+    background: rgb(249 250 251);
+    color: rgb(17 24 39);
+  }
+
+  :global(html.dark) .contact-control:focus-visible {
+    border-color: rgb(203 213 225);
+    outline-color: rgb(203 213 225 / 0.8);
+  }
+
+  :global(html.dark) .contact-control[aria-invalid='true'] {
+    border-color: rgb(248 113 113);
+    background: rgb(255 241 242);
+    outline: 3px solid rgb(248 113 113 / 0.75);
+    outline-offset: 2px;
+  }
+
+  :global(html.dark) .contact-control[aria-invalid='true']:focus-visible {
+    border-color: rgb(252 165 165);
+    outline-color: rgb(252 165 165);
+  }
+
+  :global(html.dark) .contact-error {
+    color: rgb(252 165 165);
+  }
+
+  :global(html.dark) .contact-error-summary {
+    border-color: rgb(248 113 113 / 0.65);
+    background: rgb(127 29 29 / 0.34);
+    color: rgb(254 202 202);
+  }
+
+  .contact-sent {
+    border-color: rgb(187 247 208);
+    background: rgb(240 253 244);
+    color: rgb(22 101 52);
+  }
+
+  .contact-sent-action {
+    align-items: center;
+    border: 1px solid currentColor;
+    border-radius: 0.375rem;
+    font-size: 0.875rem;
+    font-weight: 700;
+    justify-content: center;
+    min-height: 2.75rem;
+    padding: 0.625rem 1rem;
+    text-decoration: none;
+    transition:
+      background-color 160ms ease,
+      color 160ms ease,
+      outline-color 160ms ease;
+  }
+
+  .contact-sent-action:focus-visible {
+    outline: 2px solid currentColor;
+    outline-offset: 2px;
+  }
+
+  .contact-sent-action:hover {
+    background: rgb(22 101 52);
+    color: rgb(255 255 255);
+  }
+
+  :global(html.dark) .contact-sent {
+    border-color: rgb(74 222 128 / 0.65);
+    background: rgb(20 83 45 / 0.36);
+    color: rgb(220 252 231);
+  }
+
+  :global(html.dark) .contact-sent-action:hover {
+    background: rgb(220 252 231);
+    color: rgb(20 83 45);
+  }
+</style>
+
+<script>
+  import { installContactFormEnhancements } from '../../lib/contact/formEnhancements';
+
+  installContactFormEnhancements();
+</script>

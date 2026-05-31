@@ -1,15 +1,29 @@
 import type { ImageMetadata } from 'astro';
-import { z } from 'zod';
+import { z } from 'astro/zod';
 
 // Contact Form Schema
 export const contactFormSchema = z.object({
-  name: z.string().min(1, 'お名前を入力してください'),
+  name: z
+    .string()
+    .trim()
+    .min(1, 'お名前を入力してください')
+    .max(80, 'お名前は80文字以内で入力してください'),
   email: z
     .string()
+    .trim()
     .min(1, 'メールアドレスを入力してください')
-    .email('有効なメールアドレスを入力してください'),
-  subject: z.string().min(1, '件名を入力してください'),
-  message: z.string().min(1, 'メッセージを入力してください'),
+    .pipe(z.email({ message: '有効なメールアドレスを入力してください' }))
+    .pipe(z.string().max(254, 'メールアドレスは254文字以内で入力してください')),
+  subject: z
+    .string()
+    .trim()
+    .min(1, '件名を入力してください')
+    .max(120, '件名は120文字以内で入力してください'),
+  message: z
+    .string()
+    .trim()
+    .min(1, 'メッセージを入力してください')
+    .max(4000, 'メッセージは4000文字以内で入力してください'),
 });
 export type ContactForm = z.infer<typeof contactFormSchema>;
 

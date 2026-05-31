@@ -2,16 +2,16 @@ import type {
   ContactNotifier,
   ContactSubmissionInput,
   ContactSubmissionRepository,
-  RecaptchaVerifier,
+  TurnstileVerifier,
 } from './types';
 
 type ContactSubmissionDependencies = {
-  verifyRecaptcha: RecaptchaVerifier;
+  verifyTurnstile: TurnstileVerifier;
   repository: ContactSubmissionRepository;
   notifier: ContactNotifier;
 };
 
-type ContactSubmissionErrorCode = 'RECAPTCHA_FAILED' | 'PERSIST_FAILED' | 'DELIVERY_FAILED';
+type ContactSubmissionErrorCode = 'TURNSTILE_FAILED' | 'PERSIST_FAILED' | 'DELIVERY_FAILED';
 
 export class ContactSubmissionError extends Error {
   code: ContactSubmissionErrorCode;
@@ -31,13 +31,13 @@ export class ContactSubmissionError extends Error {
 
 export const submitContactSubmission = async (
   input: ContactSubmissionInput,
-  { verifyRecaptcha, repository, notifier }: ContactSubmissionDependencies
+  { verifyTurnstile, repository, notifier }: ContactSubmissionDependencies
 ) => {
-  const isRecaptchaValid = await verifyRecaptcha(input.recaptchaToken);
-  if (!isRecaptchaValid) {
+  const isTurnstileValid = await verifyTurnstile(input.turnstileToken, input.remoteIp);
+  if (!isTurnstileValid) {
     throw new ContactSubmissionError(
-      'RECAPTCHA_FAILED',
-      'reCAPTCHA の検証に失敗しました。時間をおいて再度お試しください。'
+      'TURNSTILE_FAILED',
+      'Turnstile の検証に失敗しました。時間をおいて再度お試しください。'
     );
   }
 
@@ -49,7 +49,7 @@ export const submitContactSubmission = async (
       email: input.email,
       subject: input.subject,
       message: input.message,
-      provider: 'resend',
+      provider: 'cloudflare-email',
     });
     submissionId = created.id;
   } catch (error) {
@@ -84,7 +84,7 @@ export const submitContactSubmission = async (
     await repository.updateDeliveryStatus({
       id: submissionId,
       deliveryStatus: 'failed',
-      provider: 'resend',
+      provider: 'cloudflare-email',
       providerMessageId: null,
     });
 

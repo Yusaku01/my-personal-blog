@@ -5,8 +5,8 @@ const createDependencies = () => {
   const calls: string[] = [];
 
   const dependencies = {
-    verifyRecaptcha: vi.fn(async () => {
-      calls.push('verifyRecaptcha');
+    verifyTurnstile: vi.fn(async () => {
+      calls.push('verifyTurnstile');
       return true;
     }),
     repository: {
@@ -21,7 +21,7 @@ const createDependencies = () => {
     notifier: {
       sendNotification: vi.fn(async () => {
         calls.push('sendNotification');
-        return { provider: 'resend' as const, providerMessageId: 'email-1' };
+        return { provider: 'cloudflare-email' as const, providerMessageId: 'email-1' };
       }),
     },
   };
@@ -30,9 +30,9 @@ const createDependencies = () => {
 };
 
 describe('submitContactSubmission', () => {
-  it('stops before persistence when recaptcha verification fails', async () => {
+  it('stops before persistence when turnstile verification fails', async () => {
     const { dependencies } = createDependencies();
-    dependencies.verifyRecaptcha.mockResolvedValue(false);
+    dependencies.verifyTurnstile.mockResolvedValue(false);
 
     await expect(
       submitContactSubmission(
@@ -41,12 +41,12 @@ describe('submitContactSubmission', () => {
           email: 'saku@example.com',
           subject: 'Hello',
           message: 'World',
-          recaptchaToken: 'token',
+          turnstileToken: 'token',
         },
         dependencies
       )
     ).rejects.toMatchObject({
-      code: 'RECAPTCHA_FAILED',
+      code: 'TURNSTILE_FAILED',
     } satisfies Partial<ContactSubmissionError>);
 
     expect(dependencies.repository.createSubmission).not.toHaveBeenCalled();
@@ -63,18 +63,18 @@ describe('submitContactSubmission', () => {
           email: 'saku@example.com',
           subject: 'Hello',
           message: 'World',
-          recaptchaToken: 'token',
+          turnstileToken: 'token',
         },
         dependencies
       )
     ).resolves.toEqual({
-      provider: 'resend',
+      provider: 'cloudflare-email',
       providerMessageId: 'email-1',
       submissionId: 'submission-1',
     });
 
     expect(calls).toEqual([
-      'verifyRecaptcha',
+      'verifyTurnstile',
       'createSubmission',
       'sendNotification',
       'updateDeliveryStatus:delivered',
@@ -83,7 +83,7 @@ describe('submitContactSubmission', () => {
 
   it('keeps the record and marks failure when email delivery fails', async () => {
     const { dependencies } = createDependencies();
-    dependencies.notifier.sendNotification.mockRejectedValue(new Error('resend failed'));
+    dependencies.notifier.sendNotification.mockRejectedValue(new Error('email failed'));
 
     await expect(
       submitContactSubmission(
@@ -92,7 +92,7 @@ describe('submitContactSubmission', () => {
           email: 'saku@example.com',
           subject: 'Hello',
           message: 'World',
-          recaptchaToken: 'token',
+          turnstileToken: 'token',
         },
         dependencies
       )
@@ -105,7 +105,7 @@ describe('submitContactSubmission', () => {
     expect(dependencies.repository.updateDeliveryStatus).toHaveBeenCalledWith({
       deliveryStatus: 'failed',
       id: 'submission-1',
-      provider: 'resend',
+      provider: 'cloudflare-email',
       providerMessageId: null,
     });
   });
@@ -121,7 +121,7 @@ describe('submitContactSubmission', () => {
           email: 'saku@example.com',
           subject: 'Hello',
           message: 'World',
-          recaptchaToken: 'token',
+          turnstileToken: 'token',
         },
         dependencies
       )

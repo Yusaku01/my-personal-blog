@@ -6,11 +6,12 @@ export type ContactFormValues = {
 };
 
 export type ContactSubmissionInput = ContactFormValues & {
-  recaptchaToken: string;
+  turnstileToken: string;
+  remoteIp?: string;
 };
 
 export type ContactDeliveryStatus = 'pending' | 'delivered' | 'failed';
-export type ContactProvider = 'resend';
+export type ContactProvider = 'cloudflare-email';
 
 export type ContactNotifierResult = {
   provider: ContactProvider;
@@ -33,7 +34,21 @@ export interface ContactNotifier {
   sendNotification(input: ContactFormValues): Promise<ContactNotifierResult>;
 }
 
-export type RecaptchaVerifier = (token: string) => Promise<boolean>;
+export type TurnstileVerifier = (token: string, remoteIp?: string) => Promise<boolean>;
+
+export type EmailAddress = string | { email: string; name?: string };
+
+export interface SendEmailBinding {
+  send(input: {
+    to: EmailAddress | EmailAddress[];
+    from: EmailAddress;
+    subject: string;
+    text?: string;
+    html?: string;
+    replyTo?: EmailAddress;
+    headers?: Record<string, string>;
+  }): Promise<{ messageId: string }>;
+}
 
 export interface D1PreparedStatement {
   bind(...values: unknown[]): D1PreparedStatement;
@@ -46,9 +61,9 @@ export interface D1Database {
 
 export type ContactRuntimeEnv = {
   CONTACT_DB: D1Database;
-  RESEND_API_KEY: string;
+  EMAIL: SendEmailBinding;
   CONTACT_TO_EMAIL: string;
   CONTACT_FROM_EMAIL: string;
-  GOOGLE_RECAPTCHA_SECRET_KEY: string;
-  PUBLIC_GOOGLE_RECAPTCHA_SITE_KEY?: string;
+  TURNSTILE_SECRET_KEY: string;
+  PUBLIC_TURNSTILE_SITE_KEY?: string;
 };

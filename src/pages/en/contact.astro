@@ -1,0 +1,39 @@
+---
+import { actions } from 'astro:actions';
+import Layout from '../../layouts/Layout.astro';
+import HeroSection from '../../components/Hero/HeroSection.astro';
+import ContactForm from '../../components/Contact/ContactForm.astro';
+import { getPublicTurnstileSiteKey } from '../../lib/contact/runtimeEnv';
+
+export const prerender = false;
+export const transition = { name: 'fade' };
+
+const locale = 'en';
+const turnstileSiteKey = getPublicTurnstileSiteKey();
+const sent = Astro.url.searchParams.get('sent') === '1';
+const result = Astro.getActionResult(actions.contact);
+
+if (result?.data?.ok) {
+  return Astro.redirect('/en/contact?sent=1');
+}
+---
+
+<Layout
+  title="Contact | SAKUSPACE"
+  description="Contact SAKUSPACE for questions, work inquiries, or other messages."
+  locale={locale}
+>
+  <HeroSection title="CONTACT" />
+
+  <section class="py-12">
+    <div class="container-md">
+      <ContactForm
+        action={actions.contact}
+        locale={locale}
+        sent={sent}
+        turnstileSiteKey={turnstileSiteKey}
+        result={result}
+      />
+    </div>
+  </section>
+</Layout>

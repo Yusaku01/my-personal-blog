@@ -35,6 +35,7 @@ export const uiText = {
     blog: 'BLOG',
     finds: 'FINDS',
     profile: 'PROFILE',
+    contact: 'CONTACT',
   },
   menu: {
     label: {
@@ -210,4 +211,5 @@ export const navItemsForLocale = (locale: Locale) => [
   { href: localizedPath('/blog', locale), text: uiText.nav.blog },
   { href: localizedPath('/finds', locale), text: uiText.nav.finds },
   { href: localizedPath('/profile', locale), text: uiText.nav.profile },
+  { href: localizedPath('/contact', locale), text: uiText.nav.contact },
 ];

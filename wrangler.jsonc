@@ -1,0 +1,40 @@
+{
+  "$schema": "./node_modules/wrangler/config-schema.json",
+  "name": "saku-space",
+  "main": "@astrojs/cloudflare/entrypoints/server",
+  "compatibility_date": "2026-05-26",
+  "assets": {
+    "directory": "./dist/client",
+    "binding": "ASSETS",
+    "not_found_handling": "404-page",
+    "run_worker_first": ["/contact", "/contact/*", "/en/contact", "/en/contact/*"],
+  },
+  "observability": {
+    "enabled": true,
+  },
+  "routes": [
+    {
+      "pattern": "saku-space.com",
+      "custom_domain": true,
+    },
+  ],
+  "vars": {
+    "CONTACT_TO_EMAIL": "ngtnysk@gmail.com",
+    "CONTACT_FROM_EMAIL": "contact@saku-space.com",
+    "PUBLIC_TURNSTILE_SITE_KEY": "0x4AAAAAADau5B564fQUl6Ol",
+  },
+  "d1_databases": [
+    {
+      "binding": "CONTACT_DB",
+      "database_name": "saku-space-contact",
+      "database_id": "7cfb9a52-694f-4c2b-aa06-0052e6080186",
+    },
+  ],
+  "send_email": [
+    {
+      "name": "EMAIL",
+      "remote": true,
+      "allowed_sender_addresses": ["contact@saku-space.com"],
+    },
+  ],
+}
