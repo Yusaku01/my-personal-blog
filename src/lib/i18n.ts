@@ -83,7 +83,7 @@ export const uiText = {
       en: 'View older posts',
     },
     rss: {
-      ja: 'RSSフィードで購読',
+      ja: 'RSSで購読する',
       en: 'Subscribe via RSS',
     },
     tabs: {
