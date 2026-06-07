@@ -9,7 +9,7 @@ import { uiText } from '../lib/i18n';
 export const transition = { name: 'fade' };
 
 import { Image } from 'astro:assets';
-import myImage from '../assets/images/img_profile.png';
+import profileAvatarImage from '../assets/images/img_profile-avatar.webp';
 
 const locale = 'ja';
 const profileEntry = await getEntry('profile', 'main');
@@ -40,11 +40,14 @@ const { Content } = await render(profileEntry);
               class="w-40 h-40 rounded-full overflow-hidden relative z-10 bg-white dark:bg-gray-700"
             >
               <Image
-                src={myImage}
+                src={profileAvatarImage}
                 alt={uiText.profile.imageAlt[locale]}
                 class="w-full h-full object-cover"
-                width="160"
-                height="160"
+                width={160}
+                height={160}
+                loading="eager"
+                fetchpriority="high"
+                decoding="async"
               />
             </div>
             <!-- 名前と肩書き -->

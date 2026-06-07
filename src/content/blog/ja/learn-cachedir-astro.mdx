@@ -8,8 +8,8 @@ tags: ['個人ブログ', 'cacheDir', 'Astro', 'cache', 'Vite']
 ---
 
 import { Image } from 'astro:assets';
-import cacheDirFlowImage from '../../../assets/images/blog/learn-cachedir-astro/cache-dir-flow.png';
-import generatedFilesMapImage from '../../../assets/images/blog/learn-cachedir-astro/generated-files-map.png';
+import cacheDirFlowImage from '../../../assets/images/blog/learn-cachedir-astro/cache-dir-flow-display.webp';
+import generatedFilesMapImage from '../../../assets/images/blog/learn-cachedir-astro/generated-files-map-display.webp';
 
 この記事では、AstroのcacheDirおよびキャッシュに関連する機能？について学びます。というか整理します。
 
@@ -26,6 +26,9 @@ import generatedFilesMapImage from '../../../assets/images/blog/learn-cachedir-a
   src={cacheDirFlowImage}
   alt="srcからcacheを経由してdistへ出力する流れを、ヒヤオが途中メモを置く様子で表した図"
   class="w-full h-auto"
+  loading="eager"
+  fetchpriority="high"
+  decoding="async"
 />
 
 AstroのcacheDirは、キャッシュを保存するディレクトリのことです。デフォルトでは、`node_modules/.astro`に保存されます。
@@ -58,6 +61,8 @@ Astroでプロジェクトを構築する場合、共通で生成・保存され
   src={generatedFilesMapImage}
   alt="distは配信用ファイル、.astroやcacheDirや.viteは開発やビルドの作業用データとして分けて整理した図"
   class="w-full h-auto"
+  loading="lazy"
+  decoding="async"
 />
 
 一部astro.configによる設定や使用するパッケージマネージャーによって異なる部分はあると思いますが、チートシート代わりにお役立ていただければと思います。

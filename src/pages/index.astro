@@ -15,7 +15,7 @@ const allPosts = await getAllBlogPosts(locale);
 const POSTS_PER_SECTION = 4;
 
 import { Image } from 'astro:assets';
-import myImage from '../assets/images/img_profile.png';
+import profileAvatarImage from '../assets/images/img_profile-avatar.webp';
 ---
 
 <Layout title="SAKUSPACE" locale={locale}>
@@ -57,11 +57,13 @@ import myImage from '../assets/images/img_profile.png';
           <div class="flex flex-col md:flex-row gap-4 md:gap-8 items-center">
             <div class="w-32 h-32 rounded-full overflow-hidden flex-shrink-0">
               <Image
-                src={myImage}
+                src={profileAvatarImage}
                 alt={uiText.profile.imageAlt[locale]}
                 class="w-full h-full object-cover"
-                width="128"
-                height="128"
+                width={128}
+                height={128}
+                loading="lazy"
+                decoding="async"
               />
             </div>
             <div class="flex-grow">

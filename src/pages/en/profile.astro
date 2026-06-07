@@ -5,7 +5,7 @@ import Layout from '../../layouts/Layout.astro';
 import HeroSection from '../../components/Hero/HeroSection.astro';
 import ProfileSection from '../../components/Profile/ProfileSection.astro';
 import { uiText } from '../../lib/i18n';
-import myImage from '../../assets/images/img_profile.png';
+import profileAvatarImage from '../../assets/images/img_profile-avatar.webp';
 
 export const transition = { name: 'fade' };
 
@@ -28,11 +28,14 @@ const locale = 'en';
               class="w-40 h-40 rounded-full overflow-hidden relative z-10 bg-white dark:bg-gray-700"
             >
               <Image
-                src={myImage}
+                src={profileAvatarImage}
                 alt={uiText.profile.imageAlt[locale]}
                 class="w-full h-full object-cover"
-                width="160"
-                height="160"
+                width={160}
+                height={160}
+                loading="eager"
+                fetchpriority="high"
+                decoding="async"
               />
             </div>
             <div class="text-center md:text-left">

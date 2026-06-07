@@ -8,8 +8,8 @@ tags: ['Personal blog', 'cacheDir', 'Astro', 'cache', 'Vite']
 ---
 
 import { Image } from 'astro:assets';
-import cacheDirFlowImage from '../../../assets/images/blog/learn-cachedir-astro/cache-dir-flow.png';
-import generatedFilesMapImage from '../../../assets/images/blog/learn-cachedir-astro/generated-files-map.png';
+import cacheDirFlowImage from '../../../assets/images/blog/learn-cachedir-astro/cache-dir-flow-display.webp';
+import generatedFilesMapImage from '../../../assets/images/blog/learn-cachedir-astro/generated-files-map-display.webp';
 
 In this article, I will learn about Astro's `cacheDir` and cache-related features. Or more accurately, I will organize my understanding of them.
 
@@ -27,6 +27,9 @@ I will basically not cover HTTP cache here. Instead, I will mainly use cache in 
   src={cacheDirFlowImage}
   alt="A diagram showing the flow from src through cache to dist, with Hiyao placing notes along the way"
   class="w-full h-auto"
+  loading="eager"
+  fetchpriority="high"
+  decoding="async"
 />
 
 Astro's `cacheDir` is the directory where cache files are stored. By default, they are saved in `node_modules/.astro`.
@@ -59,6 +62,8 @@ For example, when implementing a website, HTML, CSS, JavaScript, image assets, a
   src={generatedFilesMapImage}
   alt="A diagram separating dist as delivery files from .astro, cacheDir, and .vite as development and build working data"
   class="w-full h-auto"
+  loading="lazy"
+  decoding="async"
 />
 
 Some details may differ depending on `astro.config` settings or the package manager being used, but I hope this can be useful as a small cheat sheet.
