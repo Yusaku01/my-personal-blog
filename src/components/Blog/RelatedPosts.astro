@@ -13,7 +13,7 @@ const { posts, locale = 'ja' } = Astro.props as RelatedPostsProps;
 
 {
   posts.length > 0 && (
-    <section class="mt-12 border-t border-gray-200 pt-8 dark:border-gray-700">
+    <section class="mt-16 border-t border-gray-200 pt-8 dark:border-gray-700">
       <h2 class="mb-4 text-xl font-bold text-gray-900 dark:text-white">
         {uiText.blog.relatedPosts[locale]}
       </h2>
