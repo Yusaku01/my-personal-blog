@@ -116,6 +116,10 @@ export const uiText = {
       ja: (minutes: number) => `読了目安 約${minutes}分`,
       en: (minutes: number) => `${minutes} min read`,
     },
+    relatedPosts: {
+      ja: '関連記事',
+      en: 'Related posts',
+    },
   },
   profile: {
     name: {

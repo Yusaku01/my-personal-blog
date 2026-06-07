@@ -4,11 +4,16 @@ import { render } from 'astro:content';
 import { Image } from 'astro:assets';
 import Layout from '../../layouts/Layout.astro';
 import BlogTableOfContents from '../../components/Blog/BlogTableOfContents.astro';
+import RelatedPosts from '../../components/Blog/RelatedPosts.astro';
 import ShareButtons from '../../components/Sns/ShareButtons.astro';
 import { format } from 'date-fns';
 import { getEstimatedReadingTimeMinutes } from '../../lib/blog/readingTime';
 import { uiText } from '../../lib/i18n';
-import { getBlogEntriesForLocale, getBlogEntrySlug } from '../../lib/blog/posts';
+import {
+  getBlogEntriesForLocale,
+  getBlogEntrySlug,
+  getRelatedBlogPosts,
+} from '../../lib/blog/posts';
 
 export const transition = { name: 'fade' };
 
@@ -24,6 +29,7 @@ const { post } = Astro.props;
 const { Content, headings } = await render(post);
 const estimatedReadingTimeMinutes = getEstimatedReadingTimeMinutes(post.body ?? '');
 const locale = 'ja';
+const relatedPosts = await getRelatedBlogPosts(post, locale);
 ---
 
 <Layout
@@ -135,6 +141,8 @@ const locale = 'ja';
               class="justify-center md:justify-start"
             />
           </div>
+
+          <RelatedPosts posts={relatedPosts} locale={locale} />
         </article>
       </div>
       <BlogTableOfContents headings={headings} locale={locale} />
