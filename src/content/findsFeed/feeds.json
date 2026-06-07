@@ -47,6 +47,38 @@
       "description": "kounoさんの個人ブログ",
       "tags": ["Tech", "Development"],
       "enabled": true
+    },
+    {
+      "name": "Frontend Focus",
+      "nameUrl": "https://frontendfoc.us/",
+      "url": "https://frontendfoc.us/rss/",
+      "description": "Weekly frontend newsletter",
+      "tags": ["Frontend", "Newsletter"],
+      "enabled": true
+    },
+    {
+      "name": "Meyerweb",
+      "nameUrl": "https://meyerweb.com/eric/thoughts/",
+      "url": "https://meyerweb.com/eric/thoughts/feed/",
+      "description": "Eric Meyer blog",
+      "tags": ["CSS", "Accessibility", "Frontend"],
+      "enabled": true
+    },
+    {
+      "name": "Jay Freestone",
+      "nameUrl": "https://www.jayfreestone.com/",
+      "url": "https://www.jayfreestone.com/rss.xml",
+      "description": "Web development blog",
+      "tags": ["Frontend", "TypeScript", "Web"],
+      "enabled": true
+    },
+    {
+      "name": "Chris Coyier",
+      "nameUrl": "https://chriscoyier.net/",
+      "url": "https://chriscoyier.net/feed/",
+      "description": "Web design and frontend blog",
+      "tags": ["Frontend", "CSS", "Web"],
+      "enabled": true
     }
   ]
 }
