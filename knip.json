@@ -12,7 +12,6 @@
   },
   "ignoreDependencies": [
     "@astrojs/check",
-    "@astrojs/cloudflare",
     "@fontsource/zen-kaku-gothic-new",
     "@playwright/browser-chromium",
     "@unocss/autocomplete",
@@ -26,7 +25,6 @@
     "astro-eslint-parser",
     "eslint-.*",
     "textlint.*",
-    "wrangler",
     "cloudflare"
   ]
 }
