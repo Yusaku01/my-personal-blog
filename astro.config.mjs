@@ -1,5 +1,6 @@
 import { defineConfig, fontProviders } from 'astro/config';
 import cloudflare from '@astrojs/cloudflare';
+import { unified } from '@astrojs/markdown-remark';
 import mdx from '@astrojs/mdx';
 import UnoCSS from 'unocss/astro';
 import sitemap from '@astrojs/sitemap';
@@ -98,10 +99,7 @@ export default defineConfig({
     UnoCSS({
       injectReset: true, // CSSリセットを注入
     }),
-    mdx({
-      remarkPlugins: sharedRemarkPlugins,
-      rehypePlugins: markdownRehypePlugins,
-    }),
+    mdx(),
     sitemap({
       i18n: {
         defaultLocale: 'ja',
@@ -122,8 +120,10 @@ export default defineConfig({
     },
   },
   markdown: {
-    remarkPlugins: sharedRemarkPlugins,
-    rehypePlugins: markdownRehypePlugins,
+    processor: unified({
+      remarkPlugins: sharedRemarkPlugins,
+      rehypePlugins: markdownRehypePlugins,
+    }),
     syntaxHighlight: markdownSyntaxHighlight,
     shikiConfig: {
       themes: {
