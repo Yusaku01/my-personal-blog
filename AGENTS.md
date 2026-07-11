@@ -5,7 +5,8 @@
 ## Architecture Overview
 
 - Core: Astro 6、MDX、TypeScript
-- Styling: UnoCSS (`uno.config.ts`)
+- Styling: 既存のUnoCSS（`uno.config.ts`）を段階的にCSS Variables（`src/styles/global.css`）と
+  Astroコンポーネント内のscoped CSSへ移行中
 - Deployment: `output: 'static'` の静的サイト。Cloudflare Pages 運用を前提に `build:cloudflare` を用意しているが、現状 `astro.config.ts` で Cloudflare adapter は有効化していない
 - Routing: `src/pages/` 配下のファイルベースルーティング
 - Aliases: TypeScript path alias `@/*` → `./src/*` (`tsconfig.json`)
@@ -91,6 +92,9 @@ tags: ['Astro', 'UnoCSS']
 ## Dev Tips for Agents
 
 - 静的な UI は Astro コンポーネントを優先する
+- 新規・変更するUIのスタイルは、共有トークンやグローバルなMarkdownスタイルを
+  `src/styles/global.css` に置き、コンポーネント固有の見た目は各 `.astro` のscoped CSSを優先する
+- 既存UnoCSSの置換は小さなコンポーネント単位で行い、移行中でない箇所へ新しいUnoCSS依存を広げない
 - クライアント側の振る舞いは、まず `src/scripts/` の既存パターンで足せるか検討する
 - hydration が必要な場合でも、常時実行より遅延実行を優先する
 - Markdown / MDX の変換処理は `src/lib/markdown/` と `src/lib/remark/`, `src/lib/rehype/` を確認して既存ルールに合わせる

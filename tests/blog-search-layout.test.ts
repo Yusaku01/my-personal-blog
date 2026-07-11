@@ -4,10 +4,14 @@ import { describe, expect, it } from 'vitest';
 
 describe('blog search layout contract', () => {
   it('defines a blog-only grid variant that keeps empty tracks with auto-fill', async () => {
-    const layout = await readFile(path.join(process.cwd(), 'src/layouts/Layout.astro'), 'utf8');
+    const [layout, globalStyles] = await Promise.all([
+      readFile(path.join(process.cwd(), 'src/layouts/Layout.astro'), 'utf8'),
+      readFile(path.join(process.cwd(), 'src/styles/global.css'), 'utf8'),
+    ]);
 
-    expect(layout).toContain('.grid-fluid-cards-blog');
-    expect(layout).toContain(
+    expect(layout).toContain("import '../styles/global.css';");
+    expect(globalStyles).toContain('.grid-fluid-cards-blog');
+    expect(globalStyles).toContain(
       'grid-template-columns: repeat(auto-fill, minmax(min(100%, var(--cards-min)), 1fr));'
     );
   });

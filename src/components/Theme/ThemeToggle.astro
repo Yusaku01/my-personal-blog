@@ -2,18 +2,12 @@
 
 ---
 
-<button
-  id="themeToggle"
-  class="relative inline-flex h-7 w-12 items-center rounded-full bg-gray-200 dark:bg-gray-700 transition-colors focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2"
-  aria-label="Toggle theme"
->
-  <span class="sr-only">テーマを切り替える</span>
-  <span
-    class="inline-block h-5 w-5 transform rounded-full bg-white ring-0 transition-transform duration-200 ease-in-out dark:translate-x-6 translate-x-1"
-  >
+<button id="themeToggle" class="theme-toggle" aria-label="Toggle theme">
+  <span class="theme-toggle__label">テーマを切り替える</span>
+  <span class="theme-toggle__thumb">
     <svg
       id="sunIcon"
-      class="h-5 w-5 text-gray-500 hidden dark:block"
+      class="theme-toggle__icon theme-toggle__icon--sun"
       fill="currentColor"
       viewBox="0 0 20 20"
       xmlns="http://www.w3.org/2000/svg"
@@ -24,7 +18,7 @@
     </svg>
     <svg
       id="moonIcon"
-      class="h-5 w-5 text-gray-900 block dark:hidden"
+      class="theme-toggle__icon theme-toggle__icon--moon"
       fill="currentColor"
       viewBox="0 0 20 20"
       xmlns="http://www.w3.org/2000/svg"
@@ -33,3 +27,73 @@
     </svg>
   </span>
 </button>
+
+<style>
+  .theme-toggle {
+    align-items: center;
+    background-color: var(--color-theme-toggle-track);
+    border: 0;
+    border-radius: 9999px;
+    display: inline-flex;
+    inline-size: 3rem;
+    block-size: 1.75rem;
+    position: relative;
+    transition: background-color 150ms;
+  }
+
+  .theme-toggle:focus-visible {
+    outline: 2px solid var(--color-focus-ring);
+    outline-offset: 2px;
+  }
+
+  .theme-toggle__label {
+    clip: rect(0 0 0 0);
+    clip-path: inset(50%);
+    block-size: 1px;
+    inline-size: 1px;
+    margin: -1px;
+    overflow: hidden;
+    padding: 0;
+    position: absolute;
+    white-space: nowrap;
+  }
+
+  .theme-toggle__thumb {
+    align-items: center;
+    background-color: white;
+    border-radius: 9999px;
+    block-size: 1.25rem;
+    display: inline-flex;
+    inline-size: 1.25rem;
+    justify-content: center;
+    translate: 0.25rem;
+    transition: translate 200ms ease-in-out;
+  }
+
+  :global(html.dark) .theme-toggle__thumb {
+    translate: 1.5rem;
+  }
+
+  .theme-toggle__icon {
+    block-size: 1.25rem;
+    inline-size: 1.25rem;
+  }
+
+  .theme-toggle__icon--sun {
+    color: var(--color-theme-toggle-icon-muted);
+    display: none;
+  }
+
+  :global(html.dark) .theme-toggle__icon--sun {
+    display: block;
+  }
+
+  .theme-toggle__icon--moon {
+    color: var(--color-theme-toggle-icon);
+    display: block;
+  }
+
+  :global(html.dark) .theme-toggle__icon--moon {
+    display: none;
+  }
+</style>
