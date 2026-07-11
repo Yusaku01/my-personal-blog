@@ -1,6 +1,6 @@
 declare module 'he' {
   const he: {
-    encode(value: string): string;
+    encode(value: string, options?: { useNamedReferences?: boolean }): string;
   };
 
   export default he;

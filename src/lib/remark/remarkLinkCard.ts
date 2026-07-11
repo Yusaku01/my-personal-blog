@@ -39,6 +39,16 @@ const URL_ONLY_PATTERN = /^(https?:\/\/|www(?=\.))([-.\w]+)([^\s]*)$/i;
 const DEFAULT_SAVE_DIRECTORY = 'public';
 const DEFAULT_OUTPUT_DIRECTORY = '/remark-link-card/';
 
+const escapeAttribute = (value: string) =>
+  he.encode(value, {
+    useNamedReferences: true,
+  });
+
+const escapeHtmlText = (value: string) =>
+  he.encode(value, {
+    useNamedReferences: true,
+  });
+
 const isParagraphNode = (value: unknown): value is ParagraphNode => {
   if (typeof value !== 'object' || value === null) {
     return false;
@@ -154,8 +164,8 @@ const fetchData = async (targetUrl: string, options?: LinkCardOptions) => {
   const ogResult = await getOpenGraph(targetUrl);
   const parsedUrl = new URL(targetUrl);
 
-  const title = (ogResult?.ogTitle && he.encode(ogResult.ogTitle)) || parsedUrl.hostname;
-  const description = (ogResult?.ogDescription && he.encode(ogResult.ogDescription)) || '';
+  const title = ogResult?.ogTitle || parsedUrl.hostname;
+  const description = ogResult?.ogDescription || '';
 
   const faviconUrl = `https://www.google.com/s2/favicons?domain=${parsedUrl.hostname}`;
   let faviconSrc = faviconUrl;
@@ -185,7 +195,7 @@ const fetchData = async (targetUrl: string, options?: LinkCardOptions) => {
     }
   }
 
-  const ogImageAlt = (ogResult?.ogImage?.alt && he.encode(ogResult.ogImage.alt)) || title;
+  const ogImageAlt = ogResult?.ogImage?.alt || title;
 
   let displayUrl = options?.shortenUrl ? parsedUrl.hostname : targetUrl;
   try {
@@ -206,28 +216,35 @@ const fetchData = async (targetUrl: string, options?: LinkCardOptions) => {
 };
 
 const createLinkCard = (data: Awaited<ReturnType<typeof fetchData>>) => {
+  const faviconSrc = escapeAttribute(data.faviconSrc);
+  const faviconAlt = escapeAttribute(`${data.title} favicon`);
+  const ogImageSrc = escapeAttribute(data.ogImageSrc);
+  const ogImageAlt = escapeAttribute(data.ogImageAlt);
+  const title = escapeHtmlText(data.title);
+  const description = escapeHtmlText(data.description);
+  const displayUrl = escapeHtmlText(data.displayUrl);
+  const url = escapeAttribute(data.url);
+
   const faviconElement = data.faviconSrc
-    ? `<img class="rlc-favicon" src="${data.faviconSrc}" alt="${data.title} favicon" width="16" height="16">`
+    ? `<img class="rlc-favicon" src="${faviconSrc}" alt="${faviconAlt}" width="16" height="16">`
     : '';
 
-  const descriptionElement = data.description
-    ? `<div class="rlc-description">${data.description}</div>`
-    : '';
+  const descriptionElement = description ? `<div class="rlc-description">${description}</div>` : '';
 
   const imageElement = data.ogImageSrc
     ? `<div class="rlc-image-container">
-      <img class="rlc-image" src="${data.ogImageSrc}" alt="${data.ogImageAlt}" />
+      <img class="rlc-image" src="${ogImageSrc}" alt="${ogImageAlt}" />
     </div>`
     : '';
 
   return `
-<a class="rlc-container" href="${data.url}">
+<a class="rlc-container" href="${url}">
   <div class="rlc-info">
-    <div class="rlc-title">${data.title}</div>
+    <div class="rlc-title">${title}</div>
     ${descriptionElement}
     <div class="rlc-url-container">
       ${faviconElement}
-      <span class="rlc-url">${data.displayUrl}</span>
+      <span class="rlc-url">${displayUrl}</span>
     </div>
   </div>
   ${imageElement}
