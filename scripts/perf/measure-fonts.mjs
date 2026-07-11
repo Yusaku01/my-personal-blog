@@ -17,7 +17,10 @@ for (const argument of process.argv.slice(2)) {
 
 const scenario = args.get('--scenario');
 const baseUrl = args.get('--base-url') ?? 'http://127.0.0.1:4321';
-const outputDir = path.resolve(projectRoot, args.get('--output-dir') ?? 'docs/perf/astro6-fonts');
+const outputDir = path.resolve(
+  projectRoot,
+  args.get('--output-dir') ?? '.astro-cache/perf/astro6-fonts'
+);
 
 if (!scenario) {
   console.error('Missing required argument: --scenario=<name>');

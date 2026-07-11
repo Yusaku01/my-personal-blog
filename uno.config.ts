@@ -1,4 +1,4 @@
-import { defineConfig, presetAttributify, presetTypography, presetIcons } from 'unocss';
+import { defineConfig, presetTypography, presetIcons } from 'unocss';
 import presetWind3 from '@unocss/preset-wind3';
 import transformerVariantGroup from '@unocss/transformer-variant-group';
 import transformerDirectives from '@unocss/transformer-directives';
@@ -7,7 +7,6 @@ export default defineConfig({
   safelist: ['i-ic-round-content-copy', 'i-ic-round-check', 'i-ic-round-list', 'i-ic-round-close'],
   presets: [
     presetWind3(), // Tailwind互換の基本機能
-    presetAttributify(), // 属性ベースのユーティリティ
     presetTypography({
       cssExtend: {
         p: {

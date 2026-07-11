@@ -106,19 +106,10 @@ importers:
       '@unocss/astro':
         specifier: 66.7.0
         version: 66.7.0(vite@8.1.0(@types/node@25.0.10)(esbuild@0.28.1)(jiti@2.7.0)(yaml@2.9.0))
-      '@unocss/autocomplete':
-        specifier: ^66.7.0
-        version: 66.7.0
-      '@unocss/preset-attributify':
-        specifier: ^66.7.0
-        version: 66.7.0
       '@unocss/preset-icons':
         specifier: ^66.7.0
         version: 66.7.0
       '@unocss/preset-typography':
-        specifier: ^66.7.0
-        version: 66.7.0
-      '@unocss/preset-wind':
         specifier: ^66.7.0
         version: 66.7.0
       '@unocss/preset-wind3':
@@ -2408,9 +2399,6 @@ packages:
       vite:
         optional: true
 
-  '@unocss/autocomplete@66.7.0':
-    resolution: {integrity: sha512-XkI4DR2Vfez8Xr6LS2apegIJBdmyv7MmbbKFQotgzuVn7TYU+vBxI6sjFmc/8EG1IXJDKkt0O+WYUIQqkx8Olg==}
-
   '@unocss/cli@66.7.0':
     resolution: {integrity: sha512-Pkd/R+WDs8gc1i9fI5XDW8N5r7aoCWjNzt8wGGj5FWTbmsEzewueaL5LQTH4ymv/BhSHFcYpL7geQ5vYont+BA==}
     hasBin: true
@@ -3773,9 +3761,6 @@ packages:
 
   functions-have-names@1.2.3:
     resolution: {integrity: sha512-xckBUXyTIqT97tq2x2AMb+g163b5JFysYk0x4qxNFwbfQkmNZoiRHb6sPzI9/QV33WeuvVYBUIiD4NzNIyqaRQ==}
-
-  fzf@0.5.2:
-    resolution: {integrity: sha512-Tt4kuxLXFKHy8KT40zwsUPUkg1CrsgY25FxA2U/j/0WgEDCk3ddc/zLTCCcbSHX9FcKtLuVaDGtGE/STWC+j3Q==}
 
   gaxios@6.7.1:
     resolution: {integrity: sha512-LDODD4TMYx7XXdpwxAVRAIAuB0bzv0s+ywFonY46k126qzQHT9ygyoa9tncmOiQmmDrik65UYsEkv3lbfqQ3yQ==}
@@ -8744,11 +8729,6 @@ snapshots:
     optionalDependencies:
       vite: 8.1.0(@types/node@25.0.10)(esbuild@0.28.1)(jiti@2.7.0)(yaml@2.9.0)
 
-  '@unocss/autocomplete@66.7.0':
-    dependencies:
-      fzf: 0.5.2
-      lru-cache: 11.5.1
-
   '@unocss/cli@66.7.0':
     dependencies:
       '@jridgewell/remapping': 2.3.5
@@ -10472,8 +10452,6 @@ snapshots:
       is-callable: 1.2.7
 
   functions-have-names@1.2.3: {}
-
-  fzf@0.5.2: {}
 
   gaxios@6.7.1:
     dependencies:

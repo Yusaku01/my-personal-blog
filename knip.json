@@ -1,10 +1,6 @@
 {
   "$schema": "https://unpkg.com/knip@6/schema.json",
-  "entry": [
-    "textlint.config.blog-base.cjs",
-    "textlint.config.blog-tech.cjs",
-    "docs/stash/contact-astro-actions/src-actions-index.ts.txt"
-  ],
+  "entry": ["textlint.config.blog-base.cjs", "textlint.config.blog-tech.cjs"],
   "rules": {
     "files": "warn",
     "exports": "warn",
@@ -14,11 +10,8 @@
     "@astrojs/check",
     "@fontsource/zen-kaku-gothic-new",
     "@playwright/browser-chromium",
-    "@unocss/autocomplete",
-    "@unocss/preset-attributify",
     "@unocss/preset-icons",
     "@unocss/preset-typography",
-    "@unocss/preset-wind",
     "@unocss/reset",
     "@typescript-eslint/.*",
     "@eslint/.*",

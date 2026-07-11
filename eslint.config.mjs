@@ -23,7 +23,7 @@ const compat = new FlatCompat({
 
 export default [
   {
-    ignores: ['dist/**/*', 'node_modules/**/*', '.astro/**/*', '.wrangler/**/*', 'videos/**/*'],
+    ignores: ['dist/**/*', 'node_modules/**/*', '.astro/**/*', '.wrangler/**/*'],
   },
   {
     files: ['**/*.css'],

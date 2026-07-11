@@ -43,14 +43,3 @@ meta-info.md
 # blog
 src/content/blog/_*
 src/content/blog/**/_*
-
-# video experiments
-src/components/video/
-src/layouts/VideoLayout.astro
-src/lib/video/
-src/pages/video/
-videos/
-
-# claude
-/CLAUDE.md
-.claude
