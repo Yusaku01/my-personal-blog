@@ -79,6 +79,22 @@
       "description": "Web design and frontend blog",
       "tags": ["Frontend", "CSS", "Web"],
       "enabled": true
+    },
+    {
+      "name": "TypeScript Blog",
+      "nameUrl": "https://devblogs.microsoft.com/typescript/",
+      "url": "https://devblogs.microsoft.com/typescript/feed/",
+      "description": "Microsoft TypeScriptチーム公式のリリース・設計・移行情報ブログ",
+      "tags": ["TypeScript", "JavaScript", "Frontend"],
+      "enabled": true
+    },
+    {
+      "name": "Terence Eden",
+      "nameUrl": "https://shkspr.mobi/blog/",
+      "url": "https://shkspr.mobi/blog/feed",
+      "description": "Web標準・UX・アクセシビリティ・技術運用を扱うTerence Edenさんのブログ",
+      "tags": ["Web", "UX", "Accessibility"],
+      "enabled": true
     }
   ]
 }
