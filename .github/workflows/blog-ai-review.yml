@@ -1,0 +1,131 @@
+name: Blog AI Review
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+    paths:
+      - 'src/content/blog/**/*.md'
+      - 'src/content/blog/**/*.mdx'
+      - '.github/workflows/blog-ai-review.yml'
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  blog-ai-review:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pull-requests: read
+    steps:
+      - name: Checkout blog repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Check private review prerequisites
+        id: prerequisites
+        env:
+          REVIEW_BLOG_AGENT_TOKEN: ${{ secrets.REVIEW_BLOG_AGENT_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+        run: |
+          missing=()
+
+          if [ -z "$REVIEW_BLOG_AGENT_TOKEN" ]; then
+            missing+=("REVIEW_BLOG_AGENT_TOKEN")
+          fi
+
+          if [ -z "$CLOUDFLARE_ACCOUNT_ID" ]; then
+            missing+=("CLOUDFLARE_ACCOUNT_ID")
+          fi
+
+          if [ -z "$CLOUDFLARE_API_TOKEN" ]; then
+            missing+=("CLOUDFLARE_API_TOKEN")
+          fi
+
+          if [ "${#missing[@]}" -gt 0 ]; then
+            echo "ready=false" >> "$GITHUB_OUTPUT"
+            printf 'missing=%s\n' "${missing[*]}" >> "$GITHUB_OUTPUT"
+          else
+            echo "ready=true" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Setup pnpm
+        if: steps.prerequisites.outputs.ready == 'true'
+        uses: pnpm/action-setup@v4
+        with:
+          version: 11.7.0
+
+      - name: Setup Node.js
+        if: steps.prerequisites.outputs.ready == 'true'
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22.20.0'
+
+      - name: Checkout private review agent
+        if: steps.prerequisites.outputs.ready == 'true'
+        uses: actions/checkout@v4
+        with:
+          repository: Yusaku01/review-blog-agent
+          path: .review-blog-agent
+          token: ${{ secrets.REVIEW_BLOG_AGENT_TOKEN }}
+          fetch-depth: 1
+
+      - name: Install review agent dependencies
+        if: steps.prerequisites.outputs.ready == 'true'
+        run: pnpm --dir .review-blog-agent install --frozen-lockfile
+
+      - name: Build review agent CLI
+        if: steps.prerequisites.outputs.ready == 'true'
+        run: pnpm --dir .review-blog-agent build:cli
+
+      - name: Run AI review for changed blog articles
+        id: ai_review
+        if: steps.prerequisites.outputs.ready == 'true'
+        continue-on-error: true
+        env:
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          REVIEW_BASE_REF: origin/${{ github.base_ref }}
+        run: |
+          ./.review-blog-agent/dist-cli/scripts/run-review.js changed \
+            --base "$REVIEW_BASE_REF" \
+            src/content/blog \
+            | tee "$RUNNER_TEMP/blog-ai-review.md"
+
+      - name: Add summary
+        if: always()
+        env:
+          READY: ${{ steps.prerequisites.outputs.ready }}
+          MISSING: ${{ steps.prerequisites.outputs.missing }}
+          AI_REVIEW_OUTCOME: ${{ steps.ai_review.outcome }}
+        run: |
+          {
+            echo "## Blog AI Review"
+            echo
+
+            if [ "$READY" != "true" ]; then
+              echo "- Result: skipped"
+              echo "- Reason: missing private review prerequisites"
+              echo "- Missing: ${MISSING:-unknown}"
+              echo
+              echo "This workflow is notify-only and does not fail when private review secrets are unavailable."
+              exit 0
+            fi
+
+            echo "- Result: ${AI_REVIEW_OUTCOME:-skipped}"
+            echo "- Mode: notify only"
+            echo "- Target: changed files under \`src/content/blog\`"
+            echo
+
+            if [ -f "$RUNNER_TEMP/blog-ai-review.md" ]; then
+              cat "$RUNNER_TEMP/blog-ai-review.md"
+            else
+              echo "No AI review output was produced."
+            fi
+
+            echo
+            echo "This check does not fail the pull request yet."
+          } >> "$GITHUB_STEP_SUMMARY"

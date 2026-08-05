@@ -94,6 +94,27 @@
       "url": "https://shkspr.mobi/blog/feed",
       "description": "Web標準・UX・アクセシビリティ・技術運用を扱うTerence Edenさんのブログ",
       "tags": ["Web", "UX", "Accessibility"],
+      "name": "Josh W. Comeau",
+      "nameUrl": "https://www.joshwcomeau.com/",
+      "url": "https://www.joshwcomeau.com/rss.xml",
+      "description": "CSS・React・アニメーション・Web UIを実践的に解説する個人ブログ",
+      "tags": ["CSS", "React", "UI"],
+      "enabled": true
+    },
+    {
+      "name": "Chrome for Developers Blog",
+      "nameUrl": "https://developer.chrome.com/blog",
+      "url": "https://developer.chrome.com/static/blog/feed.xml",
+      "description": "Chrome公式のWeb Platform・DevTools・CSS・ブラウザAPI更新ブログ",
+      "tags": ["Chrome", "Web Platform", "Frontend"],
+      "enabled": true
+    },
+    {
+      "name": "Pawel Grzybek",
+      "nameUrl": "https://pawelgrzybek.com/",
+      "url": "https://pawelgrzybek.com/feed.xml",
+      "description": "JavaScript・Web標準・開発ツールを扱う個人ブログ",
+      "tags": ["JavaScript", "Web Standards", "Development"],
       "enabled": true
     }
   ]
