@@ -7,7 +7,12 @@ image: '../../../assets/images/blog/common/image_thumnail-4.png'
 tags: ['自分ノート', '思考', '仮説', 'AI', 'Figma MCP']
 ---
 
+import { Image } from 'astro:assets';
+import returnToFoundationImage from '../../../assets/images/blog/why-return-to-basics/why-return-to-basics_01_return-to-foundation-v2.png';
+
 この記事は、最近の私の考えを綴ったものです。まだまだ土台が固まった思いや考えではなく、思っていたことを一度文章にしました。
+
+情報に押しつぶされそうになる時がある自分と、同じようなことを不安を持つ方へ向けて。
 
 {/* textlint-disable ja-technical-writing/ja-no-successive-word */}
 ## 「なぜ」と言う問いかけの個人的な使い方
@@ -65,6 +70,16 @@ AIや新しいツールも、それ自体を目的にするものではありま
 ## 迷ったら、原点と仮説に戻る
 
 そうなったときに、やっぱり上流に戻る、原点に戻るということは、以前より重要になってきています。ただ戻るだけではなく、戻りやすくする仕組みを作っておくことや、最初に自分の中で原点を決めておくことも重要です。その原点自体を、あとから変更しやすくしておくことも大事だと思っています。
+
+自分の中では、その戻る場所を「目的・背景・価値・仮説」の4つとして捉えています。
+
+<Image
+  src={returnToFoundationImage}
+  alt="複数の選択肢から目的・背景・価値・仮説へ戻り、次の方向へ進むヒヤオの図"
+  class="w-full h-auto"
+  loading="lazy"
+  decoding="async"
+/>
 
 今回の例でいえば、原点は「Figma MCPを使うこと」ではありません。人間が関わらなくていいところをうまく自動化して、人間がよりクリエイティブな作業に集中できる状態をつくることです。
 
