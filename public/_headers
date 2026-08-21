@@ -1,2 +1,5 @@
 /*.html
   Cache-Control: public, max-age=300, stale-while-revalidate=60, stale-if-error=3600
+
+/robots.txt
+  Content-Type: text/plain; charset=utf-8
