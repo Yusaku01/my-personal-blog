@@ -1,0 +1,136 @@
+---
+title: 'Strangler Fig Applicationについて理解する'
+description: '稼働中の既存システムを段階的に置き換える仕組みと、関連する移行パターンとの違いを整理します。'
+publishDate: 2026-08-22
+author: 'Saku'
+image: '../../../assets/images/blog/common/image_thumnail-4.png'
+tags: ['ソフトウェアアーキテクチャ', 'レガシーモダナイゼーション', 'システム移行', 'Strangler Fig']
+---
+
+古いシステムを新しいシステムへ置き換えるとき、一つの考えとしてすべてを作り直して一度に切り替える方法があります。これは、個人の小規模プロジェクトや利用者がいないプロジェクトなど、限られた状況下では有用かもしれません。
+しかし実際、規模が大きく、現在も利用されているシステムは簡単に止められません。
+移行期間が長くなり、一度に切り替える場合の問題も大きくなります。
+
+このような移行を段階的に進める方法が、**Strangler Fig Application**（ストレングラー フィグ アプリケーション）です。
+
+Strangler Fig Applicationが扱うのは、移行後の構造ではなく、稼働中のシステムをどう置き換えるかです。
+
+## Strangler Fig Applicationとは
+
+Strangler Fig Applicationは、稼働中の既存システムを小さな単位に分け、新しいシステムへ徐々に置き換えるためのアーキテクチャ移行パターンです。
+
+広い意味ではデザインパターンの1つですが、StrategyやObserverのようにクラスやオブジェクトの構造を決めるパターンではありません。
+レガシーシステムをどのような手順で新しいシステムへ移すかを扱う、レガシーモダナイゼーションの知見に位置づけられます。
+
+この名称と比喩をソフトウェア移行の文脈へ導入したのはMartin Fowler（マーティン ファウラー）氏です。
+Fowlerは2004年に「Strangler Application」という記事を公開し、2019年に「Strangler Fig Application」へ改題しました。
+2024年には、この考え方を整理し直した「Strangler Fig」を公開しています。
+
+名前の由来は、Fowlerがオーストラリアのクイーンズランドで見たStrangler Figというイチジクです。
+この植物は別の木を支えにして成長し、根を地面まで伸ばしながら宿主を覆います。
+やがて自立し、場合によっては宿主の木が枯れたあとも、その場所に残ります。
+
+Fowlerはこの成長過程を、既存システムの周囲で新しいシステムを育て、振る舞いを少しずつ移していく方法に重ねました。
+
+## 何を段階的に置き換えるのか
+
+Strangler Fig Applicationでは、まず「移行できる境界」を見つけます。
+この境界は**Seam**と呼ばれ、URL、機能、ドメイン、API、イベントなどが単位になります。
+
+Webサイトやアプリケーションでは、利用者のブラウザなどから届くリクエストを、既存システムと新しいシステムへ振り分けるFacadeやProxyを置く方法が代表的です。
+Facadeはリクエストの内容を見て、未移行の機能を既存システムへ、移行済みの機能を新しいシステムへ振り分けます。
+
+```text
+利用者
+  ↓
+Facade / Proxy
+  ├─ 未移行の機能 → 既存システム
+  └─ 移行済みの機能 → 新しいシステム
+```
+
+移行は、次の流れで進みます。
+
+1. 機能を分割できる境界を見つける
+2. 新しいシステムに、その機能を実装する
+3. FacadeやProxyの振り分け先を新しいシステムへ変更する
+4. 動作を確認し、問題があれば既存システムへ戻せる状態を保つ
+5. 移行を繰り返し、役割を失った既存システムを停止する
+6. 不要になったFacadeや互換処理を削除する
+
+たとえばWebサイトをURL単位で移行する場合は、最初に1つのページだけを新しいシステムへ移します。
+問題がなければ対象URLを増やし、既存システムが担当する範囲を徐々に減らします。
+
+移行中だけ必要になる振り分け処理や互換層は、**Transitional Architecture**と呼ばれます。
+最終的なシステムには不要な構造ですが、新旧のシステムを同時に動かし、安全に責務を移すために作ります。
+
+## 移行先の構造を決めるパターンではない
+
+Strangler Fig Applicationは、移行後のシステムをマイクロサービスにするためだけの方法ではありません。
+
+モノリスからマイクロサービスへの移行例でよく紹介されますが、段階的に置き換えられる境界があれば、ほかの移行にも適用できます。
+
+- 古いフレームワークから新しいフレームワークへの移行
+- 旧CMSから新CMSへの移行
+- モノリスからモジュラーモノリスへの移行
+- 自社システムからSaaSへの移行
+
+ただし「どんなシステム構成へ変えるか」と「稼働中のシステムをどう切り替えるか」は、別々に決める必要があります。
+
+| 知見の種類 | 答える問い | 例 |
+| --- | --- | --- |
+| アーキテクチャスタイル | 最終的にどのような構造にするか | モノリス、マイクロサービス |
+| 移行パターン | 稼働中のシステムをどう置き換えるか | Strangler Fig Application |
+| リリース戦略 | 新しい実装を誰に、どの順番で公開するか | Canary Release、Blue-Green Deployment |
+
+つまり、Strangler Fig Applicationが決めるのは「どこへ移すか」ではなく、「稼働を続けながらどう移すか」です。
+
+## 利点と難しさ
+
+段階的な移行では、変更範囲を小さく保ち、機能ごとに動作を確認できます。
+移行途中でも新しい機能を提供でき、問題が起きた場合の切り戻し範囲も限定しやすくなります。
+
+一方で、移行期間中は新旧2つのシステムを保守します。
+どちらがデータの正しい持ち主なのか、共有するデータをどう同期するのか、相互に呼び出す機能をどう扱うのかも決める必要があります。
+
+FacadeやProxyがすべてのリクエストを受ける場合は、単一障害点や性能上のボトルネックになる可能性があります。
+リクエストを途中で振り分けられないシステムや、一度に置き換えてもリスクが小さいシステムには適さない場合もあります。
+
+Transitional Architectureが残り続ける問題にも注意が必要です。
+移行用の仕組みには、導入理由、所有者、削除条件、移行完了の判定方法を持たせます。
+
+## 一緒に使われる関連パターン
+
+Strangler Fig Applicationは移行全体の方針であり、実装中に起きる個別の問題は別のパターンで扱います。
+
+- **Branch by Abstraction**：抽象層の裏側で、古い実装を新しい実装へ段階的に差し替える
+- **Parallel Change**：APIやデータ構造を新旧両方に対応させ、利用側を移したあとに古い契約を削除する
+- **Anti-Corruption Layer**：古いシステムのデータや用語を変換し、新しいシステムの設計へ持ち込まないようにする
+- **Feature ToggleやCanary Release**：新しい実装を利用する環境や利用者を制限し、公開範囲を段階的に広げる
+
+これらはStrangler Fig Applicationと同じものではありません。
+たとえばCanary Releaseが決めるのは新しい実装へ流す利用者の割合であり、どの機能を新しいシステムの責務へ移すかではありません。
+
+また、URLごとの担当を記録する台帳やルーティング設定も、それ単体がStrangler Fig Applicationなのではありません。
+そのような仕組みは、段階的に移行するためのTransitional Architectureの一部です。
+
+## 移行を考えるための5つの問い
+
+Strangler Fig Applicationを実際のシステムへ当てはめるときは、次の問いから考えられます。
+
+1. 何を単位として移行するか
+2. どこにSeamを作るか
+3. 新旧のシステムをどう共存させるか
+4. どう検証し、問題が起きたらどう切り戻すか
+5. 何を削除できたら移行完了とするか
+
+Strangler Fig Applicationは、単に古いシステムと新しいシステムを共存させる方法ではありません。
+小さな境界を作り、責務を新しい側へ移し、既存システムと移行用の仕組みを最後に削除するところまでを含む移行パターンです。
+
+## 参考
+
+- [Strangler Fig | Martin Fowler](https://martinfowler.com/bliki/StranglerFigApplication.html)
+- [Original Strangler Fig Application | Martin Fowler](https://martinfowler.com/bliki/OriginalStranglerFigApplication.html)
+- [Patterns of Legacy Displacement | Martin Fowler](https://martinfowler.com/articles/patterns-legacy-displacement/)
+- [Transitional Architecture | Martin Fowler](https://martinfowler.com/articles/patterns-legacy-displacement/transitional-architecture.html)
+- [strangler figパターン | AWS規範ガイダンス](https://docs.aws.amazon.com/ja_jp/prescriptive-guidance/latest/modernization-decomposing-monoliths/strangler-fig.html)
+- [ストラングラーフィグパターン | Microsoft Learn](https://learn.microsoft.com/ja-jp/azure/architecture/patterns/strangler-fig)
