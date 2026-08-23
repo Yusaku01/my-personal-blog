@@ -17,14 +17,6 @@ const isExternalLink = (href: string | undefined, site: URL): boolean => {
     return false;
   }
 
-  if (
-    normalizedHref.startsWith('mailto:') ||
-    normalizedHref.startsWith('tel:') ||
-    normalizedHref.startsWith('javascript:')
-  ) {
-    return false;
-  }
-
   let resolvedUrl: URL;
   try {
     resolvedUrl = new URL(normalizedHref, site);
