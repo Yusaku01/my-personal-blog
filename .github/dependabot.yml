@@ -1,0 +1,29 @@
+version: 2
+
+# Dependabot alerts stay enabled, but native security-update PRs are disabled in GitHub settings.
+# Codex Automation follows .github/dependency-security-triage.md and opens only reviewed Draft PRs.
+# This file keeps routine version-update PRs disabled so the two systems do not create duplicates.
+updates:
+  - package-ecosystem: 'npm'
+    directory: '/'
+    schedule:
+      interval: 'weekly'
+      day: 'monday'
+      time: '09:00'
+      timezone: 'Asia/Tokyo'
+    # Keep routine version-update PRs disabled.
+    open-pull-requests-limit: 0
+    commit-message:
+      prefix: 'fix(deps)'
+      prefix-development: 'fix(deps-dev)'
+
+  - package-ecosystem: 'github-actions'
+    directory: '/'
+    schedule:
+      interval: 'weekly'
+      day: 'monday'
+      time: '09:00'
+      timezone: 'Asia/Tokyo'
+    open-pull-requests-limit: 0
+    commit-message:
+      prefix: 'fix(actions)'
