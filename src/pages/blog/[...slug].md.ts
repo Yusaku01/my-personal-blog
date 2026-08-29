@@ -37,5 +37,6 @@ export async function getStaticPaths() {
   const posts = await getBlogEntriesForLocale('ja');
   return posts.map((post) => ({
     params: { slug: getBlogEntrySlug(post) },
+    cacheKey: String(post.digest ?? post.body ?? ''),
   }));
 }

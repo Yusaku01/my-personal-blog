@@ -14,22 +14,31 @@ import {
   getBlogEntrySlug,
   getRelatedBlogPosts,
 } from '../../lib/blog/posts';
+import { createBlogArticleCacheKey } from '../../lib/blog/articleCacheKey';
 
 export const transition = { name: 'fade' };
 
 export async function getStaticPaths() {
-  const posts = await getBlogEntriesForLocale('ja');
-  return posts.map((post) => ({
-    params: { slug: getBlogEntrySlug(post) },
-    props: { post },
-  }));
+  const locale = 'ja';
+  const posts = await getBlogEntriesForLocale(locale);
+
+  return Promise.all(
+    posts.map(async (post) => {
+      const relatedPosts = await getRelatedBlogPosts(post, locale);
+
+      return {
+        params: { slug: getBlogEntrySlug(post) },
+        props: { post, relatedPosts },
+        cacheKey: createBlogArticleCacheKey({ locale, post, relatedPosts }),
+      };
+    })
+  );
 }
 
-const { post } = Astro.props;
+const locale = 'ja';
+const { post, relatedPosts } = Astro.props;
 const { Content, headings } = await render(post);
 const estimatedReadingTimeMinutes = getEstimatedReadingTimeMinutes(post.body ?? '');
-const locale = 'ja';
-const relatedPosts = await getRelatedBlogPosts(post, locale);
 ---
 
 <Layout

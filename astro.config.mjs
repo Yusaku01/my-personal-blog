@@ -49,7 +49,10 @@ const codeFilenameMetaTransformer = {
 
 export default defineConfig({
   site: 'https://saku-space.com',
-  cacheDir: './.astro-cache',
+  cacheDir: './node_modules/.astro',
+  experimental: {
+    incrementalBuild: true,
+  },
   output: 'server',
   adapter: cloudflare({
     imageService: 'compile',

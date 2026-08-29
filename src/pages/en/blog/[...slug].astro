@@ -15,25 +15,34 @@ import {
   getBlogEntrySlug,
   getRelatedBlogPosts,
 } from '../../../lib/blog/posts';
+import { createBlogArticleCacheKey } from '../../../lib/blog/articleCacheKey';
 
 export const transition = { name: 'fade' };
 
 export async function getStaticPaths() {
-  const posts = await getBlogEntriesForLocale('en');
-  return posts.map((post) => ({
-    params: { slug: getBlogEntrySlug(post) },
-    props: { post },
-  }));
+  const locale = 'en';
+  const posts = await getBlogEntriesForLocale(locale);
+
+  return Promise.all(
+    posts.map(async (post) => {
+      const relatedPosts = await getRelatedBlogPosts(post, locale);
+
+      return {
+        params: { slug: getBlogEntrySlug(post) },
+        props: { post, relatedPosts },
+        cacheKey: createBlogArticleCacheKey({ locale, post, relatedPosts }),
+      };
+    })
+  );
 }
 
-const { post } = Astro.props;
+const { post, relatedPosts } = Astro.props;
 const locale = 'en';
 const blogContentLocale = getBlogEntryLocale(post) ?? 'ja';
 const isFallbackJapanesePost = blogContentLocale !== locale;
 
 const { Content, headings } = await render(post);
 const estimatedReadingTimeMinutes = getEstimatedReadingTimeMinutes(post.body ?? '');
-const relatedPosts = await getRelatedBlogPosts(post, locale);
 ---
 
 <Layout
