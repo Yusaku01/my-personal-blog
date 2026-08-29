@@ -1,0 +1,188 @@
+Astro Incremental Static Builds 導入準備
+Astro 7.2 upgrade error excerpts
+Recorded: 2026-08-29 JST
+
+These are excerpts, not complete command outputs.
+Local user and repository path segments are replaced with <repo> or <user-library>.
+
+======================================================================
+CASE 1: stale node_modules prevented the baseline build
+Command: pnpm run build
+Result: exit 1
+Category: local dependency installation state
+Not evidence of: Astro 7.2 incompatibility
+======================================================================
+
+[astro] Unable to load your Astro config
+
+Cannot find module '@astrojs/markdown-remark' imported from '<repo>/astro.config.mjs'
+
+ELIFECYCLE Command failed with exit code 1.
+
+Abstract meaning:
+The manifest and lockfile declared a package that the current node_modules tree did not contain.
+The build could not reach application compilation because config loading failed first.
+
+======================================================================
+CASE 2: repository supply-chain policy rejected a very recent release
+Command: pnpm add 'astro@^7.2.9'
+Result: exit 1
+Category: dependency release-age policy
+Not evidence of: package absence or semver incompatibility
+======================================================================
+
+ERR_PNPM_NO_MATURE_MATCHING_VERSION Version 7.2.9 (released 37 hours ago) of astro does not meet the minimumReleaseAge constraint
+
+The latest release of astro is "7.2.9". Published at 8/28/2026
+
+Abstract meaning:
+Astro 7.2.9 existed, but the repository intentionally refused packages published less than 72 hours earlier.
+The safe response was to select a mature 7.2 release, not to add an exception merely to obtain the newest patch.
+
+Decision:
+Use Astro 7.2.7, which had passed the configured 4320-minute release-age threshold.
+
+======================================================================
+CASE 3: Astro and Markdown integration versions were not aligned
+Command: pnpm add 'astro@7.2.7'
+Result: install succeeded with peer warning
+Category: integration compatibility
+======================================================================
+
+WARN Issues with peer dependencies found
+.
+├─┬ astro 7.2.7
+│ └── ✕ unmet peer @astrojs/markdown-remark@7.2.4: found 7.2.1
+└─┬ eslint-plugin-jsx-a11y 6.10.2
+  └── ✕ unmet peer eslint@"^3 || ^4 || ^5 || ^6 || ^7 || ^8 || ^9": found 10.7.0
+
+Abstract meaning:
+The Astro core update completed, but its exact Markdown Remark peer version was not satisfied.
+The JSX accessibility warning was pre-existing and unrelated to Astro Incremental Static Builds.
+
+Decision:
+Update @astrojs/markdown-remark to 7.2.4 and @astrojs/mdx to 7.0.8.
+Keep @astrojs/cloudflare 14.1.4 and Wrangler 4.112.0 because their declared peer ranges already accepted Astro 7.2.7.
+
+======================================================================
+CASE 4: Wrangler could not write its debug log inside the sandbox
+Command: pnpm run astro check
+Result: Astro diagnostics succeeded with 0 errors, 0 warnings, 0 hints
+Category: execution sandbox filesystem restriction
+Not evidence of: source-code or Worker build failure
+======================================================================
+
+Failed to write to log file Error: EPERM: operation not permitted, open '<user-library>/.wrangler/logs/wrangler-2026-08-29_04-52-15_589.log'
+
+Abstract meaning:
+The validation process attempted to write outside the permitted workspace.
+Astro diagnostics still completed successfully.
+
+======================================================================
+CASE 5: a test HTTP server could not listen inside the sandbox
+Command: pnpm run test
+Initial result: exit 1 in sandbox
+Second result: all tests passed in an environment allowed to listen locally
+Category: execution sandbox network restriction
+Not evidence of: test regression
+======================================================================
+
+error: 'listen EPERM: operation not permitted 127.0.0.1'
+code: 'EPERM'
+
+Abstract meaning:
+The security test starts a local HTTP server.
+The first environment prohibited listen(2), so the test could not reach its assertion.
+
+Verification after rerun:
+Node tests: 17 passed
+Vitest: 12 files passed, 60 tests passed
+
+======================================================================
+SUCCESS BASELINE AFTER THE UPGRADE
+======================================================================
+
+astro v7.2.7
+@astrojs/cloudflare 14.1.4
+@astrojs/markdown-remark 7.2.4
+@astrojs/mdx 7.0.8
+wrangler 4.112.0
+
+astro check:
+Result (103 files):
+- 0 errors
+- 0 warnings
+- 0 hints
+
+pnpm run build:
+[build] output: "server"
+[build] adapter: @astrojs/cloudflare
+[build] Server built in 17.63s
+[build] Complete!
+
+pnpm run lint: passed
+pnpm run format:check: passed
+pnpm run test: passed
+
+Incremental Static Builds status at this point:
+experimental.incrementalBuild is not enabled.
+No getStaticPaths result includes cacheKey yet.
+
+======================================================================
+CASE 6: the first dev-server startup exited before readiness
+Command: pnpm run dev
+Initial result: exit 1
+Category: Astro background dev-server cold startup
+Not evidence of: removed API or Cloudflare adapter incompatibility
+======================================================================
+
+{"message":"Dev server process exited before becoming ready.","label":"SKIP_FORMAT","level":"error"}
+ELIFECYCLE Command failed with exit code 1.
+
+Background:
+Astro detects the Codex agent environment and starts the dev server as a detached background process.
+The previously installed local tree used Astro 6.1.1, while the upgraded tree uses Astro 7.2.7.
+The background server workflow therefore became observable after dependencies were synchronized.
+
+Diagnostic commands:
+astro dev status
+astro dev logs
+astro dev stop
+
+Verification:
+A direct verbose startup succeeded and wrote .astro/dev.json.
+The health endpoint returned {"ok":true}.
+After a clean stop, the ordinary pnpm run dev command also started successfully.
+
+Successful output:
+{"message":"Dev server running at http://localhost:4321 (pid <pid>)\n  Stop:   astro dev stop\n  Status: astro dev status\n  Logs:   astro dev logs","label":"SKIP_FORMAT","level":"info"}
+
+Abstract meaning:
+The first cold background startup failed before Astro's readiness check completed.
+The same versions started successfully after dependency optimization was warm.
+No deprecated project API or integration incompatibility was found.
+
+Current state after diagnosis:
+The background dev server is running at http://localhost:4321.
+
+======================================================================
+CASE 7: the first incremental force build could not open a local port
+Command: pnpm exec astro build --force
+Initial result: exit 1 in sandbox
+Second result: build succeeded in an environment allowed to listen locally
+Category: execution sandbox network restriction
+Not evidence of: Incremental Build, Cloudflare adapter, or content failure
+======================================================================
+
+Error: listen EPERM: operation not permitted 0.0.0.0
+
+Abstract meaning:
+Astro's Fonts integration opens a temporary local HTTP server during the build.
+The sandbox rejected listen(2) before prerendering could complete.
+
+Verification after rerun:
+- Force build rendered 29 Markdown endpoints.
+- The next unchanged build restored all 29 endpoints.
+- SHA-256 hashes matched the force-build outputs.
+- Adding one temporary post restored 29 existing endpoints and rendered only the new endpoint.
+- Removing it pruned one stale cached file and returned the manifest to 29 paths.

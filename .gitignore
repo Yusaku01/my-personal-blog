@@ -39,6 +39,14 @@ meta-info.md
 
 # docs
 /docs
+!/docs/
+/docs/*
+!/docs/blog-materials/
+/docs/blog-materials/*
+!/docs/blog-materials/astro-incremental-static-build/
+!/docs/blog-materials/astro-incremental-static-build/**
+!/docs/blog-materials/astro-view-transitions/
+!/docs/blog-materials/astro-view-transitions/**
 
 # blog
 src/content/blog/_*

@@ -1,0 +1,6 @@
+timestamp_jst,revision,astro_version,command,incremental_enabled,cache_state,change_scenario,wall_seconds,astro_server_build_seconds,prerender_seconds,cache_restore_seconds,rendered_pages,skipped_pages,cache_size_bytes,artifact_matches_force_build,notes
+2026-08-29T13:52:35+09:00,working-tree,7.2.7,pnpm run build,false,warm-local-cache-after-install,dependency-upgrade-baseline,19.42,17.63,2.86,,,,,,Incremental Build disabled; successful Workers build after Astro upgrade
+2026-08-29T15:01:59+09:00,working-tree,7.2.7,pnpm exec astro build --force,true,ignored-and-rebuilt,force-canary-baseline,22.60,14.94,3.36,,29,0,5179446,true,Generated all Markdown endpoints and refreshed the incremental cache
+2026-08-29T15:03:08+09:00,working-tree,7.2.7,pnpm exec astro build,true,warm,unchanged-input,19.90,14.35,2.85,,0,29,5179446,true,All 29 Markdown endpoints restored; SHA-256 matched force build
+2026-08-29T15:03:51+09:00,working-tree,7.2.7,pnpm exec astro build,true,warm,one-temporary-post-added,20.00,14.59,3.21,,1,29,5179446,,Existing Markdown endpoints restored and only the new endpoint rendered
+2026-08-29T15:05:08+09:00,working-tree,7.2.7,pnpm exec astro build,true,warm,temporary-post-removed,19.30,14.39,2.86,,0,29,5179446,true,Restored baseline outputs and pruned one stale cached file
