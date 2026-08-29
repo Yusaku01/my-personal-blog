@@ -9,7 +9,7 @@
 | Astro              | 7.2.7                                    | `package.json`           |
 | output             | `server`                                 | `astro.config.mjs`       |
 | adapter            | `@astrojs/cloudflare`                    | `astro.config.mjs`       |
-| cacheDir           | `./.astro-cache`                         | `astro.config.mjs`       |
+| cacheDir           | `./node_modules/.astro`                  | `astro.config.mjs`       |
 | Worker entrypoint  | `@astrojs/cloudflare/entrypoints/server` | `wrangler.jsonc`         |
 | Static Assets      | `./dist/client`                          | `wrangler.jsonc`         |
 | Worker-first route | `/contact`と`/en/contact`                | `wrangler.jsonc`         |
@@ -174,7 +174,7 @@ build成功とclient performanceは別の評価であり、この警告はIncrem
 ## 未確認
 
 - 実際のdeployment buildを実行しているのがWorkers Buildsか、外部CIか。
-- `.astro-cache`をbuild間で保存、復元する設定。
+- Cloudflare DashboardでWorkers BuildsのBuild cacheが有効か。
 - 同一入力の二回目buildでskipされるroute数。
 - 一記事変更時に再renderされるrouteの範囲。
 - cache archiveのsize、保存時間、復元時間。

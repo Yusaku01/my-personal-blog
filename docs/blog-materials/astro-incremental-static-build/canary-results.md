@@ -48,7 +48,7 @@ pnpm exec astro build --force
 ```
 
 - Markdown endpoint 29件をすべてrenderした。
-- `.astro-cache/incremental-build.json`へ29 pathを記録した。
+- `node_modules/.astro/incremental-build.json`へ29 pathを記録した。
 - Server buildは14.94秒だった。
 - Markdown endpoint自体は一件1〜3msだった。
 
@@ -152,10 +152,64 @@ Markdown endpointだけを見ると29件のrenderを省略できた。
 
 ## 次の段階
 
-1. HTML記事の関連記事選択を`getStaticPaths()`側で確定する。
-2. 現在の記事と表示する関連記事を同じpropsへ入れる。
-3. そのprops全体を安定した順序で`cacheKey`へ含める。
-4. 日本語HTMLで一記事変更と関連記事の波及を検証する。
-5. 英語fallback routeにも同じ設計を適用する。
-6. Workersの実build環境で`.astro-cache`をbuild前後にrestore/saveする。
+1. HTML記事の関連記事選択を`getStaticPaths()`側で確定する。完了。
+2. 現在の記事と表示する関連記事を同じpropsへ入れる。完了。
+3. そのprops全体を安定した順序で`cacheKey`へ含める。完了。
+4. 日本語HTMLで一記事追加と関連記事の波及を検証する。完了。
+5. 英語fallback routeにも同じ設計を適用する。完了。
+6. Cloudflare DashboardでWorkers Buildsの連続buildによるcache復元を確認する。
 7. OGP生成とcache転送を含むdeployment全体を計測する。
+
+## 検証5：日本語HTML記事の複合key
+
+日本語HTML記事routeで、現在の記事と表示中の関連記事カードを同じpropsと`cacheKey`へ渡した。
+
+同一入力のwarm buildでは、日本語HTML記事29件がすべて`restored`になった。
+
+force buildとwarm buildのHTML成果物をSHA-256で比較し、差分はなかった。
+
+## 検証6：関連記事の波及範囲
+
+`Astro` tagと将来の公開日を持つ検証用記事を一時的に追加した。
+
+- 新規記事：1件をrenderした。
+- 関連記事欄に新規記事が現れる既存記事：3件をrenderした。
+- 関連記事欄が変わらない既存記事：26件をrestoreした。
+
+生成HTMLを検索し、新規記事へのlinkがrenderされた3記事にだけ現れることも確認した。
+
+検証記事を削除した次のbuildでは、同じ3記事だけが元の関連記事へ戻り、残る26件はrestoreされた。
+
+```text
+[build] Pruned 2 stale file(s) from the incremental cache.
+```
+
+一時記事のHTMLとMarkdown endpointが削除対象になったため、prune件数は2件だった。
+
+削除後のHTML成果物は、検証前のforce buildとSHA-256が一致した。
+
+## HTML導入時のbuild error
+
+最初はfrontmatter直下で定義した`locale`を`getStaticPaths()`から参照した。
+
+`astro check`は成功したが、prerender時に次のエラーが発生した。
+
+```text
+locale is not defined
+```
+
+`getStaticPaths()`がbuild用moduleへ分離された後、そのcomponent-local変数が参照できなくなったことが原因だった。
+
+関数内にもlocaleを定義して解消した。
+
+型検査だけでは静的生成時のmodule境界を検証できないため、`astro build --force`を導入条件に含める必要がある。
+
+## 検証7：英語記事と日本語fallback
+
+英語HTML記事routeにも、日本語routeと同じ複合`cacheKey`を適用した。
+
+英語版が存在しないslugでは日本語entryを表示するため、keyは英語routeのlocaleと日本語entryの`id`、`digest`を同時に持つ。
+
+同一入力のwarm buildでは、英語HTML記事29件がすべて`restored`になった。
+
+force buildとwarm buildの英語HTML成果物をSHA-256で比較し、差分はなかった。

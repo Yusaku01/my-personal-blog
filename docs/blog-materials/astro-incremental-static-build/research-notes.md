@@ -106,19 +106,22 @@ Astroの機能とNext.js ISRは、どちらも「全件を作り直さない」�
 
 - Wranglerは指定directoryのassetをWorker codeとともにuploadする。
 - static assetはCloudflare network上でcache、配信される。
-- これはdeployment済みの`dist`を配信するcacheであり、次回の`astro build`へ`.astro-cache`を渡すbuild cacheではない。
+- これはdeployment済みの`dist`を配信するcacheであり、次回の`astro build`へ`cacheDir`を渡すbuild cacheではない。
 
 ### Workers Builds
 
-- Workers Buildsを使用する構成には`build_caching_enabled`がある。
-- cache削除APIは、cached dependenciesとbuild artifactsを削除すると説明している。
-- このrepositoryがCloudflareのGit integrationでWorkers Buildsを使っている場合、Astroの`cacheDir`永続化候補として実測する。
-- GitHub Actionsなど別のCIでbuildして`wrangler deploy`する場合、CI側で`.astro-cache`を保存、復元する。
-- repository内の設定だけでは、実際のbuild実行者とcache対象directoryをまだ確定できない。
+- Workers BuildsのBuild cacheはproject単位で有効化する。
+- Astroを自動検出した場合、`node_modules/.astro`をbuild output cacheとして保存する。
+- pnpmについてはglobal `.pnpm-store`もdependency cacheとして保存する。
+- cacheのretentionは最終readから7日、projectごとの上限は10 GBである。
+- このrepositoryの`cacheDir`は、自動保存対象へ合わせて`node_modules/.astro`にした。
+- GitHub Actionsなど別のCIでbuildして`wrangler deploy`する場合、CI側で`node_modules/.astro`を保存、復元する。
+- repository内の設定だけでは、実際のbuild実行者とCloudflare Dashboard側のBuild cache有効状態は確定できない。
 
 ### 公式資料
 
 - [Cloudflare Workers Static Assets](https://developers.cloudflare.com/workers/static-assets/)
+- [Cloudflare Workers Builds build caching](https://developers.cloudflare.com/workers/ci-cd/builds/build-caching/)
 - [Cloudflare Workers Builds API reference](https://developers.cloudflare.com/workers/ci-cd/builds/api-reference/)
 - [Cloudflare deploy a static site](https://developers.cloudflare.com/workers/static-assets/get-started/)
 
@@ -154,5 +157,5 @@ Astroの機能とNext.js ISRは、どちらも「全件を作り直さない」�
 - 使用しているAstro versionのdocumentationに同じlimitationsがあるか。
 - roadmap issueまたはchangelogにstable化、仕様変更が記載されたか。
 - Cloudflare側のbuild実行方式がWorkers Buildsか、外部CIか。
-- cache providerが`.astro-cache`を保存、復元しているか。
+- cache providerが`node_modules/.astro`を保存、復元しているか。
 - Next.js ISRとStatic Exportの制約が変わっていないか。

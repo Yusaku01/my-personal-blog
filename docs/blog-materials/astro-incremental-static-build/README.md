@@ -17,11 +17,14 @@
 - 最初のcanaryとして、`/blog/[...slug].md`だけにentry digest由来の`cacheKey`を追加した。
 - 同一入力の二回目buildで29件すべてが`restored`になり、force buildとのSHA-256比較も一致した。
 - 一記事追加時は既存29件をrestoreし、新規1件だけをrenderした。削除後はstale cacheもpruneされた。
-- HTML記事routeは関連記事という別entryへの依存があるため、まだ`cacheKey`を追加していない。
+- 日本語HTML記事routeでは、記事本体と表示中の関連記事カードから複合`cacheKey`を生成するようにした。
+- 一時記事の追加時は、既存29件のうち関連記事欄が変わる3件だけを再renderし、残る26件をrestoreした。
+- 英語HTML記事と、日本語entryを表示する英語fallback routeにも同じ複合`cacheKey`を適用した。
+- 英語HTML記事29件もwarm buildですべてrestoreされ、force buildとの成果物hashが一致した。
 - デプロイ先はCloudflare Pagesではない。
 - `@astrojs/cloudflare/entrypoints/server`とWorkers Static Assetsを組み合わせ、`/contact`と`/en/contact`だけWorkerを先に通している。
-- 現在の`cacheDir`は`.astro-cache`である。
-- Workersのビルド環境で`.astro-cache`をビルド間に保存、復元する方法は未確認である。
+- `cacheDir`を、Cloudflare Workers BuildsがAstro用に自動保存する`node_modules/.astro`へ合わせた。
+- Workers BuildsのBuild cacheが対象projectで有効かは、Cloudflare Dashboardでの確認が必要である。
 
 ## 記事の中心に置けそうな問い
 
@@ -93,14 +96,15 @@ reuse(page) =
 
 1. Astro 7.2系へ上げ、Incremental Static Buildsを無効にしたまま通常buildを通す。
 2. full buildの時間と成果物をbaselineとして保存する。
-3. Workersのビルド環境で`.astro-cache`を保存、復元できるか確認する。
+3. `cacheDir`をWorkers Buildsの自動cache対象`node_modules/.astro`へ合わせる。完了。
 4. Markdown endpointをcanaryにし、entry digest由来の`cacheKey`を追加する。完了。
 5. 同一commitを二回buildし、二回目で29 routeがrestoreされることを確認する。完了。
 6. `--force` buildとincremental buildのMarkdown成果物をSHA-256で比較する。完了。
 7. 一記事を追加し、既存29件のrestoreと新規1件のrenderを確認する。完了。
-8. HTML記事routeについて、記事本体と関連記事を同じpropsと`cacheKey`へ反映する。
-9. 英語fallback routeへ対象を広げる。
-10. cacheの保存、復元時間を含むdeployment全体を計測する。
+8. HTML記事routeについて、記事本体と関連記事を同じpropsと`cacheKey`へ反映する。完了。
+9. 英語fallback routeへ対象を広げる。完了。
+10. Cloudflare DashboardでBuild cacheが有効か確認する。
+11. cacheの保存、復元時間を含むdeployment全体を計測する。
 
 ### このブログ固有の難しさ
 
@@ -258,6 +262,46 @@ HTML記事pageは、記事本体だけでなく、同じtagを持つ別記事か
 
 Markdown endpointは一件1〜2msであり、現状のbuild時間はserver bundle、外部feed、OGP、その他の静的routeが支配している。
 
+### HTML記事では表示する関連記事そのものをkeyにした
+
+日本語HTML記事では、現在の記事の`id`と`digest`に加え、表示順を保った関連記事カードのURL、タイトル、説明文、公開日を`cacheKey`へ含めた。
+
+`getStaticPaths()`で関連記事を一度だけ選び、同じ値をpage propsと`cacheKey`へ渡した。
+
+これにより、keyを作った後に描画側で関連記事を再取得して結果がずれる経路をなくした。
+
+一時的なAstro記事を一件追加すると、新規記事と関連記事欄にその記事が現れる既存3件だけがrenderされ、残る26件はrestoreされた。
+
+記事を削除すると同じ3件だけが元の関連記事へ戻り、HTMLとMarkdownの一時成果物2件がpruneされた。
+
+全記事collectionのdigestをkeyに含めず、必要な波及だけを表現できた。
+
+### 型検査を通過してもprerender時に変数が消えた
+
+最初の実装では、frontmatter直下の`const locale = 'ja'`を`getStaticPaths()`から参照した。
+
+`astro check`は成功したが、force buildは次のエラーで停止した。
+
+```text
+locale is not defined
+```
+
+生成されたprerender用moduleでは、そのcomponent-local変数をexportされた`getStaticPaths()`が参照できなかった。
+
+`locale`を`getStaticPaths()`の関数内にも定義すると解消した。
+
+抽象化すると、source上のscopeとbuild後に分離されたmoduleのscopeが一致するとは限らず、静的routeの検証には型検査だけでなく実buildが必要である。
+
+### 英語fallbackはrouteとcontentのlocaleが異なる
+
+英語版がないslugでは、英語routeが日本語entryを表示する。
+
+cache keyには英語routeを表す`locale: 'en'`と、実際に表示する日本語entryの`id`と`digest`が同時に入る。
+
+これにより、日本語記事の変更で英語fallbackを無効化しつつ、日本語routeと英語routeのcacheを混同しない。
+
+同一入力のwarm buildでは英語HTML記事29件がすべてrestoreされ、force buildとのSHA-256比較も一致した。
+
 詳細は[`canary-results.md`](./canary-results.md)へ保存した。
 
 ## 作業者として感じたこと
@@ -292,6 +336,7 @@ Markdown endpointは一件1〜2msであり、現状のbuild時間はserver bundl
 - [Astro configuration reference](https://docs.astro.build/en/reference/configuration-reference/)
 - [Astro Cloudflare adapter](https://docs.astro.build/en/guides/integrations-guide/cloudflare/)
 - [Cloudflare Workers Static Assets](https://developers.cloudflare.com/workers/static-assets/)
+- [Cloudflare Workers Builds build caching](https://developers.cloudflare.com/workers/ci-cd/builds/build-caching/)
 - [Next.js Incremental Static Regeneration](https://nextjs.org/docs/app/guides/incremental-static-regeneration)
 
 ## 追記ルール
