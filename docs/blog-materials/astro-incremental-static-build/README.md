@@ -21,6 +21,8 @@
 - 一時記事の追加時は、既存29件のうち関連記事欄が変わる3件だけを再renderし、残る26件をrestoreした。
 - 英語HTML記事と、日本語entryを表示する英語fallback routeにも同じ複合`cacheKey`を適用した。
 - 英語HTML記事29件もwarm buildですべてrestoreされ、force buildとの成果物hashが一致した。
+- Cloudflare Workers Buildsで同じcommitを再buildし、build output cacheの復元と記事routeの`(restored)`を確認した。
+- 実環境の全体時間は初回1分1秒、再build1分13秒であり、現時点では速度改善を確認できなかった。
 - デプロイ先はCloudflare Pagesではない。
 - `@astrojs/cloudflare/entrypoints/server`とWorkers Static Assetsを組み合わせ、`/contact`と`/en/contact`だけWorkerを先に通している。
 - `cacheDir`を、Cloudflare Workers BuildsがAstro用に自動保存する`node_modules/.astro`へ合わせた。
@@ -103,8 +105,9 @@ reuse(page) =
 7. 一記事を追加し、既存29件のrestoreと新規1件のrenderを確認する。完了。
 8. HTML記事routeについて、記事本体と関連記事を同じpropsと`cacheKey`へ反映する。完了。
 9. 英語fallback routeへ対象を広げる。完了。
-10. Cloudflare DashboardでBuild cacheが有効か確認する。
-11. cacheの保存、復元時間を含むdeployment全体を計測する。
+10. Cloudflare DashboardでBuild cacheが有効か確認する。完了。
+11. 同一commitを再buildし、`node_modules/.astro`の復元とrouteのrestoreを確認する。完了。
+12. cacheの保存、復元時間を含むdeployment全体を継続計測する。
 
 ### このブログ固有の難しさ
 
@@ -301,6 +304,18 @@ cache keyには英語routeを表す`locale: 'en'`と、実際に表示する日�
 これにより、日本語記事の変更で英語fallbackを無効化しつつ、日本語routeと英語routeのcacheを混同しない。
 
 同一入力のwarm buildでは英語HTML記事29件がすべてrestoreされ、force buildとのSHA-256比較も一致した。
+
+### Workers Buildsでrestoreできても全体は速くならなかった
+
+同じcommitをCloudflare Workers Buildsで二回buildした。
+
+二回目は`Success: Build output restored from build cache.`と表示され、記事routeも`(restored)`になった。
+
+それでもdeployment全体は初回1分1秒、二回目1分13秒だった。
+
+OGP全件生成、dependency install、bundle、Incremental Build対象外route、deployが残るためである。
+
+route単位の最適化が成功したことと、deployment全体が速くなったことは分けて評価する必要がある。
 
 詳細は[`canary-results.md`](./canary-results.md)へ保存した。
 

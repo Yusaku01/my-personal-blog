@@ -157,8 +157,8 @@ Markdown endpointだけを見ると29件のrenderを省略できた。
 3. そのprops全体を安定した順序で`cacheKey`へ含める。完了。
 4. 日本語HTMLで一記事追加と関連記事の波及を検証する。完了。
 5. 英語fallback routeにも同じ設計を適用する。完了。
-6. Cloudflare DashboardでWorkers Buildsの連続buildによるcache復元を確認する。
-7. OGP生成とcache転送を含むdeployment全体を計測する。
+6. Cloudflare DashboardでWorkers Buildsの連続buildによるcache復元を確認する。完了。
+7. OGP生成とcache転送を含むdeployment全体を継続計測する。
 
 ## 検証5：日本語HTML記事の複合key
 
@@ -213,3 +213,24 @@ locale is not defined
 同一入力のwarm buildでは、英語HTML記事29件がすべて`restored`になった。
 
 force buildとwarm buildの英語HTML成果物をSHA-256で比較し、差分はなかった。
+
+## 検証8：Cloudflare Workers Builds
+
+同じcommit `b89d87e`をWorkers Buildsで二回buildした。
+
+初回buildは1分1秒で、変更後の`node_modules/.astro`へcacheを保存するbuildになった。
+
+同じcommitを再buildすると、Cloudflare側で次のログを確認できた。
+
+```text
+Restoring from build output cache
+Success: Build output restored from build cache.
+```
+
+Astroのログでも、Markdown、日本語HTML、英語HTMLの記事routeに`(restored)`が表示された。
+
+再build全体は1分13秒であり、初回より12秒長かった。
+
+route renderの省略は機能したが、dependency install、OGP全件生成、bundle、対象外route、deployが残るため、deployment全体の速度改善は確認できなかった。
+
+二回だけの計測なので、時間差は性能の結論ではなく観測値として扱う。
