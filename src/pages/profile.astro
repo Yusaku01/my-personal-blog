@@ -2,14 +2,12 @@
 export const prerender = true;
 import Layout from '../layouts/Layout.astro';
 import HeroSection from '../components/Hero/HeroSection.astro';
+import ProfileAvatar from '../components/Profile/ProfileAvatar.astro';
 import ProfileSection from '../components/Profile/ProfileSection.astro';
 import { getEntry, render } from 'astro:content';
 import { uiText } from '../lib/i18n';
 
 export const transition = { name: 'fade' };
-
-import { Image } from 'astro:assets';
-import profileAvatarImage from '../assets/images/img_profile-avatar.webp';
 
 const locale = 'ja';
 const profileEntry = await getEntry('profile', 'main');
@@ -35,21 +33,14 @@ const { Content } = await render(profileEntry);
         <div class="px-2 py-8">
           <!-- プロフィールヘッダー -->
           <div class="flex flex-col md:flex-row items-center gap-6 mb-8">
-            <!-- プロフィール画像 -->
-            <div
-              class="w-40 h-40 rounded-full overflow-hidden relative z-10 bg-white dark:bg-gray-700"
-            >
-              <Image
-                src={profileAvatarImage}
-                alt={uiText.profile.imageAlt[locale]}
-                class="w-full h-full object-cover"
-                width={160}
-                height={160}
-                loading="eager"
-                fetchpriority="high"
-                decoding="async"
-              />
-            </div>
+            <ProfileAvatar
+              locale={locale}
+              imageId="profile-page-avatar"
+              size={160}
+              className="w-40"
+              loading="eager"
+              fetchpriority="high"
+            />
             <!-- 名前と肩書き -->
             <div class="text-center md:text-left">
               <p class="text-xl font-bold lg:text-2xl text-gray-900 dark:text-white">

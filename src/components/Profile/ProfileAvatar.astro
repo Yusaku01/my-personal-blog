@@ -1,0 +1,124 @@
+---
+import { uiText, type Locale } from '../../lib/i18n';
+
+interface Props {
+  locale: Locale;
+  imageId: string;
+  size: number;
+  className?: string;
+  loading?: 'eager' | 'lazy';
+  fetchpriority?: 'high' | 'low';
+}
+
+const { locale, imageId, size, className = '', loading = 'lazy', fetchpriority } = Astro.props;
+
+const imageAlt = uiText.profile.imageAlt[locale];
+const photoAlt = uiText.profile.photoAlt[locale];
+const showPhotoLabel = uiText.profile.showPhoto[locale];
+const showIllustrationLabel = uiText.profile.showIllustration[locale];
+const profileIllustrationSrc = '/images/profile-illustration.png';
+---
+
+<div
+  class:list={['profile-avatar', className]}
+  data-profile-avatar
+  data-profile-avatar-photo-src="/images/profile-photo.png"
+  data-profile-avatar-photo-alt={photoAlt}
+  data-profile-avatar-show-photo-label={showPhotoLabel}
+  data-profile-avatar-show-illustration-label={showIllustrationLabel}
+>
+  <div class="profile-avatar__frame">
+    <img
+      id={imageId}
+      src={profileIllustrationSrc}
+      alt={imageAlt}
+      class="profile-avatar__image w-full h-full object-contain"
+      width={size}
+      height={size}
+      loading={loading}
+      fetchpriority={fetchpriority}
+      decoding="async"
+      data-profile-avatar-image
+    />
+  </div>
+  <button
+    type="button"
+    class="profile-avatar__toggle"
+    data-profile-avatar-toggle
+    aria-controls={imageId}
+    aria-pressed="false"
+    aria-label={showPhotoLabel}
+  >
+    {showPhotoLabel}
+  </button>
+</div>
+
+<style>
+  .profile-avatar {
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .profile-avatar__frame {
+    aspect-ratio: 1;
+    background-color: rgb(248 248 236);
+    border-radius: 9999px;
+    flex: 0 0 auto;
+    overflow: hidden;
+    position: relative;
+    width: 100%;
+  }
+
+  .profile-avatar__image {
+    display: block;
+  }
+
+  .profile-avatar__toggle {
+    align-items: center;
+    background: transparent;
+    border: 1px solid var(--color-section-border);
+    border-radius: 9999px;
+    color: inherit;
+    cursor: pointer;
+    display: inline-flex;
+    font-size: 0.75rem;
+    justify-content: center;
+    line-height: 1.25;
+    min-block-size: 2.25rem;
+    padding: 0.5rem 0.75rem;
+    transition:
+      background-color 150ms ease,
+      border-color 150ms ease;
+  }
+
+  .profile-avatar__toggle:hover {
+    background-color: rgb(229 231 235 / 0.7);
+  }
+
+  :global(html.dark) .profile-avatar__toggle:hover {
+    background-color: rgb(55 65 81 / 0.7);
+  }
+
+  .profile-avatar__toggle:focus-visible {
+    outline: 2px solid var(--color-focus-ring);
+    outline-offset: 2px;
+  }
+
+  :global(html:not(.js)) .profile-avatar__toggle {
+    display: none;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .profile-avatar__toggle {
+      transition: none;
+    }
+  }
+</style>
+
+<script>
+  import { bindProfileAvatars } from '../../scripts/profile-avatar';
+
+  bindProfileAvatars();
+</script>

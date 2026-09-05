@@ -127,8 +127,8 @@ export const uiText = {
       en: 'Sakku',
     },
     role: {
-      ja: 'フロントエンドエンジニア / デザイナー',
-      en: 'Frontend Engineer / Designer',
+      ja: 'デザインエンジニア',
+      en: 'Design Engineer',
     },
     intro: {
       ja: 'フロントエンドエンジニアとしての経験とデザインの知識を活かし、Web制作をしています。',
@@ -143,8 +143,20 @@ export const uiText = {
       en: 'View profile',
     },
     imageAlt: {
-      ja: 'プロフィール画像',
-      en: 'Profile image',
+      ja: 'サックのプロフィールイラスト',
+      en: 'Illustrated profile portrait of Sakku',
+    },
+    photoAlt: {
+      ja: 'サックのプロフィール写真',
+      en: 'Profile photo of Sakku',
+    },
+    showPhoto: {
+      ja: '写真で見る',
+      en: 'View photo',
+    },
+    showIllustration: {
+      ja: 'イラストで見る',
+      en: 'View illustration',
     },
     aboutTitle: {
       ja: '自己紹介',
