@@ -162,6 +162,10 @@ export const uiText = {
       ja: '自己紹介',
       en: 'About',
     },
+    timelineTitle: {
+      ja: 'これまで',
+      en: 'Journey so far',
+    },
     aboutBody: {
       en: [
         'My interest in photography eventually led me into web design. As I designed and implemented websites, I discovered how enjoyable coding could be and grew more interested in frontend development.',

@@ -4,11 +4,21 @@ import Layout from '../../layouts/Layout.astro';
 import HeroSection from '../../components/Hero/HeroSection.astro';
 import ProfileAvatar from '../../components/Profile/ProfileAvatar.astro';
 import ProfileSection from '../../components/Profile/ProfileSection.astro';
+import ProfileTimeline from '../../components/Profile/ProfileTimeline.astro';
+import { getEntry } from 'astro:content';
 import { uiText } from '../../lib/i18n';
 
 export const transition = { name: 'fade' };
 
 const locale = 'en';
+const profileEntry = await getEntry('profile', 'main');
+
+if (!profileEntry) {
+  throw new Error('Profile entry not found: src/content/profile/main.mdx');
+}
+
+const profile = profileEntry.data;
+const timeline = profile.timeline ?? [];
 ---
 
 <Layout
@@ -46,6 +56,14 @@ const locale = 'en';
               {uiText.profile.aboutBody.en.map((paragraph) => <p>{paragraph}</p>)}
             </div>
           </ProfileSection>
+
+          {
+            timeline.length > 0 && (
+              <ProfileSection title={uiText.profile.timelineTitle[locale]} className="mb-10">
+                <ProfileTimeline entries={timeline} locale={locale} />
+              </ProfileSection>
+            )
+          }
         </div>
       </div>
     </div>

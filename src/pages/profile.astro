@@ -4,6 +4,7 @@ import Layout from '../layouts/Layout.astro';
 import HeroSection from '../components/Hero/HeroSection.astro';
 import ProfileAvatar from '../components/Profile/ProfileAvatar.astro';
 import ProfileSection from '../components/Profile/ProfileSection.astro';
+import ProfileTimeline from '../components/Profile/ProfileTimeline.astro';
 import { getEntry, render } from 'astro:content';
 import { uiText } from '../lib/i18n';
 
@@ -17,6 +18,7 @@ if (!profileEntry) {
 }
 
 const profile = profileEntry.data;
+const timeline = profile.timeline ?? [];
 const { Content } = await render(profileEntry);
 ---
 
@@ -56,6 +58,14 @@ const { Content } = await render(profileEntry);
               <Content />
             </div>
           </ProfileSection>
+
+          {
+            timeline.length > 0 && (
+              <ProfileSection title={uiText.profile.timelineTitle[locale]} className="mb-10">
+                <ProfileTimeline entries={timeline} locale={locale} />
+              </ProfileSection>
+            )
+          }
         </div>
       </div>
     </div>

@@ -38,6 +38,19 @@ const findsFeed = defineCollection({
   }),
 });
 
+const profileTimelineEntry = z.object({
+  period: z.string(),
+  title: z.string(),
+  description: z.string().optional(),
+  en: z
+    .object({
+      period: z.string(),
+      title: z.string(),
+      description: z.string().optional(),
+    })
+    .optional(),
+});
+
 const profile = defineCollection({
   loader: glob({
     pattern: '*.mdx',
@@ -46,6 +59,7 @@ const profile = defineCollection({
   schema: z.object({
     name: z.string(),
     role: z.string(),
+    timeline: z.array(profileTimelineEntry).default([]),
     socialLinks: z.array(
       z.object({
         name: z.string(),

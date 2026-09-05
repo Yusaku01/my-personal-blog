@@ -1,0 +1,120 @@
+---
+import { type Locale } from '../../lib/i18n';
+
+interface TimelineEntry {
+  period: string;
+  title: string;
+  description?: string;
+  en?: {
+    period: string;
+    title: string;
+    description?: string;
+  };
+}
+
+interface Props {
+  entries: TimelineEntry[];
+  locale?: Locale;
+}
+
+const { entries, locale = 'ja' } = Astro.props;
+const localizedEntries = entries.map((entry) => (locale === 'en' && entry.en ? entry.en : entry));
+---
+
+<ol class="profile-timeline">
+  {
+    localizedEntries.map((entry) => (
+      <li class="profile-timeline__item">
+        <span class="profile-timeline__marker" aria-hidden="true" />
+        <div>
+          <p class="profile-timeline__period">{entry.period}</p>
+          <h3 class="profile-timeline__title">{entry.title}</h3>
+          {entry.description && <p class="profile-timeline__description">{entry.description}</p>}
+        </div>
+      </li>
+    ))
+  }
+</ol>
+
+<style>
+  .profile-timeline {
+    --profile-timeline-line: rgb(107 114 128);
+
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    position: relative;
+  }
+
+  .profile-timeline::before {
+    background-color: var(--profile-timeline-line);
+    content: '';
+    inline-size: 1px;
+    inset-block: 0.8rem;
+    inset-inline-start: 0.4375rem;
+    position: absolute;
+  }
+
+  .profile-timeline__item {
+    align-items: flex-start;
+    display: flex;
+    min-inline-size: 0;
+    padding-inline-start: 2rem;
+    position: relative;
+  }
+
+  .profile-timeline__item + .profile-timeline__item {
+    margin-block-start: 2.25rem;
+  }
+
+  .profile-timeline__marker {
+    background-color: rgb(255 255 255);
+    block-size: 0.9375rem;
+    border: 2px solid var(--profile-timeline-line);
+    border-radius: 50%;
+    inline-size: 0.9375rem;
+    inset-block-start: 0.3rem;
+    inset-inline-start: 0;
+    position: absolute;
+  }
+
+  .profile-timeline__period {
+    color: rgb(107 114 128);
+    font-size: 0.75rem;
+    letter-spacing: 0.08em;
+    line-height: 1.5;
+    margin: 0;
+  }
+
+  .profile-timeline__title {
+    color: var(--color-heading);
+    font-size: 1rem;
+    font-weight: 600;
+    line-height: 1.6;
+    margin: 0.25rem 0 0;
+  }
+
+  .profile-timeline__description {
+    color: rgb(75 85 99);
+    font-size: 0.875rem;
+    line-height: 1.8;
+    margin: 0.5rem 0 0;
+    max-inline-size: 45rem;
+  }
+
+  :global(html.dark) .profile-timeline {
+    --profile-timeline-line: rgb(156 163 175);
+  }
+
+  :global(html.dark) .profile-timeline__marker {
+    background-color: rgb(31 41 55);
+  }
+
+  :global(html.dark) .profile-timeline__period {
+    color: rgb(156 163 175);
+  }
+
+  :global(html.dark) .profile-timeline__description {
+    color: rgb(209 213 219);
+  }
+</style>
