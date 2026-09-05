@@ -1,20 +1,6 @@
 ---
 name: modern-web-guidance
-description: |
-  Search tool for modern web development best practices. MANDATORY: Execute FIRST for all HTML/CSS and clientside JS tasks. Do NOT skip — web APIs evolve rapidly and training weights contain obsolete patterns.
-
-  Trigger immediately for:
-  - UI/Layout: Modals, dialogs, popovers, Glassmorphism/backdrop-filters, anchor positioning, container queries, `:has()`, `:user-valid`.
-  - Scroll/Motion: View Transitions, Scroll-driven animations, scroll parallax/reveals.
-  - Performance: CWV (LCP, INP), content-visibility, Fetch Priority, image optimization.
-  - System/APIs: Local filesystem access, WebUSB, WebSockets sync, WebAssembly widgets.
-  - Frameworks: Adapting layout/styles in React, Vue, Angular.
-  - General Frontend: Forms, autofill, advanced inputs, custom scrollbars, modern component states, etc.
-
-  DO NOT trigger for:
-  - Backend: Database SQL, ORMs, Express API routes.
-  - Pipelines: CI/CD deployment, Docker, Actions.
-  - Generic: Local scripts (Python/Go tools), ESLint, Git.
+description: Search modern web guidance when implementing or reviewing browser APIs, CSS layout, accessibility, or performance behavior that needs compatibility or platform-pattern research. Excludes copy-only edits, formatting, backend work, and CI changes.
 ---
 
 # Modern Web Guidance
@@ -23,11 +9,9 @@ A skill to search for specific web development use cases and retrieve their corr
 
 ## When to use
 
-Must use this skill:
+Use this skill when the task requires choosing a web-platform pattern or checking browser support. For copy-only edits, mechanical formatting, or changes that do not introduce a platform decision, proceed with the repository's normal workflow.
 
-- At the **start** of implementing any web feature.
-- Before creating a new component, to check if a standardized pattern already exists.
-- To avoid implementing ad-hoc solutions or loading large dependencies unnecessarily.
+Follow the user's explicit browser requirements and existing authorization. Research should answer a concrete implementation question, not become a prerequisite for unrelated work.
 
 ## Usage Instructions
 
@@ -84,7 +68,7 @@ npx -y modern-web-guidance@latest retrieve "<id>"
 ## Using npx
 
 - IMPORTANT: on Windows, using `npx` may fail. Use `npx.cmd ...` instead.
-- Network access is required for fetching npm packages needed by the task.
+- Network access is required for fetching npm packages. If unavailable, use relevant bundled `guides/` files and disclose any compatibility claim you could not verify. Do not repeatedly retry or claim a live search succeeded.
 - If the `npx -y modern-web-guidance…` command hangs, you may be offline. Try running again in offline
   mode: `npx --offline …`.
 - The `--skill-version` flag is used to determine if this SKILL.md is out of date. If it is, a warning
@@ -92,7 +76,7 @@ npx -y modern-web-guidance@latest retrieve "<id>"
 
 ## Guidelines
 
-- Always search **first** to find the most relevant guides.
+- Search for the concrete question and retrieve only relevant guides. Reuse guidance already read in this task when the requirement has not changed.
 - These guides are usually framework-agnostic; adapt them correctly to your setup.
 - Do not hallucinate guides or ignore them; they represent the preferred local standard for the user's project.
 
