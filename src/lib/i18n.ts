@@ -165,7 +165,7 @@ export const uiText = {
     aboutBody: {
       en: [
         'My interest in photography eventually led me into web design. As I designed and implemented websites, I discovered how enjoyable coding could be and grew more interested in frontend development.',
-        'These days I often use generative AI tools such as Codex and Claude Code, while keeping a close eye on new web technologies. I am also revisiting computer science fundamentals, development processes, and networking basics through personal study.',
+        'I started with static HTML/CSS and now often write JavaScript/TypeScript and use web frameworks such as Astro and React. Recently, I have been making extensive use of generative AI tools such as Codex and Claude Code, while exploring how to collaborate with and make use of AI in my day-to-day work.',
       ],
     },
   },
