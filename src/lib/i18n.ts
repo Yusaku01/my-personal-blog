@@ -131,12 +131,8 @@ export const uiText = {
       en: 'Design Engineer',
     },
     intro: {
-      ja: 'フロントエンドエンジニアとしての経験とデザインの知識を活かし、Web制作をしています。',
-      en: 'I build websites by combining frontend engineering experience with design knowledge.',
-    },
-    note: {
-      ja: '最近はLLMを使って色々検証してます。',
-      en: 'Lately I have been exploring practical workflows with LLMs.',
+      ja: 'フロントエンドエンジニアとしての経験とデザインの知識を活かし、Webサイトやアプリ開発をしています。',
+      en: 'I build websites and apps by combining frontend engineering experience with design knowledge.',
     },
     more: {
       ja: '詳しく見る',
