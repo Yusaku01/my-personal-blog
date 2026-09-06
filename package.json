@@ -33,14 +33,14 @@
     "db:migrate:remote": "wrangler d1 migrations apply CONTACT_DB --remote"
   },
   "dependencies": {
-    "@astrojs/cloudflare": "^14.1.4",
-    "@astrojs/markdown-remark": "^7.2.4",
-    "@astrojs/mdx": "^7.0.8",
+    "@astrojs/cloudflare": "^14.2.6",
+    "@astrojs/markdown-remark": "^7.3.0",
+    "@astrojs/mdx": "^8.0.0",
     "@astrojs/rss": "^4.0.19",
     "@astrojs/sitemap": "^3.7.3",
     "@fontsource/zen-kaku-gothic-new": "^5.2.7",
     "@resvg/resvg-js": "^2.6.2",
-    "astro": "^7.2.7",
+    "astro": "^7.2.10",
     "budoux": "^0.8.4",
     "cheerio": "^1.2.0",
     "date-fns": "^2.30.0",
@@ -51,7 +51,7 @@
     "remark-directive": "^4.0.0",
     "sanitize-filename": "^1.6.4",
     "satori": "^0.26.0",
-    "sharp": "^0.35.3",
+    "sharp": "^0.35.4",
     "unist-util-visit": "^5.0.0"
   },
   "devDependencies": {
@@ -99,7 +99,7 @@
     "unified": "^11.0.5",
     "unocss": "^66.7.0",
     "vitest": "^4.1.7",
-    "wrangler": "4.112.0"
+    "wrangler": "4.128.0"
   },
   "simple-git-hooks": {
     "pre-commit": "pnpm exec lint-staged",
