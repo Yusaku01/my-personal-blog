@@ -1,0 +1,129 @@
+---
+title: 'Miseが9月にアプデしたらしいので試していく'
+description: '2026年9月までに追加されたmiseの機能を眺めつつ、Homebrew版から公式版へ移行し、Bootstrapのdotfiles履歴を試した記録です。'
+publishDate: 2026-09-14
+author: 'Saku'
+image: '../../../assets/images/blog/common/image_thumnail.png'
+tags: ['mise', 'Toolchain', '開発環境', '個人ブログ']
+---
+
+数ヶ月前、miseの作者であるjdx氏が、本業のかたわら続けていたOSS開発をフルタイムの仕事にしたと知りました。[本人の記事](https://jdx.dev/posts/2026-04-17-going-full-time-on-open-source/)によると、2026年4月にFigmaを退職してOSS開発へ移り、現在はentire.ioでmiseなどを開発されています。
+
+それから今月、2026年9月までにいくつか大型？と言いたくなるアップデートがあったので、追ってみようと思います。そのなかでBootstrapのdotfiles履歴は実際に試せたので、今回はそのログを中心にまとめます。
+
+そもそもmiseをよく知らんという方もいるでしょう。超絶ざっくり説明すれば、「Node.jsなど作業に必要なツールを管理できたりするツール」です。もちろん、そのほかにもいろいろ機能はあります。詳しくは[こちら](https://mise.jdx.dev/about.html)にまとまっています。
+
+## MiseをHomebrew版からネイティブ版にお引越し
+
+本筋とは逸れますが、まず私がPCに導入していたmiseはHomebrew版でした。久々にドキュメントを見たところ、[curlコマンドによるネイティブインストール](https://mise.jdx.dev/installing-mise.html#mise-run)が案内されていました。macOSでは`mise.run`から入れる公式バイナリが推奨されているため、今回はそちらへ移行します。
+
+作業前に使っていたのはHomebrew版の`2026.9.1`です。いきなり削除するのは少し怖いので、設定ファイルをバックアップし、公式インストーラーを一度ファイルとして保存して内容を確認しました。その後、公式版`v2026.9.7`を`~/.local/bin/mise`へ入れています。
+
+```sh
+curl --proto '=https' --tlsv1.2 -fsSL https://mise.run \
+  -o /private/tmp/mise-install-2026.9.7.sh
+sh /private/tmp/mise-install-2026.9.7.sh
+```
+
+次に、`.zshrc`がHomebrew版の`/opt/homebrew/bin/mise`を直接参照していたため、公式版を参照するように変更しました。あわせて、シェル起動時にPATH（コマンドの検索先）へ同じ場所を複数回追加していた設定も整理しています。
+
+```sh
+if [ -x "$HOME/.local/bin/mise" ]; then
+  eval "$("$HOME/.local/bin/mise" activate zsh)"
+fi
+```
+
+新しいシェルで確認すると、mise本体は公式版へ切り替わっていました。ただし、最初の`mise doctor`では既存ツールのshimが足りないと表示されたため、`mise reshim`で作り直しています。ここまで確認してからHomebrew版を削除しました。
+
+```sh
+mise reshim
+mise doctor
+brew uninstall --force mise
+```
+
+移行直後の結果は次のとおりです。mise本体だけを入れ替えたため、miseで管理していたNode.jsとpnpmのバージョンは変わっていません。（pnpmのバージョンが古いので別途更新したりもしてます）
+
+```text
+mise  2026.9.7 macos-arm64
+node  v24.13.0
+pnpm  10.28.0
+mise doctor: No problems found
+```
+
+そもそも私はここ数ヶ月、いや今年に入ってからぐらいはmiseを使っていると思います。以前はNodebrew → nvm → Voltaと使っていました。Voltaはインストールも割と高速で、Node.jsやpnpmなどのバージョンを`package.json`経由で固定できるため便利でした。細かい不満もあった気はしますが、覚えていません。
+
+ただ、2025年11月に[Voltaはメンテナンスされておらず、miseへの移行を推奨するというIssue](https://github.com/volta-cli/volta/issues/2080)が公開されました。この流れで、私もmiseをなんとなく使い始めました。
+
+自分のことではありますが、字面だけを見ると実に思考が足りない選定に感じます。それでも実際に使ってみると、miseは非常に使いやすく便利だなと感じています。（Nixにも興味はあるものの、まだ足を踏み出せずにいます）
+
+## 最近のmiseアップデートを整理する
+
+ここでは8月末から9月にかけて気になった変更だけをざっくり並べます。詳しい仕様は、それぞれの公式リリースを読むのが一番分かりやすいと思います。
+
+- [Lazy Tool Shims（v2026.9.0）](https://github.com/jdx/mise/releases/tag/v2026.9.0)
+  設定したツールを最初からインストールせず、そのコマンドを初めて実行したときにインストールできます。使用頻度の低いCLIで試してみたい機能です。
+- [Packslip（v2026.9.2）](https://github.com/jdx/mise/releases/tag/v2026.9.2)
+  ツール作者が公開する署名付きの情報を使い、実行ファイルだけでなく補完やマニュアル、Coding Agent向けSkillsもツールのバージョンに合わせて配布できます。
+- [Bootstrapとdotfiles履歴（v2026.8.15以降）](https://github.com/jdx/mise/releases/tag/v2026.8.15)
+  PCへ入れるパッケージや設定を宣言するBootstrapに、dotfilesの保存、差分表示、ロールバックなどが追加されています。今回実際に試したのはこの機能です。
+- [Project daemonsとプロジェクト診断（v2026.9.6）](https://github.com/jdx/mise/releases/tag/v2026.9.6)
+  プロジェクト用の常駐処理や、そのPCが開発に必要な条件を満たしているか調べるコマンドを`mise.toml`へ宣言できます。
+- [mise.lock revision 2（v2026.9.7）](https://github.com/jdx/mise/releases/tag/v2026.9.7)
+  mise経由で入れるnpm・Python製CLIについて、内部で利用するパッケージのバージョンまで固定できるようになりました。
+
+このなかで、`.zshrc`など普段編集する設定ファイルの変更履歴を自動で残せるdotfiles履歴が気になりました。まずはリモート同期を使わず、ローカルだけで試してみます。
+
+## BootstrapのDotfilesを試す
+
+dotfilesは、`.zshrc`やGitの設定など、ホームディレクトリに置く個人用の設定ファイルです。今回は`.zshrc`だけを`track`モードへ追加しました。`track`モードではファイルを元の場所に置いたまま、miseが別のGitリポジトリへ履歴を保存します。
+
+最初に、次のコマンドで`.zshrc`を追跡対象へ追加しました。
+
+```sh
+mise bootstrap dotfiles track ~/.zshrc
+mise bootstrap dotfiles status
+```
+
+グローバルのmise設定には、次の内容が追加されています。
+
+```toml
+[dotfiles]
+"~/.zshrc" = { mode = "track" }
+```
+
+追跡後は、普段どおり`.zshrc`を編集してから履歴と差分を確認しました。記事を書いている時点では、1ファイルを追跡し、履歴全体に8件のチェックポイントが記録されています。
+
+```sh
+mise bootstrap dotfiles history --path ~/.zshrc
+mise bootstrap dotfiles history diff latest --path ~/.zshrc --patch
+```
+
+履歴には、最初に保存した`baseline`、ファイルを変更した`edit`、以前の内容へ戻した`rollback`が残っていました。ロールバックでは、まず`--dry-run`を付けて変更内容を確認してから実行しています。
+
+```sh
+mise bootstrap dotfiles rollback ~/.zshrc --to 1 --dry-run
+mise bootstrap dotfiles rollback ~/.zshrc --to 1
+```
+
+自動保存も試すため、`history-watch`をBootstrapのサービスとして追加しました。macOSでは、ユーザー単位の常駐処理であるLaunchAgentとして動きます。
+
+```toml
+[bootstrap.services.mise-history]
+builtin = "history-watch"
+```
+
+```sh
+mise bootstrap services apply
+```
+
+実際に編集内容が自動保存されるところまでは確認できました。ただ、記事の執筆中に状態を再確認すると、2つの表示が一致しませんでした。`mise bootstrap services status`は`running`と表示されます。一方、`mise bootstrap dotfiles status`の表示は`declared but not running`です。理由はまだ調べ切れていません。
+
+外部のGitリポジトリは設定しておらず、履歴はローカルにだけあります。リモート同期を始めると過去のチェックポイントも送信対象になるため、一時的に書いた秘密情報が履歴に残っていないか確認してから進めるつもりです。
+
+## 今後
+
+Bootstrapのdotfiles履歴は、保存、差分表示、ロールバック、自動保存まで一通り試せました。まずは`.zshrc`だけで使いながら、history watcherの状態表示が一致しない理由も調べたいと思います。
+
+Packslipも気になっています。今回は`mise skills ls`で対象を確認しただけで、手元では0件でした。Packslipに対応するツールが見つかったら、ツールと同じバージョンのSkillsがどのように配置されるのか試してみたいです。
+
+[CLI Reference](https://mise.jdx.dev/cli/)にも、まだ知らないコマンドや気になる機能がいろいろあります。公式ドキュメントをそのまま説明するのではなく、実際に使ったときのログを今後も残していこうと思います。
