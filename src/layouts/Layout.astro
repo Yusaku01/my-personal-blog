@@ -79,8 +79,8 @@ if (blogTitle) {
   ogImageUrl = '/images/ogp/default.png';
 }
 
-// Google Analytics IDを環境変数から取得
-const gaId = import.meta.env.PUBLIC_GOOGLE_ANALYTICS_ID;
+// 公開される測定 ID。ビルド環境の変数がなくても本番で計測できるようにする。
+const gaId = 'G-WPLPNTMQPG';
 ---
 
 <!doctype html>
@@ -167,21 +167,38 @@ const gaId = import.meta.env.PUBLIC_GOOGLE_ANALYTICS_ID;
 
     <Font cssVariable="--font-zen-kaku-gothic-new" preload={[{ weight: 700 }]} />
 
-    <!-- Google Analytics (gtag.js): only when ID is provided -->
-    <script is:inline define:vars={{ gaId }}>
-      if (gaId) {
-        var s = document.createElement('script');
-        s.async = true;
-        s.src = 'https://www.googletagmanager.com/gtag/js?id=' + gaId;
+    <!-- Google Analytics (gtag.js) -->
+    <script is:inline define:vars={{ gaId }} data-astro-rerun>
+      (() => {
+        if (location.hostname !== 'saku-space.com' || window.__sakuAnalyticsInitialized) return;
+
+        window.__sakuAnalyticsInitialized = true;
         window.dataLayer = window.dataLayer || [];
-        s.addEventListener('load', function () {
-          if (typeof window.gtag === 'function') {
-            window.gtag('js', new Date());
-            window.gtag('config', gaId);
-          }
-        });
-        document.head.appendChild(s);
-      }
+        window.gtag = function () {
+          window.dataLayer.push(arguments);
+        };
+        window.gtag('js', new Date());
+        window.gtag('config', gaId, { send_page_view: false });
+
+        let lastTrackedUrl;
+        const trackPageView = () => {
+          const url = location.href;
+          if (url === lastTrackedUrl) return;
+
+          lastTrackedUrl = url;
+          window.gtag('event', 'page_view', {
+            page_title: document.title,
+            page_location: url,
+          });
+        };
+        trackPageView();
+        document.addEventListener('astro:page-load', trackPageView);
+
+        const script = document.createElement('script');
+        script.async = true;
+        script.src = 'https://www.googletagmanager.com/gtag/js?id=' + gaId;
+        document.head.appendChild(script);
+      })();
     </script>
 
     <!-- Cloudflare Turnstile is injected per-page where needed -->
