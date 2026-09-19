@@ -1,24 +1,30 @@
 ---
 name: nani-translation-review
-description: Review translated blog drafts with Nani when the user requests Nani or a desktop translation workflow; check source meaning and target-language naturalness.
+description: Review translated blog drafts with Nani when the user requests Nani or a desktop translation workflow. Preserve source meaning and the author's voice.
 ---
 
 # Nani Translation Review
 
-Preserve source meaning, technical precision, and the author's voice while improving the translated draft. Follow the user's requested scope and tone; do not impose a formal style on personal writing.
+Review the requested translation for source fidelity, technical precision, and natural wording in the target language. Preserve the author's tone and intentional uncertainty. Ordinary Japanese article editing does not require this skill.
 
-## Workflow
+## Scope and deliverable
 
-1. Identify the source, translation, target language, and requested review scope from the conversation and files. Ask only for missing information that prevents the review.
-2. Use the available Computer Use skill and its current tools to inspect Nani before interacting. Do not assume a particular tool name, model option, or setting exists.
-3. Preserve existing settings unless the requested review needs a change. Use higher accuracy when available and appropriate; do not purchase an upgrade or change billing to obtain it.
-4. Compare the requested scope directly against the source. A full-article request requires coverage of the full article; use representative sections only for a sample review and identify the sample.
-5. Use back-translation or Nani proofreading where ambiguity remains. These are diagnostic aids, not mandatory passes or proof of correctness.
-6. For review-only requests, report findings and suggested edits. When editing is requested, apply improvements within scope and preserve technical terms, code, frontmatter, links, MDX syntax, and intentional uncertainty.
-7. Run the formatter or text checks relevant to changed files. Broader checks are needed only if the change affects content rendering or code.
+Infer the source, translation, target language, and review scope from the conversation and files. Ask only for missing information that prevents a useful review, and continue independent work while waiting.
 
-## Completion
+A full-article request requires comparing the entire article with its source. Use representative sections only when a sample review is requested, and identify the coverage. For review-only requests, return findings and suggested edits. When editing is requested, apply the changes within scope while preserving technical terms, code, frontmatter, links, and MDX syntax.
 
-Briefly identify coverage, material findings or accepted changes, checks performed, and unresolved ambiguity. Report only settings and app feedback actually observed. Do not create an extra review document unless requested or needed for the deliverable.
+## Use Nani where it helps the review
 
-If Nani or Computer Use is unavailable, disclose that limitation and perform the source-to-translation review that is possible. Do not describe that fallback as Nani-verified. Do not strengthen claims or rewrite unrelated sections.
+Use the available Computer Use skill and its current tools when operating Nani. Inspect the app before interacting; rely on the settings, controls, and feedback actually visible rather than assumed tool names or model options.
+
+Preserve existing settings unless the requested review needs a change. Do not purchase an upgrade or change billing to obtain another review mode. Choose passages or batches that let you cover the requested scope and assess Nani's suggestions against the source.
+
+Use back-translation or proofreading when it can resolve a specific ambiguity. These are optional diagnostic aids; neither replaces comparison with the source nor proves a translation correct. Do not add repeated review passes once the requested scope and identified issues have been addressed.
+
+If Nani or Computer Use is unavailable, disclose the limitation and complete the source-to-translation review that is possible. Identify it as a fallback and do not claim Nani verification. If the requested result specifically depends on Nani feedback, report that part as incomplete.
+
+## Finish
+
+For edited files, run the applicable formatting and text checks. Broader checks are needed only when the change affects rendering or code; use the repository's verification guidance.
+
+Report coverage, material findings or applied changes, checks performed, and unresolved ambiguity. Cite Nani settings or feedback only when observed. Keep the result in the requested deliverable; create a separate review document only when requested or needed to use the result.

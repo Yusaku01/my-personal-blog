@@ -1,133 +1,76 @@
 # Repository Guidelines
 
-このリポジトリは Astro 7 で構築された個人ブログ / ポートフォリオです。変更は小さく保ち、既存のコンテンツ運用と表示体験を崩さないことを優先してください。
+Astro・MDX・TypeScript で構築された個人ブログ / ポートフォリオ。リポジトリ全体に適用する指針として、既存のコンテンツ運用と表示体験を保ち、依頼の目的に必要な変更を行う。
 
-## 作業の進め方
+## 作業範囲と完了条件
 
-- 着手時に `git status --short --branch` で作業場所と差分を確認し、既存の変更を保持する。
-- 調査依頼は調査と説明まで。実装・修正の依頼は、通常の実装判断を自分で行い、必要な検証まで完了する。すでに認められた作業について再確認しない。
-- 結果を左右する不足情報だけを質問する。回答待ちでも独立して進められる作業は続ける。
-- ユーザーの明示的な指示を Skills のガイドラインより優先する。Skills は依頼に必要なものだけ読み、推奨手順を新たな承認条件にしない。指示が原因で停止する場合は、該当ファイルと原文、停止理由を示す。
-- 途中の補足・訂正を取り込み、完了した作業と元の目的を維持する。
-- コミット、push、PR、merge、deploy は会話で依頼された範囲で行う。実装の依頼だけから公開操作の許可を推定しない。
-- 検証は変更の影響に合わせる。必要な確認が通った後は、新たな差分・失敗・未解決の懸念がない限り繰り返さない。文書・文言だけの変更に実装をなぞるテストを追加しない。
-- 日本語で結果を先に、変更理由・検証結果・残る制約を簡潔に伝える。実測、推測、未確認を区別する。
+- 着手時に `git status --short --branch` で作業場所・ブランチ・差分を確認し、既存の変更を保持する。関係ないファイルの整形や文言変更は含めない。
+- 会話から依頼の目的と範囲を判断する。調査・レビューの依頼は根拠を伴う説明まで、実装・修正の依頼は変更・必要な検証・その変更に起因する不具合の修正まで完了する。実装依頼を計画の提示だけで終えない。
+- 通常の実装判断は自分で行い、結果を左右する不足情報だけを質問する。回答待ちでも独立して進められる作業は続け、すでに認められた作業について再確認しない。
+- 途中の補足・訂正を取り込み、元の目的と完了した作業を維持する。明示的な中止や目的変更がなければ、途中の質問に答えた後も作業を続ける。
+- コミット、push、PR 作成・更新、merge、deploy は会話で依頼された範囲で行う。実装の依頼だけから公開操作の許可を推定しない。追加の承認が必要な場合も、承認済みの範囲で結果をレビューできる状態まで準備する。
+- 日本語で結果を先に、変更理由・検証結果・残る制約を簡潔に伝える。実測・推測・未確認を区別し、短い段落を基本に、列挙や比較が必要な箇所だけ箇条書きや表を使う。
 
-## Architecture Overview
+## 実装とコンテンツの方針
 
-- Core: Astro 7、MDX、TypeScript
-- Styling: 既存のUnoCSS（`uno.config.ts`）を段階的にCSS Variables（`src/styles/global.css`）と
-  Astroコンポーネント内のscoped CSSへ移行中
-- Deployment: `astro.config.mjs` は `output: 'server'`、Cloudflare adapter 有効。Workers と Static Assets の設定は `wrangler.jsonc`、各ページの事前生成は `prerender` を確認する
-- Routing: `src/pages/` 配下のファイルベースルーティング
-- Aliases: TypeScript path alias `@/*` → `./src/*` (`tsconfig.json`)
-- Content collections: `src/content.config.ts` で `blog` / `findsFeed` / `profile` を定義
+- 変更対象の実装・設定・スクリプトを確認する。バージョンやコマンドなどの事実は実ファイルを正とし、関連資料は作業に必要なものだけ読む。
+- ルーティングは `src/pages/`、UI は `src/components/` と `src/layouts/`、ドメインロジックは `src/lib/` に置く。検索・問い合わせ・外部フィードは既存実装を再利用する。`@/*` は `src/*` のエイリアス。
+- 静的な UI は Astro コンポーネントを優先する。クライアントの振る舞いは `src/scripts/` の既存パターンを確認し、hydration が必要な場合は遅延実行を検討する。
+- UnoCSS から CSS Variables と scoped CSS へ段階的に移行する。共有トークン・Markdown 共通スタイルは `src/styles/global.css`、固有のスタイルは各 `.astro` に置く。置換は小さなコンポーネント単位とし、新しい UnoCSS 依存を広げない。
+- 記事・プロフィールは `src/content/` に置き、frontmatter を `src/content.config.ts` の schema に合わせる。記事ファイル名は kebab-case とし、既存の Markdown / MDX 記法、脚注、装飾を踏襲する。
+- Markdown / MDX の変換を変更する場合は `src/lib/markdown/`、`src/lib/remark/`、`src/lib/rehype/` の既存ルールに合わせる。
+- Cloudflare adapter と `output: 'server'` を使用する。ページごとの事前生成は `prerender` を確認する。問い合わせは `src/pages/contact.astro` の `prerender = false` を保ち、`src/lib/contact/` の Turnstile 検証・D1 保存・Email 通知の境界を維持する。
+- 整形・lint は `.prettierrc` と `eslint.config.mjs` に従う。コンポーネントは `PascalCase`、関数は `camelCase`、環境変数は `SCREAMING_SNAKE_CASE`。`any` は避け、未使用変数は `_` プレフィックスを使う。
+- シークレットはコミットしない。環境変数は `.env` と `.env.example` で管理し、クライアントに公開する値にだけ `PUBLIC_` プレフィックスを付ける。
 
-## Project Structure & Module Organization
+## 検証
 
-- アプリ本体: `src/`
-- UI: `src/components/`, `src/layouts/`
-- ドメインロジック: `src/lib/`
-- ルーティング: `src/pages/`
-- コンテンツ: `src/content/blog/`, `src/content/findsFeed/`, `src/content/profile/`
-- スクリプト: `scripts/build-ogp.js`, `scripts/perf/measure-fonts.mjs`
-- テスト: `tests/`
-- 静的アセット: `public/`
-- ビルド成果物: `dist/`
-- ドキュメント: `docs/`
+変更の影響に応じて確認を選び、成功後の繰り返しや範囲拡大は、新しい差分・失敗・未解決の懸念がある場合に行う。CI・Git hooks の必須チェックは省略しない。
 
-`blog` コレクションの frontmatter は `src/content.config.ts` の schema に合わせます。
+| 変更内容         | 確認内容                                                                                   |
+| ---------------- | ------------------------------------------------------------------------------------------ |
+| 文書・文言のみ   | 対象の整形・リンク。ブログ記事は必要なテキスト lint。全体ビルド・テストは通常不要          |
+| コード・ロジック | 関連する既存テストを確認し、影響に応じて lint・Astro check・テストを実行                   |
+| UI・記事表示     | ローカルの対象ページで表示を目視確認。ビルド後の確認は `pnpm run preview` を使う           |
+| OGP・Mermaid     | 生成結果を目視確認。Mermaid 用ブラウザが必要なら `pnpm run mermaid:install-browser` を使う |
 
-```yaml
-title: 'Post Title'
-description: 'Summary'
-publishDate: 2025-01-01
-image: '../../assets/images/blog/common/image_thumnail.png' # optional
-tags: ['Astro', 'UnoCSS']
-```
+文書・文言のみの変更や、低影響で容易に戻せる変更に、実装をなぞるだけのテストを追加しない。確認できない項目は理由と影響を報告し、未実施の確認を成功として扱わない。
 
-## Build, Test, and Development Commands
+主なコマンドは以下を使う。その他のコマンドと実行内容は `package.json` を参照する。
 
-- 開発サーバー: `pnpm run dev`
-- ビルド: `pnpm run build`
-- プレビュー: `pnpm run preview`
-- Lint: `pnpm run lint`
-- Lint 自動修正: `pnpm run lint:fix`
-- テキスト lint: `pnpm run lint:text`, `pnpm run lint:text:blog`, `pnpm run lint:text:blog:tech`, `pnpm run lint:text:blog:diary`
-- Format: `pnpm run format`
-- Format 確認: `pnpm run format:check`
-- Astro の型 / コンテンツ検査: `pnpm run astro check`
-- テスト一括: `pnpm run test`
-- Node test runner: `pnpm run test:node`
-- Vitest: `pnpm run test:unit`
-- OGP 生成: `pnpm run generate-ogp`
-- OGP 付きビルド: `pnpm run build:with-ogp`
-- Cloudflare 向けビルド: `pnpm run build:cloudflare`
-- Mermaid 用ブラウザ導入: `pnpm run mermaid:install-browser`
+| 用途                       | コマンド                                                      |
+| -------------------------- | ------------------------------------------------------------- |
+| 開発 / ビルド / プレビュー | `pnpm run dev` / `pnpm run build` / `pnpm run preview`        |
+| lint / 型・コンテンツ検査  | `pnpm run lint` / `pnpm run astro check`                      |
+| テスト一括 / Node / Vitest | `pnpm run test` / `pnpm run test:node` / `pnpm run test:unit` |
+| 対象ファイルの整形確認     | `pnpm exec prettier --check <対象ファイル>`                   |
+| ブログのテキスト lint      | `pnpm run lint:text:blog -- <対象記事>`                       |
+| OGP 生成 / OGP 付きビルド  | `pnpm run generate-ogp` / `pnpm run build:with-ogp`           |
+| Cloudflare 向けビルド      | `pnpm run build:cloudflare`                                   |
 
-## Coding Style & Naming Conventions
+## 作業別の参照先と Skills
 
-- Prettier: 2-space, semicolons, single quotes, trailing commas, print width 100
-- ESLint: TypeScript / Astro を対象。`any` は避け、未使用変数は `_` プレフィックスを使う
-- 命名: Components は PascalCase、functions は camelCase、環境変数は SCREAMING_SNAKE_CASE
-- ブログ記事ファイル名: `src/content/blog/` 配下で kebab-case
-- 既存の Markdown / MDX 記法、脚注、装飾ルールに合わせる
+ユーザーの明示的な指示を Skills のガイドラインより優先する。必要な Skill だけを使い、推奨手順を新たな承認条件にしない。指示を理由に確認・停止・依頼からの逸脱が必要になった場合は、該当ファイルへのリンクと原文を示し、明示された要件と自分の解釈を区別して説明する。
 
-## Testing Guidelines
+| 作業                                                       | 参照先                                                                                                                                       |
+| ---------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------- |
+| Node・pnpm・チェック手順の確認                             | `mise.toml`、`package.json`、`.github/workflows/`                                                                                            |
+| ビルド・配信設定の変更                                     | `astro.config.mjs`、`wrangler.jsonc`                                                                                                         |
+| 環境変数・問い合わせ binding の変更                        | `.env.example`、`src/lib/contact/types.ts`                                                                                                   |
+| OGP 生成の変更                                             | `scripts/build-ogp.js`、`scripts/lib/build-ogp-core.js`                                                                                      |
+| Web API・CSS・アクセシビリティ・性能・ブラウザ互換性の判断 | [.agents/skills/modern-web-guidance/SKILL.md](.agents/skills/modern-web-guidance/SKILL.md)                                                   |
+| Nani を指定した翻訳レビュー                                | [.agents/skills/nani-translation-review/SKILL.md](.agents/skills/nani-translation-review/SKILL.md)                                           |
+| 依存脆弱性の調査・修正                                     | [.github/dependency-security-triage.md](.github/dependency-security-triage.md) を先に読む                                                    |
+| Incremental Build の変更                                   | [関連資料](docs/blog-materials/astro-incremental-static-build/README.md)と実装を確認し、キャッシュの出力依存と通常・強制ビルドの差を検証する |
 
-- コード変更時は、影響範囲に応じて `pnpm run lint`、`pnpm run astro check`、`pnpm run test` を基本確認とする
-- 特定機能の変更は関連する既存テストを確認する。文書・文言のみなら対象の整形・リンク・必要なテキスト lint を確認し、全体ビルドやテストは通常不要。ただし CI・Git hooks の必須チェックは省略しない
-- UI、記事表示、OGP に関わる変更では `pnpm run preview` での目視確認を行う
-- OGP や Mermaid 表示を変更した場合は、必要に応じて `pnpm run mermaid:install-browser` 実行後に生成結果を確認する
+## コミットと PR
 
-## Commit & Pull Request Guidelines
+- コミットは Conventional Commits に従い、英語で簡潔に書く。1 コミットは 1 つの目的とし、コンテンツ大量更新とコード変更は分ける。
+- PR には要約・変更点・確認内容・関連 Issue を記載する。UI・OGP の変更にはスクリーンショットを添える。
 
-- Conventional Commits を使う
-- 例: `feat: add blog search keyboard support`, `fix: handle missing contact env`
-- PR には要約、変更点、確認内容、関連 Issue を含める
-- UI 変更や OGP 変更ではスクリーンショットを添える
-- コンテンツ大量更新とコード変更は、できるだけ分けてレビューしやすくする
+## この指針の保守
 
-## Skills と関連資料
+2026-09-19 に以下の公式資料を参照して整理。常時必要な判断基準とリポジトリ固有の方針を残し、設定値や詳細手順は実装・設定・関連資料を参照する。モデル選択・推論設定はこのファイルでは変更しない。
 
-- `.agents/skills/modern-web-guidance/SKILL.md`: Web API・CSS・ブラウザ互換性の判断が必要な変更で使う。
-- `.agents/skills/nani-translation-review/SKILL.md`: Nani を使う翻訳レビューで使う。通常の日本語記事修正には適用しない。
-- 依存脆弱性の調査・修正では `.github/dependency-security-triage.md` を先に読む。
-- Incremental Build の変更では `docs/blog-materials/astro-incremental-static-build/README.md` と実装を確認する。キャッシュに関わる出力依存と通常ビルド・強制ビルドの差を確認する。
-
-## Security & Configuration Tips
-
-- シークレットはコミットしない。`.env` と `.env.example` を使う
-- クライアント公開変数は `PUBLIC_` プレフィックスを付ける
-- 外部フィード系: `QIITA_USERNAME`, `ZENN_USERNAME`
-- 外部フィード API: `QIITA_API_ENDPOINT`, `ZENN_API_ENDPOINT`
-- 問い合わせ関連: `EMAIL` binding、`CONTACT_TO_EMAIL`, `CONTACT_FROM_EMAIL`, `TURNSTILE_SECRET_KEY`, `PUBLIC_TURNSTILE_SITE_KEY`。実際の契約は `src/lib/contact/types.ts` を確認する
-- 問い合わせ保存を使う場合の実行環境: `CONTACT_DB`
-- 分析: `PUBLIC_GOOGLE_ANALYTICS_ID`
-- Node と pnpm の実行環境は現在のバージョン管理ファイルと CI 設定を確認する。古い固定バージョンをこの文書から推定しない
-
-## Dev Tips for Agents
-
-- 静的な UI は Astro コンポーネントを優先する
-- 新規・変更するUIのスタイルは、共有トークンやグローバルなMarkdownスタイルを
-  `src/styles/global.css` に置き、コンポーネント固有の見た目は各 `.astro` のscoped CSSを優先する
-- 既存UnoCSSの置換は小さなコンポーネント単位で行い、移行中でない箇所へ新しいUnoCSS依存を広げない
-- クライアント側の振る舞いは、まず `src/scripts/` の既存パターンで足せるか検討する
-- hydration が必要な場合でも、常時実行より遅延実行を優先する
-- Markdown / MDX の変換処理は `src/lib/markdown/` と `src/lib/remark/`, `src/lib/rehype/` を確認して既存ルールに合わせる
-- 検索、問い合わせ、外部フィードは `src/lib/` 配下の既存実装を再利用し、重複ロジックを増やさない
-- 問い合わせ機能は `src/lib/contact/` に集約されており、Cloudflare Email binding、Turnstile 検証、D1 repository を前提にしている
-- OGP 生成前はローカルサーバーが必要なので、必要に応じて別ターミナルで `pnpm run dev` を起動する
-
-## Agent-Specific Instructions
-
-- 変更前に実ファイルとスクリプトを確認し、ガイド文面より実装を優先して判断する
-- 既存の内容記事やプロフィールデータを編集する場合は、frontmatter / schema 整合を崩さない
-- 問い合わせは `src/pages/contact.astro` に存在し、`prerender = false`。実行時の binding と検証・保存・通知の境界を保つ
-- 関係ないファイルの整形や大規模な文言変更は避ける
-- このファイルの指示は、リポジトリ配下で編集するすべてのファイルに適用する
-
-## 指示の保守
-
-2026-09-05 に [GPT-6 Astra の公式ガイド](https://developers.openai.com/api/docs/guides/latest-model?model=gpt-6-astra) を参照して調整。
-モデル選択・推論設定はこのファイルでは変更しない。バージョンやコマンドは実ファイルを確認する。
+- [GPT-6 Astra: Prompting best practices](https://developers.openai.com/api/docs/guides/latest-model?model=gpt-6-astra#prompting-best-practices)
+- [Rethinking skills and prompts for GPT-6 Astra](https://developers.openai.com/blog/rethinking-skills-and-prompts-for-gpt-6-astra)

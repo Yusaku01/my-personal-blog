@@ -1,99 +1,35 @@
 ---
 name: modern-web-guidance
-description: Search modern web guidance when implementing or reviewing browser APIs, CSS layout, accessibility, or performance behavior that needs compatibility or platform-pattern research. Excludes copy-only edits, formatting, backend work, and CI changes.
+description: Find web-platform guidance for browser API, CSS, accessibility, or performance decisions that need research. Use when choosing a platform pattern or checking browser support.
 ---
 
 # Modern Web Guidance
 
-A skill to search for specific web development use cases and retrieve their corresponding best practice guides.
+Resolve a concrete web-platform question using relevant guides and compatibility evidence. Copy edits, formatting, and work without a platform decision do not need this research.
 
-## When to use
+## Find relevant guidance
 
-Use this skill when the task requires choosing a web-platform pattern or checking browser support. For copy-only edits, mechanical formatting, or changes that do not introduce a platform decision, proceed with the repository's normal workflow.
-
-Follow the user's explicit browser requirements and existing authorization. Research should answer a concrete implementation question, not become a prerequisite for unrelated work.
-
-## Usage Instructions
-
-### Step 1. Search Use Cases
-
-Search with an action-oriented query summarizing what you want to achieve using the `search` command. Run `modern-web-guidance` directly with `npx`.
+Reuse a guide already read in this task when it still answers the question. Otherwise, search for the intended behavior:
 
 ```sh
 npx -y modern-web-guidance@latest search "<query>" --skill-version 2026_05_16-c5e7870
 ```
 
-**Example Output**:
-
-```json
-[
-  {
-    "id": "optimize-image-priority",
-    "description": "Optimize the loading priority of Largest Contentful Paint (LCP) candidate images.",
-    "category": "performance",
-    "featuresUsed": ["Fetch priority"],
-    "tokenCount": 985,
-    "similarity": 0.7289
-  },
-  {
-    "id": "defer-rendering-heavy-content",
-    "description": "Reduce rendering times in content-heavy web pages by deferring rendering for offscreen content.",
-    "category": "performance",
-    "featuresUsed": ["content-visibility", "hidden=\"until-found\""],
-    "tokenCount": 1250,
-    "similarity": 0.6961
-  }
-]
-```
-
-> **Note**: If search results are vague, return no matches, or show low similarity scores, run the `list` command to browse all guides:
->
-> ```sh
-> npx -y modern-web-guidance@latest list
-> ```
-
----
-
-### Step 2. Retrieve Best Practices
-
-Once you have a relevant `id` from the search results, call this script using the `retrieve` command to get the full guide. You can pass multiple IDs separated by commas.
+Retrieve only guides relevant to the decision, using IDs returned by search:
 
 ```sh
 npx -y modern-web-guidance@latest retrieve "<id>"
 ```
 
-**Example Output**:
-`The markdown content of the guide describing implementation steps...`
+If search cannot identify a useful guide, browse the catalog with `npx -y modern-web-guidance@latest list` or search the bundled [guides](guides/) by topic. Avoid loading the entire catalog's contents. The skill-version value identifies this bundled edition; an update warning is not a requirement to upgrade it during unrelated work.
 
-## Using npx
+If the command fails or stalls because of network or package access, use the relevant bundled guide. Report compatibility facts that could not be verified; do not repeat the same failing search or describe local guidance as a successful live lookup. On Windows, use `npx.cmd` if `npx` fails.
 
-- IMPORTANT: on Windows, using `npx` may fail. Use `npx.cmd ...` instead.
-- Network access is required for fetching npm packages. If unavailable, use relevant bundled `guides/` files and disclose any compatibility claim you could not verify. Do not repeatedly retry or claim a live search succeeded.
-- If the `npx -y modern-web-guidance…` command hangs, you may be offline. Try running again in offline
-  mode: `npx --offline …`.
-- The `--skill-version` flag is used to determine if this SKILL.md is out of date. If it is, a warning
-  message is logged to stderr.
+## Apply the guidance
 
-## Guidelines
+- Adapt framework-agnostic examples to the existing Astro implementation and styling conventions. A guide is advice for the requested change, not authorization to migrate unrelated code or add dependencies.
+- Follow the user's browser requirements. Without a custom policy, use Baseline Widely available as the default compatibility target and follow the guide's fallback recommendations for features outside it.
+- Check compatibility evidence for the specific feature and target browsers rather than inferring support from a broad label. Treat bundled compatibility data as potentially dated when current support affects the decision.
+- Keep required functionality available in the supported browsers. Apply fallbacks or progressive enhancement as needed under the chosen policy; do not impose a new browser policy or polyfill requirement based only on a guide example.
 
-- Search for the concrete question and retrieve only relevant guides. Reuse guidance already read in this task when the requirement has not changed.
-- These guides are usually framework-agnostic; adapt them correctly to your setup.
-- Do not hallucinate guides or ignore them; they represent the preferred local standard for the user's project.
-
-## Interpreting Browser Support & Fallbacks
-
-- **Default Behavior**: All guides assume **Baseline Widely available** features are safe to use without fallbacks. For features that are not Baseline widely available, you **MUST** follow the fallback recommendations in the guide, unless the user has specified a custom browser support policy.
-- **Custom Policies**: If the user has already defined explicit browser support requirements, use the browser compatibility data in the guide to determine if a fallback can be safely ignored.
-  - For Baseline YYYY targets, a feature satisfies this target if its "Baseline since" date is <= YYYY.
-  - **Policy Examples**:
-    - _"Do not implement feature fallbacks."_ (for exploratory prototypes of the cutting-edge web)
-    - _"Safari 17.4+"_ (for internal tools targeting macOS or Tauri-based desktop apps)
-    - _"Never recommend or implement polyfills; if a Baseline Newly Available feature is required for core functionality, provide a lightweight custom fallback or redesign the approach."_ (to minimize bundle size and avoid technical debt)
-    - _"Assume a modern execution environment where Baseline Newly Available features can be used natively, provided they are strictly feature-detected and degrade gracefully."_ (for progressive enhancement strategies)
-- **Reactive Policy Discovery**: Watch for environmental cues to suggest documenting a policy in CLAUDE.md or AGENTS.md. Suggest this if the developer:
-  - Mentions building for a restricted runtime (e.g., Electron or Tauri).
-  - Explicitly excludes specific targets (e.g., "we don't support Desktop Chrome").
-  - Expresses hesitation about polyfill complexity, bundle size, or performance cost.
-  - Questions if a feature is safe to use without fallbacks.
-
-  No defined policy format. This is an example: `**Browser Support:** Allow Newly Available features, but only adopt custom fallback code that adds <= 20 lines and does not require external dependencies.`
+Complete the requested implementation or review using the findings. Explain the chosen pattern, relevant source, compatibility limits, and verification only to the extent needed to assess the result. Follow the repository's checks for the actual change; research does not add an approval step or require a separate report.
