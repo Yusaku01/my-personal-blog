@@ -40,11 +40,13 @@ const findsFeed = defineCollection({
 const profileTimelineEntry = z.object({
   period: z.string(),
   title: z.string(),
+  role: z.string().optional(),
   description: z.string().optional(),
   en: z
     .object({
       period: z.string(),
       title: z.string(),
+      role: z.string().optional(),
       description: z.string().optional(),
     })
     .optional(),

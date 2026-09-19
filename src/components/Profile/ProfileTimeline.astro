@@ -4,10 +4,12 @@ import { type Locale } from '../../lib/i18n';
 interface TimelineEntry {
   period: string;
   title: string;
+  role?: string;
   description?: string;
   en?: {
     period: string;
     title: string;
+    role?: string;
     description?: string;
   };
 }
@@ -29,6 +31,7 @@ const localizedEntries = entries.map((entry) => (locale === 'en' && entry.en ? e
         <div>
           <p class="profile-timeline__period">{entry.period}</p>
           <h3 class="profile-timeline__title">{entry.title}</h3>
+          {entry.role && <p class="profile-timeline__role">{entry.role}</p>}
           {entry.description && <p class="profile-timeline__description">{entry.description}</p>}
         </div>
       </li>
@@ -102,6 +105,13 @@ const localizedEntries = entries.map((entry) => (locale === 'en' && entry.en ? e
     max-inline-size: 45rem;
   }
 
+  .profile-timeline__role {
+    color: rgb(75 85 99);
+    font-size: 0.875rem;
+    line-height: 1.6;
+    margin: 0.125rem 0 0;
+  }
+
   :global(html.dark) .profile-timeline {
     --profile-timeline-line: rgb(156 163 175);
   }
@@ -114,6 +124,7 @@ const localizedEntries = entries.map((entry) => (locale === 'en' && entry.en ? e
     color: rgb(156 163 175);
   }
 
+  :global(html.dark) .profile-timeline__role,
   :global(html.dark) .profile-timeline__description {
     color: rgb(209 213 219);
   }
