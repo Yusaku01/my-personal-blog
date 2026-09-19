@@ -42,7 +42,6 @@
 title: 'Post Title'
 description: 'Summary'
 publishDate: 2025-01-01
-author: 'Your Name'
 image: '../../assets/images/blog/common/image_thumnail.png' # optional
 tags: ['Astro', 'UnoCSS']
 ```

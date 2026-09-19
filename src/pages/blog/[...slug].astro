@@ -90,7 +90,7 @@ const estimatedReadingTimeMinutes = getEstimatedReadingTimeMinutes(post.body ?? 
             )
           }
 
-          <!-- 4. Publish Date and Author -->
+          <!-- 4. Publish Date and Reading Time -->
           <div
             class="flex flex-wrap items-center gap-x-5 gap-y-1 text-gray-600 dark:text-gray-400 mb-8 text-sm"
           >
@@ -99,14 +99,6 @@ const estimatedReadingTimeMinutes = getEstimatedReadingTimeMinutes(post.body ?? 
               ></span>
               <span>{format(post.data.publishDate, 'yyyy年MM月dd日')}</span>
             </span>
-            {
-              post.data.author && (
-                <span class="blog-article-meta-item">
-                  <span class="blog-article-meta-prefix">written by</span>
-                  <span>{post.data.author}</span>
-                </span>
-              )
-            }
             <span class="blog-article-meta-item">
               <span class="blog-article-meta-icon i-ic-round-schedule" aria-hidden="true"></span>
               <span>{uiText.blog.readingTime[locale](estimatedReadingTimeMinutes)}</span>
@@ -200,12 +192,6 @@ const estimatedReadingTimeMinutes = getEstimatedReadingTimeMinutes(post.body ?? 
     height: 1rem;
     opacity: 0.85;
     width: 1rem;
-  }
-
-  .blog-article-meta-prefix {
-    font-size: 0.78rem;
-    letter-spacing: 0.04em;
-    opacity: 0.78;
   }
 
   .prose table {
