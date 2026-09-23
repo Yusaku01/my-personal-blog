@@ -32,7 +32,7 @@ const profileIllustrationSrc = '/images/profile-illustration.png';
       id={imageId}
       src={profileIllustrationSrc}
       alt={imageAlt}
-      class="profile-avatar__image w-full h-full object-contain"
+      class="profile-avatar__image"
       width={size}
       height={size}
       loading={loading}
@@ -73,6 +73,9 @@ const profileIllustrationSrc = '/images/profile-illustration.png';
 
   .profile-avatar__image {
     display: block;
+    height: 100%;
+    object-fit: contain;
+    width: 100%;
   }
 
   .profile-avatar__toggle {
