@@ -51,7 +51,7 @@ const timeline = profile.timeline ?? [];
             </div>
           </div>
 
-          <ProfileSection title={uiText.profile.aboutTitle[locale]} className="mb-10">
+          <ProfileSection title={uiText.profile.aboutTitle[locale]}>
             <div class="text-gray-700 dark:text-gray-300 leading-relaxed space-y-4">
               {uiText.profile.aboutBody.en.map((paragraph) => <p>{paragraph}</p>)}
             </div>
@@ -59,7 +59,7 @@ const timeline = profile.timeline ?? [];
 
           {
             timeline.length > 0 && (
-              <ProfileSection title={uiText.profile.timelineTitle[locale]} className="mb-10">
+              <ProfileSection title={uiText.profile.timelineTitle[locale]}>
                 <ProfileTimeline entries={timeline} locale={locale} />
               </ProfileSection>
             )
