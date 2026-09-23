@@ -6,7 +6,7 @@ import Layout from '../../../layouts/Layout.astro';
 import BlogTableOfContents from '../../../components/Blog/BlogTableOfContents.astro';
 import RelatedPosts from '../../../components/Blog/RelatedPosts.astro';
 import ShareButtons from '../../../components/Sns/ShareButtons.astro';
-import { format } from 'date-fns';
+import { formatPublishDate } from '../../../lib/blog/formatPublishDate';
 import { getEstimatedReadingTimeMinutes } from '../../../lib/blog/readingTime';
 import { uiText } from '../../../lib/i18n';
 import {
@@ -109,7 +109,7 @@ const estimatedReadingTimeMinutes = getEstimatedReadingTimeMinutes(post.body ?? 
             <span class="blog-article-meta-item">
               <span class="blog-article-meta-icon i-ic-round-calendar-today" aria-hidden="true"
               ></span>
-              <span>{format(post.data.publishDate, 'yyyy/MM/dd')}</span>
+              <span>{formatPublishDate(post.data.publishDate)}</span>
             </span>
             <span class="blog-article-meta-item">
               <span class="blog-article-meta-icon i-ic-round-schedule" aria-hidden="true"></span>
