@@ -14,6 +14,7 @@ Astro・MDX・TypeScript で構築された個人ブログ / ポートフォリ�
 ## 実装とコンテンツの方針
 
 - 変更対象の実装・設定・スクリプトを確認する。バージョンやコマンドなどの事実は実ファイルを正とし、関連資料は作業に必要なものだけ読む。
+- 依存パッケージの追加・更新時は、`package.json` と `pnpm-workspace.yaml` の override 値を exact pin にし、lockfile を更新する。キャレットなどのバージョン範囲指定を残さない。
 - ルーティングは `src/pages/`、UI は `src/components/` と `src/layouts/`、ドメインロジックは `src/lib/` に置く。検索・問い合わせ・外部フィードは既存実装を再利用する。`@/*` は `src/*` のエイリアス。
 - 静的な UI は Astro コンポーネントを優先する。クライアントの振る舞いは `src/scripts/` の既存パターンを確認し、hydration が必要な場合は遅延実行を検討する。
 - UnoCSS から CSS Variables と scoped CSS へ段階的に移行する。共有トークン・Markdown 共通スタイルは `src/styles/global.css`、固有のスタイルは各 `.astro` に置く。置換は小さなコンポーネント単位とし、新しい UnoCSS 依存を広げない。

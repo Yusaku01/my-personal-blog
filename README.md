@@ -16,7 +16,6 @@
 - [Astro](https://astro.build/) - 静的サイトジェネレーター
 - [TypeScript](https://www.typescriptlang.org/) - 型安全な開発
 - [UnoCSS](https://unocss.dev/) - スタイリング
-- [date-fns](https://date-fns.org/) - 日付操作
 - React（一部コンポーネント）
 
 ## 📦 プロジェクト構造
