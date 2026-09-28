@@ -1,0 +1,66 @@
+---
+title: 'Somenというフロー図作るパッケージを作り始めました'
+description: 'Somenのフロー図作成パッケージを作り始めたのでお知らせする記事'
+publishDate: 2026-09-28
+image: '../../../assets/images/blog/common/image_thumnail.png'
+tags: ['Somen', '図解', 'SVG', 'Animation', 'Web Components']
+---
+
+ある休みの日。
+
+私1「なんかブログ記事をより読者にとって、自分にとって分かり易くできないもんかな〜」<br />
+私2「ん〜、個人的には視覚優位なタイプだから、やはりビジュアライズ関連で考えたいな〜」
+
+...<br />
+...
+
+ということで作り始めました。その名も[Somen](https://github.com/Yusaku01/somen)です。
+
+作成のきっかけですが、元々業務で図解をWebサイトに載せることがあり、これコードで管理できたら楽だよな〜と思っていました。
+そんな中、最近[OpenAIの記事](https://openai.com/ja-JP/index/scaling-storage-one-billion-users-part-one/)を目にし、内容もとてもためになりつつも私の目を引いたのは記事中の図解でした。
+
+また、SVGの要素について見識を深めるきっかけにもなりそうだったので、進めることにしました。
+
+https://developer.mozilla.org/ja/docs/Web/SVG/Reference/Element/animateMotion
+とかもよく知らなかったので、便利だな〜と絶賛驚き屋中です。
+
+## Somenで具体的に作れるもの
+
+以下のような図解を簡単に作れます。
+
+<flow-diagram label="クライアントからDBへのアクセス図" autoplay>
+  <flow-node name="browser">ブラウザー</flow-node>
+  <flow-connection label="リクエスト" />
+  <flow-node name="api">API</flow-node>
+  <flow-connection label="読み書き" shape="diamond"/>
+  <flow-node name="database">データベース</flow-node>
+</flow-diagram>
+
+nodeとconnectionで図解を作っていく感じですね〜スタイルのカスタマイズの可能です。
+
+先の図解の実装コードとしては、以下になります。
+
+```html
+<flow-diagram label="ブログ記事に埋め込んだ通信の流れ" autoplay>
+  <flow-node name="browser">ブラウザー</flow-node>
+  <flow-connection label="リクエスト" />
+  <flow-node name="api">API</flow-node>
+  <flow-connection label="読み書き" shape="diamond"/>
+  <flow-node name="database">データベース</flow-node>
+</flow-diagram>
+```
+
+ぼちぼち改善していきたい。
+
+## おわりに
+
+この記事はあくまでお知らせ記事になります。内圧溜めて進めることも考えましたが、文章を書いた方が整理される気がしたので、記事を書き始め、書いた結果公開してしまったオチです。
+
+自分が使いたいのもあるので開発頑張ります。まだalpha版なのもあり、破壊的な変更があるのは申し訳ないのですが、良ければ遊んでいただけると嬉しいです！
+
+
+
+
+
+
+

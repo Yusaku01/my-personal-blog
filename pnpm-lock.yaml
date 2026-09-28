@@ -187,6 +187,9 @@ importers:
       sharp:
         specifier: 0.35.4
         version: 0.35.4(@types/node@25.0.10)
+      somenflow:
+        specifier: 0.1.0-alpha.3
+        version: 0.1.0-alpha.3
       unist-util-visit:
         specifier: 5.1.0
         version: 5.1.0
@@ -5989,6 +5992,11 @@ packages:
   smol-toml@1.8.0:
     resolution: {integrity: sha512-kCZr2V3ch9i00x8zXRhjUNVcjG9ijES5dDudkXvUVCT5QlJNQWElSJdZqyPemffHoLNUYwOcou0Fy+ojN0uHSQ==}
     engines: {node: '>= 18'}
+
+  somenflow@0.1.0-alpha.3:
+    resolution: {integrity: sha512-6NTMzSIOimv9V467rsyWIknPVlCyswANLgYaqFpZQXQAYh7NdZ6HX6XyLSSCj/0P0+GLgCzcXxWAvfHjZzos4w==}
+    engines: {node: '>=22'}
+    hasBin: true
 
   source-map-js@1.2.1:
     resolution: {integrity: sha512-UXWMKhLOwVKb728IUtQPXxfYU+usdybtUrK/8uGE8CQMvrhOpwvzDBwj0QhSL7MQc7vIsISBG8VQ8+IDQxpfQA==}
@@ -13571,6 +13579,8 @@ snapshots:
   smol-toml@1.6.1: {}
 
   smol-toml@1.8.0: {}
+
+  somenflow@0.1.0-alpha.3: {}
 
   source-map-js@1.2.1: {}
 

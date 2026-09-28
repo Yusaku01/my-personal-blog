@@ -52,6 +52,7 @@
     "sanitize-filename": "1.6.4",
     "satori": "0.26.0",
     "sharp": "0.35.4",
+    "somenflow": "0.1.0-alpha.3",
     "unist-util-visit": "5.1.0"
   },
   "devDependencies": {

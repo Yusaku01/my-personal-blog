@@ -2,6 +2,8 @@ packages:
   - .
 
 minimumReleaseAge: 4320
+minimumReleaseAgeExclude:
+  - 'somenflow@0.1.0-alpha.3'
 saveExact: true
 
 allowBuilds:
