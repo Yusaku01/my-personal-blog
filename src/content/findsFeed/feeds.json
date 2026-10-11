@@ -116,6 +116,46 @@
       "description": "JavaScript・Web標準・開発ツールを扱う個人ブログ",
       "tags": ["JavaScript", "Web Standards", "Development"],
       "enabled": true
+    },
+    {
+      "name": "Nolan Lawson",
+      "nameUrl": "https://nolanlawson.com/",
+      "url": "https://nolanlawson.com/feed/",
+      "description": "Web標準、ブラウザAPI、パフォーマンス、フロントエンド設計を掘り下げるNolan Lawsonさんのブログ",
+      "tags": ["Web Platform","Frontend","Engineering"],
+      "enabled": true
+    },
+    {
+      "name": "Panda CSS Blog",
+      "nameUrl": "https://panda-css.com/blog",
+      "url": "https://panda-css.com/rss.xml",
+      "description": "Panda CSS公式のCSSツールチェーン、Oxc、デザイントークン、デザインシステム関連ブログ",
+      "tags": ["CSS","Design System","Tooling"],
+      "enabled": true
+    },
+    {
+      "name": "WebAIM Blog",
+      "nameUrl": "https://webaim.org/blog/",
+      "url": "https://webaim.org/blog/feed/",
+      "description": "WebAIMによるWebアクセシビリティの実践、調査、支援技術に関する記事",
+      "tags": ["Accessibility","UX","Research"],
+      "enabled": true
+    },
+    {
+      "name": "Cloudflare Blog",
+      "nameUrl": "https://blog.cloudflare.com/",
+      "url": "https://blog.cloudflare.com/rss/",
+      "description": "Cloudflare公式のWebパフォーマンス、Workers、開発者基盤、セキュリティ、AIに関する技術ブログ",
+      "tags": ["Cloudflare","Web Performance","Security"],
+      "enabled": true
+    },
+    {
+      "name": "Nielsen Norman Group",
+      "nameUrl": "https://www.nngroup.com/articles/",
+      "url": "https://www.nngroup.com/feed/rss",
+      "description": "Nielsen Norman GroupによるUXリサーチ、プロダクト設計、AI UX、ユーザビリティの知見",
+      "tags": ["UX","Product Design","Research"],
+      "enabled": true
     }
   ]
 }
