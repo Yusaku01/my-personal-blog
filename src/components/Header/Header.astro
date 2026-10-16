@@ -26,32 +26,23 @@ const isActiveLink = (href: string) => {
 };
 ---
 
-<header
-  id="header"
-  class="fixed w-full top-0 bg-white dark:bg-gray-900 z-50 transition-transform duration-300"
->
-  <div class="container-lg mx-auto px-4">
-    <div class="flex items-center justify-between h-16">
-      <a
-        href={localizedPath('/', locale)}
-        class="text-xl font-bold tracking-[0.3em] text-gray-800 dark:text-white"
-      >
-        SAKUSPACE
-      </a>
+<header id="header" class="site-header">
+  <div class="header-container">
+    <div class="header-bar">
+      <a href={localizedPath('/', locale)} class="header-brand"> SAKUSPACE </a>
 
-      <nav class="flex items-center flex-row-reverse lg:flex-row gap-4">
+      <nav class="header-nav">
         <!-- デスクトップナビゲーション -->
-        <div class="hidden lg:flex items-center gap-4">
+        <div class="header-desktop-links">
           {
             navItems.map((item) => {
               const isActive = isActiveLink(item.href);
-              const baseUnoClasses = 'px-4 py-2 text-gray-800 dark:text-white relative';
               const customClasses = `nav-link ${isActive ? 'nav-link-active' : 'nav-link-hoverable'}`;
 
               return (
                 <a
                   href={item.href}
-                  class={`${baseUnoClasses} ${customClasses}`}
+                  class={customClasses}
                   aria-current={isActive ? 'page' : undefined}
                 >
                   {item.text}
@@ -61,21 +52,17 @@ const isActiveLink = (href: string) => {
           }
         </div>
 
-        <div
-          class="hidden lg:flex items-center gap-2 border-l border-gray-300 pl-4 text-sm font-bold tracking-wider text-gray-800 dark:border-gray-600 dark:text-white"
-          aria-label="Language switcher"
-        >
+        <div class="header-languages" aria-label="Language switcher">
           {
             languageItems.map((item, index) => (
               <>
-                {index > 0 && <span class="text-gray-400 dark:text-gray-500">|</span>}
+                {index > 0 && <span class="header-language-separator">|</span>}
                 <a
                   href={item.href}
                   class:list={[
-                    'px-1 underline-offset-4 transition-colors hover:underline',
+                    'header-language-link',
                     {
-                      'opacity-100': item.locale === locale,
-                      'opacity-55': item.locale !== locale,
+                      'header-language-link--inactive': item.locale !== locale,
                     },
                   ]}
                   aria-current={item.locale === locale ? 'page' : undefined}
@@ -92,7 +79,7 @@ const isActiveLink = (href: string) => {
         <button
           id="menuButton"
           type="button"
-          class="lg:hidden px-4 py-2 text-gray-800 dark:text-white lg:hover:bg-gray-800 lg:hover:text-white transition-colors duration-300 rounded-[21px] border dark:border-white border-gray-800"
+          class="header-menu-button"
           aria-controls="mobileMenu"
           aria-expanded="false"
         >
@@ -107,7 +94,7 @@ const isActiveLink = (href: string) => {
   <!-- モバイルメニュー -->
   <div
     id="mobileMenu"
-    class="mobile-menu fixed inset-0 bg-white/95 dark:bg-gray-800/95 backdrop-blur-sm z-50"
+    class="mobile-menu"
     data-state="closed"
     role="dialog"
     aria-modal="true"
@@ -115,47 +102,39 @@ const isActiveLink = (href: string) => {
     aria-hidden="true"
     inert
   >
-    <div
-      class="mobile-menu-panel relative mx-auto px-4 py-8 bg-white dark:bg-gray-900 z-[9999] h-screen overflow-y-auto"
-    >
-      <button
-        id="closeButton"
-        type="button"
-        class="absolute top-4 right-4 p-2 text-gray-800 dark:text-white lg:hover:bg-gray-800 lg:hover:text-white transition-colors duration-300"
-      >
-        <i class="ui-icon ui-icon--close text-2xl" aria-hidden="true"></i>
-        <span class="sr-only">{uiText.menu.close[locale]}</span>
+    <div class="mobile-menu-panel">
+      <button id="closeButton" type="button" class="mobile-menu-close">
+        <i class="ui-icon ui-icon--close mobile-menu-close-icon" aria-hidden="true"></i>
+        <span class="header-sr-only">{uiText.menu.close[locale]}</span>
       </button>
-      <div
-        class="flex flex-col items-center gap-6 mt-16 min-h-[calc(100vh-12rem)] max-h-[calc(100vh-4rem)]"
-      >
-        <div class="flex flex-col items-center gap-6">
+      <div class="mobile-menu-content">
+        <div class="mobile-menu-links">
           {
             navItems.map((item) => (
               <a
                 href={item.href}
-                class={`px-4 py-2 text-gray-800 dark:text-white text-xl ${isActiveLink(item.href) ? 'font-bold' : ''}`}
+                class:list={[
+                  'mobile-menu-link',
+                  { 'mobile-menu-link--active': isActiveLink(item.href) },
+                ]}
               >
                 {item.text}
               </a>
             ))
           }
         </div>
-        <div
-          class="flex items-center gap-3 text-lg font-bold tracking-wider text-gray-800 dark:text-white"
-          aria-label="Language switcher"
-        >
+        <div class="mobile-menu-languages" aria-label="Language switcher">
           {
             languageItems.map((item, index) => (
               <>
-                {index > 0 && <span class="text-gray-400 dark:text-gray-500">|</span>}
+                {index > 0 && <span class="header-language-separator">|</span>}
                 <a
                   href={item.href}
                   class:list={[
-                    'px-2 py-1 underline-offset-4',
+                    'mobile-menu-language-link',
                     {
-                      'opacity-100 underline': item.locale === locale,
-                      'opacity-55': item.locale !== locale,
+                      'mobile-menu-language-link--active': item.locale === locale,
+                      'header-language-link--inactive': item.locale !== locale,
                     },
                   ]}
                   aria-current={item.locale === locale ? 'page' : undefined}
@@ -167,9 +146,9 @@ const isActiveLink = (href: string) => {
             ))
           }
         </div>
-        <div class="my-8">
-          <p class="text-center text-gray-800 dark:text-white mb-3">{uiText.menu.follow}</p>
-          <SocialIcons variant="default" class="justify-center" />
+        <div class="mobile-menu-socials">
+          <p class="mobile-menu-follow">{uiText.menu.follow}</p>
+          <SocialIcons variant="default" />
         </div>
       </div>
     </div>
@@ -177,7 +156,235 @@ const isActiveLink = (href: string) => {
 </header>
 
 <style>
+  .site-header {
+    --header-background: rgb(255 255 255);
+    --header-color: rgb(31 41 55);
+    --header-language-border: rgb(209 213 219);
+    --header-language-separator: rgb(156 163 175);
+    --header-menu-background: rgb(255 255 255 / 0.95);
+    background-color: var(--header-background);
+    position: fixed;
+    top: 0;
+    width: 100%;
+    z-index: 50;
+    transition: transform 300ms cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .site-header--hidden {
+    transform: translate3d(0, -100%, 0);
+  }
+
+  :global(html.dark) .site-header {
+    --header-background: rgb(17 24 39);
+    --header-color: rgb(255 255 255);
+    --header-language-border: rgb(75 85 99);
+    --header-language-separator: rgb(107 114 128);
+    --header-menu-background: rgb(31 41 55 / 0.95);
+  }
+
+  .header-container {
+    margin-inline: auto;
+    max-width: 1132px;
+    padding-inline: 1rem;
+  }
+
+  .header-bar {
+    align-items: center;
+    display: flex;
+    height: 4rem;
+    justify-content: space-between;
+  }
+
+  .header-brand {
+    color: var(--header-color);
+    font-size: 1.25rem;
+    font-weight: 700;
+    letter-spacing: 0.3em;
+    line-height: 1.75rem;
+  }
+
+  .header-nav {
+    align-items: center;
+    display: flex;
+    flex-direction: row-reverse;
+    gap: 1rem;
+  }
+
+  .header-desktop-links,
+  .header-languages {
+    align-items: center;
+    display: none;
+  }
+
+  .header-desktop-links {
+    gap: 1rem;
+  }
+
+  .header-languages {
+    border-left-width: 1px;
+    border-color: var(--header-language-border);
+    color: var(--header-color);
+    font-size: 0.875rem;
+    font-weight: 700;
+    gap: 0.5rem;
+    letter-spacing: 0.05em;
+    line-height: 1.25rem;
+    padding-left: 1rem;
+  }
+
+  .header-language-separator {
+    color: var(--header-language-separator);
+  }
+
+  .header-language-link {
+    padding-inline: 0.25rem;
+    text-underline-offset: 4px;
+    transition-property:
+      color, background-color, border-color, outline-color, text-decoration-color, fill, stroke;
+    transition-duration: 150ms;
+    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .header-language-link:hover {
+    text-decoration-line: underline;
+  }
+
+  .header-language-link--inactive {
+    opacity: 0.55;
+  }
+
+  .header-menu-button,
+  .mobile-menu-close {
+    color: var(--header-color);
+    transition-property:
+      color, background-color, border-color, outline-color, text-decoration-color, fill, stroke;
+    transition-duration: 300ms;
+    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .header-menu-button {
+    border: 1px solid var(--header-color);
+    border-radius: 21px;
+    padding: 0.5rem 1rem;
+  }
+
+  .mobile-menu-panel {
+    background-color: var(--header-background);
+    height: 100vh;
+    margin-inline: auto;
+    overflow-y: auto;
+    padding: 2rem 1rem;
+    position: relative;
+    z-index: 9999;
+  }
+
+  .mobile-menu-close {
+    padding: 0.5rem;
+    position: absolute;
+    right: 1rem;
+    top: 1rem;
+  }
+
+  .mobile-menu-close-icon {
+    font-size: 1.5rem;
+    line-height: 2rem;
+  }
+
+  .header-sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border-width: 0;
+  }
+
+  .mobile-menu-content,
+  .mobile-menu-links {
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+
+  .mobile-menu-content {
+    margin-top: 4rem;
+    max-height: calc(100vh - 4rem);
+    min-height: calc(100vh - 12rem);
+  }
+
+  .mobile-menu-link {
+    color: var(--header-color);
+    font-size: 1.25rem;
+    line-height: 1.75rem;
+    padding: 0.5rem 1rem;
+  }
+
+  .mobile-menu-link--active {
+    font-weight: 700;
+  }
+
+  .mobile-menu-languages {
+    align-items: center;
+    color: var(--header-color);
+    display: flex;
+    font-size: 1.125rem;
+    font-weight: 700;
+    gap: 0.75rem;
+    letter-spacing: 0.05em;
+    line-height: 1.75rem;
+  }
+
+  .mobile-menu-language-link {
+    padding: 0.25rem 0.5rem;
+    text-underline-offset: 4px;
+  }
+
+  .mobile-menu-language-link--active {
+    text-decoration-line: underline;
+  }
+
+  .mobile-menu-socials {
+    margin-block: 2rem;
+  }
+
+  .mobile-menu-socials :global(.social-icons) {
+    justify-content: center;
+  }
+
+  .mobile-menu-follow {
+    color: var(--header-color);
+    margin-bottom: 0.75rem;
+    text-align: center;
+  }
+
+  @media (min-width: 1024px) {
+    .header-nav {
+      flex-direction: row;
+    }
+
+    .header-desktop-links,
+    .header-languages {
+      display: flex;
+    }
+
+    .header-menu-button {
+      display: none;
+    }
+
+    .header-menu-button:hover,
+    .mobile-menu-close:hover {
+      background-color: rgb(31 41 55);
+      color: rgb(255 255 255);
+    }
+  }
+
   .nav-link {
+    color: var(--header-color);
+    padding: 0.5rem 1rem;
     position: relative; /* Needed for absolute positioning of ::after */
     transition: color 0.3s; /* Optional: Keep color transition */
   }
@@ -189,14 +396,9 @@ const isActiveLink = (href: string) => {
     left: 0;
     bottom: 0; /* Adjust as needed, maybe slightly above bottom edge */
     height: 2px; /* Underline thickness */
-    background-color: theme('colors.gray.800'); /* Use theme colors */
+    background-color: var(--header-color); /* Use theme colors */
     transition: width 0.3s ease-out; /* Animate only width */
     width: 0; /* Default width is 0 */
-  }
-
-  /* Dark mode underline color */
-  :global(html.dark) .nav-link::after {
-    background-color: theme('colors.white');
   }
 
   /* Style for hoverable (non-active) links */
@@ -211,6 +413,11 @@ const isActiveLink = (href: string) => {
   }
 
   .mobile-menu {
+    position: fixed;
+    inset: 0;
+    background-color: var(--header-menu-background);
+    backdrop-filter: blur(4px);
+    z-index: 50;
     opacity: 0;
     pointer-events: none;
     transform: translateX(100%);
@@ -231,8 +438,6 @@ const isActiveLink = (href: string) => {
     visibility: visible;
   }
 </style>
-
-<!-- <div class="h-16"></div> -->
 
 <script is:inline>
   let controller = new AbortController();
@@ -274,13 +479,13 @@ const isActiveLink = (href: string) => {
       const currentScroll = window.scrollY;
 
       if (currentScroll <= 0) {
-        header?.classList.remove('-translate-y-full');
+        header?.classList.remove('site-header--hidden');
       }
 
       if (currentScroll > lastScroll && currentScroll > 80) {
-        header?.classList.add('-translate-y-full');
+        header?.classList.add('site-header--hidden');
       } else {
-        header?.classList.remove('-translate-y-full');
+        header?.classList.remove('site-header--hidden');
       }
 
       lastScroll = currentScroll;
