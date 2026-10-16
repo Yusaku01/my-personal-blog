@@ -30,14 +30,15 @@ const searchIndexUrl = localizedPath('/search-index.json', locale);
 ---
 
 <div
+  class="blog-controls"
   data-blog-search-root
   data-initial-post-count={String(initialPostCount)}
   data-initial-query={initialSearchState.activeQuery}
   data-search-index-url={searchIndexUrl}
 >
-  <form class="mb-8 max-w-xl mx-auto relative" data-blog-search-form>
-    <label class="block w-full">
-      <span class="sr-only">{uiText.blog.searchLabel[locale]}</span>
+  <form class="blog-controls__form" data-blog-search-form>
+    <label class="blog-controls__label">
+      <span class="blog-controls__label-text">{uiText.blog.searchLabel[locale]}</span>
       <input
         type="search"
         id="blog-search-input"
@@ -45,31 +46,25 @@ const searchIndexUrl = localizedPath('/search-index.json', locale);
         placeholder={uiText.blog.searchLabel[locale]}
         autocomplete="off"
         value={initialSearchState.activeQuery}
-        class="w-full px-2 py-2 border border-gray-200 rounded-md focus:outline-none focus:ring-2 focus:ring-[#333] bg-white dark:bg-white dark:border-none dark:text-[#222]"
+        class="blog-controls__input"
       />
     </label>
-    <button
-      type="submit"
-      class="absolute top-0 right-0 px-4 py-2 text-sm bg-[#333] text-white lg:hover:opacity-70 transition-all duration-300 rounded-r-md h-full font-bold leading-loose dark:border-none grid align-center text-[16px]"
-    >
+    <button type="submit" class="blog-controls__submit">
       {uiText.blog.searchButton[locale]}
     </button>
     <div
       data-blog-search-history
-      class="absolute left-0 right-0 z-10 mt-2 hidden overflow-hidden rounded-md border border-gray-200 bg-white shadow-lg dark:border-gray-700 dark:bg-gray-900"
+      hidden
+      class="blog-controls__history"
       aria-label={uiText.blog.searchHistory[locale]}
     >
     </div>
   </form>
-  <p
-    data-blog-search-error
-    class="mx-auto mb-4 hidden max-w-xl text-sm text-red-600 dark:text-red-400"
-    role="status"
-  >
+  <p data-blog-search-error hidden class="blog-controls__error" role="status">
     {uiText.blog.searchError[locale]}
   </p>
 
-  <div class="flex flex-wrap justify-center gap-3 mb-8 text-sm">
+  <div class="blog-controls__tabs">
     {
       tabs.map((tab) => {
         const isActive = activePath === normalizePath(tab.href);
@@ -78,11 +73,7 @@ const searchIndexUrl = localizedPath('/search-index.json', locale);
             href={buildBlogTabHref(tab.href, currentQuery)}
             data-blog-tab
             data-blog-base-href={tab.href}
-            class={`px-2 py-1.5 rounded-full border transition-colors min-w-16 text-center ${
-              isActive
-                ? 'bg-[#333] text-white border-[#333] font-bold'
-                : 'bg-white text-gray-700 border-gray-200 hover:bg-gray-100 dark:bg-gray-900 dark:text-gray-200 dark:border-gray-700 dark:hover:bg-gray-800'
-            }`}
+            class="blog-controls__tab"
             aria-current={isActive ? 'page' : undefined}
           >
             {tab.label}
@@ -92,11 +83,8 @@ const searchIndexUrl = localizedPath('/search-index.json', locale);
     }
   </div>
 
-  <div class="text-center mb-8">
-    <a
-      href="/rss.xml"
-      class="inline-flex items-center gap-2 text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200 transition-colors"
-    >
+  <div class="blog-controls__rss">
+    <a href="/rss.xml" class="blog-controls__rss-link">
       <svg
         xmlns="http://www.w3.org/2000/svg"
         width="16"
@@ -112,16 +100,8 @@ const searchIndexUrl = localizedPath('/search-index.json', locale);
     </a>
   </div>
 
-  <div
-    data-blog-empty
-    class:list={[
-      'text-center py-12',
-      {
-        hidden: initialSearchState.matchedCount > 0,
-      },
-    ]}
-  >
-    <p class="text-gray-600 dark:text-gray-400 text-lg">
+  <div data-blog-empty class="blog-controls__empty" hidden={initialSearchState.matchedCount > 0}>
+    <p class="blog-controls__empty-message">
       {uiText.blog.empty[locale]}
     </p>
   </div>
@@ -133,9 +113,7 @@ const searchIndexUrl = localizedPath('/search-index.json', locale);
           data-post-wrapper
           data-index={index}
           data-post-url={post.url}
-          class:list={{
-            hidden: initialSearchState.hiddenStates[index],
-          }}
+          hidden={initialSearchState.hiddenStates[index]}
         >
           <PostCard {...post} index={index} locale={locale} />
         </div>
@@ -146,25 +124,253 @@ const searchIndexUrl = localizedPath('/search-index.json', locale);
   {
     hasMorePosts && (
       <div
-        class:list={[
-          'text-center mt-12',
-          {
-            hidden: !initialSearchState.shouldShowLoadMore,
-          },
-        ]}
+        class="blog-controls__more"
+        hidden={!initialSearchState.shouldShowLoadMore}
         data-blog-load-more-container
       >
-        <button
-          data-blog-load-more
-          class="px-6 py-2 bg-[#333] text-white rounded-md lg:hover:opacity-70 transition-all duration-300 dark:bg-white dark:text-[#333] font-bold leading-loose"
-          type="button"
-        >
+        <button data-blog-load-more class="blog-controls__load-more" type="button">
           {uiText.blog.loadMore[locale]}
         </button>
       </div>
     )
   }
 </div>
+
+<style>
+  .blog-controls__form {
+    position: relative;
+    max-width: 36rem;
+    margin-inline: auto;
+    margin-bottom: 2rem;
+  }
+
+  .blog-controls__label {
+    display: block;
+    width: 100%;
+  }
+
+  .blog-controls__label-text {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    margin: -1px;
+    border-width: 0;
+    padding: 0;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+  }
+
+  .blog-controls__input {
+    width: 100%;
+    border: 1px solid rgb(229 231 235);
+    border-radius: 0.375rem;
+    background-color: rgb(255 255 255);
+    padding: 0.5rem;
+  }
+
+  :global(html.dark) .blog-controls__input {
+    border-style: none;
+    color: rgb(34 34 34);
+  }
+
+  .blog-controls__input:focus {
+    outline: 2px solid transparent;
+    outline-offset: 2px;
+    box-shadow: 0 0 0 2px rgb(51 51 51);
+  }
+
+  .blog-controls__submit {
+    position: absolute;
+    top: 0;
+    right: 0;
+    display: grid;
+    height: 100%;
+    border-top-right-radius: 0.375rem;
+    border-bottom-right-radius: 0.375rem;
+    background-color: rgb(51 51 51);
+    padding: 0.5rem 1rem;
+    color: rgb(255 255 255);
+    font-size: 0.875rem;
+    font-weight: 700;
+    line-height: 2;
+    transition: all 300ms cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  :global(html.dark) .blog-controls__submit {
+    border-style: none;
+  }
+
+  .blog-controls__history {
+    position: absolute;
+    right: 0;
+    left: 0;
+    z-index: 10;
+    overflow: hidden;
+    margin-top: 0.5rem;
+    border: 1px solid var(--color-section-border);
+    border-radius: 0.375rem;
+    background-color: rgb(255 255 255);
+    box-shadow:
+      0 10px 15px -3px rgb(0 0 0 / 0.1),
+      0 4px 6px -4px rgb(0 0 0 / 0.1);
+  }
+
+  :global(html.dark) .blog-controls__history {
+    background-color: rgb(17 24 39);
+  }
+
+  .blog-controls :global(.blog-controls__history-item) {
+    width: 100%;
+    padding: 0.5rem 0.75rem;
+    color: rgb(55 65 81);
+    font-size: 0.875rem;
+    line-height: 1.25rem;
+    text-align: center;
+    transition:
+      color 150ms cubic-bezier(0.4, 0, 0.2, 1),
+      background-color 150ms cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .blog-controls :global(.blog-controls__history-item:hover) {
+    background-color: rgb(243 244 246);
+  }
+
+  :global(html.dark) .blog-controls :global(.blog-controls__history-item) {
+    color: rgb(229 231 235);
+  }
+
+  :global(html.dark) .blog-controls :global(.blog-controls__history-item:hover) {
+    background-color: rgb(31 41 55);
+  }
+
+  .blog-controls__error {
+    max-width: 36rem;
+    margin-inline: auto;
+    margin-bottom: 1rem;
+    color: rgb(220 38 38);
+    font-size: 0.875rem;
+    line-height: 1.25rem;
+  }
+
+  :global(html.dark) .blog-controls__error {
+    color: rgb(248 113 113);
+  }
+
+  .blog-controls__tabs {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0.75rem;
+    margin-bottom: 2rem;
+    font-size: 0.875rem;
+    line-height: 1.25rem;
+  }
+
+  .blog-controls__tab {
+    min-width: 4rem;
+    border: 1px solid rgb(229 231 235);
+    border-radius: 9999px;
+    background-color: rgb(255 255 255);
+    padding: 0.375rem 0.5rem;
+    color: rgb(55 65 81);
+    text-align: center;
+    transition:
+      color 150ms cubic-bezier(0.4, 0, 0.2, 1),
+      background-color 150ms cubic-bezier(0.4, 0, 0.2, 1),
+      border-color 150ms cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .blog-controls__tab[aria-current='page'] {
+    border-color: rgb(51 51 51);
+    background-color: rgb(51 51 51);
+    color: rgb(255 255 255);
+    font-weight: 700;
+  }
+
+  .blog-controls__tab:not([aria-current='page']):hover {
+    background-color: rgb(243 244 246);
+  }
+
+  :global(html.dark) .blog-controls__tab:not([aria-current='page']) {
+    border-color: rgb(55 65 81);
+    background-color: rgb(17 24 39);
+    color: rgb(229 231 235);
+  }
+
+  :global(html.dark) .blog-controls__tab:not([aria-current='page']):hover {
+    background-color: rgb(31 41 55);
+  }
+
+  .blog-controls__rss {
+    margin-bottom: 2rem;
+    text-align: center;
+  }
+
+  .blog-controls__rss-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: rgb(75 85 99);
+    font-size: 0.875rem;
+    line-height: 1.25rem;
+    transition: color 150ms cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  :global(html.dark) .blog-controls__rss-link {
+    color: rgb(156 163 175);
+  }
+
+  .blog-controls__rss-link:hover {
+    color: rgb(17 24 39);
+  }
+
+  :global(html.dark) .blog-controls__rss-link:hover {
+    color: rgb(229 231 235);
+  }
+
+  .blog-controls__empty {
+    padding-block: 3rem;
+    text-align: center;
+  }
+
+  .blog-controls__empty-message {
+    color: rgb(75 85 99);
+    font-size: 1.125rem;
+    line-height: 1.75rem;
+  }
+
+  :global(html.dark) .blog-controls__empty-message {
+    color: rgb(156 163 175);
+  }
+
+  .blog-controls__more {
+    margin-top: 3rem;
+    text-align: center;
+  }
+
+  .blog-controls__load-more {
+    border-radius: 0.375rem;
+    background-color: rgb(51 51 51);
+    padding: 0.5rem 1.5rem;
+    color: rgb(255 255 255);
+    font-weight: 700;
+    line-height: 2;
+    transition: all 300ms cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  :global(html.dark) .blog-controls__load-more {
+    background-color: rgb(255 255 255);
+    color: rgb(51 51 51);
+  }
+
+  @media (min-width: 1024px) {
+    .blog-controls__submit:hover,
+    .blog-controls__load-more:hover {
+      opacity: 0.7;
+    }
+  }
+</style>
 
 <script>
   import { installBlogSearch } from '../../lib/blog/searchController';

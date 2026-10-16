@@ -28,16 +28,16 @@ const renderDom = () => {
         <input data-blog-search-input type="search" />
         <button type="submit">検索する</button>
       </form>
-      <div data-blog-search-history class="hidden"></div>
-      <p data-blog-search-error class="hidden"></p>
-      <div data-blog-empty class="hidden"></div>
+      <div data-blog-search-history hidden></div>
+      <p data-blog-search-error hidden></p>
+      <div data-blog-empty hidden></div>
       <div data-blog-post-grid>
         <div data-post-wrapper data-post-url="/blog/personal/astro-search"></div>
         <div data-post-wrapper data-post-url="/blog/qiita/astro-search"></div>
       </div>
       <a data-blog-tab data-blog-base-href="/blog/" href="/blog/">全て</a>
       <a data-blog-tab data-blog-base-href="/blog/personal/" href="/blog/personal/">個人ブログ</a>
-      <div data-blog-load-more-container class="hidden">
+      <div data-blog-load-more-container hidden>
         <button data-blog-load-more type="button">過去の記事を見る</button>
       </div>
     </div>
@@ -61,7 +61,7 @@ describe('initBlogSearch', () => {
     input.value = '本文ワード';
     input.dispatchEvent(new Event('input', { bubbles: true }));
 
-    expect(wrappers.every((wrapper) => !wrapper.classList.contains('hidden'))).toBe(true);
+    expect(wrappers.every((wrapper) => !wrapper.hidden)).toBe(true);
     cleanup();
   });
 
@@ -77,8 +77,8 @@ describe('initBlogSearch', () => {
     input.value = '本文ワード';
     form.dispatchEvent(new Event('submit', { bubbles: true, cancelable: true }));
 
-    expect(wrappers[0]?.classList.contains('hidden')).toBe(false);
-    expect(wrappers[1]?.classList.contains('hidden')).toBe(true);
+    expect(wrappers[0]?.hidden).toBe(false);
+    expect(wrappers[1]?.hidden).toBe(true);
     expect(window.location.search).toBe('?q=%E6%9C%AC%E6%96%87%E3%83%AF%E3%83%BC%E3%83%89');
     expect(tabs[0]?.href).toContain('/blog/?q=');
     cleanup();
@@ -101,16 +101,16 @@ describe('initBlogSearch', () => {
     input.dispatchEvent(new Event('focus', { bubbles: true }));
 
     const button = history.querySelector<HTMLButtonElement>('button');
-    expect(history.classList.contains('hidden')).toBe(false);
+    expect(history.hidden).toBe(false);
     expect(button?.textContent).toContain('本文ワード');
 
     button?.dispatchEvent(new Event('pointerdown', { bubbles: true, cancelable: true }));
 
     expect(input.value).toBe('本文ワード');
-    expect(wrappers[0]?.classList.contains('hidden')).toBe(false);
-    expect(wrappers[1]?.classList.contains('hidden')).toBe(true);
+    expect(wrappers[0]?.hidden).toBe(false);
+    expect(wrappers[1]?.hidden).toBe(true);
     expect(window.location.search).toBe('?q=%E6%9C%AC%E6%96%87%E3%83%AF%E3%83%BC%E3%83%89');
-    expect(history.classList.contains('hidden')).toBe(true);
+    expect(history.hidden).toBe(true);
     cleanup();
   });
 
@@ -130,13 +130,13 @@ describe('initBlogSearch', () => {
     input.value = '';
     input.focus();
     input.dispatchEvent(new Event('focus', { bubbles: true }));
-    expect(history.classList.contains('hidden')).toBe(false);
+    expect(history.hidden).toBe(false);
 
     outsideButton.focus();
     root.dispatchEvent(new FocusEvent('focusout', { bubbles: true, relatedTarget: outsideButton }));
     await Promise.resolve();
 
-    expect(history.classList.contains('hidden')).toBe(true);
+    expect(history.hidden).toBe(true);
     cleanup();
   });
 
@@ -161,8 +161,8 @@ describe('initBlogSearch', () => {
     expect(input.disabled).toBe(false);
     expect(button.disabled).toBe(false);
     expect(input.value).toBe('本文ワード');
-    expect(wrappers[0]?.classList.contains('hidden')).toBe(false);
-    expect(wrappers[1]?.classList.contains('hidden')).toBe(true);
+    expect(wrappers[0]?.hidden).toBe(false);
+    expect(wrappers[1]?.hidden).toBe(true);
     cleanup();
   });
 
@@ -182,10 +182,10 @@ describe('initBlogSearch', () => {
       }),
     });
 
-    expect(error.classList.contains('hidden')).toBe(false);
+    expect(error.hidden).toBe(false);
     expect(input.disabled).toBe(true);
     expect(button.disabled).toBe(true);
-    expect(wrappers.every((wrapper) => !wrapper.classList.contains('hidden'))).toBe(true);
+    expect(wrappers.every((wrapper) => !wrapper.hidden)).toBe(true);
     cleanup();
   });
 });

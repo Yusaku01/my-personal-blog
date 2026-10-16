@@ -32,7 +32,6 @@ type WindowWithBlogSearch = Window & {
   __blogSearchRequestId?: number;
 };
 
-const HIDDEN_CLASS_NAME = 'hidden';
 const DEFAULT_SEARCH_INDEX_URL = '/search-index.json';
 
 const getSearchInput = (root: HTMLElement) =>
@@ -65,7 +64,7 @@ const setSearchErrorVisibility = (root: HTMLElement, visible: boolean) => {
     return;
   }
 
-  errorElement.classList.toggle(HIDDEN_CLASS_NAME, !visible);
+  errorElement.hidden = !visible;
 };
 
 const parseInitialPostCount = (root: HTMLElement): number => {
@@ -77,7 +76,7 @@ const renderHistoryButtons = (container: HTMLElement, queries: string[]) => {
   container.replaceChildren();
 
   if (queries.length === 0) {
-    container.classList.add(HIDDEN_CLASS_NAME);
+    container.hidden = true;
     return;
   }
 
@@ -86,14 +85,13 @@ const renderHistoryButtons = (container: HTMLElement, queries: string[]) => {
     const button = document.createElement('button');
     button.type = 'button';
     button.dataset.blogSearchHistoryItem = query;
-    button.className =
-      'w-full text-left px-3 py-2 text-sm text-gray-700 transition-colors hover:bg-gray-100 dark:text-gray-200 dark:hover:bg-gray-800';
+    button.className = 'blog-controls__history-item';
     button.textContent = query;
     fragment.append(button);
   }
 
   container.append(fragment);
-  container.classList.remove(HIDDEN_CLASS_NAME);
+  container.hidden = false;
 };
 
 export const initBlogSearch = ({
@@ -135,7 +133,7 @@ export const initBlogSearch = ({
   };
 
   const hideHistory = () => {
-    historyContainer.classList.add(HIDDEN_CLASS_NAME);
+    historyContainer.hidden = true;
     historyContainer.replaceChildren();
   };
 
@@ -174,21 +172,21 @@ export const initBlogSearch = ({
       const isMatch = entry ? matchesSearchQuery(entry.searchText, query) : query.length === 0;
 
       if (!isMatch) {
-        wrapper.classList.add(HIDDEN_CLASS_NAME);
+        wrapper.hidden = true;
         return;
       }
 
       matchedCount += 1;
       const shouldHideForPagination = !query && !showAll && index >= initialPostCount;
-      wrapper.classList.toggle(HIDDEN_CLASS_NAME, shouldHideForPagination);
+      wrapper.hidden = shouldHideForPagination;
     });
 
-    emptyState.classList.toggle(HIDDEN_CLASS_NAME, matchedCount > 0);
+    emptyState.hidden = matchedCount > 0;
 
     if (loadMoreContainer) {
       const shouldHideLoadMore =
         Boolean(query) || showAll || matchedCount <= initialPostCount || !loadMoreButton;
-      loadMoreContainer.classList.toggle(HIDDEN_CLASS_NAME, shouldHideLoadMore);
+      loadMoreContainer.hidden = shouldHideLoadMore;
     }
   };
 
