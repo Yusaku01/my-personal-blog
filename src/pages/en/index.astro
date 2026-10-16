@@ -17,9 +17,9 @@ const POSTS_PER_SECTION = 4;
 
 <Layout title="SAKUSPACE" description={siteDescription[locale]} locale={locale}>
   <HeroSection title="SAKUSPACE" />
-  <div class="py-16">
-    <div class="container-lg container-base">
-      <section class="mb-16">
+  <div class="home-page">
+    <div class="home-container">
+      <section class="home-section">
         <SectionHeading title="BLOG" />
         <div class="grid-fluid-cards">
           {
@@ -41,37 +41,37 @@ const POSTS_PER_SECTION = 4;
               ))
           }
         </div>
-        <div class="text-center mt-8">
-          <a href={localizedPath('/blog', locale)} class="btn-primary inline-block">
+        <div class="home-blog-action">
+          <a href={localizedPath('/blog', locale)} class="primary-link">
             {uiText.blog.viewAll[locale]}
           </a>
         </div>
       </section>
 
-      <section class="mb-16">
+      <section class="home-section">
         <SectionHeading title="PROFILE" />
-        <div class="py-6">
-          <div class="flex flex-col md:flex-row gap-4 md:gap-8 items-center">
+        <div class="home-profile">
+          <div class="home-profile-summary">
             <ProfileAvatar
               locale={locale}
               imageId="home-profile-avatar"
               size={128}
-              className="w-32 flex-shrink-0"
+              className="home-profile-avatar"
             />
-            <div class="flex-grow">
-              <h3 class="heading-h3 text-center md:text-left mb-2">
+            <div class="home-profile-copy">
+              <h3 class="home-profile-name">
                 {uiText.profile.name[locale]}
               </h3>
-              <p class="text-gray-700 dark:text-gray-300 mb-6 mb:mb-4 text-center md:text-left">
+              <p class="home-profile-role">
                 {uiText.profile.role[locale]}
               </p>
-              <p class="text-gray-600 dark:text-gray-400">
+              <p class="home-profile-intro">
                 {uiText.profile.intro[locale]}
               </p>
             </div>
           </div>
-          <div class="mt-6 text-center">
-            <a href={localizedPath('/profile', locale)} class="btn-primary inline-block">
+          <div class="home-profile-action">
+            <a href={localizedPath('/profile', locale)} class="primary-link">
               {uiText.profile.more[locale]}
             </a>
           </div>
@@ -80,3 +80,70 @@ const POSTS_PER_SECTION = 4;
     </div>
   </div>
 </Layout>
+
+<style>
+  .home-page {
+    padding-block: 4rem;
+  }
+  .home-container {
+    margin-inline: auto;
+    max-width: 1132px;
+    padding-inline: 1rem;
+  }
+  .home-section {
+    margin-bottom: 4rem;
+  }
+  .home-blog-action {
+    margin-top: 2rem;
+    text-align: center;
+  }
+  .home-profile {
+    padding-block: 1.5rem;
+  }
+  .home-profile-summary {
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+  .home-profile-summary :global(.home-profile-avatar) {
+    flex-shrink: 0;
+    width: 8rem;
+  }
+  .home-profile-copy {
+    flex-grow: 1;
+  }
+  .home-profile-name {
+    font-size: var(--fs-h3);
+    margin-bottom: 0.5rem;
+    text-align: center;
+  }
+  .home-profile-role {
+    color: rgb(55 65 81);
+    margin-bottom: 1.5rem;
+    text-align: center;
+  }
+  .home-profile-intro {
+    color: rgb(75 85 99);
+  }
+  .home-profile-action {
+    margin-top: 1.5rem;
+    text-align: center;
+  }
+  :global(html.dark) .home-profile-role {
+    color: rgb(209 213 219);
+  }
+  :global(html.dark) .home-profile-intro {
+    color: rgb(156 163 175);
+  }
+  @media (min-width: 768px) {
+    .home-profile-summary {
+      flex-direction: row;
+      gap: 2rem;
+    }
+    .home-profile-name,
+    .home-profile-role {
+      text-align: left;
+    }
+  }
+</style>
