@@ -13,37 +13,23 @@ const { posts, locale = 'ja' } = Astro.props as RelatedPostsProps;
 
 {
   posts.length > 0 && (
-    <section class="mt-16 border-t border-gray-200 pt-8 dark:border-gray-700">
-      <h2 class="mb-4 text-xl font-bold text-gray-900 dark:text-white">
-        {uiText.blog.relatedPosts[locale]}
-      </h2>
-      <ul class="grid gap-3 md:grid-cols-2">
+    <section class="related-posts">
+      <h2 class="related-posts__heading">{uiText.blog.relatedPosts[locale]}</h2>
+      <ul class="related-posts__list">
         {posts.map((post) => {
           const publishDate = new Date(post.publishDate);
           const excerpt = post.excerpt?.trim();
 
           return (
             <li>
-              <a
-                href={post.url}
-                class="group flex h-full min-h-32 flex-col justify-between rounded-md border border-gray-200 bg-white p-4 transition-colors hover:border-gray-400 hover:bg-gray-50 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-3 focus-visible:outline-gray-900 dark:border-gray-700 dark:bg-gray-900 dark:hover:border-gray-500 dark:hover:bg-gray-800 dark:focus-visible:outline-white"
-              >
+              <a href={post.url} class="related-posts__link">
                 <span>
-                  <span class="block text-base font-bold leading-snug text-gray-900 transition-colors group-hover:text-gray-700 dark:text-white dark:group-hover:text-gray-200">
-                    {post.title}
-                  </span>
-                  {excerpt && (
-                    <span class="mt-2 line-clamp-2 text-sm leading-relaxed text-gray-600 dark:text-gray-400">
-                      {excerpt}
-                    </span>
-                  )}
+                  <span class="related-posts__title">{post.title}</span>
+                  {excerpt && <span class="related-posts__excerpt">{excerpt}</span>}
                 </span>
-                <span class="mt-3 inline-flex items-center gap-2 text-sm text-gray-600 dark:text-gray-400">
+                <span class="related-posts__meta">
                   <time datetime={publishDate.toISOString()}>{formatPublishDate(publishDate)}</time>
-                  <span
-                    class="ui-icon ui-icon--arrow inline-block text-4 transition-transform duration-200 group-hover:translate-x-2 group-focus-visible:translate-x-2"
-                    aria-hidden="true"
-                  />
+                  <span class="ui-icon ui-icon--arrow related-posts__arrow" aria-hidden="true" />
                 </span>
               </a>
             </li>
@@ -53,3 +39,123 @@ const { posts, locale = 'ja' } = Astro.props as RelatedPostsProps;
     </section>
   )
 }
+
+<style>
+  .related-posts {
+    margin-top: 4rem;
+    border-top: 1px solid var(--color-section-border);
+    border-color: var(--color-section-border);
+    padding-top: 2rem;
+  }
+
+  .related-posts__heading {
+    margin-bottom: 1rem;
+    color: var(--color-heading);
+    font-size: 1.25rem;
+    font-weight: 700;
+    line-height: 1.75rem;
+  }
+
+  .related-posts__list {
+    display: grid;
+    gap: 0.75rem;
+  }
+
+  .related-posts__link {
+    display: flex;
+    height: 100%;
+    min-height: 8rem;
+    flex-direction: column;
+    justify-content: space-between;
+    border: 1px solid var(--color-section-border);
+    border-radius: 0.375rem;
+    background-color: rgb(255 255 255);
+    padding: 1rem;
+    transition:
+      color 150ms cubic-bezier(0.4, 0, 0.2, 1),
+      background-color 150ms cubic-bezier(0.4, 0, 0.2, 1),
+      border-color 150ms cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  :global(html.dark) .related-posts__link {
+    background-color: rgb(17 24 39);
+  }
+
+  .related-posts__link:hover {
+    border-color: rgb(156 163 175);
+    background-color: rgb(249 250 251);
+  }
+
+  :global(html.dark) .related-posts__link:hover {
+    border-color: rgb(107 114 128);
+    background-color: rgb(31 41 55);
+  }
+
+  .related-posts__link:focus-visible {
+    outline: 2px solid var(--color-heading);
+    outline-offset: 3px;
+  }
+
+  .related-posts__title {
+    display: block;
+    color: var(--color-heading);
+    font-size: 1rem;
+    font-weight: 700;
+    line-height: 1.375;
+    transition: color 150ms cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .related-posts__link:hover .related-posts__title {
+    color: rgb(55 65 81);
+  }
+
+  :global(html.dark) .related-posts__link:hover .related-posts__title {
+    color: rgb(229 231 235);
+  }
+
+  .related-posts__excerpt {
+    display: -webkit-box;
+    overflow: hidden;
+    margin-top: 0.5rem;
+    color: rgb(75 85 99);
+    font-size: 0.875rem;
+    line-height: 1.625;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+  }
+
+  :global(html.dark) .related-posts__excerpt {
+    color: rgb(156 163 175);
+  }
+
+  .related-posts__meta {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-top: 0.75rem;
+    color: rgb(75 85 99);
+    font-size: 0.875rem;
+    line-height: 1.25rem;
+  }
+
+  :global(html.dark) .related-posts__meta {
+    color: rgb(156 163 175);
+  }
+
+  .related-posts__arrow {
+    display: inline-block;
+    font-size: 1rem;
+    transition: transform 200ms cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .related-posts__link:hover .related-posts__arrow,
+  .related-posts__link:focus-visible .related-posts__arrow {
+    transform: translate3d(0.5rem, 0, 0);
+  }
+
+  @media (min-width: 768px) {
+    .related-posts__list {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+</style>
