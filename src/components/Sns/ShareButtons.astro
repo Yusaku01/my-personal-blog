@@ -23,17 +23,83 @@ const shareText = {
 } satisfies Record<Locale, { heading: string; xLabel: string }>;
 ---
 
-<div class={`flex flex-col items-center gap-4 ${extraClass}`}>
-  <div class="text-gray-900 dark:text-white text-center mb-2">{shareText[locale].heading}</div>
-  <div class="flex flex-row gap-4 justify-center w-full flex-wrap">
+<div class:list={['share-buttons', extraClass]}>
+  <div class="share-buttons__heading">{shareText[locale].heading}</div>
+  <div class="share-buttons__links">
     <a
       href={shareUrl}
       target="_blank"
       rel="noopener noreferrer"
       aria-label={shareText[locale].xLabel}
-      class="flex items-center justify-center min-w-40 h-14 rounded-lg bg-black lg:hover:opacity-70 transition-all duration-300 text-lg gap-2 relative px-6 py-2 before:(content-[''] inline-block w-6 h-6 bg-[url('/images/icon_x-dark.svg')] bg-no-repeat bg-contain)"
+      class="share-buttons__link"
     >
-      <span class="text-white font-medium lg:block hidden">{shareText[locale].xLabel}</span>
+      <span class="share-buttons__label">{shareText[locale].xLabel}</span>
     </a>
   </div>
 </div>
+
+<style>
+  .share-buttons {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+  }
+
+  .share-buttons__heading {
+    margin-bottom: 0.5rem;
+    color: var(--color-heading);
+    text-align: center;
+  }
+
+  .share-buttons__links {
+    display: flex;
+    width: 100%;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 1rem;
+  }
+
+  .share-buttons__link {
+    position: relative;
+    display: flex;
+    height: 3.5rem;
+    min-width: 10rem;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    border-radius: 0.5rem;
+    background-color: rgb(0 0 0);
+    padding: 0.5rem 1.5rem;
+    font-size: 1.125rem;
+    line-height: 1.75rem;
+    transition: all 300ms cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .share-buttons__link::before {
+    display: inline-block;
+    width: 1.5rem;
+    height: 1.5rem;
+    background-image: url('/images/icon_x-dark.svg');
+    background-repeat: no-repeat;
+    background-size: contain;
+    content: '';
+  }
+
+  .share-buttons__label {
+    display: none;
+    color: rgb(255 255 255);
+    font-weight: 500;
+  }
+
+  @media (min-width: 1024px) {
+    .share-buttons__link:hover {
+      opacity: 0.7;
+    }
+
+    .share-buttons__label {
+      display: block;
+    }
+  }
+</style>
