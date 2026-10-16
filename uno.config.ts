@@ -1,10 +1,14 @@
-import { defineConfig, presetTypography, presetIcons } from 'unocss';
-import presetWind3 from '@unocss/preset-wind3';
+import { defineConfig, presetTypography } from 'unocss';
+import presetWind3, { type Theme } from '@unocss/preset-wind3';
 import transformerVariantGroup from '@unocss/transformer-variant-group';
 import transformerDirectives from '@unocss/transformer-directives';
 
-export default defineConfig({
-  safelist: ['i-ic-round-content-copy', 'i-ic-round-check', 'i-ic-round-list', 'i-ic-round-close'],
+type BlogTheme = Theme & {
+  screens?: Record<string, string>;
+  extend?: Record<string, unknown>;
+};
+
+export default defineConfig<BlogTheme>({
   presets: [
     presetWind3(), // Tailwind互換の基本機能
     presetTypography({
@@ -32,19 +36,6 @@ export default defineConfig({
         },
       },
     }), // Tailwindの@tailwindcss/typographyの代替
-    presetIcons({
-      scale: 1.2,
-      mode: 'auto',
-      prefix: 'i-',
-      extraProperties: {
-        display: 'inline-block',
-        'vertical-align': 'middle',
-      },
-      collections: {
-        ic: () => import('@iconify-json/ic/icons.json').then((i) => i.default),
-      },
-      // cdn: 'https://esm.sh/', // ← collections指定したら不要です
-    }),
   ],
   transformers: [
     transformerVariantGroup(), // バリアント機能の拡張

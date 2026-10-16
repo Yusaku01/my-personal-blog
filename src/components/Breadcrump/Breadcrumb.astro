@@ -60,7 +60,7 @@ const isLocalizedHomePage = pathname === '/en' || pathname === '/en/';
               ) : (
                 <a href={item.path} class="breadcrumb__link">
                   {item.path === localizedPath('/', locale) && (
-                    <span class="breadcrumb__home-icon i-ic-home" aria-hidden="true" />
+                    <span class="breadcrumb__home-icon ui-icon ui-icon--home" aria-hidden="true" />
                   )}
                   {item.label}
                 </a>

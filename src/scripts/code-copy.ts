@@ -42,7 +42,7 @@ const updateButtonVisibility = (button: HTMLButtonElement, visible: boolean) => 
 
 const createCopyIcon = (iconClassName: string, stateClassName: string): HTMLSpanElement => {
   const icon = document.createElement('span');
-  icon.classList.add(iconClassName, 'code-copy-icon', stateClassName);
+  icon.classList.add('ui-icon', iconClassName, 'code-copy-icon', stateClassName);
   icon.setAttribute('aria-hidden', 'true');
   return icon;
 };
@@ -99,8 +99,8 @@ const ensureCopyButton = (preElement: HTMLElement): HTMLButtonElement => {
   button.setAttribute('title', COPY_MESSAGES.idle);
   button.setAttribute('data-copy-feedback', '');
   button.setAttribute('data-copy-visible', 'false');
-  button.appendChild(createCopyIcon('i-ic-round-content-copy', 'code-copy-icon--copy'));
-  button.appendChild(createCopyIcon('i-ic-round-check', 'code-copy-icon--success'));
+  button.appendChild(createCopyIcon('ui-icon--copy', 'code-copy-icon--copy'));
+  button.appendChild(createCopyIcon('ui-icon--check', 'code-copy-icon--success'));
 
   wrapper.appendChild(button);
   return button;

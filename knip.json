@@ -10,7 +10,6 @@
     "@astrojs/check",
     "@fontsource/zen-kaku-gothic-new",
     "@playwright/browser-chromium",
-    "@unocss/preset-icons",
     "@unocss/preset-typography",
     "@unocss/reset",
     "@typescript-eslint/.*",

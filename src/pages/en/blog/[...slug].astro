@@ -107,12 +107,12 @@ const estimatedReadingTimeMinutes = getEstimatedReadingTimeMinutes(post.body ?? 
             class="flex flex-wrap items-center gap-x-5 gap-y-1 text-gray-600 dark:text-gray-400 mb-8 text-sm"
           >
             <span class="blog-article-meta-item">
-              <span class="blog-article-meta-icon i-ic-round-calendar-today" aria-hidden="true"
+              <span class="blog-article-meta-icon ui-icon ui-icon--calendar" aria-hidden="true"
               ></span>
               <span>{formatPublishDate(post.data.publishDate)}</span>
             </span>
             <span class="blog-article-meta-item">
-              <span class="blog-article-meta-icon i-ic-round-schedule" aria-hidden="true"></span>
+              <span class="blog-article-meta-icon ui-icon ui-icon--clock" aria-hidden="true"></span>
               <span>{uiText.blog.readingTime[locale](estimatedReadingTimeMinutes)}</span>
             </span>
           </div>
