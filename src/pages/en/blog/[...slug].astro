@@ -111,10 +111,7 @@ const estimatedReadingTimeMinutes = getEstimatedReadingTimeMinutes(post.body ?? 
           </div>
 
           <!-- 5. Content -->
-          <div
-            class="blog-article-content prose prose-lg max-w-none prose-headings:font-bold prose-a:text-sky-600 prose-a:underline-offset-4 hover:prose-a:underline dark:prose-invert dark:prose-a:text-sky-300 dark:hover:prose-a:text-sky-200 prose-img:rounded-lg mt-8"
-            data-blog-content
-          >
+          <div class="blog-article-content prose" data-blog-content>
             <Content />
           </div>
 
@@ -270,13 +267,16 @@ const estimatedReadingTimeMinutes = getEstimatedReadingTimeMinutes(post.body ?? 
   }
 
   .footnotes {
-    @apply border-t border-gray-200 dark:border-gray-700 mt-12 pt-8;
+    border-top-width: 1px;
+    border-color: var(--color-section-border);
+    margin-top: 3rem;
+    padding-top: 2rem;
   }
   .footnotes ol {
-    @apply mb-0;
+    margin-bottom: 0;
   }
   .footnotes li:last-child p {
-    @apply mb-0;
+    margin-bottom: 0;
   }
 
   .prose a {
@@ -1023,11 +1023,6 @@ const estimatedReadingTimeMinutes = getEstimatedReadingTimeMinutes(post.body ?? 
       transition: none;
     }
   }
-
-  /* 必要であればフットノート内のリンクスタイルも調整 */
-  /* .footnotes a {
-    @apply text-brand hover:underline;
-  } */
 </style>
 
 <script>

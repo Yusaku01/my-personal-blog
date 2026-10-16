@@ -1,4 +1,4 @@
-import { defineConfig, presetTypography } from 'unocss';
+import { defineConfig } from 'unocss';
 import presetWind3, { type Theme } from '@unocss/preset-wind3';
 import transformerVariantGroup from '@unocss/transformer-variant-group';
 import transformerDirectives from '@unocss/transformer-directives';
@@ -9,34 +9,7 @@ type BlogTheme = Theme & {
 };
 
 export default defineConfig<BlogTheme>({
-  presets: [
-    presetWind3(), // Tailwind互換の基本機能
-    presetTypography({
-      cssExtend: {
-        p: {
-          'font-size': 'var(--fs-body)',
-        },
-        h1: {
-          'font-size': 'var(--fs-h1)',
-        },
-        h2: {
-          'font-size': 'var(--fs-h2)',
-        },
-        h3: {
-          'font-size': 'var(--fs-h3)',
-        },
-        h4: {
-          'font-size': 'var(--fs-h4)',
-        },
-        h5: {
-          'font-size': 'var(--fs-h5)',
-        },
-        h6: {
-          'font-size': 'var(--fs-h6)',
-        },
-      },
-    }), // Tailwindの@tailwindcss/typographyの代替
-  ],
+  presets: [presetWind3()],
   transformers: [
     transformerVariantGroup(), // バリアント機能の拡張
     transformerDirectives(), // CSSディレクティブ
