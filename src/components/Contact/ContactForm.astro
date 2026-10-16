@@ -113,17 +113,13 @@ const fields = {
 const messageError = fieldErrors.message?.join(locale === 'ja' ? '、' : ', ');
 ---
 
-<div class="lg:px-8">
+<div class="contact-container">
   {
     sent && (
-      <div
-        class="contact-sent mx-auto max-w-2xl rounded-md border p-8 text-center"
-        role="status"
-        aria-live="polite"
-      >
-        <h2 class="mb-3 text-2xl font-bold">{t.sentTitle}</h2>
-        <p class="leading-relaxed">{t.sentBody}</p>
-        <a class="contact-sent-action mt-6 inline-flex" href={contactPath}>
+      <div class="contact-sent" role="status" aria-live="polite">
+        <h2 class="contact-sent-title">{t.sentTitle}</h2>
+        <p class="contact-sent-body">{t.sentBody}</p>
+        <a class="contact-sent-action" href={contactPath}>
           {t.sentAction}
         </a>
       </div>
@@ -133,22 +129,16 @@ const messageError = fieldErrors.message?.join(locale === 'ja' ? '、' : ', ');
   {
     !sent && (
       <>
-        <p class="mb-8 text-center leading-relaxed text-gray-700 dark:text-gray-200">
+        <p class="contact-intro">
           {t.intro}
-          <br class="hidden sm:block" />
+          <br class="contact-intro-break" />
           {t.introSub}
         </p>
 
-        <form
-          method="POST"
-          action={action}
-          data-contact-form
-          novalidate
-          class="mx-auto max-w-2xl space-y-6"
-        >
+        <form method="POST" action={action} data-contact-form novalidate class="contact-form">
           <div
             data-contact-status
-            class="sr-only"
+            class="contact-status"
             role="status"
             aria-live="polite"
             aria-atomic="true"
@@ -165,11 +155,9 @@ const messageError = fieldErrors.message?.join(locale === 'ja' ? '、' : ', ');
 
           {Object.entries(fields).map(([name, field]) => (
             <div class="contact-field">
-              <label for={field.id} class="mb-2 flex items-center gap-2">
-                <span class="font-bold text-gray-700 dark:text-white">{field.label}</span>
-                <span class="rounded-md bg-gray-200 px-2 py-0.5 text-xs font-bold text-gray-700">
-                  {t.required}
-                </span>
+              <label for={field.id} class="contact-label">
+                <span class="contact-label-name">{field.label}</span>
+                <span class="contact-required">{t.required}</span>
               </label>
               <input
                 id={field.id}
@@ -193,11 +181,9 @@ const messageError = fieldErrors.message?.join(locale === 'ja' ? '、' : ', ');
           ))}
 
           <div class="contact-field">
-            <label for="contact-message" class="mb-2 flex items-center gap-2">
-              <span class="font-bold text-gray-700 dark:text-white">{t.message}</span>
-              <span class="rounded-md bg-gray-200 px-2 py-0.5 text-xs font-bold text-gray-700">
-                {t.required}
-              </span>
+            <label for="contact-message" class="contact-label">
+              <span class="contact-label-name">{t.message}</span>
+              <span class="contact-required">{t.required}</span>
             </label>
             <textarea
               id="contact-message"
@@ -210,31 +196,29 @@ const messageError = fieldErrors.message?.join(locale === 'ja' ? '、' : ', ');
               aria-invalid={messageError ? 'true' : undefined}
               aria-describedby="contact-message-error contact-message-count"
               aria-errormessage="contact-message-error"
-              class="contact-control max-h-80 min-h-48 resize-y"
+              class="contact-control contact-textarea"
             >
               {values.message}
             </textarea>
-            <div class="mt-1 flex items-start justify-between gap-4">
+            <div class="contact-message-meta">
               <p id="contact-message-error" class="contact-error" data-contact-field-error>
                 {messageError}
               </p>
-              <p id="contact-message-count" class="text-xs text-gray-500 dark:text-gray-400">
+              <p id="contact-message-count" class="contact-message-count">
                 <span data-contact-message-count>{values.message.length}</span>/4000
               </p>
             </div>
           </div>
 
           {turnstileSiteKey ? (
-            <div class="grid justify-center">
+            <div class="contact-verification">
               <div class="cf-turnstile" data-sitekey={turnstileSiteKey} />
             </div>
           ) : (
-            <p class="rounded-md border border-amber-200 bg-amber-50 p-3 text-sm text-amber-700">
-              {t.turnstileMissing}
-            </p>
+            <p class="contact-verification-warning">{t.turnstileMissing}</p>
           )}
 
-          <div class="text-center">
+          <div class="contact-actions">
             <button
               type="submit"
               data-contact-submit
@@ -242,7 +226,7 @@ const messageError = fieldErrors.message?.join(locale === 'ja' ? '、' : ', ');
               data-pending-label={t.submitting}
               data-invalid-message={t.retry}
               data-turnstile-message={t.turnstileMissing}
-              class="btn-primary disabled:cursor-not-allowed disabled:opacity-70"
+              class="contact-submit"
               disabled={!turnstileSiteKey}
             >
               {t.submit}
@@ -255,6 +239,169 @@ const messageError = fieldErrors.message?.join(locale === 'ja' ? '、' : ', ');
 </div>
 
 <style>
+  .contact-form,
+  .contact-sent {
+    margin-inline: auto;
+    max-width: 42rem;
+  }
+
+  .contact-intro {
+    color: rgb(55 65 81);
+    line-height: 1.625;
+    margin-bottom: 2rem;
+    text-align: center;
+  }
+
+  .contact-intro-break {
+    display: none;
+  }
+
+  .contact-form > :global(:not([hidden]) ~ :not([hidden])) {
+    margin-top: 1.5rem;
+    margin-bottom: 0;
+  }
+
+  .contact-status {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border-width: 0;
+  }
+
+  .contact-label {
+    align-items: center;
+    display: flex;
+    gap: 0.5rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .contact-label-name {
+    color: rgb(55 65 81);
+    font-weight: 700;
+  }
+
+  .contact-required {
+    background-color: rgb(229 231 235);
+    border-radius: 0.375rem;
+    color: rgb(55 65 81);
+    font-size: 0.75rem;
+    font-weight: 700;
+    line-height: 1rem;
+    padding: 0.125rem 0.5rem;
+  }
+
+  .contact-textarea {
+    max-height: 20rem;
+    resize: vertical;
+  }
+
+  .contact-message-meta {
+    align-items: flex-start;
+    display: flex;
+    gap: 1rem;
+    justify-content: space-between;
+    margin-top: 0.25rem;
+  }
+
+  .contact-message-count {
+    color: rgb(107 114 128);
+    font-size: 0.75rem;
+    line-height: 1rem;
+  }
+
+  .contact-verification {
+    display: grid;
+    justify-content: center;
+  }
+
+  .contact-verification-warning {
+    background-color: rgb(255 251 235);
+    border: 1px solid rgb(253 230 138);
+    border-radius: 0.375rem;
+    color: rgb(180 83 9);
+    font-size: 0.875rem;
+    line-height: 1.25rem;
+    padding: 0.75rem;
+  }
+
+  .contact-actions {
+    text-align: center;
+  }
+
+  .contact-submit {
+    background-color: rgb(31 41 55);
+    border-radius: 0.375rem;
+    color: rgb(255 255 255);
+    font-weight: 700;
+    letter-spacing: 0.025em;
+    padding: 0.75rem 1.5rem;
+    transition-property:
+      color, background-color, border-color, outline-color, text-decoration-color, fill, stroke;
+    transition-duration: 150ms;
+    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .contact-submit:focus {
+    outline: 2px solid transparent;
+    outline-offset: 2px;
+    box-shadow:
+      0 0 0 2px rgb(255 255 255),
+      0 0 0 4px rgb(107 114 128);
+  }
+
+  .contact-submit:disabled {
+    cursor: not-allowed;
+    opacity: 0.7;
+  }
+
+  :global(html.dark) .contact-intro {
+    color: rgb(229 231 235);
+  }
+
+  :global(html.dark) .contact-label-name {
+    color: rgb(255 255 255);
+  }
+
+  :global(html.dark) .contact-message-count {
+    color: rgb(156 163 175);
+  }
+
+  :global(html.dark) .contact-submit {
+    background-color: rgb(255 255 255);
+    color: rgb(17 24 39);
+  }
+
+  :global(html.dark) .contact-submit:focus {
+    box-shadow:
+      0 0 0 2px rgb(209 213 219),
+      0 0 0 4px rgb(209 213 219);
+  }
+
+  @media (min-width: 640px) {
+    .contact-intro-break {
+      display: block;
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .contact-container {
+      padding-inline: 2rem;
+    }
+
+    .contact-submit:hover {
+      background-color: rgb(55 65 81);
+    }
+
+    :global(html.dark) .contact-submit:hover {
+      background-color: rgb(209 213 219);
+    }
+  }
+
   .contact-control {
     width: 100%;
     border: 1px solid rgb(209 213 219);
@@ -341,12 +488,30 @@ const messageError = fieldErrors.message?.join(locale === 'ja' ? '、' : ', ');
   }
 
   .contact-sent {
+    border-width: 1px;
+    border-style: solid;
+    border-radius: 0.375rem;
+    padding: 2rem;
+    text-align: center;
     border-color: rgb(187 247 208);
     background: rgb(240 253 244);
     color: rgb(22 101 52);
   }
 
+  .contact-sent-title {
+    font-size: 1.5rem;
+    font-weight: 700;
+    line-height: 2rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .contact-sent-body {
+    line-height: 1.625;
+  }
+
   .contact-sent-action {
+    display: inline-flex;
+    margin-top: 1.5rem;
     align-items: center;
     border: 1px solid currentColor;
     border-radius: 0.375rem;
