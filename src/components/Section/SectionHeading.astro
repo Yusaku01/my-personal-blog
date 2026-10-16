@@ -1,6 +1,4 @@
 ---
-import { heading } from '../../styles/unoVariants';
-
 interface Props {
   title: string;
   className?: string;
@@ -8,9 +6,28 @@ interface Props {
 }
 
 const { title, className = '', marginBottom = 'md' } = Astro.props;
-
-// unoVariants
-const classes = heading({ marginBottom, className });
 ---
 
-<h2 class={classes}>{title}</h2>
+<h2 class:list={['section-heading', className]} data-margin-bottom={marginBottom}>{title}</h2>
+
+<style>
+  .section-heading {
+    margin-bottom: 1rem;
+    color: var(--color-heading);
+    font-size: var(--fs-h2);
+    font-weight: 600;
+    letter-spacing: 0.1em;
+  }
+
+  .section-heading[data-margin-bottom='sm'] {
+    margin-bottom: 0.5rem;
+  }
+
+  .section-heading[data-margin-bottom='lg'] {
+    margin-bottom: 1.5rem;
+  }
+
+  .section-heading[data-margin-bottom='xl'] {
+    margin-bottom: 2rem;
+  }
+</style>
