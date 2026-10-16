@@ -16,35 +16,35 @@ const feeds = feedEntries.flatMap((entry) => entry.data.feeds).filter((feed) => 
 <Layout title="FINDS | SAKUSPACE" locale={locale}>
   <HeroSection title="FINDS" />
 
-  <div class="py-10">
-    <div class="container-md">
-      <section class="mb-12">
+  <div class="finds-page">
+    <div class="finds-container">
+      <section class="finds-intro-section">
         <SectionHeading title="What is FINDS" />
-        <div class="mt-6 space-y-4 text-gray-700 dark:text-gray-300 leading-relaxed">
+        <div class="finds-intro">
           <p>
             {uiText.finds.description[locale]}<br />
             {uiText.finds.recommendation[locale]}
           </p>
-          <p class="space-y-2 text-sm text-gray-600 dark:text-gray-400">
+          <p class="finds-copyright">
             {uiText.finds.copyright[locale]}
           </p>
         </div>
       </section>
 
-      <section class="mb-6">
+      <section class="finds-feeds-section">
         <SectionHeading title="Feeds I Follow" />
-        <div class="mt-6 grid-fluid-cards-compact">
+        <div class="finds-feeds grid-fluid-cards-compact">
           {
             feeds.map((feed) => (
-              <div class="rounded-md border border-gray-200 dark:border-gray-700 p-4 bg-white dark:bg-gray-900">
-                <div class="flex items-center justify-between">
-                  <h3 class="text-md font-semibold text-gray-900 dark:text-white">
+              <div class="finds-feed">
+                <div class="finds-feed-header">
+                  <h3 class="finds-feed-name">
                     {feed.nameUrl ? (
                       <a
                         href={feed.nameUrl}
                         target="_blank"
                         rel="noopener noreferrer"
-                        class="underline-offset-4 hover:underline"
+                        class="finds-feed-link"
                       >
                         {feed.name}
                       </a>
@@ -53,26 +53,22 @@ const feeds = feedEntries.flatMap((entry) => entry.data.feeds).filter((feed) => 
                     )}
                   </h3>
                   {feed.tags.length > 0 && (
-                    <div class="flex flex-wrap gap-2">
+                    <div class="finds-feed-tags">
                       {feed.tags.map((tag) => (
-                        <span class="inline-flex items-center px-2 py-0.5 rounded-full text-2.5 font-medium border border-gray-900 dark:border-gray-600 text-gray-700 dark:text-gray-200">
-                          {tag}
-                        </span>
+                        <span class="finds-feed-tag">{tag}</span>
                       ))}
                     </div>
                   )}
                 </div>
-                {feed.description && (
-                  <p class="mt-2 text-sm text-gray-600 dark:text-gray-400">{feed.description}</p>
-                )}
+                {feed.description && <p class="finds-feed-description">{feed.description}</p>}
                 <a
                   href={feed.url}
                   target="_blank"
                   rel="noopener noreferrer"
-                  class="mt-3 inline-flex items-center text-sm text-gray-700 dark:text-gray-300 underline-offset-4 hover:underline"
+                  class="finds-feed-subscribe"
                 >
                   {uiText.finds.subscribe[locale]}
-                  <span class="ui-icon ui-icon--external text-3.5 ml-1" aria-hidden="true" />
+                  <span class="ui-icon ui-icon--external finds-feed-external" aria-hidden="true" />
                 </a>
               </div>
             ))
@@ -82,3 +78,112 @@ const feeds = feedEntries.flatMap((entry) => entry.data.feeds).filter((feed) => 
     </div>
   </div>
 </Layout>
+
+<style>
+  .finds-page {
+    padding-block: 2.5rem;
+  }
+  .finds-container {
+    margin-inline: auto;
+    max-width: 56rem;
+    padding-inline: 1rem;
+  }
+  .finds-intro-section {
+    margin-bottom: 3rem;
+  }
+  .finds-intro {
+    color: rgb(55 65 81);
+    line-height: 1.625;
+    margin-top: 1.5rem;
+  }
+  .finds-intro > :global(:not([hidden]) ~ :not([hidden])) {
+    margin-top: 1rem;
+    margin-bottom: 0;
+  }
+  .finds-copyright {
+    color: rgb(75 85 99);
+    font-size: 0.875rem;
+    line-height: 1.25rem;
+  }
+  .finds-copyright > :global(:not([hidden]) ~ :not([hidden])) {
+    margin-top: 0.5rem;
+    margin-bottom: 0;
+  }
+  .finds-feeds-section {
+    margin-bottom: 1.5rem;
+  }
+  .finds-feeds {
+    margin-top: 1.5rem;
+  }
+  .finds-feed {
+    background-color: rgb(255 255 255);
+    border: 1px solid var(--color-section-border);
+    border-radius: 0.375rem;
+    padding: 1rem;
+  }
+  .finds-feed-header {
+    align-items: center;
+    display: flex;
+    justify-content: space-between;
+  }
+  .finds-feed-name {
+    color: var(--color-heading);
+    font-weight: 600;
+  }
+  .finds-feed-link,
+  .finds-feed-subscribe {
+    text-underline-offset: 4px;
+  }
+  .finds-feed-link:hover,
+  .finds-feed-subscribe:hover {
+    text-decoration-line: underline;
+  }
+  .finds-feed-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+  .finds-feed-tag {
+    align-items: center;
+    border: 1px solid rgb(17 24 39);
+    border-radius: 9999px;
+    color: rgb(55 65 81);
+    display: inline-flex;
+    font-size: 0.625rem;
+    font-weight: 500;
+    padding: 0.125rem 0.5rem;
+  }
+  .finds-feed-description {
+    color: rgb(75 85 99);
+    font-size: 0.875rem;
+    line-height: 1.25rem;
+    margin-top: 0.5rem;
+  }
+  .finds-feed-subscribe {
+    align-items: center;
+    color: rgb(55 65 81);
+    display: inline-flex;
+    font-size: 0.875rem;
+    line-height: 1.25rem;
+    margin-top: 0.75rem;
+  }
+  .finds-feed-external {
+    font-size: 0.875rem;
+    margin-left: 0.25rem;
+  }
+  :global(html.dark) .finds-intro,
+  :global(html.dark) .finds-feed-subscribe {
+    color: rgb(209 213 219);
+  }
+  :global(html.dark) .finds-copyright,
+  :global(html.dark) .finds-feed-description {
+    color: rgb(156 163 175);
+  }
+  :global(html.dark) .finds-feed {
+    background-color: rgb(17 24 39);
+  }
+  :global(html.dark) .finds-feed-tag {
+    border-color: rgb(75 85 99);
+    color: rgb(229 231 235);
+  }
+</style>
