@@ -1,0 +1,3342 @@
+{
+  "generatedAt": "2026-09-28T02:38:09.086Z",
+  "repetitions": 3,
+  "terms": [
+    "Web Worker",
+    "コンテナクエリ",
+    "プリフェッチ",
+    "翻訳",
+    "キャッシュ",
+    "View transitions",
+    "CSS変数",
+    "mise",
+    "Lukurauha",
+    "ルーティング"
+  ],
+  "naturalQueries": [
+    "Astro のページを事前に読み込む方法",
+    "ブログ記事を速くビルドしたい",
+    "読書アプリを作った話"
+  ],
+  "truth": {
+    "Web Worker": ["/blog/web-worker-basics"],
+    "コンテナクエリ": ["https://qiita.com/ngtnysk/items/f2bf834201f7d2662ab5"],
+    "プリフェッチ": [
+      "/blog/astro-island-prefetch",
+      "/blog/astro-nextjs-prefetch-comparison",
+      "https://zenn.dev/saku2323/articles/about-speculation-api",
+      "https://zenn.dev/saku2323/articles/about-astro-prefetch",
+      "https://zenn.dev/saku2323/articles/about-prefetch"
+    ],
+    "翻訳": [
+      "/blog/january-diary-2026-3",
+      "/blog/january-diary-2026",
+      "/blog/astro-docs-idea-discussion",
+      "/blog/astro-docs-translation-beginner"
+    ],
+    "キャッシュ": [
+      "/blog/learn-cachedir-astro",
+      "/blog/astro-route-caching-note-2",
+      "/blog/astro-route-caching-note",
+      "/blog/vite-plus-commands",
+      "/blog/astro-island-prefetch",
+      "/blog/revalidatetag-path",
+      "/blog/astro-nextjs-prefetch-comparison",
+      "/blog/about-improve-astro-encode"
+    ],
+    "View transitions": [
+      "/blog/astro-build-blog-integration",
+      "https://zenn.dev/saku2323/articles/about-astro-loading-viewtransition"
+    ],
+    "CSS変数": [
+      "/blog/ai-agents-2025-2026",
+      "https://qiita.com/ngtnysk/items/9b23dd2051e3b737254d"
+    ],
+    "mise": ["/blog/mise-2026-9-features-note"],
+    "Lukurauha": ["/blog/july-diary-2026", "/blog/lukurauha"],
+    "ルーティング": ["/blog/strangler-fig-application-note", "/blog/january-diary-2026-2"]
+  },
+  "engines": [
+    {
+      "name": "Current",
+      "url": "http://127.0.0.1:4331/blog/",
+      "summary": {
+        "coldMs": 7.2,
+        "warmMeanMs": 1.7,
+        "warmMedianMs": 1.6,
+        "warmP90Ms": 1.8,
+        "top3LiteralRecall": "60/60",
+        "mrr": 1,
+        "naturalZeroResults": "9/9",
+        "errors": 0,
+        "naturalHit3": "0/9",
+        "naturalMrr": 0
+      },
+      "cases": [
+        {
+          "query": "Web Worker",
+          "runs": [
+            {
+              "ms": 2.399999976158142,
+              "results": ["/blog/web-worker-basics"]
+            },
+            {
+              "ms": 1.600000023841858,
+              "results": ["/blog/web-worker-basics"]
+            },
+            {
+              "ms": 1.699999988079071,
+              "results": ["/blog/web-worker-basics"]
+            }
+          ]
+        },
+        {
+          "query": "コンテナクエリ",
+          "runs": [
+            {
+              "ms": 2.2000000178813934,
+              "results": ["https://qiita.com/ngtnysk/items/f2bf834201f7d2662ab5"]
+            },
+            {
+              "ms": 1.800000011920929,
+              "results": ["https://qiita.com/ngtnysk/items/f2bf834201f7d2662ab5"]
+            },
+            {
+              "ms": 1.9000000059604645,
+              "results": ["https://qiita.com/ngtnysk/items/f2bf834201f7d2662ab5"]
+            }
+          ]
+        },
+        {
+          "query": "プリフェッチ",
+          "runs": [
+            {
+              "ms": 1.699999988079071,
+              "results": [
+                "/blog/astro-island-prefetch",
+                "/blog/astro-nextjs-prefetch-comparison",
+                "https://zenn.dev/saku2323/articles/about-speculation-api",
+                "https://zenn.dev/saku2323/articles/about-astro-prefetch",
+                "https://zenn.dev/saku2323/articles/about-prefetch"
+              ]
+            },
+            {
+              "ms": 1.600000023841858,
+              "results": [
+                "/blog/astro-island-prefetch",
+                "/blog/astro-nextjs-prefetch-comparison",
+                "https://zenn.dev/saku2323/articles/about-speculation-api",
+                "https://zenn.dev/saku2323/articles/about-astro-prefetch",
+                "https://zenn.dev/saku2323/articles/about-prefetch"
+              ]
+            },
+            {
+              "ms": 1.7000000178813934,
+              "results": [
+                "/blog/astro-island-prefetch",
+                "/blog/astro-nextjs-prefetch-comparison",
+                "https://zenn.dev/saku2323/articles/about-speculation-api",
+                "https://zenn.dev/saku2323/articles/about-astro-prefetch",
+                "https://zenn.dev/saku2323/articles/about-prefetch"
+              ]
+            }
+          ]
+        },
+        {
+          "query": "翻訳",
+          "runs": [
+            {
+              "ms": 1.699999988079071,
+              "results": [
+                "/blog/january-diary-2026-3",
+                "/blog/january-diary-2026",
+                "/blog/astro-docs-idea-discussion",
+                "/blog/astro-docs-translation-beginner"
+              ]
+            },
+            {
+              "ms": 1.800000011920929,
+              "results": [
+                "/blog/january-diary-2026-3",
+                "/blog/january-diary-2026",
+                "/blog/astro-docs-idea-discussion",
+                "/blog/astro-docs-translation-beginner"
+              ]
+            },
+            {
+              "ms": 1.600000023841858,
+              "results": [
+                "/blog/january-diary-2026-3",
+                "/blog/january-diary-2026",
+                "/blog/astro-docs-idea-discussion",
+                "/blog/astro-docs-translation-beginner"
+              ]
+            }
+          ]
+        },
+        {
+          "query": "キャッシュ",
+          "runs": [
+            {
+              "ms": 1.5,
+              "results": [
+                "/blog/learn-cachedir-astro",
+                "/blog/astro-route-caching-note-2",
+                "/blog/astro-route-caching-note",
+                "/blog/vite-plus-commands",
+                "/blog/astro-island-prefetch",
+                "/blog/revalidatetag-path",
+                "/blog/astro-nextjs-prefetch-comparison",
+                "/blog/about-improve-astro-encode"
+              ]
+            },
+            {
+              "ms": 1.5999999940395355,
+              "results": [
+                "/blog/learn-cachedir-astro",
+                "/blog/astro-route-caching-note-2",
+                "/blog/astro-route-caching-note",
+                "/blog/vite-plus-commands",
+                "/blog/astro-island-prefetch",
+                "/blog/revalidatetag-path",
+                "/blog/astro-nextjs-prefetch-comparison",
+                "/blog/about-improve-astro-encode"
+              ]
+            },
+            {
+              "ms": 1.5999999940395355,
+              "results": [
+                "/blog/learn-cachedir-astro",
+                "/blog/astro-route-caching-note-2",
+                "/blog/astro-route-caching-note",
+                "/blog/vite-plus-commands",
+                "/blog/astro-island-prefetch",
+                "/blog/revalidatetag-path",
+                "/blog/astro-nextjs-prefetch-comparison",
+                "/blog/about-improve-astro-encode"
+              ]
+            }
+          ]
+        },
+        {
+          "query": "View transitions",
+          "runs": [
+            {
+              "ms": 1.5999999940395355,
+              "results": [
+                "/blog/astro-build-blog-integration",
+                "https://zenn.dev/saku2323/articles/about-astro-loading-viewtransition"
+              ]
+            },
+            {
+              "ms": 1.7000000178813934,
+              "results": [
+                "/blog/astro-build-blog-integration",
+                "https://zenn.dev/saku2323/articles/about-astro-loading-viewtransition"
+              ]
+            },
+            {
+              "ms": 1.7000000178813934,
+              "results": [
+                "/blog/astro-build-blog-integration",
+                "https://zenn.dev/saku2323/articles/about-astro-loading-viewtransition"
+              ]
+            }
+          ]
+        },
+        {
+          "query": "CSS変数",
+          "runs": [
+            {
+              "ms": 1.600000023841858,
+              "results": [
+                "/blog/ai-agents-2025-2026",
+                "https://qiita.com/ngtnysk/items/9b23dd2051e3b737254d"
+              ]
+            },
+            {
+              "ms": 1.5999999940395355,
+              "results": [
+                "/blog/ai-agents-2025-2026",
+                "https://qiita.com/ngtnysk/items/9b23dd2051e3b737254d"
+              ]
+            },
+            {
+              "ms": 1.5999999940395355,
+              "results": [
+                "/blog/ai-agents-2025-2026",
+                "https://qiita.com/ngtnysk/items/9b23dd2051e3b737254d"
+              ]
+            }
+          ]
+        },
+        {
+          "query": "mise",
+          "runs": [
+            {
+              "ms": 1.800000011920929,
+              "results": ["/blog/mise-2026-9-features-note"]
+            },
+            {
+              "ms": 1.5999999940395355,
+              "results": ["/blog/mise-2026-9-features-note"]
+            },
+            {
+              "ms": 1.5,
+              "results": ["/blog/mise-2026-9-features-note"]
+            }
+          ]
+        },
+        {
+          "query": "Lukurauha",
+          "runs": [
+            {
+              "ms": 1.699999988079071,
+              "results": ["/blog/july-diary-2026", "/blog/lukurauha"]
+            },
+            {
+              "ms": 1.5,
+              "results": ["/blog/july-diary-2026", "/blog/lukurauha"]
+            },
+            {
+              "ms": 1.7000000178813934,
+              "results": ["/blog/july-diary-2026", "/blog/lukurauha"]
+            }
+          ]
+        },
+        {
+          "query": "ルーティング",
+          "runs": [
+            {
+              "ms": 1.7999999821186066,
+              "results": ["/blog/strangler-fig-application-note", "/blog/january-diary-2026-2"]
+            },
+            {
+              "ms": 1.5999999940395355,
+              "results": ["/blog/strangler-fig-application-note", "/blog/january-diary-2026-2"]
+            },
+            {
+              "ms": 1.5,
+              "results": ["/blog/strangler-fig-application-note", "/blog/january-diary-2026-2"]
+            }
+          ]
+        },
+        {
+          "query": "Astro のページを事前に読み込む方法",
+          "runs": [
+            {
+              "ms": 1.5,
+              "results": []
+            },
+            {
+              "ms": 1.5,
+              "results": []
+            },
+            {
+              "ms": 1.7000000178813934,
+              "results": []
+            }
+          ]
+        },
+        {
+          "query": "ブログ記事を速くビルドしたい",
+          "runs": [
+            {
+              "ms": 1.5999999940395355,
+              "results": []
+            },
+            {
+              "ms": 1.699999988079071,
+              "results": []
+            },
+            {
+              "ms": 1.7000000178813934,
+              "results": []
+            }
+          ]
+        },
+        {
+          "query": "読書アプリを作った話",
+          "runs": [
+            {
+              "ms": 1.5999999940395355,
+              "results": []
+            },
+            {
+              "ms": 1.5,
+              "results": []
+            },
+            {
+              "ms": 1.5,
+              "results": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Jev",
+      "url": "http://127.0.0.1:4332/search-lab/",
+      "summary": {
+        "coldMs": 747,
+        "warmMeanMs": 794,
+        "warmMedianMs": 687.4,
+        "warmP90Ms": 1218.3,
+        "top3LiteralRecall": "39/60",
+        "mrr": 0.633,
+        "naturalZeroResults": "0/9",
+        "errors": 0,
+        "naturalHit3": "8/9",
+        "naturalMrr": 0.769
+      },
+      "cases": [
+        {
+          "query": "Web Worker",
+          "runs": [
+            {
+              "ms": 595.0999999940395,
+              "results": ["/blog/web-worker-basics"]
+            },
+            {
+              "ms": 841.3000000119209,
+              "results": ["/blog/web-worker-basics"]
+            },
+            {
+              "ms": 919.0999999940395,
+              "results": ["/blog/web-worker-basics"]
+            }
+          ]
+        },
+        {
+          "query": "コンテナクエリ",
+          "runs": [
+            {
+              "ms": 560.8000000119209,
+              "results": ["/blog/vite-plus-commands"]
+            },
+            {
+              "ms": 1243.699999988079,
+              "results": ["/blog/vite-plus-commands"]
+            },
+            {
+              "ms": 573,
+              "results": ["/blog/vite-plus-commands"]
+            }
+          ]
+        },
+        {
+          "query": "プリフェッチ",
+          "runs": [
+            {
+              "ms": 981.5,
+              "results": [
+                "/blog/astro-nextjs-prefetch-comparison",
+                "/blog/astro-island-prefetch",
+                "/blog/astro-route-caching-note-2",
+                "/blog/astro-route-caching-note"
+              ]
+            },
+            {
+              "ms": 1369.5999999940395,
+              "results": [
+                "/blog/astro-nextjs-prefetch-comparison",
+                "/blog/astro-island-prefetch",
+                "/blog/astro-route-caching-note-2",
+                "/blog/astro-route-caching-note"
+              ]
+            },
+            {
+              "ms": 747.4000000059605,
+              "results": [
+                "/blog/astro-nextjs-prefetch-comparison",
+                "/blog/astro-island-prefetch",
+                "/blog/astro-route-caching-note-2",
+                "/blog/astro-route-caching-note"
+              ]
+            }
+          ]
+        },
+        {
+          "query": "翻訳",
+          "runs": [
+            {
+              "ms": 573.6999999880791,
+              "results": [
+                "/blog/astro-docs-translation-beginner",
+                "/blog/astro-docs-idea-discussion",
+                "/blog/january-diary-2026-3",
+                "/blog/january-diary-2026-2",
+                "/blog/astro-517-update-note",
+                "/blog/about-improve-astro-encode",
+                "/blog/astro-build-blog-integration",
+                "/blog/what-is-my-tech-stack",
+                "/blog/astro-nextjs-prefetch-comparison",
+                "/blog/astro-island-prefetch"
+              ]
+            },
+            {
+              "ms": 552.7000000178814,
+              "results": [
+                "/blog/astro-docs-translation-beginner",
+                "/blog/astro-docs-idea-discussion",
+                "/blog/january-diary-2026-3",
+                "/blog/january-diary-2026-2",
+                "/blog/about-improve-astro-encode",
+                "/blog/astro-517-update-note",
+                "/blog/astro-build-blog-integration",
+                "/blog/what-is-my-tech-stack",
+                "/blog/astro-route-caching-note-2",
+                "/blog/astro-island-prefetch",
+                "/blog/astro-nextjs-prefetch-comparison"
+              ]
+            },
+            {
+              "ms": 601.4000000059605,
+              "results": [
+                "/blog/astro-docs-translation-beginner",
+                "/blog/astro-docs-idea-discussion",
+                "/blog/january-diary-2026-3",
+                "/blog/january-diary-2026-2",
+                "/blog/about-improve-astro-encode",
+                "/blog/astro-517-update-note",
+                "/blog/astro-build-blog-integration",
+                "/blog/astro-nextjs-prefetch-comparison",
+                "/blog/what-is-my-tech-stack"
+              ]
+            }
+          ]
+        },
+        {
+          "query": "キャッシュ",
+          "runs": [
+            {
+              "ms": 791.3000000119209,
+              "results": [
+                "/blog/learn-cachedir-astro",
+                "/blog/astro-route-caching-note-2",
+                "/blog/astro-route-caching-note",
+                "/blog/revalidatetag-path",
+                "/blog/astro-nextjs-prefetch-comparison",
+                "/blog/astro-island-prefetch"
+              ]
+            },
+            {
+              "ms": 913.2999999821186,
+              "results": [
+                "/blog/learn-cachedir-astro",
+                "/blog/astro-route-caching-note-2",
+                "/blog/astro-route-caching-note",
+                "/blog/revalidatetag-path",
+                "/blog/astro-nextjs-prefetch-comparison",
+                "/blog/astro-island-prefetch"
+              ]
+            },
+            {
+              "ms": 639.1999999880791,
+              "results": [
+                "/blog/learn-cachedir-astro",
+                "/blog/astro-route-caching-note-2",
+                "/blog/astro-route-caching-note",
+                "/blog/revalidatetag-path",
+                "/blog/astro-nextjs-prefetch-comparison",
+                "/blog/astro-island-prefetch"
+              ]
+            }
+          ]
+        },
+        {
+          "query": "View transitions",
+          "runs": [
+            {
+              "ms": 1016.8999999761581,
+              "results": [
+                "/blog/astro-island-prefetch",
+                "/blog/astro-nextjs-prefetch-comparison",
+                "/blog/strangler-fig-application-note",
+                "/blog/astro-route-caching-note-2",
+                "/blog/lukurauha"
+              ]
+            },
+            {
+              "ms": 750.8999999761581,
+              "results": [
+                "/blog/astro-island-prefetch",
+                "/blog/astro-nextjs-prefetch-comparison",
+                "/blog/strangler-fig-application-note",
+                "/blog/lukurauha",
+                "/blog/astro-route-caching-note-2"
+              ]
+            },
+            {
+              "ms": 645.2999999821186,
+              "results": [
+                "/blog/astro-island-prefetch",
+                "/blog/astro-nextjs-prefetch-comparison",
+                "/blog/strangler-fig-application-note",
+                "/blog/astro-route-caching-note-2",
+                "/blog/lukurauha"
+              ]
+            }
+          ]
+        },
+        {
+          "query": "CSS変数",
+          "runs": [
+            {
+              "ms": 567.9000000059605,
+              "results": []
+            },
+            {
+              "ms": 1218.2999999821186,
+              "results": []
+            },
+            {
+              "ms": 1213.199999988079,
+              "results": []
+            }
+          ]
+        },
+        {
+          "query": "mise",
+          "runs": [
+            {
+              "ms": 1179.5,
+              "results": ["/blog/mise-2026-9-features-note"]
+            },
+            {
+              "ms": 561.6999999880791,
+              "results": ["/blog/mise-2026-9-features-note"]
+            },
+            {
+              "ms": 558.5999999940395,
+              "results": ["/blog/mise-2026-9-features-note"]
+            }
+          ]
+        },
+        {
+          "query": "Lukurauha",
+          "runs": [
+            {
+              "ms": 878.5,
+              "results": ["/blog/lukurauha", "/blog/july-diary-2026"]
+            },
+            {
+              "ms": 577.4000000059605,
+              "results": ["/blog/lukurauha", "/blog/july-diary-2026"]
+            },
+            {
+              "ms": 1427.5,
+              "results": ["/blog/lukurauha", "/blog/july-diary-2026"]
+            }
+          ]
+        },
+        {
+          "query": "ルーティング",
+          "runs": [
+            {
+              "ms": 600.5,
+              "results": [
+                "/blog/astro-route-caching-note",
+                "/blog/astro-route-caching-note-2",
+                "/blog/january-diary-2026-2",
+                "/blog/astro-nextjs-prefetch-comparison",
+                "/blog/astro-island-prefetch",
+                "/blog/revalidatetag-path",
+                "/blog/july-diary-2026",
+                "/blog/what-is-my-tech-stack",
+                "/blog/astro-build-blog-integration"
+              ]
+            },
+            {
+              "ms": 663.3000000119209,
+              "results": [
+                "/blog/astro-route-caching-note",
+                "/blog/astro-route-caching-note-2",
+                "/blog/january-diary-2026-2",
+                "/blog/astro-nextjs-prefetch-comparison",
+                "/blog/astro-island-prefetch",
+                "/blog/revalidatetag-path",
+                "/blog/what-is-my-tech-stack",
+                "/blog/july-diary-2026"
+              ]
+            },
+            {
+              "ms": 818.1999999880791,
+              "results": [
+                "/blog/astro-route-caching-note",
+                "/blog/astro-route-caching-note-2",
+                "/blog/january-diary-2026-2",
+                "/blog/astro-nextjs-prefetch-comparison",
+                "/blog/astro-island-prefetch",
+                "/blog/revalidatetag-path",
+                "/blog/july-diary-2026",
+                "/blog/what-is-my-tech-stack",
+                "/blog/astro-build-blog-integration"
+              ]
+            }
+          ]
+        },
+        {
+          "query": "Astro のページを事前に読み込む方法",
+          "runs": [
+            {
+              "ms": 687.4000000059605,
+              "results": [
+                "/blog/astro-island-prefetch",
+                "/blog/astro-nextjs-prefetch-comparison",
+                "/blog/astro-route-caching-note",
+                "/blog/astro-route-caching-note-2"
+              ]
+            },
+            {
+              "ms": 660.9000000059605,
+              "results": [
+                "/blog/astro-island-prefetch",
+                "/blog/astro-nextjs-prefetch-comparison",
+                "/blog/astro-route-caching-note",
+                "/blog/astro-route-caching-note-2"
+              ]
+            },
+            {
+              "ms": 540.4000000059605,
+              "results": [
+                "/blog/astro-nextjs-prefetch-comparison",
+                "/blog/astro-island-prefetch",
+                "/blog/astro-route-caching-note-2",
+                "/blog/astro-route-caching-note"
+              ]
+            }
+          ]
+        },
+        {
+          "query": "ブログ記事を速くビルドしたい",
+          "runs": [
+            {
+              "ms": 1154.800000011921,
+              "results": [
+                "/blog/blog-operation-in-ai-era",
+                "/blog/astro-build-blog-integration",
+                "/blog/getting-started-blog",
+                "/blog/learn-cachedir-astro",
+                "/blog/what-is-my-tech-stack",
+                "/blog/vite-plus-commands",
+                "/blog/vite-plus-note",
+                "/blog/about-improve-astro-encode",
+                "/blog/july-diary-2026",
+                "/blog/astro-route-caching-note",
+                "/blog/january-diary-2026-2",
+                "/blog/ai-agents-2025-2026",
+                "/blog/astro-island-prefetch",
+                "/blog/astro-nextjs-prefetch-comparison",
+                "/blog/january-diary-2026-3"
+              ]
+            },
+            {
+              "ms": 652.5,
+              "results": [
+                "/blog/blog-operation-in-ai-era",
+                "/blog/astro-build-blog-integration",
+                "/blog/learn-cachedir-astro",
+                "/blog/getting-started-blog",
+                "/blog/what-is-my-tech-stack",
+                "/blog/vite-plus-note",
+                "/blog/vite-plus-commands",
+                "/blog/about-improve-astro-encode",
+                "/blog/july-diary-2026",
+                "/blog/astro-route-caching-note",
+                "/blog/january-diary-2026-2",
+                "/blog/astro-island-prefetch",
+                "/blog/ai-agents-2025-2026",
+                "/blog/astro-nextjs-prefetch-comparison",
+                "/blog/january-diary-2026-3"
+              ]
+            },
+            {
+              "ms": 819.0999999940395,
+              "results": [
+                "/blog/astro-build-blog-integration",
+                "/blog/blog-operation-in-ai-era",
+                "/blog/learn-cachedir-astro",
+                "/blog/getting-started-blog",
+                "/blog/what-is-my-tech-stack",
+                "/blog/vite-plus-commands",
+                "/blog/vite-plus-note",
+                "/blog/about-improve-astro-encode",
+                "/blog/july-diary-2026",
+                "/blog/astro-route-caching-note",
+                "/blog/astro-island-prefetch",
+                "/blog/january-diary-2026-2",
+                "/blog/astro-nextjs-prefetch-comparison",
+                "/blog/january-diary-2026-3",
+                "/blog/ai-agents-2025-2026"
+              ]
+            }
+          ]
+        },
+        {
+          "query": "読書アプリを作った話",
+          "runs": [
+            {
+              "ms": 785.7000000178814,
+              "results": ["/blog/lukurauha", "/blog/july-diary-2026"]
+            },
+            {
+              "ms": 526.0999999940395,
+              "results": ["/blog/lukurauha", "/blog/july-diary-2026"]
+            },
+            {
+              "ms": 559.7000000178814,
+              "results": ["/blog/lukurauha", "/blog/july-diary-2026"]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Cloudflare AI Search",
+      "url": "http://127.0.0.1:4333/search-lab/",
+      "summary": {
+        "coldMs": 9287,
+        "warmMeanMs": 1945.2,
+        "warmMedianMs": 1072.9,
+        "warmP90Ms": 4906,
+        "top3LiteralRecall": "42/60",
+        "mrr": 1,
+        "naturalZeroResults": "0/9",
+        "errors": 0,
+        "naturalHit3": "6/9",
+        "naturalMrr": 0.5
+      },
+      "cases": [
+        {
+          "query": "Web Worker",
+          "runs": [
+            {
+              "ms": 5980.199999988079,
+              "results": [
+                "/blog/web-worker-basics",
+                "https://zenn.dev/saku2323/articles/about-speculation-api",
+                "/blog/astro-island-prefetch",
+                "/blog/astro-nextjs-prefetch-comparison",
+                "https://zenn.dev/saku2323/scraps/61dae809e94dde",
+                "https://zenn.dev/saku2323/articles/about-nextjs-useclient",
+                "/blog/primer-of-hyperframes",
+                "https://qiita.com/ngtnysk/items/f5aaee56860f139852b1",
+                "/blog/what-is-my-tech-stack",
+                "https://qiita.com/ngtnysk/items/5fedd08158a26809effa",
+                "https://qiita.com/ngtnysk/items/c0c21ad8b5cc3f9edc50",
+                "/blog/strangler-fig-application-note",
+                "https://qiita.com/ngtnysk/items/5755ef9b10e1bc8e5458",
+                "/blog/why-return-to-basics",
+                "/blog/revalidatetag-path",
+                "https://zenn.dev/saku2323/articles/about-astro-compile"
+              ]
+            },
+            {
+              "ms": 1209,
+              "results": [
+                "/blog/web-worker-basics",
+                "https://zenn.dev/saku2323/articles/about-speculation-api",
+                "/blog/astro-island-prefetch",
+                "/blog/astro-nextjs-prefetch-comparison",
+                "https://zenn.dev/saku2323/scraps/61dae809e94dde",
+                "https://zenn.dev/saku2323/articles/about-nextjs-useclient",
+                "/blog/primer-of-hyperframes",
+                "https://qiita.com/ngtnysk/items/f5aaee56860f139852b1",
+                "/blog/what-is-my-tech-stack",
+                "https://qiita.com/ngtnysk/items/5fedd08158a26809effa",
+                "https://qiita.com/ngtnysk/items/c0c21ad8b5cc3f9edc50",
+                "/blog/strangler-fig-application-note",
+                "https://qiita.com/ngtnysk/items/5755ef9b10e1bc8e5458",
+                "/blog/why-return-to-basics",
+                "/blog/revalidatetag-path",
+                "https://zenn.dev/saku2323/articles/about-astro-compile"
+              ]
+            },
+            {
+              "ms": 647.9000000059605,
+              "results": [
+                "/blog/web-worker-basics",
+                "https://zenn.dev/saku2323/articles/about-speculation-api",
+                "/blog/astro-island-prefetch",
+                "/blog/astro-nextjs-prefetch-comparison",
+                "https://zenn.dev/saku2323/scraps/61dae809e94dde",
+                "https://zenn.dev/saku2323/articles/about-nextjs-useclient",
+                "/blog/primer-of-hyperframes",
+                "https://qiita.com/ngtnysk/items/f5aaee56860f139852b1",
+                "/blog/what-is-my-tech-stack",
+                "https://qiita.com/ngtnysk/items/5fedd08158a26809effa",
+                "https://qiita.com/ngtnysk/items/c0c21ad8b5cc3f9edc50",
+                "/blog/strangler-fig-application-note",
+                "https://qiita.com/ngtnysk/items/5755ef9b10e1bc8e5458",
+                "/blog/why-return-to-basics",
+                "/blog/revalidatetag-path",
+                "https://zenn.dev/saku2323/articles/about-astro-compile"
+              ]
+            }
+          ]
+        },
+        {
+          "query": "コンテナクエリ",
+          "runs": [
+            {
+              "ms": 4143.799999982119,
+              "results": [
+                "https://qiita.com/ngtnysk/items/f2bf834201f7d2662ab5",
+                "/blog/ai-agents-2025-2026",
+                "/blog/strangler-fig-application-note",
+                "https://zenn.dev/saku2323/articles/about-speculation-api",
+                "/blog/july-diary-2026",
+                "/blog/blog-operation-in-ai-era",
+                "/blog/revalidatetag-path",
+                "https://zenn.dev/saku2323/scraps/61dae809e94dde",
+                "/blog/what-is-my-tech-stack",
+                "/blog/astro-nextjs-prefetch-comparison",
+                "/blog/astro-island-prefetch",
+                "https://qiita.com/ngtnysk/items/5755ef9b10e1bc8e5458",
+                "/blog/why-return-to-basics"
+              ]
+            },
+            {
+              "ms": 1172.0999999940395,
+              "results": [
+                "https://qiita.com/ngtnysk/items/f2bf834201f7d2662ab5",
+                "/blog/ai-agents-2025-2026",
+                "/blog/strangler-fig-application-note",
+                "https://zenn.dev/saku2323/articles/about-speculation-api",
+                "/blog/july-diary-2026",
+                "/blog/blog-operation-in-ai-era",
+                "/blog/revalidatetag-path",
+                "https://zenn.dev/saku2323/scraps/61dae809e94dde",
+                "/blog/what-is-my-tech-stack",
+                "/blog/astro-nextjs-prefetch-comparison",
+                "/blog/astro-island-prefetch",
+                "https://qiita.com/ngtnysk/items/5755ef9b10e1bc8e5458",
+                "/blog/why-return-to-basics"
+              ]
+            },
+            {
+              "ms": 827.3000000119209,
+              "results": [
+                "https://qiita.com/ngtnysk/items/f2bf834201f7d2662ab5",
+                "/blog/ai-agents-2025-2026",
+                "/blog/strangler-fig-application-note",
+                "https://zenn.dev/saku2323/articles/about-speculation-api",
+                "/blog/july-diary-2026",
+                "/blog/blog-operation-in-ai-era",
+                "/blog/revalidatetag-path",
+                "https://zenn.dev/saku2323/scraps/61dae809e94dde",
+                "/blog/what-is-my-tech-stack",
+                "/blog/astro-nextjs-prefetch-comparison",
+                "/blog/astro-island-prefetch",
+                "https://qiita.com/ngtnysk/items/5755ef9b10e1bc8e5458",
+                "/blog/why-return-to-basics"
+              ]
+            }
+          ]
+        },
+        {
+          "query": "プリフェッチ",
+          "runs": [
+            {
+              "ms": 3821.4000000059605,
+              "results": [
+                "https://zenn.dev/saku2323/articles/about-speculation-api",
+                "/blog/astro-island-prefetch",
+                "/blog/astro-nextjs-prefetch-comparison",
+                "/blog/mise-2026-9-features-note",
+                "https://zenn.dev/saku2323/articles/about-prefetch",
+                "/blog/strangler-fig-application-note",
+                "/blog/january-diary-2026-2",
+                "/blog/revalidatetag-path",
+                "/blog/ai-agents-2025-2026",
+                "https://qiita.com/ngtnysk/items/5fedd08158a26809effa",
+                "/blog/vite-plus-commands",
+                "https://zenn.dev/saku2323/scraps/61dae809e94dde",
+                "/blog/astro-517-update-note",
+                "/blog/what-is-my-tech-stack",
+                "https://zenn.dev/saku2323/articles/about-astro-prefetch",
+                "/blog/blog-operation-in-ai-era",
+                "/blog/july-diary-2026",
+                "/blog/january-diary-2026-3",
+                "/blog/astro-docs-idea-discussion",
+                "/blog/why-return-to-basics"
+              ]
+            },
+            {
+              "ms": 692.9000000059605,
+              "results": [
+                "https://zenn.dev/saku2323/articles/about-speculation-api",
+                "/blog/astro-island-prefetch",
+                "/blog/astro-nextjs-prefetch-comparison",
+                "/blog/mise-2026-9-features-note",
+                "https://zenn.dev/saku2323/articles/about-prefetch",
+                "/blog/strangler-fig-application-note",
+                "/blog/january-diary-2026-2",
+                "/blog/revalidatetag-path",
+                "/blog/ai-agents-2025-2026",
+                "https://qiita.com/ngtnysk/items/5fedd08158a26809effa",
+                "/blog/vite-plus-commands",
+                "https://zenn.dev/saku2323/scraps/61dae809e94dde",
+                "/blog/astro-517-update-note",
+                "/blog/what-is-my-tech-stack",
+                "https://zenn.dev/saku2323/articles/about-astro-prefetch",
+                "/blog/blog-operation-in-ai-era",
+                "/blog/july-diary-2026",
+                "/blog/january-diary-2026-3",
+                "/blog/astro-docs-idea-discussion",
+                "/blog/why-return-to-basics"
+              ]
+            },
+            {
+              "ms": 764.9000000059605,
+              "results": [
+                "https://zenn.dev/saku2323/articles/about-speculation-api",
+                "/blog/astro-island-prefetch",
+                "/blog/astro-nextjs-prefetch-comparison",
+                "/blog/mise-2026-9-features-note",
+                "https://zenn.dev/saku2323/articles/about-prefetch",
+                "/blog/strangler-fig-application-note",
+                "/blog/january-diary-2026-2",
+                "/blog/revalidatetag-path",
+                "/blog/ai-agents-2025-2026",
+                "https://qiita.com/ngtnysk/items/5fedd08158a26809effa",
+                "/blog/vite-plus-commands",
+                "https://zenn.dev/saku2323/scraps/61dae809e94dde",
+                "/blog/astro-517-update-note",
+                "/blog/what-is-my-tech-stack",
+                "https://zenn.dev/saku2323/articles/about-astro-prefetch",
+                "/blog/blog-operation-in-ai-era",
+                "/blog/july-diary-2026",
+                "/blog/january-diary-2026-3",
+                "/blog/astro-docs-idea-discussion",
+                "/blog/why-return-to-basics"
+              ]
+            }
+          ]
+        },
+        {
+          "query": "翻訳",
+          "runs": [
+            {
+              "ms": 1971.3999999761581,
+              "results": [
+                "/blog/astro-docs-translation-beginner",
+                "/blog/july-diary-2026",
+                "/blog/strangler-fig-application-note",
+                "/blog/ai-agents-2025-2026",
+                "/blog/lukurauha",
+                "/blog/mise-2026-9-features-note",
+                "/blog/why-return-to-basics",
+                "/blog/astro-docs-idea-discussion",
+                "/blog/january-diary-2026-2",
+                "/blog/blog-operation-in-ai-era",
+                "https://zenn.dev/saku2323/articles/about-speculation-api",
+                "/blog/astro-island-prefetch",
+                "/blog/primer-of-hyperframes"
+              ]
+            },
+            {
+              "ms": 836.2999999821186,
+              "results": [
+                "/blog/astro-docs-translation-beginner",
+                "/blog/july-diary-2026",
+                "/blog/strangler-fig-application-note",
+                "/blog/ai-agents-2025-2026",
+                "/blog/lukurauha",
+                "/blog/mise-2026-9-features-note",
+                "/blog/why-return-to-basics",
+                "/blog/astro-docs-idea-discussion",
+                "/blog/january-diary-2026-2",
+                "/blog/blog-operation-in-ai-era",
+                "https://zenn.dev/saku2323/articles/about-speculation-api",
+                "/blog/astro-island-prefetch",
+                "/blog/primer-of-hyperframes"
+              ]
+            },
+            {
+              "ms": 734.5999999940395,
+              "results": [
+                "/blog/astro-docs-translation-beginner",
+                "/blog/july-diary-2026",
+                "/blog/strangler-fig-application-note",
+                "/blog/ai-agents-2025-2026",
+                "/blog/lukurauha",
+                "/blog/mise-2026-9-features-note",
+                "/blog/why-return-to-basics",
+                "/blog/astro-docs-idea-discussion",
+                "/blog/january-diary-2026-2",
+                "/blog/blog-operation-in-ai-era",
+                "https://zenn.dev/saku2323/articles/about-speculation-api",
+                "/blog/astro-island-prefetch",
+                "/blog/primer-of-hyperframes"
+              ]
+            }
+          ]
+        },
+        {
+          "query": "キャッシュ",
+          "runs": [
+            {
+              "ms": 1097.2000000178814,
+              "results": [
+                "/blog/astro-route-caching-note-2",
+                "/blog/blog-operation-in-ai-era",
+                "/blog/learn-cachedir-astro",
+                "/blog/ai-agents-2025-2026",
+                "https://zenn.dev/saku2323/articles/about-speculation-api",
+                "https://zenn.dev/saku2323/scraps/61dae809e94dde",
+                "/blog/july-diary-2026",
+                "/blog/revalidatetag-path",
+                "/blog/what-is-my-tech-stack",
+                "/blog/strangler-fig-application-note",
+                "/blog/astro-route-caching-note",
+                "/blog/why-return-to-basics",
+                "/blog/january-diary-2026-2",
+                "/blog/mise-2026-9-features-note",
+                "/blog/astro-docs-idea-discussion",
+                "/blog/astro-island-prefetch"
+              ]
+            },
+            {
+              "ms": 756.7000000178814,
+              "results": [
+                "/blog/astro-route-caching-note-2",
+                "/blog/blog-operation-in-ai-era",
+                "/blog/learn-cachedir-astro",
+                "/blog/ai-agents-2025-2026",
+                "https://zenn.dev/saku2323/articles/about-speculation-api",
+                "https://zenn.dev/saku2323/scraps/61dae809e94dde",
+                "/blog/july-diary-2026",
+                "/blog/revalidatetag-path",
+                "/blog/what-is-my-tech-stack",
+                "/blog/strangler-fig-application-note",
+                "/blog/astro-route-caching-note",
+                "/blog/why-return-to-basics",
+                "/blog/january-diary-2026-2",
+                "/blog/mise-2026-9-features-note",
+                "/blog/astro-docs-idea-discussion",
+                "/blog/astro-island-prefetch"
+              ]
+            },
+            {
+              "ms": 1346.5,
+              "results": [
+                "/blog/astro-route-caching-note-2",
+                "/blog/blog-operation-in-ai-era",
+                "/blog/learn-cachedir-astro",
+                "/blog/ai-agents-2025-2026",
+                "https://zenn.dev/saku2323/articles/about-speculation-api",
+                "https://zenn.dev/saku2323/scraps/61dae809e94dde",
+                "/blog/july-diary-2026",
+                "/blog/revalidatetag-path",
+                "/blog/what-is-my-tech-stack",
+                "/blog/strangler-fig-application-note",
+                "/blog/astro-route-caching-note",
+                "/blog/why-return-to-basics",
+                "/blog/january-diary-2026-2",
+                "/blog/mise-2026-9-features-note",
+                "/blog/astro-docs-idea-discussion",
+                "/blog/astro-island-prefetch"
+              ]
+            }
+          ]
+        },
+        {
+          "query": "View transitions",
+          "runs": [
+            {
+              "ms": 3902,
+              "results": [
+                "https://zenn.dev/saku2323/articles/about-astro-loading-viewtransition",
+                "/blog/strangler-fig-application-note",
+                "/blog/july-diary-2026",
+                "/blog/revalidatetag-path",
+                "/blog/astro-island-prefetch",
+                "/blog/why-return-to-basics",
+                "https://qiita.com/ngtnysk/items/5c497e185aae4765acc0",
+                "/blog/mise-2026-9-features-note",
+                "https://qiita.com/ngtnysk/items/b94dea48528b50ea0de0",
+                "/blog/astro-docs-translation-beginner",
+                "/blog/vite-plus-commands",
+                "https://zenn.dev/saku2323/articles/about-speculation-api",
+                "https://qiita.com/ngtnysk/items/1677969fc259b79cfb8e",
+                "https://qiita.com/ngtnysk/items/25a3d209854956948653",
+                "https://zenn.dev/saku2323/scraps/61dae809e94dde",
+                "https://qiita.com/ngtnysk/items/c6383be94ce84d278dac",
+                "/blog/astro-docs-idea-discussion"
+              ]
+            },
+            {
+              "ms": 799.0999999940395,
+              "results": [
+                "https://zenn.dev/saku2323/articles/about-astro-loading-viewtransition",
+                "/blog/strangler-fig-application-note",
+                "/blog/july-diary-2026",
+                "/blog/revalidatetag-path",
+                "/blog/astro-island-prefetch",
+                "/blog/why-return-to-basics",
+                "https://qiita.com/ngtnysk/items/5c497e185aae4765acc0",
+                "/blog/mise-2026-9-features-note",
+                "https://qiita.com/ngtnysk/items/b94dea48528b50ea0de0",
+                "/blog/astro-docs-translation-beginner",
+                "/blog/vite-plus-commands",
+                "https://zenn.dev/saku2323/articles/about-speculation-api",
+                "https://qiita.com/ngtnysk/items/1677969fc259b79cfb8e",
+                "https://qiita.com/ngtnysk/items/25a3d209854956948653",
+                "https://zenn.dev/saku2323/scraps/61dae809e94dde",
+                "https://qiita.com/ngtnysk/items/c6383be94ce84d278dac",
+                "/blog/astro-docs-idea-discussion"
+              ]
+            },
+            {
+              "ms": 512.7000000178814,
+              "results": [
+                "https://zenn.dev/saku2323/articles/about-astro-loading-viewtransition",
+                "/blog/strangler-fig-application-note",
+                "/blog/july-diary-2026",
+                "/blog/revalidatetag-path",
+                "/blog/astro-island-prefetch",
+                "/blog/why-return-to-basics",
+                "https://qiita.com/ngtnysk/items/5c497e185aae4765acc0",
+                "/blog/mise-2026-9-features-note",
+                "https://qiita.com/ngtnysk/items/b94dea48528b50ea0de0",
+                "/blog/astro-docs-translation-beginner",
+                "/blog/vite-plus-commands",
+                "https://zenn.dev/saku2323/articles/about-speculation-api",
+                "https://qiita.com/ngtnysk/items/1677969fc259b79cfb8e",
+                "https://qiita.com/ngtnysk/items/25a3d209854956948653",
+                "https://zenn.dev/saku2323/scraps/61dae809e94dde",
+                "https://qiita.com/ngtnysk/items/c6383be94ce84d278dac",
+                "/blog/astro-docs-idea-discussion"
+              ]
+            }
+          ]
+        },
+        {
+          "query": "CSS変数",
+          "runs": [
+            {
+              "ms": 5650.4000000059605,
+              "results": [
+                "https://qiita.com/ngtnysk/items/9b23dd2051e3b737254d",
+                "https://qiita.com/ngtnysk/items/c0c21ad8b5cc3f9edc50",
+                "https://zenn.dev/saku2323/scraps/61dae809e94dde",
+                "/blog/revalidatetag-path",
+                "https://zenn.dev/saku2323/articles/about-speculation-api",
+                "/blog/july-diary-2026",
+                "https://qiita.com/ngtnysk/items/551fd63d818388c3f951",
+                "https://qiita.com/ngtnysk/items/70ca0d0a1126256896af",
+                "https://zenn.dev/saku2323/articles/about-astro-compile",
+                "https://qiita.com/ngtnysk/items/7ce334bc7518db557a05",
+                "https://qiita.com/ngtnysk/items/0ab68b8a6ba8228d92a6",
+                "https://qiita.com/ngtnysk/items/aa56619189b4beab5a00",
+                "/blog/astro-517-update-note",
+                "https://qiita.com/ngtnysk/items/f2bf834201f7d2662ab5",
+                "/blog/vite-plus-commands",
+                "/blog/blog-operation-in-ai-era",
+                "https://qiita.com/ngtnysk/items/1677969fc259b79cfb8e",
+                "/blog/strangler-fig-application-note",
+                "https://zenn.dev/saku2323/scraps/7a378bcb13d044",
+                "/blog/what-is-my-tech-stack",
+                "https://zenn.dev/saku2323/articles/about-nextjs-useclient",
+                "/blog/why-return-to-basics"
+              ]
+            },
+            {
+              "ms": 762.4000000059605,
+              "results": [
+                "https://qiita.com/ngtnysk/items/9b23dd2051e3b737254d",
+                "https://qiita.com/ngtnysk/items/c0c21ad8b5cc3f9edc50",
+                "https://zenn.dev/saku2323/scraps/61dae809e94dde",
+                "/blog/revalidatetag-path",
+                "https://zenn.dev/saku2323/articles/about-speculation-api",
+                "/blog/july-diary-2026",
+                "https://qiita.com/ngtnysk/items/551fd63d818388c3f951",
+                "https://qiita.com/ngtnysk/items/70ca0d0a1126256896af",
+                "https://zenn.dev/saku2323/articles/about-astro-compile",
+                "https://qiita.com/ngtnysk/items/7ce334bc7518db557a05",
+                "https://qiita.com/ngtnysk/items/0ab68b8a6ba8228d92a6",
+                "https://qiita.com/ngtnysk/items/aa56619189b4beab5a00",
+                "/blog/astro-517-update-note",
+                "https://qiita.com/ngtnysk/items/f2bf834201f7d2662ab5",
+                "/blog/vite-plus-commands",
+                "/blog/blog-operation-in-ai-era",
+                "https://qiita.com/ngtnysk/items/1677969fc259b79cfb8e",
+                "/blog/strangler-fig-application-note",
+                "https://zenn.dev/saku2323/scraps/7a378bcb13d044",
+                "/blog/what-is-my-tech-stack",
+                "https://zenn.dev/saku2323/articles/about-nextjs-useclient",
+                "/blog/why-return-to-basics"
+              ]
+            },
+            {
+              "ms": 754.8000000119209,
+              "results": [
+                "https://qiita.com/ngtnysk/items/9b23dd2051e3b737254d",
+                "https://qiita.com/ngtnysk/items/c0c21ad8b5cc3f9edc50",
+                "https://zenn.dev/saku2323/scraps/61dae809e94dde",
+                "/blog/revalidatetag-path",
+                "https://zenn.dev/saku2323/articles/about-speculation-api",
+                "/blog/july-diary-2026",
+                "https://qiita.com/ngtnysk/items/551fd63d818388c3f951",
+                "https://qiita.com/ngtnysk/items/70ca0d0a1126256896af",
+                "https://zenn.dev/saku2323/articles/about-astro-compile",
+                "https://qiita.com/ngtnysk/items/7ce334bc7518db557a05",
+                "https://qiita.com/ngtnysk/items/0ab68b8a6ba8228d92a6",
+                "https://qiita.com/ngtnysk/items/aa56619189b4beab5a00",
+                "/blog/astro-517-update-note",
+                "https://qiita.com/ngtnysk/items/f2bf834201f7d2662ab5",
+                "/blog/vite-plus-commands",
+                "/blog/blog-operation-in-ai-era",
+                "https://qiita.com/ngtnysk/items/1677969fc259b79cfb8e",
+                "/blog/strangler-fig-application-note",
+                "https://zenn.dev/saku2323/scraps/7a378bcb13d044",
+                "/blog/what-is-my-tech-stack",
+                "https://zenn.dev/saku2323/articles/about-nextjs-useclient",
+                "/blog/why-return-to-basics"
+              ]
+            }
+          ]
+        },
+        {
+          "query": "mise",
+          "runs": [
+            {
+              "ms": 788.3999999761581,
+              "results": [
+                "/blog/mise-2026-9-features-note",
+                "/blog/july-diary-2026",
+                "/blog/ai-agents-2025-2026",
+                "/blog/why-return-to-basics",
+                "https://zenn.dev/saku2323/articles/about-speculation-api",
+                "/blog/strangler-fig-application-note",
+                "/blog/blog-operation-in-ai-era",
+                "/blog/astro-island-prefetch",
+                "/blog/astro-docs-idea-discussion",
+                "/blog/what-is-my-tech-stack",
+                "/blog/january-diary-2026-2",
+                "https://zenn.dev/saku2323/scraps/61dae809e94dde",
+                "/blog/revalidatetag-path"
+              ]
+            },
+            {
+              "ms": 4033,
+              "results": [
+                "/blog/mise-2026-9-features-note",
+                "/blog/july-diary-2026",
+                "/blog/ai-agents-2025-2026",
+                "/blog/why-return-to-basics",
+                "https://zenn.dev/saku2323/articles/about-speculation-api",
+                "/blog/strangler-fig-application-note",
+                "/blog/blog-operation-in-ai-era",
+                "/blog/astro-island-prefetch",
+                "/blog/astro-docs-idea-discussion",
+                "/blog/what-is-my-tech-stack",
+                "/blog/january-diary-2026-2",
+                "https://zenn.dev/saku2323/scraps/61dae809e94dde",
+                "/blog/revalidatetag-path"
+              ]
+            },
+            {
+              "ms": 1202.2000000178814,
+              "results": [
+                "/blog/mise-2026-9-features-note",
+                "/blog/july-diary-2026",
+                "/blog/ai-agents-2025-2026",
+                "/blog/why-return-to-basics",
+                "https://zenn.dev/saku2323/articles/about-speculation-api",
+                "/blog/strangler-fig-application-note",
+                "/blog/blog-operation-in-ai-era",
+                "/blog/astro-island-prefetch",
+                "/blog/astro-docs-idea-discussion",
+                "/blog/what-is-my-tech-stack",
+                "/blog/january-diary-2026-2",
+                "https://zenn.dev/saku2323/scraps/61dae809e94dde",
+                "/blog/revalidatetag-path"
+              ]
+            }
+          ]
+        },
+        {
+          "query": "Lukurauha",
+          "runs": [
+            {
+              "ms": 4906,
+              "results": [
+                "/blog/lukurauha",
+                "/blog/july-diary-2026",
+                "https://zenn.dev/saku2323/articles/about-speculation-api",
+                "https://zenn.dev/saku2323/scraps/61dae809e94dde",
+                "/blog/blog-operation-in-ai-era",
+                "/blog/strangler-fig-application-note",
+                "/blog/revalidatetag-path",
+                "/blog/january-diary-2026-2",
+                "/blog/astro-island-prefetch",
+                "/blog/what-is-my-tech-stack",
+                "/blog/ai-agents-2025-2026",
+                "/blog/mise-2026-9-features-note",
+                "/blog/astro-docs-idea-discussion",
+                "/blog/astro-route-caching-note-2",
+                "/blog/astro-nextjs-prefetch-comparison"
+              ]
+            },
+            {
+              "ms": 788.4000000059605,
+              "results": [
+                "/blog/lukurauha",
+                "/blog/july-diary-2026",
+                "https://zenn.dev/saku2323/articles/about-speculation-api",
+                "https://zenn.dev/saku2323/scraps/61dae809e94dde",
+                "/blog/blog-operation-in-ai-era",
+                "/blog/strangler-fig-application-note",
+                "/blog/revalidatetag-path",
+                "/blog/january-diary-2026-2",
+                "/blog/astro-island-prefetch",
+                "/blog/what-is-my-tech-stack",
+                "/blog/ai-agents-2025-2026",
+                "/blog/mise-2026-9-features-note",
+                "/blog/astro-docs-idea-discussion",
+                "/blog/astro-route-caching-note-2",
+                "/blog/astro-nextjs-prefetch-comparison"
+              ]
+            },
+            {
+              "ms": 737.6999999880791,
+              "results": [
+                "/blog/lukurauha",
+                "/blog/july-diary-2026",
+                "https://zenn.dev/saku2323/articles/about-speculation-api",
+                "https://zenn.dev/saku2323/scraps/61dae809e94dde",
+                "/blog/blog-operation-in-ai-era",
+                "/blog/strangler-fig-application-note",
+                "/blog/revalidatetag-path",
+                "/blog/january-diary-2026-2",
+                "/blog/astro-island-prefetch",
+                "/blog/what-is-my-tech-stack",
+                "/blog/ai-agents-2025-2026",
+                "/blog/mise-2026-9-features-note",
+                "/blog/astro-docs-idea-discussion",
+                "/blog/astro-route-caching-note-2",
+                "/blog/astro-nextjs-prefetch-comparison"
+              ]
+            }
+          ]
+        },
+        {
+          "query": "ルーティング",
+          "runs": [
+            {
+              "ms": 3649.0999999940395,
+              "results": [
+                "/blog/strangler-fig-application-note",
+                "/blog/revalidatetag-path",
+                "/blog/astro-route-caching-note-2",
+                "/blog/july-diary-2026",
+                "/blog/january-diary-2026-2",
+                "/blog/astro-route-caching-note",
+                "/blog/astro-island-prefetch",
+                "/blog/ai-agents-2025-2026",
+                "https://zenn.dev/saku2323/articles/about-speculation-api",
+                "https://zenn.dev/saku2323/articles/about-astro-loading-viewtransition",
+                "/blog/lukurauha",
+                "/blog/what-is-my-tech-stack",
+                "/blog/astro-nextjs-prefetch-comparison",
+                "https://zenn.dev/saku2323/scraps/61dae809e94dde"
+              ]
+            },
+            {
+              "ms": 743.2000000178814,
+              "results": [
+                "/blog/strangler-fig-application-note",
+                "/blog/revalidatetag-path",
+                "/blog/astro-route-caching-note-2",
+                "/blog/july-diary-2026",
+                "/blog/january-diary-2026-2",
+                "/blog/astro-route-caching-note",
+                "/blog/astro-island-prefetch",
+                "/blog/ai-agents-2025-2026",
+                "https://zenn.dev/saku2323/articles/about-speculation-api",
+                "https://zenn.dev/saku2323/articles/about-astro-loading-viewtransition",
+                "/blog/lukurauha",
+                "/blog/what-is-my-tech-stack",
+                "/blog/astro-nextjs-prefetch-comparison",
+                "https://zenn.dev/saku2323/scraps/61dae809e94dde"
+              ]
+            },
+            {
+              "ms": 998.5999999940395,
+              "results": [
+                "/blog/strangler-fig-application-note",
+                "/blog/revalidatetag-path",
+                "/blog/astro-route-caching-note-2",
+                "/blog/july-diary-2026",
+                "/blog/january-diary-2026-2",
+                "/blog/astro-route-caching-note",
+                "/blog/astro-island-prefetch",
+                "/blog/ai-agents-2025-2026",
+                "https://zenn.dev/saku2323/articles/about-speculation-api",
+                "https://zenn.dev/saku2323/articles/about-astro-loading-viewtransition",
+                "/blog/lukurauha",
+                "/blog/what-is-my-tech-stack",
+                "/blog/astro-nextjs-prefetch-comparison",
+                "https://zenn.dev/saku2323/scraps/61dae809e94dde"
+              ]
+            }
+          ]
+        },
+        {
+          "query": "Astro のページを事前に読み込む方法",
+          "runs": [
+            {
+              "ms": 3171.800000011921,
+              "results": [
+                "/blog/astro-island-prefetch",
+                "/blog/astro-docs-idea-discussion",
+                "/blog/what-is-my-tech-stack",
+                "/blog/astro-build-blog-integration",
+                "https://zenn.dev/saku2323/articles/about-astro-compile",
+                "/blog/getting-started-blog",
+                "/blog/astro-route-caching-note",
+                "/blog/astro-nextjs-prefetch-comparison",
+                "/blog/astro-517-update-note",
+                "https://zenn.dev/saku2323/articles/about-astro-loading-viewtransition",
+                "/blog/astro-docs-translation-beginner",
+                "/blog/blog-operation-in-ai-era",
+                "https://zenn.dev/saku2323/articles/about-astro-prefetch",
+                "/blog/learn-cachedir-astro",
+                "/blog/astro-route-caching-note-2"
+              ]
+            },
+            {
+              "ms": 655.9000000059605,
+              "results": [
+                "/blog/astro-island-prefetch",
+                "/blog/astro-docs-idea-discussion",
+                "/blog/what-is-my-tech-stack",
+                "/blog/astro-build-blog-integration",
+                "https://zenn.dev/saku2323/articles/about-astro-compile",
+                "/blog/getting-started-blog",
+                "/blog/astro-route-caching-note",
+                "/blog/astro-nextjs-prefetch-comparison",
+                "/blog/astro-517-update-note",
+                "https://zenn.dev/saku2323/articles/about-astro-loading-viewtransition",
+                "/blog/astro-docs-translation-beginner",
+                "/blog/blog-operation-in-ai-era",
+                "https://zenn.dev/saku2323/articles/about-astro-prefetch",
+                "/blog/learn-cachedir-astro",
+                "/blog/astro-route-caching-note-2"
+              ]
+            },
+            {
+              "ms": 587.8000000119209,
+              "results": [
+                "/blog/astro-island-prefetch",
+                "/blog/astro-docs-idea-discussion",
+                "/blog/what-is-my-tech-stack",
+                "/blog/astro-build-blog-integration",
+                "https://zenn.dev/saku2323/articles/about-astro-compile",
+                "/blog/getting-started-blog",
+                "/blog/astro-route-caching-note",
+                "/blog/astro-nextjs-prefetch-comparison",
+                "/blog/astro-517-update-note",
+                "https://zenn.dev/saku2323/articles/about-astro-loading-viewtransition",
+                "/blog/astro-docs-translation-beginner",
+                "/blog/blog-operation-in-ai-era",
+                "https://zenn.dev/saku2323/articles/about-astro-prefetch",
+                "/blog/learn-cachedir-astro",
+                "/blog/astro-route-caching-note-2"
+              ]
+            }
+          ]
+        },
+        {
+          "query": "ブログ記事を速くビルドしたい",
+          "runs": [
+            {
+              "ms": 6186.5999999940395,
+              "results": [
+                "/blog/blog-operation-in-ai-era",
+                "https://zenn.dev/saku2323/scraps/61dae809e94dde",
+                "/blog/what-is-my-tech-stack",
+                "/blog/lukurauha",
+                "/blog/getting-started-blog",
+                "/blog/july-diary-2026",
+                "/blog/astro-build-blog-integration",
+                "https://zenn.dev/saku2323/articles/about-speculation-api",
+                "/blog/astro-docs-idea-discussion",
+                "/blog/january-diary-2026-3",
+                "https://qiita.com/ngtnysk/items/5fedd08158a26809effa",
+                "/blog/january-diary-2026-2",
+                "https://qiita.com/ngtnysk/items/f5aaee56860f139852b1",
+                "/blog/about-improve-astro-encode",
+                "/blog/astro-route-caching-note",
+                "https://zenn.dev/saku2323/articles/about-astro-compile"
+              ]
+            },
+            {
+              "ms": 1072.9000000059605,
+              "results": [
+                "/blog/blog-operation-in-ai-era",
+                "https://zenn.dev/saku2323/scraps/61dae809e94dde",
+                "/blog/what-is-my-tech-stack",
+                "/blog/lukurauha",
+                "/blog/getting-started-blog",
+                "/blog/july-diary-2026",
+                "/blog/astro-build-blog-integration",
+                "https://zenn.dev/saku2323/articles/about-speculation-api",
+                "/blog/astro-docs-idea-discussion",
+                "/blog/january-diary-2026-3",
+                "https://qiita.com/ngtnysk/items/5fedd08158a26809effa",
+                "/blog/january-diary-2026-2",
+                "https://qiita.com/ngtnysk/items/f5aaee56860f139852b1",
+                "/blog/about-improve-astro-encode",
+                "/blog/astro-route-caching-note",
+                "https://zenn.dev/saku2323/articles/about-astro-compile"
+              ]
+            },
+            {
+              "ms": 637.7999999821186,
+              "results": [
+                "/blog/blog-operation-in-ai-era",
+                "https://zenn.dev/saku2323/scraps/61dae809e94dde",
+                "/blog/what-is-my-tech-stack",
+                "/blog/lukurauha",
+                "/blog/getting-started-blog",
+                "/blog/july-diary-2026",
+                "/blog/astro-build-blog-integration",
+                "https://zenn.dev/saku2323/articles/about-speculation-api",
+                "/blog/astro-docs-idea-discussion",
+                "/blog/january-diary-2026-3",
+                "https://qiita.com/ngtnysk/items/5fedd08158a26809effa",
+                "/blog/january-diary-2026-2",
+                "https://qiita.com/ngtnysk/items/f5aaee56860f139852b1",
+                "/blog/about-improve-astro-encode",
+                "/blog/astro-route-caching-note",
+                "https://zenn.dev/saku2323/articles/about-astro-compile"
+              ]
+            }
+          ]
+        },
+        {
+          "query": "読書アプリを作った話",
+          "runs": [
+            {
+              "ms": 4273.899999976158,
+              "results": [
+                "/blog/july-diary-2026",
+                "/blog/lukurauha",
+                "/blog/blog-operation-in-ai-era",
+                "https://qiita.com/ngtnysk/items/d53ca84e66f02cf6ef22",
+                "/blog/strangler-fig-application-note",
+                "/blog/what-is-my-tech-stack",
+                "https://zenn.dev/saku2323/articles/about-speculation-api",
+                "/blog/january-diary-2026-2",
+                "/blog/mise-2026-9-features-note",
+                "/blog/ai-agents-2025-2026",
+                "/blog/astro-docs-idea-discussion"
+              ]
+            },
+            {
+              "ms": 1662.0999999940395,
+              "results": [
+                "/blog/july-diary-2026",
+                "/blog/lukurauha",
+                "/blog/blog-operation-in-ai-era",
+                "https://qiita.com/ngtnysk/items/d53ca84e66f02cf6ef22",
+                "/blog/strangler-fig-application-note",
+                "/blog/what-is-my-tech-stack",
+                "https://zenn.dev/saku2323/articles/about-speculation-api",
+                "/blog/january-diary-2026-2",
+                "/blog/mise-2026-9-features-note",
+                "/blog/ai-agents-2025-2026",
+                "/blog/astro-docs-idea-discussion"
+              ]
+            },
+            {
+              "ms": 1385.1000000238419,
+              "results": [
+                "/blog/july-diary-2026",
+                "/blog/lukurauha",
+                "/blog/blog-operation-in-ai-era",
+                "https://qiita.com/ngtnysk/items/d53ca84e66f02cf6ef22",
+                "/blog/strangler-fig-application-note",
+                "/blog/what-is-my-tech-stack",
+                "https://zenn.dev/saku2323/articles/about-speculation-api",
+                "/blog/january-diary-2026-2",
+                "/blog/mise-2026-9-features-note",
+                "/blog/ai-agents-2025-2026",
+                "/blog/astro-docs-idea-discussion"
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Orama",
+      "url": "http://127.0.0.1:4334/search-lab/",
+      "summary": {
+        "coldMs": 124.3,
+        "warmMeanMs": 0.4,
+        "warmMedianMs": 0.3,
+        "warmP90Ms": 0.7,
+        "top3LiteralRecall": "60/60",
+        "mrr": 0.95,
+        "naturalZeroResults": "0/9",
+        "errors": 0,
+        "naturalHit3": "3/9",
+        "naturalMrr": 0.281
+      },
+      "cases": [
+        {
+          "query": "Web Worker",
+          "runs": [
+            {
+              "ms": 0.7000000178813934,
+              "results": [
+                "/blog/web-worker-basics",
+                "/blog/learn-cachedir-astro",
+                "/blog/astro-route-caching-note",
+                "/blog/what-is-my-tech-stack",
+                "/blog/revalidatetag-path"
+              ]
+            },
+            {
+              "ms": 0.4000000059604645,
+              "results": [
+                "/blog/web-worker-basics",
+                "/blog/learn-cachedir-astro",
+                "/blog/astro-route-caching-note",
+                "/blog/what-is-my-tech-stack",
+                "/blog/revalidatetag-path"
+              ]
+            },
+            {
+              "ms": 0.30000001192092896,
+              "results": [
+                "/blog/web-worker-basics",
+                "/blog/learn-cachedir-astro",
+                "/blog/astro-route-caching-note",
+                "/blog/what-is-my-tech-stack",
+                "/blog/revalidatetag-path"
+              ]
+            }
+          ]
+        },
+        {
+          "query": "コンテナクエリ",
+          "runs": [
+            {
+              "ms": 0.4000000059604645,
+              "results": ["https://qiita.com/ngtnysk/items/f2bf834201f7d2662ab5"]
+            },
+            {
+              "ms": 0.30000001192092896,
+              "results": ["https://qiita.com/ngtnysk/items/f2bf834201f7d2662ab5"]
+            },
+            {
+              "ms": 0.29999998211860657,
+              "results": ["https://qiita.com/ngtnysk/items/f2bf834201f7d2662ab5"]
+            }
+          ]
+        },
+        {
+          "query": "プリフェッチ",
+          "runs": [
+            {
+              "ms": 0.7999999821186066,
+              "results": [
+                "https://zenn.dev/saku2323/articles/about-astro-prefetch",
+                "https://zenn.dev/saku2323/articles/about-speculation-api",
+                "https://zenn.dev/saku2323/articles/about-prefetch",
+                "/blog/astro-nextjs-prefetch-comparison",
+                "/blog/astro-island-prefetch"
+              ]
+            },
+            {
+              "ms": 0.30000001192092896,
+              "results": [
+                "https://zenn.dev/saku2323/articles/about-astro-prefetch",
+                "https://zenn.dev/saku2323/articles/about-speculation-api",
+                "https://zenn.dev/saku2323/articles/about-prefetch",
+                "/blog/astro-nextjs-prefetch-comparison",
+                "/blog/astro-island-prefetch"
+              ]
+            },
+            {
+              "ms": 0.4000000059604645,
+              "results": [
+                "https://zenn.dev/saku2323/articles/about-astro-prefetch",
+                "https://zenn.dev/saku2323/articles/about-speculation-api",
+                "https://zenn.dev/saku2323/articles/about-prefetch",
+                "/blog/astro-nextjs-prefetch-comparison",
+                "/blog/astro-island-prefetch"
+              ]
+            }
+          ]
+        },
+        {
+          "query": "翻訳",
+          "runs": [
+            {
+              "ms": 0.30000001192092896,
+              "results": [
+                "/blog/astro-docs-translation-beginner",
+                "/blog/january-diary-2026-3",
+                "/blog/january-diary-2026",
+                "/blog/astro-docs-idea-discussion"
+              ]
+            },
+            {
+              "ms": 0.5,
+              "results": [
+                "/blog/astro-docs-translation-beginner",
+                "/blog/january-diary-2026-3",
+                "/blog/january-diary-2026",
+                "/blog/astro-docs-idea-discussion"
+              ]
+            },
+            {
+              "ms": 0.20000001788139343,
+              "results": [
+                "/blog/astro-docs-translation-beginner",
+                "/blog/january-diary-2026-3",
+                "/blog/january-diary-2026",
+                "/blog/astro-docs-idea-discussion"
+              ]
+            }
+          ]
+        },
+        {
+          "query": "キャッシュ",
+          "runs": [
+            {
+              "ms": 0.4000000059604645,
+              "results": [
+                "/blog/astro-route-caching-note",
+                "/blog/astro-route-caching-note-2",
+                "/blog/revalidatetag-path",
+                "/blog/vite-plus-commands",
+                "/blog/about-improve-astro-encode",
+                "/blog/learn-cachedir-astro",
+                "/blog/astro-nextjs-prefetch-comparison",
+                "/blog/astro-island-prefetch",
+                "/blog/ai-agents-2025-2026"
+              ]
+            },
+            {
+              "ms": 0.30000001192092896,
+              "results": [
+                "/blog/astro-route-caching-note",
+                "/blog/astro-route-caching-note-2",
+                "/blog/revalidatetag-path",
+                "/blog/vite-plus-commands",
+                "/blog/about-improve-astro-encode",
+                "/blog/learn-cachedir-astro",
+                "/blog/astro-nextjs-prefetch-comparison",
+                "/blog/astro-island-prefetch",
+                "/blog/ai-agents-2025-2026"
+              ]
+            },
+            {
+              "ms": 0.29999998211860657,
+              "results": [
+                "/blog/astro-route-caching-note",
+                "/blog/astro-route-caching-note-2",
+                "/blog/revalidatetag-path",
+                "/blog/vite-plus-commands",
+                "/blog/about-improve-astro-encode",
+                "/blog/learn-cachedir-astro",
+                "/blog/astro-nextjs-prefetch-comparison",
+                "/blog/astro-island-prefetch",
+                "/blog/ai-agents-2025-2026"
+              ]
+            }
+          ]
+        },
+        {
+          "query": "View transitions",
+          "runs": [
+            {
+              "ms": 0.19999998807907104,
+              "results": [
+                "https://zenn.dev/saku2323/articles/about-astro-loading-viewtransition",
+                "/blog/astro-build-blog-integration"
+              ]
+            },
+            {
+              "ms": 0.30000001192092896,
+              "results": [
+                "https://zenn.dev/saku2323/articles/about-astro-loading-viewtransition",
+                "/blog/astro-build-blog-integration"
+              ]
+            },
+            {
+              "ms": 0.19999998807907104,
+              "results": [
+                "https://zenn.dev/saku2323/articles/about-astro-loading-viewtransition",
+                "/blog/astro-build-blog-integration"
+              ]
+            }
+          ]
+        },
+        {
+          "query": "CSS変数",
+          "runs": [
+            {
+              "ms": 0.30000001192092896,
+              "results": [
+                "https://qiita.com/ngtnysk/items/0b6aa41dee1f00e52eff",
+                "https://qiita.com/ngtnysk/items/9b23dd2051e3b737254d",
+                "/blog/ai-agents-2025-2026"
+              ]
+            },
+            {
+              "ms": 0.30000001192092896,
+              "results": [
+                "https://qiita.com/ngtnysk/items/0b6aa41dee1f00e52eff",
+                "https://qiita.com/ngtnysk/items/9b23dd2051e3b737254d",
+                "/blog/ai-agents-2025-2026"
+              ]
+            },
+            {
+              "ms": 0.29999998211860657,
+              "results": [
+                "https://qiita.com/ngtnysk/items/0b6aa41dee1f00e52eff",
+                "https://qiita.com/ngtnysk/items/9b23dd2051e3b737254d",
+                "/blog/ai-agents-2025-2026"
+              ]
+            }
+          ]
+        },
+        {
+          "query": "mise",
+          "runs": [
+            {
+              "ms": 0.30000001192092896,
+              "results": ["/blog/mise-2026-9-features-note"]
+            },
+            {
+              "ms": 0.29999998211860657,
+              "results": ["/blog/mise-2026-9-features-note"]
+            },
+            {
+              "ms": 0.20000001788139343,
+              "results": ["/blog/mise-2026-9-features-note"]
+            }
+          ]
+        },
+        {
+          "query": "Lukurauha",
+          "runs": [
+            {
+              "ms": 0.19999998807907104,
+              "results": ["/blog/lukurauha", "/blog/july-diary-2026"]
+            },
+            {
+              "ms": 0.20000001788139343,
+              "results": ["/blog/lukurauha", "/blog/july-diary-2026"]
+            },
+            {
+              "ms": 0.29999998211860657,
+              "results": ["/blog/lukurauha", "/blog/july-diary-2026"]
+            }
+          ]
+        },
+        {
+          "query": "ルーティング",
+          "runs": [
+            {
+              "ms": 0.5,
+              "results": ["/blog/january-diary-2026-2", "/blog/strangler-fig-application-note"]
+            },
+            {
+              "ms": 0.4000000059604645,
+              "results": ["/blog/january-diary-2026-2", "/blog/strangler-fig-application-note"]
+            },
+            {
+              "ms": 0.29999998211860657,
+              "results": ["/blog/january-diary-2026-2", "/blog/strangler-fig-application-note"]
+            }
+          ]
+        },
+        {
+          "query": "Astro のページを事前に読み込む方法",
+          "runs": [
+            {
+              "ms": 0.699999988079071,
+              "results": [
+                "/blog/astro-517-update-note",
+                "/blog/astro-build-blog-integration",
+                "/blog/learn-cachedir-astro",
+                "/blog/astro-docs-idea-discussion",
+                "/blog/about-improve-astro-encode",
+                "/blog/ai-agents-2025-2026",
+                "/blog/astro-island-prefetch",
+                "/blog/astro-docs-translation-beginner",
+                "/blog/astro-route-caching-note-2",
+                "/blog/astro-route-caching-note",
+                "/blog/lukurauha",
+                "https://qiita.com/ngtnysk/items/25a3d209854956948653",
+                "/blog/astro-nextjs-prefetch-comparison",
+                "/blog/primer-of-hyperframes",
+                "https://zenn.dev/saku2323/articles/about-astro-loading-viewtransition",
+                "https://zenn.dev/saku2323/articles/about-astro-prefetch",
+                "/blog/getting-started-blog",
+                "/blog/what-is-my-tech-stack",
+                "https://qiita.com/ngtnysk/items/5755ef9b10e1bc8e5458",
+                "/blog/blog-operation-in-ai-era",
+                "https://zenn.dev/saku2323/articles/about-astro-compile",
+                "/blog/about-ast",
+                "/blog/july-diary-2026",
+                "/blog/january-diary-2026-2",
+                "/blog/february-diary-2026",
+                "/blog/web-worker-basics",
+                "/blog/vite-plus-commands",
+                "/blog/january-diary-2026",
+                "/blog/strangler-fig-application-note",
+                "/blog/revalidatetag-path",
+                "/blog/why-return-to-basics",
+                "/blog/mise-2026-9-features-note",
+                "/blog/january-diary-2026-3",
+                "/blog/introduction-oxc",
+                "/blog/vite-plus-note"
+              ]
+            },
+            {
+              "ms": 0.7000000178813934,
+              "results": [
+                "/blog/astro-517-update-note",
+                "/blog/astro-build-blog-integration",
+                "/blog/learn-cachedir-astro",
+                "/blog/astro-docs-idea-discussion",
+                "/blog/about-improve-astro-encode",
+                "/blog/ai-agents-2025-2026",
+                "/blog/astro-island-prefetch",
+                "/blog/astro-docs-translation-beginner",
+                "/blog/astro-route-caching-note-2",
+                "/blog/astro-route-caching-note",
+                "/blog/lukurauha",
+                "https://qiita.com/ngtnysk/items/25a3d209854956948653",
+                "/blog/astro-nextjs-prefetch-comparison",
+                "/blog/primer-of-hyperframes",
+                "https://zenn.dev/saku2323/articles/about-astro-loading-viewtransition",
+                "https://zenn.dev/saku2323/articles/about-astro-prefetch",
+                "/blog/getting-started-blog",
+                "/blog/what-is-my-tech-stack",
+                "https://qiita.com/ngtnysk/items/5755ef9b10e1bc8e5458",
+                "/blog/blog-operation-in-ai-era",
+                "https://zenn.dev/saku2323/articles/about-astro-compile",
+                "/blog/about-ast",
+                "/blog/july-diary-2026",
+                "/blog/january-diary-2026-2",
+                "/blog/february-diary-2026",
+                "/blog/web-worker-basics",
+                "/blog/vite-plus-commands",
+                "/blog/january-diary-2026",
+                "/blog/strangler-fig-application-note",
+                "/blog/revalidatetag-path",
+                "/blog/why-return-to-basics",
+                "/blog/mise-2026-9-features-note",
+                "/blog/january-diary-2026-3",
+                "/blog/introduction-oxc",
+                "/blog/vite-plus-note"
+              ]
+            },
+            {
+              "ms": 0.4000000059604645,
+              "results": [
+                "/blog/astro-517-update-note",
+                "/blog/astro-build-blog-integration",
+                "/blog/learn-cachedir-astro",
+                "/blog/astro-docs-idea-discussion",
+                "/blog/about-improve-astro-encode",
+                "/blog/ai-agents-2025-2026",
+                "/blog/astro-island-prefetch",
+                "/blog/astro-docs-translation-beginner",
+                "/blog/astro-route-caching-note-2",
+                "/blog/astro-route-caching-note",
+                "/blog/lukurauha",
+                "https://qiita.com/ngtnysk/items/25a3d209854956948653",
+                "/blog/astro-nextjs-prefetch-comparison",
+                "/blog/primer-of-hyperframes",
+                "https://zenn.dev/saku2323/articles/about-astro-loading-viewtransition",
+                "https://zenn.dev/saku2323/articles/about-astro-prefetch",
+                "/blog/getting-started-blog",
+                "/blog/what-is-my-tech-stack",
+                "https://qiita.com/ngtnysk/items/5755ef9b10e1bc8e5458",
+                "/blog/blog-operation-in-ai-era",
+                "https://zenn.dev/saku2323/articles/about-astro-compile",
+                "/blog/about-ast",
+                "/blog/july-diary-2026",
+                "/blog/january-diary-2026-2",
+                "/blog/february-diary-2026",
+                "/blog/web-worker-basics",
+                "/blog/vite-plus-commands",
+                "/blog/january-diary-2026",
+                "/blog/strangler-fig-application-note",
+                "/blog/revalidatetag-path",
+                "/blog/why-return-to-basics",
+                "/blog/mise-2026-9-features-note",
+                "/blog/january-diary-2026-3",
+                "/blog/introduction-oxc",
+                "/blog/vite-plus-note"
+              ]
+            }
+          ]
+        },
+        {
+          "query": "ブログ記事を速くビルドしたい",
+          "runs": [
+            {
+              "ms": 0.5,
+              "results": [
+                "/blog/getting-started-blog",
+                "/blog/blog-operation-in-ai-era",
+                "/blog/astro-build-blog-integration",
+                "/blog/vite-plus-note",
+                "/blog/learn-cachedir-astro",
+                "/blog/astro-docs-idea-discussion",
+                "/blog/vite-plus-commands",
+                "/blog/introduction-oxc",
+                "https://qiita.com/ngtnysk/items/88b2d29148a4d8c7069c",
+                "/blog/what-is-my-tech-stack",
+                "/blog/mise-2026-9-features-note",
+                "/blog/astro-docs-translation-beginner",
+                "https://qiita.com/ngtnysk/items/25a3d209854956948653",
+                "/blog/revalidatetag-path",
+                "/blog/astro-route-caching-note",
+                "https://qiita.com/ngtnysk/items/77cfb94e9b0eda5bb846",
+                "/blog/astro-route-caching-note-2",
+                "/blog/lukurauha",
+                "/blog/january-diary-2026-3",
+                "/blog/astro-nextjs-prefetch-comparison",
+                "/blog/web-worker-basics",
+                "/blog/astro-517-update-note",
+                "/blog/january-diary-2026-2",
+                "/blog/january-diary-2026",
+                "/blog/about-improve-astro-encode",
+                "/blog/about-ast",
+                "/blog/primer-of-hyperframes",
+                "/blog/ai-agents-2025-2026",
+                "/blog/february-diary-2026",
+                "/blog/astro-island-prefetch",
+                "/blog/july-diary-2026",
+                "/blog/why-return-to-basics",
+                "/blog/strangler-fig-application-note"
+              ]
+            },
+            {
+              "ms": 0.4000000059604645,
+              "results": [
+                "/blog/getting-started-blog",
+                "/blog/blog-operation-in-ai-era",
+                "/blog/astro-build-blog-integration",
+                "/blog/vite-plus-note",
+                "/blog/learn-cachedir-astro",
+                "/blog/astro-docs-idea-discussion",
+                "/blog/vite-plus-commands",
+                "/blog/introduction-oxc",
+                "https://qiita.com/ngtnysk/items/88b2d29148a4d8c7069c",
+                "/blog/what-is-my-tech-stack",
+                "/blog/mise-2026-9-features-note",
+                "/blog/astro-docs-translation-beginner",
+                "https://qiita.com/ngtnysk/items/25a3d209854956948653",
+                "/blog/revalidatetag-path",
+                "/blog/astro-route-caching-note",
+                "https://qiita.com/ngtnysk/items/77cfb94e9b0eda5bb846",
+                "/blog/astro-route-caching-note-2",
+                "/blog/lukurauha",
+                "/blog/january-diary-2026-3",
+                "/blog/astro-nextjs-prefetch-comparison",
+                "/blog/web-worker-basics",
+                "/blog/astro-517-update-note",
+                "/blog/january-diary-2026-2",
+                "/blog/january-diary-2026",
+                "/blog/about-improve-astro-encode",
+                "/blog/about-ast",
+                "/blog/primer-of-hyperframes",
+                "/blog/ai-agents-2025-2026",
+                "/blog/february-diary-2026",
+                "/blog/astro-island-prefetch",
+                "/blog/july-diary-2026",
+                "/blog/why-return-to-basics",
+                "/blog/strangler-fig-application-note"
+              ]
+            },
+            {
+              "ms": 0.4000000059604645,
+              "results": [
+                "/blog/getting-started-blog",
+                "/blog/blog-operation-in-ai-era",
+                "/blog/astro-build-blog-integration",
+                "/blog/vite-plus-note",
+                "/blog/learn-cachedir-astro",
+                "/blog/astro-docs-idea-discussion",
+                "/blog/vite-plus-commands",
+                "/blog/introduction-oxc",
+                "https://qiita.com/ngtnysk/items/88b2d29148a4d8c7069c",
+                "/blog/what-is-my-tech-stack",
+                "/blog/mise-2026-9-features-note",
+                "/blog/astro-docs-translation-beginner",
+                "https://qiita.com/ngtnysk/items/25a3d209854956948653",
+                "/blog/revalidatetag-path",
+                "/blog/astro-route-caching-note",
+                "https://qiita.com/ngtnysk/items/77cfb94e9b0eda5bb846",
+                "/blog/astro-route-caching-note-2",
+                "/blog/lukurauha",
+                "/blog/january-diary-2026-3",
+                "/blog/astro-nextjs-prefetch-comparison",
+                "/blog/web-worker-basics",
+                "/blog/astro-517-update-note",
+                "/blog/january-diary-2026-2",
+                "/blog/january-diary-2026",
+                "/blog/about-improve-astro-encode",
+                "/blog/about-ast",
+                "/blog/primer-of-hyperframes",
+                "/blog/ai-agents-2025-2026",
+                "/blog/february-diary-2026",
+                "/blog/astro-island-prefetch",
+                "/blog/july-diary-2026",
+                "/blog/why-return-to-basics",
+                "/blog/strangler-fig-application-note"
+              ]
+            }
+          ]
+        },
+        {
+          "query": "読書アプリを作った話",
+          "runs": [
+            {
+              "ms": 0.5,
+              "results": [
+                "https://qiita.com/ngtnysk/items/d53ca84e66f02cf6ef22",
+                "/blog/lukurauha",
+                "/blog/astro-docs-idea-discussion",
+                "https://qiita.com/ngtnysk/items/77cfb94e9b0eda5bb846",
+                "/blog/mise-2026-9-features-note",
+                "https://zenn.dev/saku2323/articles/about-astro-prefetch",
+                "https://zenn.dev/saku2323/articles/about-speculation-api",
+                "https://zenn.dev/saku2323/articles/about-prefetch",
+                "https://qiita.com/ngtnysk/items/70ca0d0a1126256896af",
+                "https://qiita.com/ngtnysk/items/25a3d209854956948653",
+                "/blog/astro-nextjs-prefetch-comparison",
+                "https://qiita.com/ngtnysk/items/c6383be94ce84d278dac",
+                "/blog/primer-of-hyperframes",
+                "/blog/vite-plus-commands",
+                "/blog/july-diary-2026",
+                "/blog/january-diary-2026-3",
+                "/blog/why-return-to-basics",
+                "/blog/getting-started-blog",
+                "/blog/introduction-oxc",
+                "/blog/january-diary-2026-2",
+                "/blog/strangler-fig-application-note",
+                "/blog/learn-cachedir-astro",
+                "/blog/vite-plus-note",
+                "/blog/what-is-my-tech-stack",
+                "/blog/astro-island-prefetch",
+                "/blog/blog-operation-in-ai-era",
+                "/blog/astro-build-blog-integration",
+                "/blog/astro-route-caching-note-2",
+                "/blog/ai-agents-2025-2026",
+                "/blog/february-diary-2026",
+                "/blog/about-ast",
+                "/blog/revalidatetag-path",
+                "/blog/astro-docs-translation-beginner",
+                "/blog/astro-517-update-note",
+                "/blog/about-improve-astro-encode",
+                "/blog/astro-route-caching-note",
+                "/blog/january-diary-2026"
+              ]
+            },
+            {
+              "ms": 0.5,
+              "results": [
+                "https://qiita.com/ngtnysk/items/d53ca84e66f02cf6ef22",
+                "/blog/lukurauha",
+                "/blog/astro-docs-idea-discussion",
+                "https://qiita.com/ngtnysk/items/77cfb94e9b0eda5bb846",
+                "/blog/mise-2026-9-features-note",
+                "https://zenn.dev/saku2323/articles/about-astro-prefetch",
+                "https://zenn.dev/saku2323/articles/about-speculation-api",
+                "https://zenn.dev/saku2323/articles/about-prefetch",
+                "https://qiita.com/ngtnysk/items/70ca0d0a1126256896af",
+                "https://qiita.com/ngtnysk/items/25a3d209854956948653",
+                "/blog/astro-nextjs-prefetch-comparison",
+                "https://qiita.com/ngtnysk/items/c6383be94ce84d278dac",
+                "/blog/primer-of-hyperframes",
+                "/blog/vite-plus-commands",
+                "/blog/july-diary-2026",
+                "/blog/january-diary-2026-3",
+                "/blog/why-return-to-basics",
+                "/blog/getting-started-blog",
+                "/blog/introduction-oxc",
+                "/blog/january-diary-2026-2",
+                "/blog/strangler-fig-application-note",
+                "/blog/learn-cachedir-astro",
+                "/blog/vite-plus-note",
+                "/blog/what-is-my-tech-stack",
+                "/blog/astro-island-prefetch",
+                "/blog/blog-operation-in-ai-era",
+                "/blog/astro-build-blog-integration",
+                "/blog/astro-route-caching-note-2",
+                "/blog/ai-agents-2025-2026",
+                "/blog/february-diary-2026",
+                "/blog/about-ast",
+                "/blog/revalidatetag-path",
+                "/blog/astro-docs-translation-beginner",
+                "/blog/astro-517-update-note",
+                "/blog/about-improve-astro-encode",
+                "/blog/astro-route-caching-note",
+                "/blog/january-diary-2026"
+              ]
+            },
+            {
+              "ms": 0.5,
+              "results": [
+                "https://qiita.com/ngtnysk/items/d53ca84e66f02cf6ef22",
+                "/blog/lukurauha",
+                "/blog/astro-docs-idea-discussion",
+                "https://qiita.com/ngtnysk/items/77cfb94e9b0eda5bb846",
+                "/blog/mise-2026-9-features-note",
+                "https://zenn.dev/saku2323/articles/about-astro-prefetch",
+                "https://zenn.dev/saku2323/articles/about-speculation-api",
+                "https://zenn.dev/saku2323/articles/about-prefetch",
+                "https://qiita.com/ngtnysk/items/70ca0d0a1126256896af",
+                "https://qiita.com/ngtnysk/items/25a3d209854956948653",
+                "/blog/astro-nextjs-prefetch-comparison",
+                "https://qiita.com/ngtnysk/items/c6383be94ce84d278dac",
+                "/blog/primer-of-hyperframes",
+                "/blog/vite-plus-commands",
+                "/blog/july-diary-2026",
+                "/blog/january-diary-2026-3",
+                "/blog/why-return-to-basics",
+                "/blog/getting-started-blog",
+                "/blog/introduction-oxc",
+                "/blog/january-diary-2026-2",
+                "/blog/strangler-fig-application-note",
+                "/blog/learn-cachedir-astro",
+                "/blog/vite-plus-note",
+                "/blog/what-is-my-tech-stack",
+                "/blog/astro-island-prefetch",
+                "/blog/blog-operation-in-ai-era",
+                "/blog/astro-build-blog-integration",
+                "/blog/astro-route-caching-note-2",
+                "/blog/ai-agents-2025-2026",
+                "/blog/february-diary-2026",
+                "/blog/about-ast",
+                "/blog/revalidatetag-path",
+                "/blog/astro-docs-translation-beginner",
+                "/blog/astro-517-update-note",
+                "/blog/about-improve-astro-encode",
+                "/blog/astro-route-caching-note",
+                "/blog/january-diary-2026"
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Pagefind",
+      "url": "http://127.0.0.1:4335/search-lab/",
+      "summary": {
+        "coldMs": 116.6,
+        "warmMeanMs": 4.1,
+        "warmMedianMs": 1.7,
+        "warmP90Ms": 14.9,
+        "top3LiteralRecall": "57/60",
+        "mrr": 1,
+        "naturalZeroResults": "9/9",
+        "errors": 0,
+        "naturalHit3": "0/9",
+        "naturalMrr": 0
+      },
+      "cases": [
+        {
+          "query": "Web Worker",
+          "runs": [
+            {
+              "ms": 13.300000011920929,
+              "results": ["/blog/web-worker-basics", "/blog/what-is-my-tech-stack"]
+            },
+            {
+              "ms": 2.0999999940395355,
+              "results": ["/blog/web-worker-basics", "/blog/what-is-my-tech-stack"]
+            },
+            {
+              "ms": 1.5999999940395355,
+              "results": ["/blog/web-worker-basics", "/blog/what-is-my-tech-stack"]
+            }
+          ]
+        },
+        {
+          "query": "コンテナクエリ",
+          "runs": [
+            {
+              "ms": 18.5,
+              "results": ["https://qiita.com/ngtnysk/items/f2bf834201f7d2662ab5"]
+            },
+            {
+              "ms": 1,
+              "results": ["https://qiita.com/ngtnysk/items/f2bf834201f7d2662ab5"]
+            },
+            {
+              "ms": 0.5999999940395355,
+              "results": ["https://qiita.com/ngtnysk/items/f2bf834201f7d2662ab5"]
+            }
+          ]
+        },
+        {
+          "query": "プリフェッチ",
+          "runs": [
+            {
+              "ms": 14.900000005960464,
+              "results": [
+                "https://zenn.dev/saku2323/articles/about-prefetch",
+                "https://zenn.dev/saku2323/articles/about-speculation-api",
+                "https://zenn.dev/saku2323/articles/about-astro-prefetch",
+                "/blog/astro-nextjs-prefetch-comparison",
+                "/blog/astro-island-prefetch"
+              ]
+            },
+            {
+              "ms": 2.0999999940395355,
+              "results": [
+                "https://zenn.dev/saku2323/articles/about-prefetch",
+                "https://zenn.dev/saku2323/articles/about-speculation-api",
+                "https://zenn.dev/saku2323/articles/about-astro-prefetch",
+                "/blog/astro-nextjs-prefetch-comparison",
+                "/blog/astro-island-prefetch"
+              ]
+            },
+            {
+              "ms": 2.800000011920929,
+              "results": [
+                "https://zenn.dev/saku2323/articles/about-prefetch",
+                "https://zenn.dev/saku2323/articles/about-speculation-api",
+                "https://zenn.dev/saku2323/articles/about-astro-prefetch",
+                "/blog/astro-nextjs-prefetch-comparison",
+                "/blog/astro-island-prefetch"
+              ]
+            }
+          ]
+        },
+        {
+          "query": "翻訳",
+          "runs": [
+            {
+              "ms": 19,
+              "results": [
+                "/blog/astro-docs-translation-beginner",
+                "/blog/january-diary-2026",
+                "/blog/astro-docs-idea-discussion",
+                "/blog/january-diary-2026-3"
+              ]
+            },
+            {
+              "ms": 1.7000000178813934,
+              "results": [
+                "/blog/astro-docs-translation-beginner",
+                "/blog/january-diary-2026",
+                "/blog/astro-docs-idea-discussion",
+                "/blog/january-diary-2026-3"
+              ]
+            },
+            {
+              "ms": 1.300000011920929,
+              "results": [
+                "/blog/astro-docs-translation-beginner",
+                "/blog/january-diary-2026",
+                "/blog/astro-docs-idea-discussion",
+                "/blog/january-diary-2026-3"
+              ]
+            }
+          ]
+        },
+        {
+          "query": "キャッシュ",
+          "runs": [
+            {
+              "ms": 15.100000023841858,
+              "results": [
+                "/blog/astro-route-caching-note-2",
+                "/blog/learn-cachedir-astro",
+                "/blog/astro-route-caching-note",
+                "/blog/revalidatetag-path",
+                "/blog/about-improve-astro-encode",
+                "/blog/vite-plus-commands",
+                "/blog/astro-nextjs-prefetch-comparison",
+                "/blog/astro-island-prefetch"
+              ]
+            },
+            {
+              "ms": 2.800000011920929,
+              "results": [
+                "/blog/astro-route-caching-note-2",
+                "/blog/learn-cachedir-astro",
+                "/blog/astro-route-caching-note",
+                "/blog/revalidatetag-path",
+                "/blog/about-improve-astro-encode",
+                "/blog/vite-plus-commands",
+                "/blog/astro-nextjs-prefetch-comparison",
+                "/blog/astro-island-prefetch"
+              ]
+            },
+            {
+              "ms": 2.800000011920929,
+              "results": [
+                "/blog/astro-route-caching-note-2",
+                "/blog/learn-cachedir-astro",
+                "/blog/astro-route-caching-note",
+                "/blog/revalidatetag-path",
+                "/blog/about-improve-astro-encode",
+                "/blog/vite-plus-commands",
+                "/blog/astro-nextjs-prefetch-comparison",
+                "/blog/astro-island-prefetch"
+              ]
+            }
+          ]
+        },
+        {
+          "query": "View transitions",
+          "runs": [
+            {
+              "ms": 8.099999994039536,
+              "results": [
+                "https://zenn.dev/saku2323/articles/about-astro-loading-viewtransition",
+                "/blog/astro-build-blog-integration"
+              ]
+            },
+            {
+              "ms": 1.0999999940395355,
+              "results": [
+                "https://zenn.dev/saku2323/articles/about-astro-loading-viewtransition",
+                "/blog/astro-build-blog-integration"
+              ]
+            },
+            {
+              "ms": 0.7000000178813934,
+              "results": [
+                "https://zenn.dev/saku2323/articles/about-astro-loading-viewtransition",
+                "/blog/astro-build-blog-integration"
+              ]
+            }
+          ]
+        },
+        {
+          "query": "CSS変数",
+          "runs": [
+            {
+              "ms": 8.199999988079071,
+              "results": ["/blog/ai-agents-2025-2026"]
+            },
+            {
+              "ms": 1.800000011920929,
+              "results": ["/blog/ai-agents-2025-2026"]
+            },
+            {
+              "ms": 1.7999999821186066,
+              "results": ["/blog/ai-agents-2025-2026"]
+            }
+          ]
+        },
+        {
+          "query": "mise",
+          "runs": [
+            {
+              "ms": 1.4000000059604645,
+              "results": ["/blog/mise-2026-9-features-note"]
+            },
+            {
+              "ms": 1.0999999940395355,
+              "results": ["/blog/mise-2026-9-features-note"]
+            },
+            {
+              "ms": 2.2999999821186066,
+              "results": ["/blog/mise-2026-9-features-note"]
+            }
+          ]
+        },
+        {
+          "query": "Lukurauha",
+          "runs": [
+            {
+              "ms": 8,
+              "results": ["/blog/lukurauha", "/blog/july-diary-2026"]
+            },
+            {
+              "ms": 1.5999999940395355,
+              "results": ["/blog/lukurauha", "/blog/july-diary-2026"]
+            },
+            {
+              "ms": 1.4000000059604645,
+              "results": ["/blog/lukurauha", "/blog/july-diary-2026"]
+            }
+          ]
+        },
+        {
+          "query": "ルーティング",
+          "runs": [
+            {
+              "ms": 7.5,
+              "results": ["/blog/strangler-fig-application-note", "/blog/january-diary-2026-2"]
+            },
+            {
+              "ms": 1,
+              "results": ["/blog/strangler-fig-application-note", "/blog/january-diary-2026-2"]
+            },
+            {
+              "ms": 0.9000000059604645,
+              "results": ["/blog/strangler-fig-application-note", "/blog/january-diary-2026-2"]
+            }
+          ]
+        },
+        {
+          "query": "Astro のページを事前に読み込む方法",
+          "runs": [
+            {
+              "ms": 2.0999999940395355,
+              "results": []
+            },
+            {
+              "ms": 1.199999988079071,
+              "results": []
+            },
+            {
+              "ms": 1.0999999940395355,
+              "results": []
+            }
+          ]
+        },
+        {
+          "query": "ブログ記事を速くビルドしたい",
+          "runs": [
+            {
+              "ms": 4.600000023841858,
+              "results": []
+            },
+            {
+              "ms": 1,
+              "results": []
+            },
+            {
+              "ms": 0.9000000059604645,
+              "results": []
+            }
+          ]
+        },
+        {
+          "query": "読書アプリを作った話",
+          "runs": [
+            {
+              "ms": 1.199999988079071,
+              "results": []
+            },
+            {
+              "ms": 0.699999988079071,
+              "results": []
+            },
+            {
+              "ms": 0.9000000059604645,
+              "results": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Fuse.js",
+      "url": "http://127.0.0.1:4336/search-lab/",
+      "summary": {
+        "coldMs": 39.3,
+        "warmMeanMs": 17.4,
+        "warmMedianMs": 13.8,
+        "warmP90Ms": 28.7,
+        "top3LiteralRecall": "54/60",
+        "mrr": 0.933,
+        "naturalZeroResults": "6/9",
+        "errors": 0,
+        "naturalHit3": "3/9",
+        "naturalMrr": 0.111
+      },
+      "cases": [
+        {
+          "query": "Web Worker",
+          "runs": [
+            {
+              "ms": 20.19999998807907,
+              "results": [
+                "/blog/web-worker-basics",
+                "https://qiita.com/ngtnysk/items/7ce334bc7518db557a05",
+                "https://zenn.dev/saku2323/articles/about-prefetch",
+                "https://qiita.com/ngtnysk/items/f5aaee56860f139852b1",
+                "https://qiita.com/ngtnysk/items/25a3d209854956948653",
+                "https://qiita.com/ngtnysk/items/83341b0852dd5a5cdcf8",
+                "https://qiita.com/ngtnysk/items/70ca0d0a1126256896af",
+                "https://qiita.com/ngtnysk/items/26fea0fe804efa718e15",
+                "/blog/what-is-my-tech-stack",
+                "/blog/lukurauha",
+                "/blog/mise-2026-9-features-note",
+                "/blog/blog-operation-in-ai-era",
+                "/blog/ai-agents-2025-2026",
+                "/blog/introduction-oxc",
+                "/blog/primer-of-hyperframes",
+                "/blog/vite-plus-note",
+                "/blog/astro-docs-idea-discussion",
+                "/blog/astro-route-caching-note",
+                "/blog/july-diary-2026",
+                "/blog/astro-build-blog-integration",
+                "/blog/learn-cachedir-astro",
+                "/blog/strangler-fig-application-note",
+                "/blog/astro-island-prefetch",
+                "/blog/astro-nextjs-prefetch-comparison",
+                "/blog/revalidatetag-path"
+              ]
+            },
+            {
+              "ms": 20,
+              "results": [
+                "/blog/web-worker-basics",
+                "https://qiita.com/ngtnysk/items/7ce334bc7518db557a05",
+                "https://zenn.dev/saku2323/articles/about-prefetch",
+                "https://qiita.com/ngtnysk/items/f5aaee56860f139852b1",
+                "https://qiita.com/ngtnysk/items/25a3d209854956948653",
+                "https://qiita.com/ngtnysk/items/83341b0852dd5a5cdcf8",
+                "https://qiita.com/ngtnysk/items/70ca0d0a1126256896af",
+                "https://qiita.com/ngtnysk/items/26fea0fe804efa718e15",
+                "/blog/what-is-my-tech-stack",
+                "/blog/lukurauha",
+                "/blog/mise-2026-9-features-note",
+                "/blog/blog-operation-in-ai-era",
+                "/blog/ai-agents-2025-2026",
+                "/blog/introduction-oxc",
+                "/blog/primer-of-hyperframes",
+                "/blog/vite-plus-note",
+                "/blog/astro-docs-idea-discussion",
+                "/blog/astro-route-caching-note",
+                "/blog/july-diary-2026",
+                "/blog/astro-build-blog-integration",
+                "/blog/learn-cachedir-astro",
+                "/blog/strangler-fig-application-note",
+                "/blog/astro-island-prefetch",
+                "/blog/astro-nextjs-prefetch-comparison",
+                "/blog/revalidatetag-path"
+              ]
+            },
+            {
+              "ms": 19.5,
+              "results": [
+                "/blog/web-worker-basics",
+                "https://qiita.com/ngtnysk/items/7ce334bc7518db557a05",
+                "https://zenn.dev/saku2323/articles/about-prefetch",
+                "https://qiita.com/ngtnysk/items/f5aaee56860f139852b1",
+                "https://qiita.com/ngtnysk/items/25a3d209854956948653",
+                "https://qiita.com/ngtnysk/items/83341b0852dd5a5cdcf8",
+                "https://qiita.com/ngtnysk/items/70ca0d0a1126256896af",
+                "https://qiita.com/ngtnysk/items/26fea0fe804efa718e15",
+                "/blog/what-is-my-tech-stack",
+                "/blog/lukurauha",
+                "/blog/mise-2026-9-features-note",
+                "/blog/blog-operation-in-ai-era",
+                "/blog/ai-agents-2025-2026",
+                "/blog/introduction-oxc",
+                "/blog/primer-of-hyperframes",
+                "/blog/vite-plus-note",
+                "/blog/astro-docs-idea-discussion",
+                "/blog/astro-route-caching-note",
+                "/blog/july-diary-2026",
+                "/blog/astro-build-blog-integration",
+                "/blog/learn-cachedir-astro",
+                "/blog/strangler-fig-application-note",
+                "/blog/astro-island-prefetch",
+                "/blog/astro-nextjs-prefetch-comparison",
+                "/blog/revalidatetag-path"
+              ]
+            }
+          ]
+        },
+        {
+          "query": "コンテナクエリ",
+          "runs": [
+            {
+              "ms": 14.400000005960464,
+              "results": ["https://qiita.com/ngtnysk/items/f2bf834201f7d2662ab5"]
+            },
+            {
+              "ms": 13.799999982118607,
+              "results": ["https://qiita.com/ngtnysk/items/f2bf834201f7d2662ab5"]
+            },
+            {
+              "ms": 13.700000017881393,
+              "results": ["https://qiita.com/ngtnysk/items/f2bf834201f7d2662ab5"]
+            }
+          ]
+        },
+        {
+          "query": "プリフェッチ",
+          "runs": [
+            {
+              "ms": 12.5,
+              "results": [
+                "https://zenn.dev/saku2323/articles/about-astro-prefetch",
+                "https://zenn.dev/saku2323/articles/about-prefetch",
+                "https://zenn.dev/saku2323/articles/about-speculation-api",
+                "/blog/astro-island-prefetch",
+                "/blog/astro-nextjs-prefetch-comparison"
+              ]
+            },
+            {
+              "ms": 12.599999994039536,
+              "results": [
+                "https://zenn.dev/saku2323/articles/about-astro-prefetch",
+                "https://zenn.dev/saku2323/articles/about-prefetch",
+                "https://zenn.dev/saku2323/articles/about-speculation-api",
+                "/blog/astro-island-prefetch",
+                "/blog/astro-nextjs-prefetch-comparison"
+              ]
+            },
+            {
+              "ms": 12.900000005960464,
+              "results": [
+                "https://zenn.dev/saku2323/articles/about-astro-prefetch",
+                "https://zenn.dev/saku2323/articles/about-prefetch",
+                "https://zenn.dev/saku2323/articles/about-speculation-api",
+                "/blog/astro-island-prefetch",
+                "/blog/astro-nextjs-prefetch-comparison"
+              ]
+            }
+          ]
+        },
+        {
+          "query": "翻訳",
+          "runs": [
+            {
+              "ms": 5.199999988079071,
+              "results": [
+                "/blog/astro-docs-translation-beginner",
+                "/blog/january-diary-2026",
+                "/blog/astro-docs-idea-discussion",
+                "/blog/january-diary-2026-3"
+              ]
+            },
+            {
+              "ms": 5.199999988079071,
+              "results": [
+                "/blog/astro-docs-translation-beginner",
+                "/blog/january-diary-2026",
+                "/blog/astro-docs-idea-discussion",
+                "/blog/january-diary-2026-3"
+              ]
+            },
+            {
+              "ms": 5.100000023841858,
+              "results": [
+                "/blog/astro-docs-translation-beginner",
+                "/blog/january-diary-2026",
+                "/blog/astro-docs-idea-discussion",
+                "/blog/january-diary-2026-3"
+              ]
+            }
+          ]
+        },
+        {
+          "query": "キャッシュ",
+          "runs": [
+            {
+              "ms": 10.5,
+              "results": [
+                "/blog/astro-route-caching-note",
+                "/blog/astro-route-caching-note-2",
+                "/blog/revalidatetag-path",
+                "/blog/about-improve-astro-encode",
+                "/blog/learn-cachedir-astro",
+                "/blog/vite-plus-commands",
+                "/blog/astro-island-prefetch",
+                "/blog/astro-nextjs-prefetch-comparison",
+                "/blog/blog-operation-in-ai-era",
+                "/blog/astro-docs-translation-beginner",
+                "/blog/january-diary-2026-3",
+                "/blog/ai-agents-2025-2026"
+              ]
+            },
+            {
+              "ms": 10.599999994039536,
+              "results": [
+                "/blog/astro-route-caching-note",
+                "/blog/astro-route-caching-note-2",
+                "/blog/revalidatetag-path",
+                "/blog/about-improve-astro-encode",
+                "/blog/learn-cachedir-astro",
+                "/blog/vite-plus-commands",
+                "/blog/astro-island-prefetch",
+                "/blog/astro-nextjs-prefetch-comparison",
+                "/blog/blog-operation-in-ai-era",
+                "/blog/astro-docs-translation-beginner",
+                "/blog/january-diary-2026-3",
+                "/blog/ai-agents-2025-2026"
+              ]
+            },
+            {
+              "ms": 10.900000005960464,
+              "results": [
+                "/blog/astro-route-caching-note",
+                "/blog/astro-route-caching-note-2",
+                "/blog/revalidatetag-path",
+                "/blog/about-improve-astro-encode",
+                "/blog/learn-cachedir-astro",
+                "/blog/vite-plus-commands",
+                "/blog/astro-island-prefetch",
+                "/blog/astro-nextjs-prefetch-comparison",
+                "/blog/blog-operation-in-ai-era",
+                "/blog/astro-docs-translation-beginner",
+                "/blog/january-diary-2026-3",
+                "/blog/ai-agents-2025-2026"
+              ]
+            }
+          ]
+        },
+        {
+          "query": "View transitions",
+          "runs": [
+            {
+              "ms": 28.700000017881393,
+              "results": [
+                "https://zenn.dev/saku2323/articles/about-astro-loading-viewtransition",
+                "/blog/astro-build-blog-integration",
+                "/blog/astro-docs-translation-beginner",
+                "/blog/primer-of-hyperframes",
+                "/blog/strangler-fig-application-note",
+                "/blog/astro-route-caching-note-2",
+                "/blog/ai-agents-2025-2026",
+                "/blog/vite-plus-commands",
+                "/blog/astro-island-prefetch",
+                "/blog/astro-nextjs-prefetch-comparison"
+              ]
+            },
+            {
+              "ms": 28.700000017881393,
+              "results": [
+                "https://zenn.dev/saku2323/articles/about-astro-loading-viewtransition",
+                "/blog/astro-build-blog-integration",
+                "/blog/astro-docs-translation-beginner",
+                "/blog/primer-of-hyperframes",
+                "/blog/strangler-fig-application-note",
+                "/blog/astro-route-caching-note-2",
+                "/blog/ai-agents-2025-2026",
+                "/blog/vite-plus-commands",
+                "/blog/astro-island-prefetch",
+                "/blog/astro-nextjs-prefetch-comparison"
+              ]
+            },
+            {
+              "ms": 28.19999998807907,
+              "results": [
+                "https://zenn.dev/saku2323/articles/about-astro-loading-viewtransition",
+                "/blog/astro-build-blog-integration",
+                "/blog/astro-docs-translation-beginner",
+                "/blog/primer-of-hyperframes",
+                "/blog/strangler-fig-application-note",
+                "/blog/astro-route-caching-note-2",
+                "/blog/ai-agents-2025-2026",
+                "/blog/vite-plus-commands",
+                "/blog/astro-island-prefetch",
+                "/blog/astro-nextjs-prefetch-comparison"
+              ]
+            }
+          ]
+        },
+        {
+          "query": "CSS変数",
+          "runs": [
+            {
+              "ms": 12.900000005960464,
+              "results": [
+                "https://qiita.com/ngtnysk/items/9b23dd2051e3b737254d",
+                "https://qiita.com/ngtnysk/items/551fd63d818388c3f951",
+                "https://qiita.com/ngtnysk/items/b780d34b1096826888cc",
+                "https://qiita.com/ngtnysk/items/aa56619189b4beab5a00",
+                "https://qiita.com/ngtnysk/items/0ab68b8a6ba8228d92a6",
+                "https://qiita.com/ngtnysk/items/f2bf834201f7d2662ab5",
+                "https://qiita.com/ngtnysk/items/70ca0d0a1126256896af",
+                "https://qiita.com/ngtnysk/items/0b6aa41dee1f00e52eff",
+                "https://zenn.dev/saku2323/articles/about-way-of-unvisualize",
+                "https://qiita.com/ngtnysk/items/c0c21ad8b5cc3f9edc50",
+                "https://qiita.com/ngtnysk/items/26fea0fe804efa718e15",
+                "https://qiita.com/ngtnysk/items/1677969fc259b79cfb8e",
+                "https://zenn.dev/saku2323/articles/dd304b2973c5c4",
+                "https://qiita.com/ngtnysk/items/7ce334bc7518db557a05",
+                "https://qiita.com/ngtnysk/items/117e518e3851e495f080",
+                "https://qiita.com/ngtnysk/items/25a3d209854956948653",
+                "https://qiita.com/ngtnysk/items/93d22c3dfbc9211853f1",
+                "https://qiita.com/ngtnysk/items/efd5e741817ecbafcced",
+                "/blog/what-is-my-tech-stack",
+                "/blog/getting-started-blog",
+                "/blog/ai-agents-2025-2026",
+                "/blog/primer-of-hyperframes",
+                "/blog/learn-cachedir-astro",
+                "/blog/astro-island-prefetch"
+              ]
+            },
+            {
+              "ms": 13,
+              "results": [
+                "https://qiita.com/ngtnysk/items/9b23dd2051e3b737254d",
+                "https://qiita.com/ngtnysk/items/551fd63d818388c3f951",
+                "https://qiita.com/ngtnysk/items/b780d34b1096826888cc",
+                "https://qiita.com/ngtnysk/items/aa56619189b4beab5a00",
+                "https://qiita.com/ngtnysk/items/0ab68b8a6ba8228d92a6",
+                "https://qiita.com/ngtnysk/items/f2bf834201f7d2662ab5",
+                "https://qiita.com/ngtnysk/items/70ca0d0a1126256896af",
+                "https://qiita.com/ngtnysk/items/0b6aa41dee1f00e52eff",
+                "https://zenn.dev/saku2323/articles/about-way-of-unvisualize",
+                "https://qiita.com/ngtnysk/items/c0c21ad8b5cc3f9edc50",
+                "https://qiita.com/ngtnysk/items/26fea0fe804efa718e15",
+                "https://qiita.com/ngtnysk/items/1677969fc259b79cfb8e",
+                "https://zenn.dev/saku2323/articles/dd304b2973c5c4",
+                "https://qiita.com/ngtnysk/items/7ce334bc7518db557a05",
+                "https://qiita.com/ngtnysk/items/117e518e3851e495f080",
+                "https://qiita.com/ngtnysk/items/25a3d209854956948653",
+                "https://qiita.com/ngtnysk/items/93d22c3dfbc9211853f1",
+                "https://qiita.com/ngtnysk/items/efd5e741817ecbafcced",
+                "/blog/what-is-my-tech-stack",
+                "/blog/getting-started-blog",
+                "/blog/ai-agents-2025-2026",
+                "/blog/primer-of-hyperframes",
+                "/blog/learn-cachedir-astro",
+                "/blog/astro-island-prefetch"
+              ]
+            },
+            {
+              "ms": 13,
+              "results": [
+                "https://qiita.com/ngtnysk/items/9b23dd2051e3b737254d",
+                "https://qiita.com/ngtnysk/items/551fd63d818388c3f951",
+                "https://qiita.com/ngtnysk/items/b780d34b1096826888cc",
+                "https://qiita.com/ngtnysk/items/aa56619189b4beab5a00",
+                "https://qiita.com/ngtnysk/items/0ab68b8a6ba8228d92a6",
+                "https://qiita.com/ngtnysk/items/f2bf834201f7d2662ab5",
+                "https://qiita.com/ngtnysk/items/70ca0d0a1126256896af",
+                "https://qiita.com/ngtnysk/items/0b6aa41dee1f00e52eff",
+                "https://zenn.dev/saku2323/articles/about-way-of-unvisualize",
+                "https://qiita.com/ngtnysk/items/c0c21ad8b5cc3f9edc50",
+                "https://qiita.com/ngtnysk/items/26fea0fe804efa718e15",
+                "https://qiita.com/ngtnysk/items/1677969fc259b79cfb8e",
+                "https://zenn.dev/saku2323/articles/dd304b2973c5c4",
+                "https://qiita.com/ngtnysk/items/7ce334bc7518db557a05",
+                "https://qiita.com/ngtnysk/items/117e518e3851e495f080",
+                "https://qiita.com/ngtnysk/items/25a3d209854956948653",
+                "https://qiita.com/ngtnysk/items/93d22c3dfbc9211853f1",
+                "https://qiita.com/ngtnysk/items/efd5e741817ecbafcced",
+                "/blog/what-is-my-tech-stack",
+                "/blog/getting-started-blog",
+                "/blog/ai-agents-2025-2026",
+                "/blog/primer-of-hyperframes",
+                "/blog/learn-cachedir-astro",
+                "/blog/astro-island-prefetch"
+              ]
+            }
+          ]
+        },
+        {
+          "query": "mise",
+          "runs": [
+            {
+              "ms": 9.799999982118607,
+              "results": [
+                "/blog/mise-2026-9-features-note",
+                "/blog/primer-of-hyperframes",
+                "/blog/astro-docs-translation-beginner"
+              ]
+            },
+            {
+              "ms": 9.100000023841858,
+              "results": [
+                "/blog/mise-2026-9-features-note",
+                "/blog/primer-of-hyperframes",
+                "/blog/astro-docs-translation-beginner"
+              ]
+            },
+            {
+              "ms": 9.199999988079071,
+              "results": [
+                "/blog/mise-2026-9-features-note",
+                "/blog/primer-of-hyperframes",
+                "/blog/astro-docs-translation-beginner"
+              ]
+            }
+          ]
+        },
+        {
+          "query": "Lukurauha",
+          "runs": [
+            {
+              "ms": 16.099999994039536,
+              "results": ["/blog/lukurauha", "/blog/july-diary-2026"]
+            },
+            {
+              "ms": 16.5,
+              "results": ["/blog/lukurauha", "/blog/july-diary-2026"]
+            },
+            {
+              "ms": 16,
+              "results": ["/blog/lukurauha", "/blog/july-diary-2026"]
+            }
+          ]
+        },
+        {
+          "query": "ルーティング",
+          "runs": [
+            {
+              "ms": 13,
+              "results": [
+                "https://zenn.dev/saku2323/articles/about-astro-loading-viewtransition",
+                "/blog/july-diary-2026",
+                "/blog/january-diary-2026-2",
+                "/blog/strangler-fig-application-note",
+                "/blog/vite-plus-note",
+                "/blog/getting-started-blog",
+                "/blog/astro-route-caching-note",
+                "/blog/blog-operation-in-ai-era",
+                "/blog/astro-docs-translation-beginner",
+                "/blog/astro-build-blog-integration",
+                "/blog/what-is-my-tech-stack",
+                "/blog/learn-cachedir-astro",
+                "/blog/astro-route-caching-note-2"
+              ]
+            },
+            {
+              "ms": 13.100000023841858,
+              "results": [
+                "https://zenn.dev/saku2323/articles/about-astro-loading-viewtransition",
+                "/blog/july-diary-2026",
+                "/blog/january-diary-2026-2",
+                "/blog/strangler-fig-application-note",
+                "/blog/vite-plus-note",
+                "/blog/getting-started-blog",
+                "/blog/astro-route-caching-note",
+                "/blog/blog-operation-in-ai-era",
+                "/blog/astro-docs-translation-beginner",
+                "/blog/astro-build-blog-integration",
+                "/blog/what-is-my-tech-stack",
+                "/blog/learn-cachedir-astro",
+                "/blog/astro-route-caching-note-2"
+              ]
+            },
+            {
+              "ms": 12.900000005960464,
+              "results": [
+                "https://zenn.dev/saku2323/articles/about-astro-loading-viewtransition",
+                "/blog/july-diary-2026",
+                "/blog/january-diary-2026-2",
+                "/blog/strangler-fig-application-note",
+                "/blog/vite-plus-note",
+                "/blog/getting-started-blog",
+                "/blog/astro-route-caching-note",
+                "/blog/blog-operation-in-ai-era",
+                "/blog/astro-docs-translation-beginner",
+                "/blog/astro-build-blog-integration",
+                "/blog/what-is-my-tech-stack",
+                "/blog/learn-cachedir-astro",
+                "/blog/astro-route-caching-note-2"
+              ]
+            }
+          ]
+        },
+        {
+          "query": "Astro のページを事前に読み込む方法",
+          "runs": [
+            {
+              "ms": 34.5,
+              "results": [
+                "/blog/astro-build-blog-integration",
+                "/blog/astro-docs-translation-beginner",
+                "/blog/astro-nextjs-prefetch-comparison",
+                "/blog/astro-517-update-note",
+                "/blog/about-improve-astro-encode",
+                "/blog/astro-docs-idea-discussion",
+                "/blog/learn-cachedir-astro",
+                "/blog/astro-island-prefetch",
+                "https://zenn.dev/saku2323/articles/about-astro-prefetch",
+                "https://zenn.dev/saku2323/articles/about-astro-compile",
+                "/blog/astro-route-caching-note",
+                "/blog/astro-route-caching-note-2",
+                "/blog/about-ast",
+                "/blog/getting-started-blog",
+                "https://qiita.com/ngtnysk/items/1677969fc259b79cfb8e",
+                "https://zenn.dev/saku2323/articles/about-astro-loading-viewtransition",
+                "/blog/what-is-my-tech-stack",
+                "/blog/blog-operation-in-ai-era",
+                "/blog/strangler-fig-application-note",
+                "/blog/february-diary-2026",
+                "https://zenn.dev/saku2323/articles/about-speculation-api",
+                "https://qiita.com/ngtnysk/items/7ce334bc7518db557a05",
+                "https://qiita.com/ngtnysk/items/25a3d209854956948653",
+                "https://qiita.com/ngtnysk/items/77cfb94e9b0eda5bb846",
+                "https://qiita.com/ngtnysk/items/93d22c3dfbc9211853f1",
+                "https://qiita.com/ngtnysk/items/70ca0d0a1126256896af",
+                "https://qiita.com/ngtnysk/items/9b23dd2051e3b737254d",
+                "https://qiita.com/ngtnysk/items/d53ca84e66f02cf6ef22",
+                "https://qiita.com/ngtnysk/items/efd5e741817ecbafcced",
+                "https://qiita.com/ngtnysk/items/f5aaee56860f139852b1",
+                "/blog/vite-plus-note",
+                "/blog/web-worker-basics",
+                "/blog/vite-plus-commands",
+                "/blog/revalidatetag-path",
+                "/blog/mise-2026-9-features-note",
+                "/blog/introduction-oxc",
+                "/blog/primer-of-hyperframes",
+                "/blog/why-return-to-basics",
+                "/blog/january-diary-2026",
+                "/blog/january-diary-2026-2",
+                "/blog/july-diary-2026",
+                "/blog/january-diary-2026-3",
+                "/blog/ai-agents-2025-2026"
+              ]
+            },
+            {
+              "ms": 35.39999997615814,
+              "results": [
+                "/blog/astro-build-blog-integration",
+                "/blog/astro-docs-translation-beginner",
+                "/blog/astro-nextjs-prefetch-comparison",
+                "/blog/astro-517-update-note",
+                "/blog/about-improve-astro-encode",
+                "/blog/astro-docs-idea-discussion",
+                "/blog/learn-cachedir-astro",
+                "/blog/astro-island-prefetch",
+                "https://zenn.dev/saku2323/articles/about-astro-prefetch",
+                "https://zenn.dev/saku2323/articles/about-astro-compile",
+                "/blog/astro-route-caching-note",
+                "/blog/astro-route-caching-note-2",
+                "/blog/about-ast",
+                "/blog/getting-started-blog",
+                "https://qiita.com/ngtnysk/items/1677969fc259b79cfb8e",
+                "https://zenn.dev/saku2323/articles/about-astro-loading-viewtransition",
+                "/blog/what-is-my-tech-stack",
+                "/blog/blog-operation-in-ai-era",
+                "/blog/strangler-fig-application-note",
+                "/blog/february-diary-2026",
+                "https://zenn.dev/saku2323/articles/about-speculation-api",
+                "https://qiita.com/ngtnysk/items/7ce334bc7518db557a05",
+                "https://qiita.com/ngtnysk/items/25a3d209854956948653",
+                "https://qiita.com/ngtnysk/items/77cfb94e9b0eda5bb846",
+                "https://qiita.com/ngtnysk/items/93d22c3dfbc9211853f1",
+                "https://qiita.com/ngtnysk/items/70ca0d0a1126256896af",
+                "https://qiita.com/ngtnysk/items/9b23dd2051e3b737254d",
+                "https://qiita.com/ngtnysk/items/d53ca84e66f02cf6ef22",
+                "https://qiita.com/ngtnysk/items/efd5e741817ecbafcced",
+                "https://qiita.com/ngtnysk/items/f5aaee56860f139852b1",
+                "/blog/vite-plus-note",
+                "/blog/web-worker-basics",
+                "/blog/vite-plus-commands",
+                "/blog/revalidatetag-path",
+                "/blog/mise-2026-9-features-note",
+                "/blog/introduction-oxc",
+                "/blog/primer-of-hyperframes",
+                "/blog/why-return-to-basics",
+                "/blog/january-diary-2026",
+                "/blog/january-diary-2026-2",
+                "/blog/july-diary-2026",
+                "/blog/january-diary-2026-3",
+                "/blog/ai-agents-2025-2026"
+              ]
+            },
+            {
+              "ms": 34.79999998211861,
+              "results": [
+                "/blog/astro-build-blog-integration",
+                "/blog/astro-docs-translation-beginner",
+                "/blog/astro-nextjs-prefetch-comparison",
+                "/blog/astro-517-update-note",
+                "/blog/about-improve-astro-encode",
+                "/blog/astro-docs-idea-discussion",
+                "/blog/learn-cachedir-astro",
+                "/blog/astro-island-prefetch",
+                "https://zenn.dev/saku2323/articles/about-astro-prefetch",
+                "https://zenn.dev/saku2323/articles/about-astro-compile",
+                "/blog/astro-route-caching-note",
+                "/blog/astro-route-caching-note-2",
+                "/blog/about-ast",
+                "/blog/getting-started-blog",
+                "https://qiita.com/ngtnysk/items/1677969fc259b79cfb8e",
+                "https://zenn.dev/saku2323/articles/about-astro-loading-viewtransition",
+                "/blog/what-is-my-tech-stack",
+                "/blog/blog-operation-in-ai-era",
+                "/blog/strangler-fig-application-note",
+                "/blog/february-diary-2026",
+                "https://zenn.dev/saku2323/articles/about-speculation-api",
+                "https://qiita.com/ngtnysk/items/7ce334bc7518db557a05",
+                "https://qiita.com/ngtnysk/items/25a3d209854956948653",
+                "https://qiita.com/ngtnysk/items/77cfb94e9b0eda5bb846",
+                "https://qiita.com/ngtnysk/items/93d22c3dfbc9211853f1",
+                "https://qiita.com/ngtnysk/items/70ca0d0a1126256896af",
+                "https://qiita.com/ngtnysk/items/9b23dd2051e3b737254d",
+                "https://qiita.com/ngtnysk/items/d53ca84e66f02cf6ef22",
+                "https://qiita.com/ngtnysk/items/efd5e741817ecbafcced",
+                "https://qiita.com/ngtnysk/items/f5aaee56860f139852b1",
+                "/blog/vite-plus-note",
+                "/blog/web-worker-basics",
+                "/blog/vite-plus-commands",
+                "/blog/revalidatetag-path",
+                "/blog/mise-2026-9-features-note",
+                "/blog/introduction-oxc",
+                "/blog/primer-of-hyperframes",
+                "/blog/why-return-to-basics",
+                "/blog/january-diary-2026",
+                "/blog/january-diary-2026-2",
+                "/blog/july-diary-2026",
+                "/blog/january-diary-2026-3",
+                "/blog/ai-agents-2025-2026"
+              ]
+            }
+          ]
+        },
+        {
+          "query": "ブログ記事を速くビルドしたい",
+          "runs": [
+            {
+              "ms": 27.30000001192093,
+              "results": []
+            },
+            {
+              "ms": 27.099999994039536,
+              "results": []
+            },
+            {
+              "ms": 26.900000005960464,
+              "results": []
+            }
+          ]
+        },
+        {
+          "query": "読書アプリを作った話",
+          "runs": [
+            {
+              "ms": 21.900000005960464,
+              "results": []
+            },
+            {
+              "ms": 22.299999982118607,
+              "results": []
+            },
+            {
+              "ms": 21.799999982118607,
+              "results": []
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "intentGold": {
+    "Astro のページを事前に読み込む方法": [
+      "/blog/astro-island-prefetch",
+      "/blog/astro-nextjs-prefetch-comparison",
+      "https://zenn.dev/saku2323/articles/about-astro-prefetch"
+    ],
+    "ブログ記事を速くビルドしたい": ["/blog/learn-cachedir-astro"],
+    "読書アプリを作った話": ["/blog/lukurauha"]
+  }
+}
