@@ -6,7 +6,6 @@ on:
     paths:
       - 'src/**'
       - 'scripts/**'
-      - 'uno.config.ts'
       - 'astro.config.mjs'
       - 'tsconfig.json'
       - 'package.json'
@@ -17,7 +16,6 @@ on:
     paths:
       - 'src/**'
       - 'scripts/**'
-      - 'uno.config.ts'
       - 'astro.config.mjs'
       - 'tsconfig.json'
       - 'package.json'

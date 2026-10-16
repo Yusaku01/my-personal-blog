@@ -1,7 +1,7 @@
 import type { Root } from 'hast';
 import { visit } from 'unist-util-visit';
 
-const iconClassName = ['ui-icon', 'ui-icon--undo', 'text-3.5', 'align-middle'];
+const iconClassName = ['ui-icon', 'ui-icon--undo', 'markdown-footnote-backref-icon'];
 
 const getClassList = (classValue: unknown): string[] => {
   if (Array.isArray(classValue)) {

@@ -8,14 +8,15 @@
 - プロフィールページ
 - コンタクトフォーム
 - レスポンシブデザイン
-- UnoCSSによるスタイリング
+- CSS Variablesとscoped CSSによるスタイリング
 - TypeScriptサポート
 
 ## 🚀 技術スタック
 
 - [Astro](https://astro.build/) - 静的サイトジェネレーター
 - [TypeScript](https://www.typescriptlang.org/) - 型安全な開発
-- [UnoCSS](https://unocss.dev/) - スタイリング
+- CSS Variables / scoped CSS - スタイリング
+- [Phosphor Icons](https://github.com/phosphor-icons/core) - UIアイコン（SVG / CSS mask）
 - React（一部コンポーネント）
 
 ## 📦 プロジェクト構造

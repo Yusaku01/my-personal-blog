@@ -2,7 +2,6 @@ import { defineConfig, fontProviders } from 'astro/config';
 import cloudflare from '@astrojs/cloudflare';
 import { unified } from '@astrojs/markdown-remark';
 import mdx from '@astrojs/mdx';
-import UnoCSS from 'unocss/astro';
 import sitemap from '@astrojs/sitemap';
 import { visualizer } from 'rollup-plugin-visualizer';
 import {
@@ -99,9 +98,6 @@ export default defineConfig({
   },
   // devToolbar: { enabled: false },
   integrations: [
-    UnoCSS({
-      injectReset: true, // CSSリセットを注入
-    }),
     mdx(),
     sitemap({
       i18n: {

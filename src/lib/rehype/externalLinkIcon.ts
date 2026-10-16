@@ -5,7 +5,7 @@ type ExternalLinkIconOptions = {
   site: string;
 };
 
-const iconClassName = ['ui-icon', 'ui-icon--external', 'text-3.5', 'ml-1', 'align-middle'];
+const iconClassName = ['ui-icon', 'ui-icon--external', 'markdown-external-link-icon'];
 
 const isExternalLink = (href: string | undefined, site: URL): boolean => {
   if (!href) {
