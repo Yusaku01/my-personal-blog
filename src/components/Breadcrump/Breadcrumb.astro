@@ -47,26 +47,20 @@ const isLocalizedHomePage = pathname === '/en' || pathname === '/en/';
 
 {
   !isHomePage && !isLocalizedHomePage && (
-    <nav
-      aria-label={locale === 'ja' ? 'パンくずリスト' : 'Breadcrumb'}
-      class="border-t border-gray-200 dark:border-gray-700 py-3 text-sm bg-white dark:bg-gray-900"
-    >
-      <div class="container-lg mx-auto px-4">
-        <ol class="flex flex-wrap items-center gap-2">
+    <nav aria-label={locale === 'ja' ? 'パンくずリスト' : 'Breadcrumb'} class="breadcrumb">
+      <div class="breadcrumb__container">
+        <ol class="breadcrumb__list">
           {breadcrumbItems.map((item, index) => (
-            <li class="flex items-center">
-              {index > 0 && <span class="mx-2 text-gray-500 dark:text-gray-400">＞</span>}
+            <li class="breadcrumb__item">
+              {index > 0 && <span class="breadcrumb__separator">＞</span>}
               {index === breadcrumbItems.length - 1 ? (
-                <span class="text-gray-700 dark:text-gray-300" aria-current="page">
+                <span class="breadcrumb__current" aria-current="page">
                   {item.label}
                 </span>
               ) : (
-                <a
-                  href={item.path}
-                  class="inline-flex items-center text-gray-600 lg:hover:text-gray-900 dark:text-gray-400 dark:lg:hover:text-gray-200 lg:hover:underline transition-colors"
-                >
+                <a href={item.path} class="breadcrumb__link">
                   {item.path === localizedPath('/', locale) && (
-                    <span class="i-ic-home mr-1 text-base" aria-hidden="true" />
+                    <span class="breadcrumb__home-icon i-ic-home" aria-hidden="true" />
                   )}
                   {item.label}
                 </a>
@@ -78,3 +72,81 @@ const isLocalizedHomePage = pathname === '/en' || pathname === '/en/';
     </nav>
   )
 }
+
+<style>
+  .breadcrumb {
+    border-top: 1px solid var(--color-section-border);
+    border-color: var(--color-section-border);
+    background-color: rgb(255 255 255);
+    padding-block: 0.75rem;
+    font-size: 0.875rem;
+    line-height: 1.25rem;
+  }
+
+  :global(html.dark) .breadcrumb {
+    background-color: rgb(17 24 39);
+  }
+
+  .breadcrumb__container {
+    max-width: 1132px;
+    margin-inline: auto;
+    padding-inline: 1rem;
+  }
+
+  .breadcrumb__list {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .breadcrumb__item {
+    display: flex;
+    align-items: center;
+  }
+
+  .breadcrumb__separator {
+    margin-inline: 0.5rem;
+    color: rgb(107 114 128);
+  }
+
+  :global(html.dark) .breadcrumb__separator {
+    color: rgb(156 163 175);
+  }
+
+  .breadcrumb__current {
+    color: rgb(55 65 81);
+  }
+
+  :global(html.dark) .breadcrumb__current {
+    color: rgb(209 213 219);
+  }
+
+  .breadcrumb__link {
+    display: inline-flex;
+    align-items: center;
+    color: rgb(75 85 99);
+    transition: color 150ms cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  :global(html.dark) .breadcrumb__link {
+    color: rgb(156 163 175);
+  }
+
+  .breadcrumb__home-icon {
+    margin-right: 0.25rem;
+    font-size: 1rem;
+    line-height: 1.5rem;
+  }
+
+  @media (min-width: 1024px) {
+    .breadcrumb__link:hover {
+      color: rgb(17 24 39);
+      text-decoration-line: underline;
+    }
+
+    :global(html.dark) .breadcrumb__link:hover {
+      color: rgb(229 231 235);
+    }
+  }
+</style>
