@@ -47,7 +47,7 @@ const primaryThumbnailHref =
     )
   }
   <HeroSection title="BLOG" />
-  <div class="container-lg container-lg py-14">
+  <div class="blog-list-page">
     <BlogControls
       posts={filteredPosts}
       currentPath={Astro.url.pathname}
@@ -56,3 +56,11 @@ const primaryThumbnailHref =
     />
   </div>
 </Layout>
+
+<style>
+  .blog-list-page {
+    margin-inline: auto;
+    max-width: 1132px;
+    padding: 3.5rem 1rem;
+  }
+</style>
