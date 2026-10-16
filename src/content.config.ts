@@ -67,7 +67,6 @@ const profile = defineCollection({
         url: z.string(),
         iconLight: z.string(),
         iconDark: z.string(),
-        class: z.string().optional(),
       })
     ),
   }),
