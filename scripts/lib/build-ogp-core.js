@@ -220,7 +220,7 @@ export function createOgpElement({ title, isBasicPage }, { parser = defaultParse
   };
 
   const titleStyle = {
-    fontSize: isBasicPage ? '58px' : '50px',
+    fontSize: isBasicPage ? '58px' : '52px',
     fontWeight: 900,
     lineHeight: 1.3,
     textAlign: isBasicPage ? 'center' : 'left',
