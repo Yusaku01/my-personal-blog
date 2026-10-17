@@ -7,13 +7,23 @@ image: '../../../assets/images/blog/common/image_thumnail.png'
 tags: ['Astro', 'UnoCSS', 'CSS', '個人開発']
 ---
 
-このブログからUnoCSSを外して、AstroのScoped CSSと通常のCSSでスタイルを管理する構成にしました。なぜ入れて、なぜ外したのかと、移行の手順を残しておきます。
+このブログから[UnoCSS](https://unocss.dev/)を外して、AstroのScoped CSSと通常のCSSでスタイルを管理する構成にしました。なぜ入れて、なぜ外したのかと、移行の手順を残しておきます。
 
 ## UnoCSSを入れたときの動機
 
-正直なところ、Tailwind CSS全盛の中で逆張りしたかった、という気持ちがありました。
+正直なところ、[Tailwind CSS](https://tailwindcss.com/)全盛の中で逆張りしたかった、という気持ちがありました。
 
-それに、当時はUnoCSSのJITの仕組みがTailwind CSSより効率よく、画期的に思えました。より小さく導入できて、運用もしやすそうだと感じていたのも理由です。あくまで、当時の私の印象です。
+それに、当時はUnoCSSのオンデマンドなCSS生成がTailwind CSSより効率よく、画期的に思えました。より小さく導入できて、運用もしやすそうだと感じていたのも理由です。あくまで、当時の私の印象です。
+
+### JITとコンセプトの違い
+
+必要なCSSをオンデマンドで生成する考え方は、両者に共通しています。Tailwind CSSも、[v3.0でJITエンジンが標準になっています](https://v3.tailwindcss.com/docs/upgrade-guide#migrating-to-the-jit-engine)。[^jit]
+
+設計として、Tailwind CSSはユーティリティクラスを組み合わせてデザインするCSSフレームワークです。[色や余白などの値をテーマとして管理し、それに対応するクラスを使えます](https://tailwindcss.com/docs/theme)。[独自のユーティリティも追加できます](https://tailwindcss.com/docs/adding-custom-styles#adding-custom-utilities)。
+
+一方、[UnoCSSはルールやプリセットを組み合わせられるCSS生成エンジンです](https://unocss.dev/guide/)。コアに特定のユーティリティ一式を固定せず、検出したクラス名を文字列や正規表現のルールに照合してCSSを作ります。このルール群などをまとめたものがプリセットです。このブログでも、`presetWind3`、本文装飾用、アイコン用のプリセットを組み合わせていました。
+
+なお、Tailwind CSSも[v4.0でエンジンが刷新されています](https://tailwindcss.com/blog/tailwindcss-v4)。当時の印象から現在の速度やサイズの優劣までは判断できず、比較するなら条件をそろえて計測する必要があります。
 
 ## 今回、外すことにした理由
 
@@ -54,3 +64,5 @@ tags: ['Astro', 'UnoCSS', 'CSS', '個人開発']
 以上。なんかスッキリしたのでメモを書き残しました。読んで頂いたちゃんちゃん方は本当にありがとうございます。
 
 ちゃんちゃん。
+
+[^jit]: JITはJust-in-Timeの略です。JITコンパイルはJust-in-Time compilationと表記します。ここでは、[テンプレート内のクラスに応じて必要なCSSを生成する方式](https://tailwindcss.com/blog/just-in-time-the-next-generation-of-tailwind-css)を指します。このブログではビルド時に生成しており、閲覧時にブラウザでCSSを生成する構成ではありません。
