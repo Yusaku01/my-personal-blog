@@ -44,14 +44,21 @@ HTMLの仕様ではShared Workerも定義されています。また、Service W
 
 ## 使用するかどうかの判断基準
 
-```mermaid
-flowchart TD
-    A{"処理中にUIが固まるか"}
-    A -->|"いいえ"| B["まず通常のJavaScriptでよい"]
-    A -->|"はい"| C{"DOM操作が必要か"}
-    C -->|"はい"| D["計算部分だけWorkerへ分離"]
-    C -->|"いいえ"| E["Web Workerの有力候補"]
-```
+<flow-diagram label="Web Workerを使うかどうかの判断" layout="vertical" legend="hidden" autoplay>
+  <flow-node name="freeze" shape="decision">
+    処理中にUIが固まるか
+  </flow-node>
+  <flow-node name="normal">まず通常のJavaScriptでよい</flow-node>
+  <flow-node name="dom" shape="decision">
+    DOM操作が必要か
+  </flow-node>
+  <flow-node name="split">計算部分だけWorkerへ分離</flow-node>
+  <flow-node name="worker">Web Workerの有力候補</flow-node>
+  <flow-connection from="freeze" to="normal" label="いいえ" />
+  <flow-connection from="freeze" to="dom" label="はい" />
+  <flow-connection from="dom" to="split" label="はい" />
+  <flow-connection from="dom" to="worker" label="いいえ" />
+</flow-diagram>
 
 ## Web Workerはどこに作られているのか
 
@@ -63,15 +70,20 @@ Web WorkerはJavaScriptで作られたライブラリではなく、HTML Standar
 
 ChromeのDedicated Workerでは、起動元のページと同じRenderer Process内にWorker Threadが作られます。
 
-```mermaid
-flowchart TB
-    subgraph Chrome["Chrome"]
-        subgraph Renderer["Renderer Process"]
-            Main["Main Thread：ページ・DOM・UI"]
-            Worker["Worker Thread：WorkerのJavaScript"]
-            Main <-->|"メッセージ通信"| Worker
-        end
-    end
-```
+<flow-diagram
+  label="ChromeのRenderer Process内でのWeb Workerの配置"
+  layout="vertical"
+  legend="hidden"
+  autoplay
+>
+  <flow-group name="chrome" label="Chrome">
+    <flow-group name="renderer" label="Renderer Process">
+      <flow-node name="main">Main Thread：ページ・DOM・UI</flow-node>
+      <flow-node name="worker">Worker Thread：WorkerのJavaScript</flow-node>
+      <flow-connection from="main" to="worker" label="メッセージ通信" />
+      <flow-connection from="worker" to="main" label="メッセージ通信" />
+    </flow-group>
+  </flow-group>
+</flow-diagram>
 
 Web Workerの仕様については、[HTML StandardのWeb Workers](https://html.spec.whatwg.org/multipage/workers.html)で確認できます。Chrome内部のイメージについては、Chromiumの[WorkerとWorkletの実装資料](https://chromium.googlesource.com/chromium/src/+/main/third_party/blink/renderer/core/workers/README.md)を参考にしました。
