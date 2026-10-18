@@ -67,9 +67,13 @@ img {
   gap: var(--cards-gap-compact);
 }
 
-/* Restore the slotted node border overridden by the document's CSS reset. */
-.prose flow-diagram > flow-node {
-  border: 1px solid var(--flow-node-border, #fff);
+.prose flow-diagram {
+  margin-block: 1.5rem;
+}
+
+/* Node surfaces own their borders; group hosts still need to override the reset. */
+.prose flow-diagram flow-group {
+  border: 1px solid var(--flow-group-border, rgb(255 255 255 / 0.4));
 }
 
 .prose .rlc-container {

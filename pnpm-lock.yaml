@@ -188,8 +188,8 @@ importers:
         specifier: 0.35.4
         version: 0.35.4(@types/node@25.0.10)
       somenflow:
-        specifier: 0.1.0-alpha.3
-        version: 0.1.0-alpha.3
+        specifier: 0.1.0-alpha.5
+        version: 0.1.0-alpha.5
       unist-util-visit:
         specifier: 5.1.0
         version: 5.1.0
@@ -5687,8 +5687,8 @@ packages:
     resolution: {integrity: sha512-j7WyPdf0CJoutMzMoPLF/bVXHtKZIT9Rb4eGeEbWw8X2t5oirjPgpL+OpaENZrILYaXqYwnVH+qgUwVbl+pUJQ==}
     engines: {node: '>= 18'}
 
-  somenflow@0.1.0-alpha.3:
-    resolution: {integrity: sha512-6NTMzSIOimv9V467rsyWIknPVlCyswANLgYaqFpZQXQAYh7NdZ6HX6XyLSSCj/0P0+GLgCzcXxWAvfHjZzos4w==}
+  somenflow@0.1.0-alpha.5:
+    resolution: {integrity: sha512-JmgdzX5AbfZHXTvasY8AHQ7rmOXXo8vjqluazYNXsjGEZdpB9ZcnHrjK+ycHmz8Ze4ROPS5t99xUF3nxjmZUyg==}
     engines: {node: '>=22'}
     hasBin: true
 
@@ -12931,7 +12931,7 @@ snapshots:
 
   smol-toml@1.9.1: {}
 
-  somenflow@0.1.0-alpha.3: {}
+  somenflow@0.1.0-alpha.5: {}
 
   source-map-js@1.2.1: {}
 
