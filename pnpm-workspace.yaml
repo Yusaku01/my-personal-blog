@@ -3,7 +3,7 @@ packages:
 
 minimumReleaseAge: 4320
 minimumReleaseAgeExclude:
-  - 'somenflow@0.1.0-alpha.3'
+  - 'somenflow@0.1.0-alpha.5'
   - 'astro@7.4.0'
   - '@astrojs/cloudflare@14.4.0'
   - '@astrojs/internal-helpers@0.13.0'
