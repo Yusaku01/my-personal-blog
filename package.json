@@ -51,7 +51,7 @@
     "remark-directive": "4.0.0",
     "sanitize-filename": "1.6.4",
     "satori": "0.26.0",
-    "sharp": "0.35.4",
+    "sharp": "0.35.5",
     "somenflow": "0.1.0-alpha.5",
     "unist-util-visit": "5.1.0"
   },
