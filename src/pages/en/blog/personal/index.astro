@@ -4,13 +4,12 @@ import { getImage } from 'astro:assets';
 import Layout from '../../../../layouts/Layout.astro';
 import BlogControls from '../../../../components/Blog/BlogControls.astro';
 import HeroSection from '../../../../components/Hero/HeroSection.astro';
-import { getAllBlogPosts } from '../../../../lib/blog/posts';
+import { getPersonalBlogPosts } from '../../../../lib/blog/posts';
 
 export const transition = { name: 'fade' };
 
 const locale = 'en';
-const allPosts = await getAllBlogPosts(locale);
-const filteredPosts = allPosts.filter((post) => post.source === 'personal');
+const filteredPosts = await getPersonalBlogPosts(locale);
 const primaryThumbnail = filteredPosts.find((post) => Boolean(post.thumbnail))?.thumbnail;
 const primaryThumbnailImage = primaryThumbnail
   ? await getImage({

@@ -60,14 +60,11 @@ export async function getBlogEntriesForLocale(
   return [...resolvedPosts, ...localeOnlyPosts];
 }
 
-export async function getAllBlogPosts(locale: Locale = 'ja'): Promise<SearchablePost[]> {
+export async function getPersonalBlogPosts(locale: Locale = 'ja'): Promise<SearchablePost[]> {
   const posts = await getBlogEntriesForLocale(locale);
-  const qiitaPosts = await getQiitaPosts('ngtnysk');
-  const zennPosts = await getZennPosts('saku2323');
-  const zennScraps = await getZennScraps('saku2323');
-
-  const allPosts: SearchablePost[] = [
-    ...posts.map((post) => ({
+  return posts
+    .sort((a, b) => b.data.publishDate.getTime() - a.data.publishDate.getTime())
+    .map((post) => ({
       title: post.data.title,
       url: localizedPath(`/blog/${getBlogEntrySlug(post)}`, locale),
       publishDate: post.data.publishDate,
@@ -83,7 +80,19 @@ export async function getAllBlogPosts(locale: Locale = 'ja'): Promise<Searchable
         excerpt: post.data.description,
         body: post.body,
       }),
-    })),
+    }));
+}
+
+export async function getAllBlogPosts(locale: Locale = 'ja'): Promise<SearchablePost[]> {
+  const [personalPosts, qiitaPosts, zennPosts, zennScraps] = await Promise.all([
+    getPersonalBlogPosts(locale),
+    getQiitaPosts('ngtnysk'),
+    getZennPosts('saku2323'),
+    getZennScraps('saku2323'),
+  ]);
+
+  const allPosts: SearchablePost[] = [
+    ...personalPosts,
     ...qiitaPosts.map((post) => ({
       ...post,
       searchText: buildBlogSearchText({
