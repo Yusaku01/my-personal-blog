@@ -9,6 +9,10 @@ const createDependencies = () => {
       calls.push('verifyTurnstile');
       return true;
     }),
+    checkRateLimit: vi.fn(async () => {
+      calls.push('checkRateLimit');
+      return true;
+    }),
     repository: {
       createSubmission: vi.fn(async () => {
         calls.push('createSubmission');
@@ -75,10 +79,55 @@ describe('submitContactSubmission', () => {
 
     expect(calls).toEqual([
       'verifyTurnstile',
+      'checkRateLimit',
       'createSubmission',
       'sendNotification',
       'updateDeliveryStatus:delivered',
     ]);
+  });
+
+  it('does not persist or notify when the contact rate limit is exceeded', async () => {
+    const { dependencies } = createDependencies();
+    dependencies.checkRateLimit.mockResolvedValue(false);
+
+    await expect(
+      submitContactSubmission(
+        {
+          name: 'Saku',
+          email: 'saku@example.com',
+          subject: 'Hello',
+          message: 'World',
+          turnstileToken: 'token',
+          remoteIp: '203.0.113.1',
+        },
+        dependencies
+      )
+    ).rejects.toMatchObject({ code: 'RATE_LIMITED' } satisfies Partial<ContactSubmissionError>);
+
+    expect(dependencies.repository.createSubmission).not.toHaveBeenCalled();
+    expect(dependencies.notifier.sendNotification).not.toHaveBeenCalled();
+  });
+
+  it('does not persist or notify when the rate limiter fails', async () => {
+    const { dependencies } = createDependencies();
+    dependencies.checkRateLimit.mockRejectedValue(new Error('rate limiter unavailable'));
+
+    await expect(
+      submitContactSubmission(
+        {
+          name: 'Saku',
+          email: 'saku@example.com',
+          subject: 'Hello',
+          message: 'World',
+          turnstileToken: 'token',
+          remoteIp: '203.0.113.1',
+        },
+        dependencies
+      )
+    ).rejects.toThrow('rate limiter unavailable');
+
+    expect(dependencies.repository.createSubmission).not.toHaveBeenCalled();
+    expect(dependencies.notifier.sendNotification).not.toHaveBeenCalled();
   });
 
   it('keeps the record and marks failure when email delivery fails', async () => {

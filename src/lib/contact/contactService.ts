@@ -2,16 +2,22 @@ import type {
   ContactNotifier,
   ContactSubmissionInput,
   ContactSubmissionRepository,
+  ContactRateLimiter,
   TurnstileVerifier,
 } from './types';
 
 type ContactSubmissionDependencies = {
   verifyTurnstile: TurnstileVerifier;
+  checkRateLimit: ContactRateLimiter;
   repository: ContactSubmissionRepository;
   notifier: ContactNotifier;
 };
 
-type ContactSubmissionErrorCode = 'TURNSTILE_FAILED' | 'PERSIST_FAILED' | 'DELIVERY_FAILED';
+type ContactSubmissionErrorCode =
+  | 'TURNSTILE_FAILED'
+  | 'RATE_LIMITED'
+  | 'PERSIST_FAILED'
+  | 'DELIVERY_FAILED';
 
 export class ContactSubmissionError extends Error {
   code: ContactSubmissionErrorCode;
@@ -31,13 +37,21 @@ export class ContactSubmissionError extends Error {
 
 export const submitContactSubmission = async (
   input: ContactSubmissionInput,
-  { verifyTurnstile, repository, notifier }: ContactSubmissionDependencies
+  { verifyTurnstile, checkRateLimit, repository, notifier }: ContactSubmissionDependencies
 ) => {
   const isTurnstileValid = await verifyTurnstile(input.turnstileToken, input.remoteIp);
   if (!isTurnstileValid) {
     throw new ContactSubmissionError(
       'TURNSTILE_FAILED',
       'Turnstile の検証に失敗しました。時間をおいて再度お試しください。'
+    );
+  }
+
+  const isWithinRateLimit = await checkRateLimit(input.remoteIp);
+  if (!isWithinRateLimit) {
+    throw new ContactSubmissionError(
+      'RATE_LIMITED',
+      '送信回数の上限に達しました。時間をおいて再度お試しください。'
     );
   }
 

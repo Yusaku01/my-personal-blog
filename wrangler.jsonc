@@ -30,6 +30,16 @@
       "database_id": "7cfb9a52-694f-4c2b-aa06-0052e6080186",
     },
   ],
+  "ratelimits": [
+    {
+      "name": "CONTACT_RATE_LIMIT",
+      "namespace_id": "20261031",
+      "simple": {
+        "limit": 3,
+        "period": 60,
+      },
+    },
+  ],
   "send_email": [
     {
       "name": "EMAIL",

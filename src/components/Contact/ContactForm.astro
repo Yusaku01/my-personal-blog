@@ -18,6 +18,7 @@ type ContactFormText = {
   retry: string;
   turnstileMissing: string;
   genericError: string;
+  rateLimited: string;
 };
 
 type Props = {
@@ -47,6 +48,7 @@ const text: Record<Locale, ContactFormText> = {
     retry: '入力内容を確認してください。',
     turnstileMissing: 'Turnstile のサイトキーが未設定です。設定後に送信を有効化してください。',
     genericError: '送信に失敗しました。時間をおいて再度お試しください。',
+    rateLimited: '送信回数の上限に達しました。時間をおいて再度お試しください。',
   },
   en: {
     intro: 'If you have a question or inquiry, please use the form below.',
@@ -65,6 +67,7 @@ const text: Record<Locale, ContactFormText> = {
     turnstileMissing:
       'Turnstile site key is not configured. Submissions will be enabled after setup.',
     genericError: 'Could not send your message. Please try again later.',
+    rateLimited: 'You have sent too many messages. Please try again later.',
   },
 };
 
@@ -78,7 +81,10 @@ const values = failedSubmission?.values ?? {
   message: '',
 };
 const fieldErrors = failedSubmission?.fieldErrors ?? {};
-const formError = failedSubmission?.message ?? (result?.error ? t.genericError : null);
+const formError =
+  failedSubmission?.code === 'RATE_LIMITED'
+    ? t.rateLimited
+    : (failedSubmission?.message ?? (result?.error ? t.genericError : null));
 
 const fields = {
   name: {

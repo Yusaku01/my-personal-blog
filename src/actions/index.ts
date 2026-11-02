@@ -5,6 +5,7 @@ import { submitContactSubmission } from '../lib/contact/contactService';
 import { createCloudflareEmailNotifier } from '../lib/contact/cloudflareEmailNotifier';
 import { createD1ContactSubmissionRepository } from '../lib/contact/d1Repository';
 import { createTurnstileVerifier } from '../lib/contact/turnstile';
+import { createContactRateLimiter } from '../lib/contact/rateLimit';
 import type { ContactRuntimeEnv } from '../lib/contact/types';
 
 const isContactRuntimeEnv = (
@@ -12,6 +13,7 @@ const isContactRuntimeEnv = (
 ): runtimeEnv is ContactRuntimeEnv =>
   Boolean(
     runtimeEnv.CONTACT_DB &&
+    runtimeEnv.CONTACT_RATE_LIMIT &&
     runtimeEnv.EMAIL &&
     runtimeEnv.CONTACT_TO_EMAIL &&
     runtimeEnv.CONTACT_FROM_EMAIL &&
@@ -39,6 +41,7 @@ export const server = {
             verifyTurnstile: createTurnstileVerifier({
               secretKey: runtimeEnv.TURNSTILE_SECRET_KEY,
             }),
+            checkRateLimit: createContactRateLimiter(runtimeEnv.CONTACT_RATE_LIMIT),
             repository: createD1ContactSubmissionRepository(runtimeEnv.CONTACT_DB),
             notifier: createCloudflareEmailNotifier({
               email: runtimeEnv.EMAIL,
