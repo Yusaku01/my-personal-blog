@@ -50,6 +50,9 @@ jobs:
           cache: 'pnpm'
 
       - name: Install dependencies
+        env:
+          # Lint and formatting do not need a browser binary.
+          PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD: '1'
         run: pnpm install --frozen-lockfile
 
       - name: Get changed files
