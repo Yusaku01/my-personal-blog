@@ -4,7 +4,7 @@ Astro・MDX・TypeScript で構築した個人ブログ / ポートフォリオ�
 
 ## 特徴
 
-- 日本語 / 英語のブログ記事（Markdown / MDX、脚注、Mermaid 図、リンクカード、コードのファイル名表示）
+- 日本語 / 英語のブログ記事（Markdown / MDX、脚注、リンクカード、コードのファイル名表示）
 - ブログ内検索、RSS、サイトマップ、OGP 画像の自動生成
 - プロフィールページと、Qiita / Zenn などの外部フィードを集めた Finds ページ
 - 問い合わせフォーム（Cloudflare Turnstile、D1 への保存、Email 通知、レート制限）
@@ -16,7 +16,7 @@ Astro・MDX・TypeScript で構築した個人ブログ / ポートフォリオ�
 - [Cloudflare Workers](https://developers.cloudflare.com/workers/)（D1・Email・Rate Limiting・Turnstile）
 - [Vitest](https://vitest.dev/) と Node の test runner によるテスト
 - ESLint・Prettier・textlint・knip による静的検査
-- [Mermaid](https://mermaid.js.org/)（ビルド時に SVG へ変換）、[Resvg](https://github.com/yisibl/resvg-js)（OGP 画像生成）
+- [Resvg](https://github.com/yisibl/resvg-js)（OGP 画像生成）
 
 Node と pnpm のバージョンは `mise.toml` と `package.json` の `packageManager` を参照してください。
 
@@ -73,42 +73,26 @@ pnpm run dev
 
 ## コマンド
 
-| コマンド                           | 説明                                                     |
-| :--------------------------------- | :------------------------------------------------------- |
-| `pnpm run dev`                     | 開発サーバーを起動（`localhost:4321`）                   |
-| `pnpm run build`                   | 本番用ビルドを生成（`./dist/`）                          |
-| `pnpm run preview`                 | ビルドしたサイトをプレビュー                             |
-| `pnpm run generate-ogp`            | OGP 画像を生成                                           |
-| `pnpm run build:with-ogp`          | OGP 画像を生成してからビルド                             |
-| `pnpm run build:cloudflare`        | Mermaid をビルド時描画に切り替え、OGP 付きでビルド       |
-| `pnpm run mermaid:install-browser` | Mermaid のビルド時描画に必要な Playwright browser を導入 |
-| `pnpm run lint`                    | ESLint                                                   |
-| `pnpm run astro check`             | Astro・型・コンテンツの検査                              |
-| `pnpm run lint:text:blog`          | ブログ記事の textlint                                    |
-| `pnpm run lint:deps`               | 未使用の依存・ファイルを knip で検査                     |
-| `pnpm run format:check`            | Prettier の整形確認                                      |
-| `pnpm run test`                    | Node のテストと Vitest を実行                            |
-| `pnpm run db:migrate:local`        | D1 のマイグレーションをローカルに適用                    |
-| `pnpm run db:migrate:remote`       | D1 のマイグレーションを本番に適用                        |
+| コマンド                     | 説明                                   |
+| :--------------------------- | :------------------------------------- |
+| `pnpm run dev`               | 開発サーバーを起動（`localhost:4321`） |
+| `pnpm run build`             | 本番用ビルドを生成（`./dist/`）        |
+| `pnpm run preview`           | ビルドしたサイトをプレビュー           |
+| `pnpm run generate-ogp`      | OGP 画像を生成                         |
+| `pnpm run build:with-ogp`    | OGP 画像を生成してからビルド           |
+| `pnpm run build:cloudflare`  | Cloudflare 向けに OGP 付きでビルド     |
+| `pnpm run lint`              | ESLint                                 |
+| `pnpm run astro check`       | Astro・型・コンテンツの検査            |
+| `pnpm run lint:text:blog`    | ブログ記事の textlint                  |
+| `pnpm run lint:deps`         | 未使用の依存・ファイルを knip で検査   |
+| `pnpm run format:check`      | Prettier の整形確認                    |
+| `pnpm run test`              | Node のテストと Vitest を実行          |
+| `pnpm run db:migrate:local`  | D1 のマイグレーションをローカルに適用  |
+| `pnpm run db:migrate:remote` | D1 のマイグレーションを本番に適用      |
 
 ## デプロイ
 
 Cloudflare Workers にデプロイします。Build command は `pnpm run build:cloudflare` です。`wrangler.jsonc` は `./dist/client` を静的アセットとして配信し、問い合わせ関連のパス（`/contact` と `/en/contact`）は Worker を先に実行します。問い合わせページは SSR（`prerender = false`）のままにしてください。
-
-## Mermaid 図
-
-`mermaid` のコードフェンスは、ビルド時に SVG へ変換されます。ダークモードでは `picture` 要素経由でダーク向けの SVG が使われます。
-
-````md
-```mermaid
-graph TD
-  A[Start] --> B{Build-time render?}
-  B -->|yes| C[SVG output]
-  B -->|no| D[Code block]
-```
-````
-
-`pnpm run build:cloudflare` は事前に Playwright browser を使う設定でビルドします。ローカルで browser が不足している場合は `pnpm run mermaid:install-browser` を実行してください。
 
 ## 記事の追加
 

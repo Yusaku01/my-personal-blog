@@ -55,7 +55,7 @@ pnpm audit --prod
 pnpm run test
 pnpm run lint
 pnpm run astro check
-ASTRO_MERMAID_STRATEGY=pre-mermaid pnpm run build
+pnpm run build
 pnpm run format:check
 git diff --check
 ```

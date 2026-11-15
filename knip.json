@@ -9,7 +9,6 @@
   "ignoreDependencies": [
     "@astrojs/check",
     "@fontsource/zen-kaku-gothic-new",
-    "@playwright/browser-chromium",
     "@typescript-eslint/.*",
     "@eslint/.*",
     "astro-eslint-parser",
