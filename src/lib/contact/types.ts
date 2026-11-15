@@ -35,6 +35,11 @@ export interface ContactNotifier {
 }
 
 export type TurnstileVerifier = (token: string, remoteIp?: string) => Promise<boolean>;
+export type ContactRateLimiter = (remoteIp?: string) => Promise<boolean>;
+
+export interface RateLimitBinding {
+  limit(input: { key: string }): Promise<{ success: boolean }>;
+}
 
 export type EmailAddress = string | { email: string; name?: string };
 
@@ -65,5 +70,6 @@ export type ContactRuntimeEnv = {
   CONTACT_TO_EMAIL: string;
   CONTACT_FROM_EMAIL: string;
   TURNSTILE_SECRET_KEY: string;
+  CONTACT_RATE_LIMIT: RateLimitBinding;
   PUBLIC_TURNSTILE_SITE_KEY?: string;
 };

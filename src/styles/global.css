@@ -1,3 +1,7 @@
+@import './reset.css';
+@import './typography.css';
+@import './icons.css';
+
 :root {
   --accent: 136, 58, 234;
   --accent-light: 224, 204, 250;
@@ -61,6 +65,15 @@ img {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(min(100%, var(--cards-min-compact)), 1fr));
   gap: var(--cards-gap-compact);
+}
+
+.prose flow-diagram {
+  margin-block: 1.5rem;
+}
+
+/* Node surfaces own their borders; group hosts still need to override the reset. */
+.prose flow-diagram flow-group {
+  border: 1px solid var(--flow-group-border, rgb(255 255 255 / 0.4));
 }
 
 .prose .rlc-container {
@@ -165,4 +178,86 @@ html.dark .prose .rlc-url-container {
   height: 100%;
   object-fit: cover;
   width: 100%;
+}
+
+.primary-link {
+  --primary-link-background: rgb(31 41 55);
+  --primary-link-color: rgb(255 255 255);
+  --primary-link-hover: rgb(55 65 81);
+  --primary-link-ring: rgb(107 114 128);
+  --primary-link-ring-offset: rgb(255 255 255);
+  background-color: var(--primary-link-background);
+  border-radius: 0.375rem;
+  color: var(--primary-link-color);
+  display: inline-block;
+  font-weight: 700;
+  letter-spacing: 0.025em;
+  padding: 0.75rem 1.5rem;
+  transition-property:
+    color, background-color, border-color, outline-color, text-decoration-color, fill, stroke;
+  transition-duration: 150ms;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.primary-link:focus {
+  outline: 2px solid transparent;
+  outline-offset: 2px;
+  box-shadow:
+    0 0 0 2px var(--primary-link-ring-offset),
+    0 0 0 4px var(--primary-link-ring);
+}
+
+html.dark .primary-link {
+  --primary-link-background: rgb(255 255 255);
+  --primary-link-color: rgb(17 24 39);
+  --primary-link-hover: rgb(209 213 219);
+  --primary-link-ring: rgb(209 213 219);
+  --primary-link-ring-offset: rgb(209 213 219);
+}
+
+@media (min-width: 1024px) {
+  .primary-link:hover {
+    background-color: var(--primary-link-hover);
+  }
+}
+
+.article-media {
+  width: 100%;
+  height: auto;
+}
+
+.article-comparison {
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: minmax(0, 1fr);
+}
+
+@media (min-width: 768px) {
+  .article-comparison {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+.markdown-external-link-icon,
+.markdown-footnote-backref-icon {
+  font-size: 0.875rem;
+  vertical-align: middle;
+}
+
+.markdown-external-link-icon {
+  margin-left: 0.25rem;
+}
+
+/* Markdown-generated footnote headings remain available to assistive technology. */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  /* eslint-disable-next-line css/use-baseline -- Preserves clipping for Markdown-generated screen-reader labels. */
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
 }

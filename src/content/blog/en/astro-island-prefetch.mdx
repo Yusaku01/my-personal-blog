@@ -22,22 +22,24 @@ I have a rough mental model of how they behave, but I wanted to organize it prop
 
 My current answer can be expressed with this diagram.
 
-```mermaid
-flowchart LR
-  subgraph Before navigation
-      A[Prefetch]
-  end
-
-  subgraph After navigation
-      B[Static HTML]
-      C[Client Island]
-      D[Server Island]
-  end
-
-  A --> B
-  B --> C
-  B --> D
-```
+<flow-diagram
+  label="Responsibilities of Prefetch and Islands architecture"
+  layout="horizontal"
+  legend="hidden"
+  autoplay
+>
+  <flow-group name="before" label="Before navigation">
+    <flow-node name="prefetch">Prefetch</flow-node>
+  </flow-group>
+  <flow-group name="after" label="After navigation">
+    <flow-node name="html">Static HTML</flow-node>
+    <flow-node name="client">Client Island</flow-node>
+    <flow-node name="server">Server Island</flow-node>
+    <flow-connection from="html" to="client" />
+    <flow-connection from="html" to="server" />
+  </flow-group>
+  <flow-connection from="prefetch" to="html" />
+</flow-diagram>
 
 Prefetch is responsible for the left side of the diagram, while Islands architecture is responsible for the right side. In other words, I think they do not interfere much with each other. They are responsible for different layers. From the user's point of view, however, those layers are connected as a continuous flow: Prefetch first, then island processing.
 
@@ -55,15 +57,15 @@ So, what is Prefetch?
 
 **It is a mechanism that predicts the page a user may navigate to next and loads it ahead of time.**
 
-```mermaid
-flowchart TB
-  A[The user touches a link, such as by hover]
-  B[Prefetch runs]
-  C[The next page is loaded ahead of time]
-  D[The page appears quickly when clicked]
-
-  A --> B --> C --> D
-```
+<flow-diagram label="Prefetch execution flow" layout="vertical" legend="hidden" autoplay>
+  <flow-node name="interaction">The user touches a link, such as by hover</flow-node>
+  <flow-connection />
+  <flow-node name="prefetch">Prefetch runs</flow-node>
+  <flow-connection />
+  <flow-node name="load">The next page is loaded ahead of time</flow-node>
+  <flow-connection />
+  <flow-node name="navigation">The page appears quickly when clicked</flow-node>
+</flow-diagram>
 
 I think that sentence and diagram capture the basic idea.
 

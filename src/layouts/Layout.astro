@@ -206,14 +206,39 @@ const gaId = 'G-WPLPNTMQPG';
     <slot name="head" />
   </head>
 
-  <body
-    class="min-h-screen flex flex-col text-gray-800 dark:text-gray-100 transition-colors overscroll-none"
-  >
+  <body class="site-body">
     <Header locale={locale} />
-    <main class="flex-grow bg-gray-100 dark:bg-gray-800">
+    <main class="site-main">
       <slot />
     </main>
     <Breadcrumb blogTitle={blogTitle} locale={locale} />
     <Footer locale={locale} />
   </body>
 </html>
+
+<style>
+  .site-body {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    color: rgb(31 41 55);
+    overscroll-behavior: none;
+    transition-property:
+      color, background-color, border-color, outline-color, text-decoration-color, fill, stroke;
+    transition-duration: 150ms;
+    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .site-main {
+    flex-grow: 1;
+    background-color: rgb(243 244 246);
+  }
+
+  :global(html.dark) .site-body {
+    color: rgb(243 244 246);
+  }
+
+  :global(html.dark) .site-main {
+    background-color: rgb(31 41 55);
+  }
+</style>

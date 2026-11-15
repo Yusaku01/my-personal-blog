@@ -9,6 +9,7 @@ type ContactActionFailure = {
   values: ContactForm;
   fieldErrors: Partial<Record<keyof ContactForm, string[]>>;
   message?: string;
+  code?: 'RATE_LIMITED';
 };
 
 type ContactActionSuccess = {
@@ -73,6 +74,10 @@ export const createContactActionHandler = ({
         ok: false,
         values,
         fieldErrors: {},
+        code:
+          error instanceof ContactSubmissionError && error.code === 'RATE_LIMITED'
+            ? 'RATE_LIMITED'
+            : undefined,
         message:
           error instanceof ContactSubmissionError
             ? error.message

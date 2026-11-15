@@ -1,5 +1,6 @@
 import { describe, expect, it, vi } from 'vitest';
 import { createContactActionHandler } from '../src/lib/contact/contactAction';
+import { ContactSubmissionError } from '../src/lib/contact/contactService';
 
 const buildFormData = (values: Record<string, string>) => {
   const formData = new FormData();
@@ -83,5 +84,29 @@ describe('createContactActionHandler', () => {
     expect(result.fieldErrors).toEqual({});
     expect(result.message).toBe('送信に失敗しました。時間をおいて再度お試しください。');
     expect(result.values.name).toBe('Saku');
+  });
+
+  it('marks rate-limit failures for localized display', async () => {
+    const handler = createContactActionHandler({
+      submitContactSubmission: vi
+        .fn()
+        .mockRejectedValue(new ContactSubmissionError('RATE_LIMITED', 'Too many submissions')),
+    });
+
+    const result = await handler(
+      buildFormData({
+        name: 'Saku',
+        email: 'saku@example.com',
+        subject: 'Hello',
+        message: 'World',
+        'cf-turnstile-response': 'token',
+      })
+    );
+
+    expect(result).toMatchObject({
+      ok: false,
+      code: 'RATE_LIMITED',
+      values: { name: 'Saku' },
+    });
   });
 });

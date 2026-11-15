@@ -23,13 +23,13 @@ const initImageZoom = (): (() => void) => {
     modalImage.setAttribute('alt', image.getAttribute('alt') ?? '');
     modal.classList.add('is-open');
     modal.setAttribute('aria-hidden', 'false');
-    document.body.classList.add('overflow-hidden');
+    document.body.classList.add('image-modal-open');
   };
 
   const closeModal = () => {
     modal.classList.remove('is-open');
     modal.setAttribute('aria-hidden', 'true');
-    document.body.classList.remove('overflow-hidden');
+    document.body.classList.remove('image-modal-open');
   };
 
   contentRoot.addEventListener(

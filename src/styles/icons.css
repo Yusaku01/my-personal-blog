@@ -1,0 +1,49 @@
+.ui-icon {
+  display: inline-block;
+  width: 1.2em;
+  height: 1.2em;
+  vertical-align: middle;
+  background-color: currentColor;
+  mask: var(--ui-icon-mask) no-repeat;
+  mask-size: 100% 100%;
+}
+
+.ui-icon--external {
+  --ui-icon-mask: url('@phosphor-icons/core/regular/arrow-square-out.svg');
+}
+
+.ui-icon--calendar {
+  --ui-icon-mask: url('@phosphor-icons/core/regular/calendar-blank.svg');
+}
+
+.ui-icon--clock {
+  --ui-icon-mask: url('@phosphor-icons/core/regular/clock.svg');
+}
+
+.ui-icon--close {
+  --ui-icon-mask: url('@phosphor-icons/core/regular/x.svg');
+}
+
+.ui-icon--home {
+  --ui-icon-mask: url('@phosphor-icons/core/regular/house.svg');
+}
+
+.ui-icon--arrow {
+  --ui-icon-mask: url('@phosphor-icons/core/regular/arrow-right.svg');
+}
+
+.ui-icon--copy {
+  --ui-icon-mask: url('@phosphor-icons/core/regular/copy.svg');
+}
+
+.ui-icon--check {
+  --ui-icon-mask: url('@phosphor-icons/core/regular/check.svg');
+}
+
+.ui-icon--undo {
+  --ui-icon-mask: url('@phosphor-icons/core/regular/arrow-u-up-left.svg');
+}
+
+.ui-icon--list {
+  --ui-icon-mask: url('@phosphor-icons/core/regular/list.svg');
+}

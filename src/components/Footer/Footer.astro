@@ -23,43 +23,34 @@ const languageItems = [
 const footerLinks = navItems;
 ---
 
-<footer
-  class="bg-gray-900 text-white dark:text-gray-400 dark:bg-gray-900 transition-colors mt-auto border-t border-gray-700"
->
-  <div class="container mx-auto px-4 py-20">
+<footer class="site-footer">
+  <div class="footer-container">
     <!-- フッターナビゲーション -->
-    <div class="flex flex-col md:flex-row justify-center items-center mb-8 gap-4">
+    <div class="footer-navigation">
       <nav aria-label={locale === 'ja' ? 'フッターナビゲーション' : 'Footer navigation'}>
-        <ul class="flex flex-wrap justify-center items-center gap-x-7 gap-y-2">
+        <ul class="footer-links">
           {
             footerLinks.map((item) => (
               <li>
-                <a
-                  href={item.href}
-                  class="text-white dark:text-gray-300 lg:hover:underline duration-300"
-                >
+                <a href={item.href} class="footer-link">
                   {item.text}
                 </a>
               </li>
             ))
           }
-          <li class="hidden md:block text-gray-500" aria-hidden="true">|</li>
+          <li class="footer-separator" aria-hidden="true">|</li>
           <li>
-            <div
-              class="flex items-center gap-2 font-bold tracking-wider"
-              aria-label="Language switcher"
-            >
+            <div class="footer-languages" aria-label="Language switcher">
               {
                 languageItems.map((item, index) => (
                   <>
-                    {index > 0 && <span class="text-gray-500">|</span>}
+                    {index > 0 && <span class="footer-language-separator">|</span>}
                     <a
                       href={item.href}
                       class:list={[
-                        'px-1 text-white underline-offset-4 transition-colors hover:underline dark:text-gray-300',
+                        'footer-language-link',
                         {
-                          'opacity-100': item.locale === locale,
-                          'opacity-55': item.locale !== locale,
+                          'footer-language-link--inactive': item.locale !== locale,
                         },
                       ]}
                       aria-current={item.locale === locale ? 'page' : undefined}
@@ -77,18 +68,159 @@ const footerLinks = navItems;
     </div>
 
     <!-- SNSアイコン -->
-    <div class="flex justify-center items-center mb-8">
+    <div class="footer-socials">
       <SocialIcons
         variant="minimal"
-        class="gap-4 flex-wrap"
         networks={['GitHub', 'X', 'LinkedIn', 'Qiita', 'Zenn', 'RSS']}
         forceTheme="dark"
       />
     </div>
 
     <!-- コピーライト -->
-    <div class="text-center text-gray-400 dark:text-gray-400">
+    <div class="footer-copyright">
       <small>&copy; {currentYear} SAKUSPACE. All rights reserved.</small>
     </div>
   </div>
 </footer>
+
+<style>
+  .site-footer {
+    --footer-link-color: rgb(255 255 255);
+    background-color: rgb(17 24 39);
+    border-top-width: 1px;
+    border-color: rgb(55 65 81);
+    color: rgb(255 255 255);
+    margin-top: auto;
+    transition-property:
+      color, background-color, border-color, outline-color, text-decoration-color, fill, stroke;
+    transition-duration: 150ms;
+    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  :global(html.dark) .site-footer {
+    --footer-link-color: rgb(209 213 219);
+    color: rgb(156 163 175);
+  }
+
+  .footer-container {
+    margin-inline: auto;
+    padding: 5rem 1rem;
+    width: 100%;
+  }
+
+  .footer-navigation {
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    justify-content: center;
+    margin-bottom: 2rem;
+  }
+
+  .footer-links {
+    align-items: center;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem 1.75rem;
+    justify-content: center;
+  }
+
+  .footer-link,
+  .footer-language-link {
+    color: var(--footer-link-color);
+  }
+
+  .footer-link {
+    transition-duration: 300ms;
+  }
+
+  .footer-separator,
+  .footer-language-separator {
+    color: rgb(107 114 128);
+  }
+
+  .footer-separator {
+    display: none;
+  }
+
+  .footer-languages {
+    align-items: center;
+    display: flex;
+    font-weight: 700;
+    gap: 0.5rem;
+    letter-spacing: 0.05em;
+  }
+
+  .footer-language-link {
+    padding-inline: 0.25rem;
+    text-underline-offset: 4px;
+    transition-property:
+      color, background-color, border-color, outline-color, text-decoration-color, fill, stroke;
+    transition-duration: 150ms;
+    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .footer-language-link:hover {
+    text-decoration-line: underline;
+  }
+
+  .footer-language-link--inactive {
+    opacity: 0.55;
+  }
+
+  .footer-socials {
+    align-items: center;
+    display: flex;
+    justify-content: center;
+    margin-bottom: 2rem;
+  }
+
+  .footer-socials :global(.social-icons) {
+    flex-wrap: wrap;
+    gap: 1rem;
+  }
+
+  .footer-copyright {
+    color: rgb(156 163 175);
+    text-align: center;
+  }
+
+  @media (min-width: 640px) {
+    .footer-container {
+      max-width: 640px;
+    }
+  }
+
+  @media (min-width: 768px) {
+    .footer-container {
+      max-width: 768px;
+    }
+    .footer-navigation {
+      flex-direction: row;
+    }
+    .footer-separator {
+      display: block;
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .footer-container {
+      max-width: 1024px;
+    }
+    .footer-link:hover {
+      text-decoration-line: underline;
+    }
+  }
+
+  @media (min-width: 1280px) {
+    .footer-container {
+      max-width: 1280px;
+    }
+  }
+
+  @media (min-width: 1536px) {
+    .footer-container {
+      max-width: 1536px;
+    }
+  }
+</style>

@@ -6,7 +6,6 @@ on:
     paths:
       - 'src/**'
       - 'scripts/**'
-      - 'uno.config.ts'
       - 'astro.config.mjs'
       - 'tsconfig.json'
       - 'package.json'
@@ -17,7 +16,6 @@ on:
     paths:
       - 'src/**'
       - 'scripts/**'
-      - 'uno.config.ts'
       - 'astro.config.mjs'
       - 'tsconfig.json'
       - 'package.json'
@@ -48,10 +46,13 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '24.18.0'
+          node-version: '24.22.1'
           cache: 'pnpm'
 
       - name: Install dependencies
+        env:
+          # Lint and formatting do not need a browser binary.
+          PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD: '1'
         run: pnpm install --frozen-lockfile
 
       - name: Get changed files

@@ -17,7 +17,7 @@ Astro・MDX・TypeScript で構築された個人ブログ / ポートフォリ�
 - 依存パッケージの追加・更新時は、`package.json` と `pnpm-workspace.yaml` の override 値を exact pin にし、lockfile を更新する。キャレットなどのバージョン範囲指定を残さない。
 - ルーティングは `src/pages/`、UI は `src/components/` と `src/layouts/`、ドメインロジックは `src/lib/` に置く。検索・問い合わせ・外部フィードは既存実装を再利用する。`@/*` は `src/*` のエイリアス。
 - 静的な UI は Astro コンポーネントを優先する。クライアントの振る舞いは `src/scripts/` の既存パターンを確認し、hydration が必要な場合は遅延実行を検討する。
-- UnoCSS から CSS Variables と scoped CSS へ段階的に移行する。共有トークン・Markdown 共通スタイルは `src/styles/global.css`、固有のスタイルは各 `.astro` に置く。置換は小さなコンポーネント単位とし、新しい UnoCSS 依存を広げない。
+- CSS Variables と scoped CSS を使用する。共有トークン・CSS reset・Markdown 共通スタイルは `src/styles/global.css` を入口に管理し、固有のスタイルは各 `.astro` に置く。変更は小さなコンポーネント単位で行う。
 - 記事・プロフィールは `src/content/` に置き、frontmatter を `src/content.config.ts` の schema に合わせる。記事ファイル名は kebab-case とし、既存の Markdown / MDX 記法、脚注、装飾を踏襲する。
 - Markdown / MDX の変換を変更する場合は `src/lib/markdown/`、`src/lib/remark/`、`src/lib/rehype/` の既存ルールに合わせる。
 - Cloudflare adapter と `output: 'server'` を使用する。ページごとの事前生成は `prerender` を確認する。問い合わせは `src/pages/contact.astro` の `prerender = false` を保ち、`src/lib/contact/` の Turnstile 検証・D1 保存・Email 通知の境界を維持する。

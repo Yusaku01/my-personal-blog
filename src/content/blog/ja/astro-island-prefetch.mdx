@@ -23,22 +23,24 @@ AstroにはPrefetch機能とIslands architectureという仕組みがありま�
 
 この疑問への答えは、以下の図で表せます。
 
-```mermaid
-flowchart LR
-  subgraph Navigationの前
-      A[Prefetch]
-  end
-
-  subgraph Navigationの後
-      B[Static HTML]
-      C[Client Island]
-      D[Server Island]
-  end
-
-  A --> B
-  B --> C
-  B --> D
-```
+<flow-diagram
+  label="PrefetchとIslands architectureの担当範囲"
+  layout="horizontal"
+  legend="hidden"
+  autoplay
+>
+  <flow-group name="before" label="Navigationの前">
+    <flow-node name="prefetch">Prefetch</flow-node>
+  </flow-group>
+  <flow-group name="after" label="Navigationの後">
+    <flow-node name="html">Static HTML</flow-node>
+    <flow-node name="client">Client Island</flow-node>
+    <flow-node name="server">Server Island</flow-node>
+    <flow-connection from="html" to="client" />
+    <flow-connection from="html" to="server" />
+  </flow-group>
+  <flow-connection from="prefetch" to="html" />
+</flow-diagram>
 
 Prefetchは図の左部分、Islands architectureは図の右部分がそれぞれの担当レイヤーになっています。すなわち、お互いに過度に干渉しているというよりは、機能として担当レイヤーが異なる、ユーザーの体験的には、担当レイヤーは連続している（Prefetch → Island処理）と言えると思います。
 
@@ -55,15 +57,15 @@ Prefetchについてすでに理解を深めていらっしゃる方は、次の
 
 **ユーザーが次に遷移する画面を予測し、先読みする仕組み**
 
-```mermaid
-flowchart TB
-  A[ユーザーがリンクに触れる（hoverトリガー）]
-  B[Prefetchが走る]
-  C[次のページを先読みする]
-  D[クリック時に素早く表示する]
-
-  A --> B --> C --> D
-```
+<flow-diagram label="Prefetchの実行フロー" layout="vertical" legend="hidden" autoplay>
+  <flow-node name="interaction">ユーザーがリンクに触れる（hoverトリガー）</flow-node>
+  <flow-connection />
+  <flow-node name="prefetch">Prefetchが走る</flow-node>
+  <flow-connection />
+  <flow-node name="load">次のページを先読みする</flow-node>
+  <flow-connection />
+  <flow-node name="navigation">クリック時に素早く表示する</flow-node>
+</flow-diagram>
 
 上記の一言と図で表せると思います。
 

@@ -111,13 +111,30 @@ export const getParagraphUrlCandidate = (node: ParagraphNode) => {
   return URL_ONLY_PATTERN.test(child.url) ? child.url : null;
 };
 
-const getOpenGraph = async (targetUrl: string) => {
+const pendingOpenGraphRequests = new Map<string, ReturnType<typeof fetchOpenGraph>>();
+
+const fetchOpenGraph = async (targetUrl: string) => {
   try {
     const { result } = await ogs({ url: targetUrl, timeout: 10000 });
     return result;
   } catch {
     return undefined;
   }
+};
+
+const getOpenGraph = (targetUrl: string) => {
+  const pending = pendingOpenGraphRequests.get(targetUrl);
+  if (pending) {
+    return pending;
+  }
+
+  // Share only in-flight requests. Later renders still fetch fresh metadata,
+  // including after a failed request or while running the dev server.
+  const request = fetchOpenGraph(targetUrl).finally(() => {
+    pendingOpenGraphRequests.delete(targetUrl);
+  });
+  pendingOpenGraphRequests.set(targetUrl, request);
+  return request;
 };
 
 const downloadImage = async (url: string, saveDirectory: string) => {
