@@ -9,7 +9,7 @@ import {
   normalizeTitle,
   resolveFontDir,
   runBuildOgp,
-} from '../scripts/lib/build-ogp-core.js';
+} from '../scripts/build-ogp-core.js';
 
 function createParser(chunks: string[]) {
   return {

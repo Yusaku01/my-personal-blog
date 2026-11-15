@@ -22,7 +22,7 @@ Astro・MDX・TypeScript で構築された個人ブログ / ポートフォリ�
 - Markdown / MDX の変換を変更する場合は `src/lib/markdown/`、`src/lib/remark/`、`src/lib/rehype/` の既存ルールに合わせる。
 - Cloudflare adapter と `output: 'server'` を使用する。ページごとの事前生成は `prerender` を確認する。問い合わせは `src/pages/contact.astro` の `prerender = false` を保ち、`src/lib/contact/` の Turnstile 検証・D1 保存・Email 通知の境界を維持する。
 - 整形・lint は `.prettierrc` と `eslint.config.mjs` に従う。コンポーネントは `PascalCase`、関数は `camelCase`、環境変数は `SCREAMING_SNAKE_CASE`。`any` は避け、未使用変数は `_` プレフィックスを使う。
-- シークレットはコミットしない。環境変数は `.env` と `.env.example` で管理し、クライアントに公開する値にだけ `PUBLIC_` プレフィックスを付ける。
+- シークレットはコミットしない。環境変数は `.env` と `wrangler.jsonc` の `vars` で管理し（一覧は `README.md`）、クライアントに公開する値にだけ `PUBLIC_` プレフィックスを付ける。
 
 ## 検証
 
@@ -53,16 +53,15 @@ Astro・MDX・TypeScript で構築された個人ブログ / ポートフォリ�
 
 ユーザーの明示的な指示を Skills のガイドラインより優先する。必要な Skill だけを使い、推奨手順を新たな承認条件にしない。指示を理由に確認・停止・依頼からの逸脱が必要になった場合は、該当ファイルへのリンクと原文を示し、明示された要件と自分の解釈を区別して説明する。
 
-| 作業                                                       | 参照先                                                                                                                                       |
-| ---------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------- |
-| Node・pnpm・チェック手順の確認                             | `mise.toml`、`package.json`、`.github/workflows/`                                                                                            |
-| ビルド・配信設定の変更                                     | `astro.config.mjs`、`wrangler.jsonc`                                                                                                         |
-| 環境変数・問い合わせ binding の変更                        | `.env.example`、`src/lib/contact/types.ts`                                                                                                   |
-| OGP 生成の変更                                             | `scripts/build-ogp.js`、`scripts/lib/build-ogp-core.js`                                                                                      |
-| Web API・CSS・アクセシビリティ・性能・ブラウザ互換性の判断 | [.agents/skills/modern-web-guidance/SKILL.md](.agents/skills/modern-web-guidance/SKILL.md)                                                   |
-| Nani を指定した翻訳レビュー                                | [.agents/skills/nani-translation-review/SKILL.md](.agents/skills/nani-translation-review/SKILL.md)                                           |
-| 依存脆弱性の調査・修正                                     | [.github/dependency-security-triage.md](.github/dependency-security-triage.md) を先に読む                                                    |
-| Incremental Build の変更                                   | [関連資料](docs/blog-materials/astro-incremental-static-build/README.md)と実装を確認し、キャッシュの出力依存と通常・強制ビルドの差を検証する |
+| 作業                                                       | 参照先                                                                                             |
+| ---------------------------------------------------------- | -------------------------------------------------------------------------------------------------- |
+| Node・pnpm・チェック手順の確認                             | `mise.toml`、`package.json`、`.github/workflows/`                                                  |
+| ビルド・配信設定の変更                                     | `astro.config.mjs`、`wrangler.jsonc`                                                               |
+| 環境変数・問い合わせ binding の変更                        | `README.md`、`wrangler.jsonc`、`src/lib/contact/types.ts`                                          |
+| OGP 生成の変更                                             | `scripts/build-ogp.js`、`scripts/build-ogp-core.js`                                                |
+| Web API・CSS・アクセシビリティ・性能・ブラウザ互換性の判断 | [.agents/skills/modern-web-guidance/SKILL.md](.agents/skills/modern-web-guidance/SKILL.md)         |
+| Nani を指定した翻訳レビュー                                | [.agents/skills/nani-translation-review/SKILL.md](.agents/skills/nani-translation-review/SKILL.md) |
+| 依存脆弱性の調査・修正                                     | [.github/dependency-security-triage.md](.github/dependency-security-triage.md) を先に読む          |
 
 ## コミットと PR
 

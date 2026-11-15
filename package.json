@@ -22,7 +22,6 @@
     "lint:text:blog:tech": "node scripts/lint-blog-text.mjs --scope tech",
     "lint:text:blog:diary": "node scripts/lint-blog-text.mjs --scope diary",
     "lint:text:ci": "node scripts/lint-blog-text.mjs",
-    "perf:measure-fonts": "node scripts/perf/measure-fonts.mjs",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
     "mermaid:install-browser": "playwright install chromium chromium-headless-shell",

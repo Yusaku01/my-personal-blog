@@ -25,7 +25,7 @@ import matter from 'gray-matter';
  */
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
-const projectRoot = path.join(__dirname, '..', '..');
+const projectRoot = path.join(__dirname, '..');
 const defaultContentDir = path.join(projectRoot, 'src', 'content', 'blog');
 const defaultOutputDir = path.join(projectRoot, 'public', 'images', 'ogp');
 const requireFromProjectRoot = createRequire(path.join(projectRoot, 'package.json'));
