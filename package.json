@@ -91,7 +91,7 @@
     "textlint-rule-preset-japanese": "10.0.4",
     "typescript": "5.9.3",
     "unified": "11.0.5",
-    "vitest": "4.1.7",
+    "vitest": "4.1.12",
     "wrangler": "4.151.1"
   },
   "simple-git-hooks": {
