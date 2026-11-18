@@ -134,15 +134,47 @@ describe.each(feedCases)('$name', (feed) => {
     expect(getOGPImage).toHaveBeenCalledTimes(feed.post.source === 'zennScrap' ? 0 : 1);
   });
 
-  it('keeps different usernames isolated', async () => {
-    const fetchMock = vi.fn().mockImplementation(() => Promise.resolve(Response.json(feed.body)));
+  it('starts the one-hour cache when the response arrives', async () => {
+    let resolveResponse!: (response: Response) => void;
+    const pending = new Promise<Response>((resolve) => {
+      resolveResponse = resolve;
+    });
+    const fetchMock = vi.fn().mockImplementation(() => pending);
     vi.stubGlobal('fetch', fetchMock);
     const load = await feed.load();
 
-    await Promise.all([load('example'), load('another')]);
-    await load('example');
-    await load('another');
+    const request = load('example');
+    vi.advanceTimersByTime(60 * 1000);
+    resolveResponse(Response.json(feed.body));
+    const posts = await request;
 
+    vi.advanceTimersByTime(60 * 60 * 1000 - 1);
+    expect(await load('example')).toBe(posts);
+    expect(fetchMock).toHaveBeenCalledTimes(1);
+  });
+
+  it('keeps different usernames isolated', async () => {
+    const userFromUrl = (url: string) => (url.includes('another') ? 'another' : 'example');
+    const fetchMock = vi
+      .fn()
+      .mockImplementation((url: string) =>
+        Promise.resolve(
+          Response.json(
+            JSON.parse(
+              JSON.stringify(feed.body).replace('Example post', `Post by ${userFromUrl(url)}`)
+            )
+          )
+        )
+      );
+    vi.stubGlobal('fetch', fetchMock);
+    const load = await feed.load();
+    const titles = (posts: { title: string }[]) => posts.map((post) => post.title);
+
+    const [examplePosts, anotherPosts] = await Promise.all([load('example'), load('another')]);
+    expect(titles(examplePosts)).toEqual(['Post by example']);
+    expect(titles(anotherPosts)).toEqual(['Post by another']);
+    expect(await load('example')).toBe(examplePosts);
+    expect(await load('another')).toBe(anotherPosts);
     expect(fetchMock).toHaveBeenCalledTimes(2);
   });
 

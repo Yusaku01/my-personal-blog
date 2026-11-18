@@ -46,7 +46,7 @@ export function createCachedFeedLoader({ label, load }: FeedLoaderOptions) {
     const request = (async () => {
       try {
         const posts = await load(username);
-        cache.set(username, { data: posts, timestamp: now });
+        cache.set(username, { data: posts, timestamp: Date.now() });
         return posts;
       } catch (error) {
         const message = `[blog] Failed to fetch ${label} (${summarizeFetchError(error)}). Using cached or empty results.`;
