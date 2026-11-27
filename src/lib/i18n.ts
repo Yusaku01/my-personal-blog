@@ -196,7 +196,7 @@ export const uiText = {
 export const getLocaleFromPathname = (pathname: string): Locale =>
   pathname === '/en' || pathname.startsWith('/en/') ? 'en' : defaultLocale;
 
-export const stripLocalePrefix = (pathname: string): string => {
+const stripLocalePrefix = (pathname: string): string => {
   if (pathname === '/en' || pathname === '/en/') {
     return '/';
   }

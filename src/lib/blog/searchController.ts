@@ -289,7 +289,7 @@ const isBlogSearchEntry = (value: unknown): value is BlogSearchEntry => {
   );
 };
 
-export const loadBlogSearchEntries = async (
+const loadBlogSearchEntries = async (
   fetchImpl: FetchLike = window.fetch.bind(window),
   searchIndexUrl = DEFAULT_SEARCH_INDEX_URL
 ): Promise<BlogSearchEntry[]> => {

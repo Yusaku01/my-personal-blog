@@ -1,4 +1,4 @@
-export const JAPANESE_AVERAGE_CHARS_PER_MINUTE = 653;
+const JAPANESE_AVERAGE_CHARS_PER_MINUTE = 653;
 
 const CODE_FENCE_PATTERN = /```[\s\S]*?```/g;
 const INLINE_CODE_PATTERN = /`[^`\n]+`/g;
@@ -25,7 +25,7 @@ const normalizeReadableText = (markdown: string): string => {
     .trim();
 };
 
-export const getReadableCharacterCount = (markdown: string): number => {
+const getReadableCharacterCount = (markdown: string): number => {
   const normalized = normalizeReadableText(markdown);
   return normalized.replace(/\s+/g, '').length;
 };

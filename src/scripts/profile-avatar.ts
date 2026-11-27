@@ -19,7 +19,7 @@ const getProfileAvatarElements = (root: HTMLElement): ProfileAvatarElements | nu
   };
 };
 
-export const setupProfileAvatars = (scope: ParentNode = document): (() => void) => {
+const setupProfileAvatars = (scope: ParentNode = document): (() => void) => {
   const avatars = Array.from(scope.querySelectorAll<HTMLElement>('[data-profile-avatar]'))
     .map(getProfileAvatarElements)
     .filter((avatar): avatar is ProfileAvatarElements => avatar !== null);
