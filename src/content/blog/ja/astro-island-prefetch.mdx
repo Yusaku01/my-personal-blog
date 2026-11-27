@@ -103,7 +103,7 @@ MDNでも、Speculation Rules APIは文書単位の`prefetch` / `prerender`を�
 
 1. 通常時は`<link rel="prefetch">`を優先する
 2. 非対応ブラウザでは`fetch()`にフォールバックする
-3. `experimental.clientPrerender`を有効にした環境では Speculation Rules APIを活用する
+3. `experimental.clientPrerender`を有効にした環境ではSpeculation Rules APIを活用する
 
 この「ブラウザ標準を使い、必要な時だけフォールバックする」という姿勢は、Astroの設計思想がかなり表れている部分だと思います。
 
@@ -227,7 +227,7 @@ Prefetchは、**今見ているページから、次に遷移するかもしれ�
 :::note
 **`experimental.clientPrerender`を有効にした場合**  
 
-あくまで推測が混じりますが、`experimental.clientPrerender`を有効にした場合はフローが少し変わるのではないか？と思います。Speculation Rules APIの`prerender`が使える環境では、遷移前から次ページ自体を Invisibleなhidden tabで準備（描画・実行）できるため、Client IslandのJavaScript実行や、Server Islandでのデータフェッチなどが遷移前に始まる可能性があるのではないか？と思っています。つまり、**通常のPrefetchでは役割分担がかなり明確だが、client prerenderまで有効にすると両者の実行タイミングは一部重なる**、と整理できるのではないでしょうか？
+あくまで推測が混じりますが、`experimental.clientPrerender`を有効にした場合はフローが少し変わるのではないか？と思います。Speculation Rules APIの`prerender`が使える環境では、遷移前から次ページ自体をInvisibleなhidden tabで準備（描画・実行）できるため、Client IslandのJavaScript実行や、Server Islandでのデータフェッチなどが遷移前に始まる可能性があるのではないか？と思っています。つまり、**通常のPrefetchでは役割分担がかなり明確だが、client prerenderまで有効にすると両者の実行タイミングは一部重なる**、と整理できるのではないでしょうか？
 
 もし、先に実行できるのであれば使い方によってはユーザー体験を更に向上できるかもしれない反面、開発者が実行タイミングについてもより深く把握しておく必要が出てくるので、その点は気合いでなんとかするしかないかもですね。
 :::

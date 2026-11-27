@@ -25,7 +25,7 @@ tags: ['個人ブログ', 'キャッシュ', 'Cache-Control' , 'Next.js', 'ISR']
 - 後述するCache-Controlなども関係する
 
 ### Cache-Control ヘッダー
-ブラウザーや共有キャッシュ（プロキシーや CDN など）において、HTTPキャッシュを制御する仕組み。
+ブラウザーや共有キャッシュ（プロキシーやCDNなど）において、HTTPキャッシュを制御する仕組み。
 
 `Cache-control: max-age=180, public`のように、`Cache-Control: <ディレクティブ>, <ディレクティブ>, ...`のような形で書かれる。
 
@@ -152,14 +152,14 @@ revalidateTag(tag: string, profile: string | { expire?: number }): void;
 
 :::note
 **`max` と `{ expire: 0 }` の違い**  
-`max` は stale-while-revalidate の挙動で、まず古いキャッシュを返しつつ、裏側で再検証してキャッシュを新しくする。  
-`{ expire: 0 }` は対象タグを即時失効させるため、次リクエストでは stale を返さず新規取得完了まで待つ。  
+`max` はstale-while-revalidateの挙動で、まず古いキャッシュを返しつつ、裏側で再検証してキャッシュを新しくする。  
+`{ expire: 0 }` は対象タグを即時失効させるため、次リクエストではstaleを返さず新規取得完了まで待つ。  
 Server Action[^server-action] 内で「更新直後の本人には必ず新しい内容を返したい」場合は、`updateTag` を使う方が意図に合う。
 :::
 
 :::note
 **cacheLifeとは**  
-cacheLife は、`'use cache'` 系のキャッシュ寿命を名前付きプロファイルとして定義する `next.config` 設定である。  
+cacheLifeは、`'use cache'` 系のキャッシュ寿命を名前付きプロファイルとして定義する `next.config` 設定である。  
 具体的には `stale`・`revalidate`・`expire` を1セットにし、`revalidateTag()` の第2引数でそのプロファイル名を指定できる。
 
 ```ts
@@ -206,14 +206,14 @@ export async function POST(request: Request) {
 }
 ```
 
-このようにしておくと、CMS更新をトリガーに `posts` タグ付きキャッシュを再検証対象にできる。`profile: 'max'` を使えば stale-while-revalidate で更新されるため、即時全体再計算を避けつつ整合性を保ちやすい。
+このようにしておくと、CMS更新をトリガーに `posts` タグ付きキャッシュを再検証対象にできる。`profile: 'max'` を使えばstale-while-revalidateで更新されるため、即時全体再計算を避けつつ整合性を保ちやすい。
 
 ## updateTag
 
 revalidatePath・revalidateTag以外にも、[updateTag](https://nextjs.org/docs/app/api-reference/functions/updateTag) というAPIも存在する。
 
-updateTag は、タグ付きキャッシュを**即時失効**させるAPIである。`revalidateTag('tag', 'max')` と異なり stale を返さず、次の読み取りでfreshデータ取得を待つのが特徴である。  
-公式ブログのNext.js v16 リリース（2025年10月21日公開）で `updateTag()(new)`として追加が明記されており、利用前提はNext.js v16以降である。
+updateTagは、タグ付きキャッシュを**即時失効**させるAPIである。`revalidateTag('tag', 'max')` と異なりstaleを返さず、次の読み取りでfreshデータ取得を待つのが特徴である。  
+公式ブログのNext.js v16リリース（2025年10月21日公開）で `updateTag()(new)`として追加が明記されており、利用前提はNext.js v16以降である。
 
 基本的な構文は以下の通り。
 
@@ -225,7 +225,7 @@ updateTag(tag: string): void;
 
 `updateTag()`は**Server Actions**[^server-action]でのみ呼び出せる（Route Handler[^route-handler]内で使用しようとするとエラーになる）。  
 これにより、「更新した本人には直後に必ず新しいデータを見せたい」というread-your-own-writesの要件を満たしやすくなる。  
-read-your-own-writes とは、**自分が書き込んだ更新結果を直後の読み取りで必ず自分が観測できる**一貫性の考え方である。たとえば投稿作成直後に一覧へ戻った時、作成した投稿がすぐ表示される状態を担保したい場合に重要になる。
+read-your-own-writesとは、**自分が書き込んだ更新結果を直後の読み取りで必ず自分が観測できる**一貫性の考え方である。たとえば投稿作成直後に一覧へ戻った時、作成した投稿がすぐ表示される状態を担保したい場合に重要になる。
 
 具体例としては、投稿作成や編集のServer Action[^server-action]でDB更新直後に`updateTag`を呼ぶケースが分かりやすい。
 

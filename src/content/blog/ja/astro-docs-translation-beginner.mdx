@@ -7,23 +7,23 @@ tags: ['個人ブログ', 'Astro', 'Astro Docs', 'Translation', 'OSS']
 ---
 
 
-こんにちは、Saku です！
-すでに2026年ですが、この記事は、フロントパッケージリーディング Advent Calendar 2025 の 8 日目の記事です。
+こんにちは、Sakuです！
+すでに2026年ですが、この記事は、フロントパッケージリーディングAdvent Calendar 2025の8日目の記事です。
 
 https://adventar.org/calendars/12671
 
 最近というか年末から[Astro Docs](https://github.com/withastro/docs)への翻訳Contributeを始めたので。この初心を記録すべく、ざっくりどのようなフローで翻訳しているか、Tips、姿勢や心構えなどについて書き留めておこうと思います。
 
 ## Contributeフロー
-1. [Translation Status](https://i18n.docs.astro.build/)内の日本語セクションを確認し、翻訳対象を決める。翻訳対象がOutdated or Missing のどちらかによって、2-1 or 2-2 に分岐する
-2-1. Outdated（更新対応）の場合は、Translation Status > 翻訳対象ファイル名リンク > source change history で 更新内容を確認しつつ3以降のように翻訳する
+1. [Translation Status](https://i18n.docs.astro.build/)内の日本語セクションを確認し、翻訳対象を決める。翻訳対象がOutdated or Missingのどちらかによって、2-1 or 2-2に分岐する
+2-1. Outdated（更新対応）の場合は、Translation Status > 翻訳対象ファイル名リンク > source change historyで更新内容を確認しつつ3以降のように翻訳する
 2-2. Missing（新規対応）の場合は、シンプルに3以降のように翻訳する
 3. withastro/docsリポを手元にForkし、VSCodeなどでリポを開く。その後`src/content/docs`配下の`/en`と`/ja`の翻訳対象ファイルを同時に開き、見比べられるようにする
 4. [i18n-guides 日本語](https://github.com/withastro/docs/blob/main/i18n-guides/%E6%97%A5%E6%9C%AC%E8%AA%9E.md)も開き、いつでも確認できるようにする
 5. 4と同時に、[i18nと翻訳](https://contribute.docs.astro.build/guides/i18n/) も開き、いつでも確認できるようにする
 6. 初見のファイルであれば、まず既存のドキュメントの内容を上から下にかけてざっと読み、把握する。同時に既存の日本語文章の構造や口調がどのように書かれているかを把握する
 7. これまで開いた情報やLLM、自分の言語力などを活用しながら翻訳する
-8. コミット＆プッシュし、PRを作成する。PRメッセージには、英語版のどのコミットの変更を日本語版に反映したのかわかるようにsource change history から該当のCommitへのリンクを記載する。
+8. コミット＆プッシュし、PRを作成する。PRメッセージには、英語版のどのコミットの変更を日本語版に反映したのかわかるようにsource change historyから該当のCommitへのリンクを記載する。
 
 ## 個人的Tips
 - guideドキュメントを参照し、そのルールに則る
@@ -38,7 +38,7 @@ https://adventar.org/calendars/12671
 
 ## 翻訳時の姿勢や心構えQ&A
 ### 翻訳へのLLM活用
-LLMは活用している。ただ、英語 >> 日本語 への変換は、直訳すればいいというものでは全くなく、現状だとLLM使用した変換の自然さは7割くらいなイメージ。残りの3割が読者が使いやすくなる為の肝なので、翻訳前後のチェックと修正は絶対手動でやるべきかなと思っている。
+LLMは活用している。ただ、英語 >> 日本語への変換は、直訳すればいいというものでは全くなく、現状だとLLM使用した変換の自然さは7割くらいなイメージ。残りの3割が読者が使いやすくなる為の肝なので、翻訳前後のチェックと修正は絶対手動でやるべきかなと思っている。
 
 どちらにしろ手動でやる必要があるのだから、頭を動かして実行することで、このLLM時代に不足している脳にindexする感覚を得られる。もちろん必要な時にLLMを頼れば大体情報は揃うが、そこに思考が伴っていないことが年々増えてる気がする。脳にしっかりindexすることで、思考が伴った情報の選択やそこからの創造に活かせると思う（抽象的ですみません）
 
