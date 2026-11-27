@@ -30,8 +30,8 @@ const defaultContentDir = path.join(projectRoot, 'src', 'content', 'blog');
 const defaultOutputDir = path.join(projectRoot, 'public', 'images', 'ogp');
 const requireFromProjectRoot = createRequire(path.join(projectRoot, 'package.json'));
 
-export const WIDTH = 1200;
-export const HEIGHT = 630;
+const WIDTH = 1200;
+const HEIGHT = 630;
 
 const defaultParser = loadDefaultJapaneseParser();
 
@@ -91,7 +91,7 @@ export function createNode(type, props = {}, ...children) {
  * @param {{ parser?: TitleParser }} [options]
  * @returns {OgpNode[]}
  */
-export function createTitleNodes(title, { parser = defaultParser } = {}) {
+function createTitleNodes(title, { parser = defaultParser } = {}) {
   const normalizedTitle = normalizeTitle(title);
   const chunks = parser.parse(normalizedTitle);
   return chunks.map((chunk, index) => createNode('span', { key: `title-chunk-${index}` }, chunk));
@@ -260,7 +260,7 @@ export function createOgpElement({ title, isBasicPage }, { parser = defaultParse
  *   resvgClass?: typeof Resvg;
  * }} [options]
  */
-export async function createOgpImage(
+async function createOgpImage(
   target,
   fonts,
   { parser = defaultParser, satoriImpl = satori, resvgClass = Resvg } = {}

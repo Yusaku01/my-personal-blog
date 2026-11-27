@@ -26,8 +26,7 @@ export const getBlogEntrySlug = (entry: BlogEntry): string => {
   return slugParts.join('/') || entry.id;
 };
 
-export const isDraftBlogEntry = (entry: BlogEntry): boolean =>
-  getBlogEntrySlug(entry).startsWith('_');
+const isDraftBlogEntry = (entry: BlogEntry): boolean => getBlogEntrySlug(entry).startsWith('_');
 
 export async function getBlogEntriesForLocale(
   locale: Locale = defaultLocale,

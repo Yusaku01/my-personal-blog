@@ -1,4 +1,4 @@
-export type ContactFormValues = {
+type ContactFormValues = {
   name: string;
   email: string;
   subject: string;
@@ -10,10 +10,10 @@ export type ContactSubmissionInput = ContactFormValues & {
   remoteIp?: string;
 };
 
-export type ContactDeliveryStatus = 'pending' | 'delivered' | 'failed';
-export type ContactProvider = 'cloudflare-email';
+type ContactDeliveryStatus = 'pending' | 'delivered' | 'failed';
+type ContactProvider = 'cloudflare-email';
 
-export type ContactNotifierResult = {
+type ContactNotifierResult = {
   provider: ContactProvider;
   providerMessageId: string | null;
 };
@@ -41,7 +41,7 @@ export interface RateLimitBinding {
   limit(input: { key: string }): Promise<{ success: boolean }>;
 }
 
-export type EmailAddress = string | { email: string; name?: string };
+type EmailAddress = string | { email: string; name?: string };
 
 export interface SendEmailBinding {
   send(input: {
@@ -55,7 +55,7 @@ export interface SendEmailBinding {
   }): Promise<{ messageId: string }>;
 }
 
-export interface D1PreparedStatement {
+interface D1PreparedStatement {
   bind(...values: unknown[]): D1PreparedStatement;
   run(): Promise<{ success?: boolean }>;
 }

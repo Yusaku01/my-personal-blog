@@ -14,6 +14,6 @@
     "astro-eslint-parser",
     "eslint-.*",
     "textlint.*",
-    "cloudflare"
+    "@phosphor-icons/core"
   ]
 }
