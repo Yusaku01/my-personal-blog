@@ -9,28 +9,30 @@ tags: ['個人ブログ', 'Vite Plus', 'JavaScript', 'Toolchain']
 Vite Plusを少し使ってみたので、メモというか、知見整理というか。
 
 :::note
-最初に感想を、Void Zeroの方々、Vite Plusを作成いただきありがとうございます！！軽く使っている感じ、体験が非常にいいです！
-EvanさんのPostで見かけた vp create void？的な感じでセットアップをものすごく簡略化できる構想もすごい気になります〜
+最初に感想を、Void Zeroの方々、Vite Plusを作成いただきありがとうございます！軽く使っている感じ、体験が非常にいいです！
+EvanさんのPostで見かけたvp create void？的な感じでセットアップをものすごく簡略化できる構想もすごい気になります〜
 :::
 
 ## Vite Plusとは
-Vite Plusとは、ViteやVueを作成したEvan氏および、Evan氏率いるVoid Zero社が、作成・支援するJavaScript 統合Toolchain？的なもの。
+Vite Plusとは、ViteやVueを作成したEvan氏および、Evan氏率いるVoid Zero社が、作成・支援するJavaScript統合Toolchain？的なもの。
 
-そもそもフロントエンドおよび、JSエコシステムの変遷は、凄まじいものがあるが、これまで以下のように、ビルド・バンドルツールのシェアは遷移している。（厳密には、違うので、ざっくり。異論は認める）
+そもそもフロントエンドおよびJSエコシステムの変遷は、凄まじいものがあるが、これまで以下のように、ビルド・バンドルツールのシェアは遷移している。（厳密には、違うので、ざっくり。異論は認める）
 
+{/* textlint-disable ja-technical-writing/ja-no-successive-word, ja-technical-writing/ja-no-mixed-period */}
 いくつものツールを自前で準備
 ↓↓↓
 Webpack
 ↓↓↓
 Vite
+{/* textlint-enable ja-technical-writing/ja-no-successive-word, ja-technical-writing/ja-no-mixed-period */}
 
 このようにVite自体は、ビルドツール？と呼ばれるものであり、TSなどをJSなどブラウザで動く形に、トランスパイル（あれ使い方合ってるっけ？）&圧縮などをするツール。
 
 Vite v7台までは、Viteの中身で、ESbuild + rollupを併用することで、dev環境・production環境それぞれへのファイル生成や配信を実現していた。
 
-それが、先日でたv8から、中身がrolldown一つに置き換わる。このrolldownは、ざっくりいうと、Rust製のツールであり、ビルド処理などを高速で行える。
+それが、先日でたv8から、中身がrolldown1つに置き換わる。このrolldownは、ざっくりいうと、Rust製のツールであり、ビルド処理などを高速で行える。
 
-そんなこんなでrolldown製に置き換わったこのViteを中核に添えつつ、Oxc系ツール（Oxlint/Oxfmt）やVitestのようなViteエコシステムのツールをvpコマンド一つで使えるようにしたツールが、Vite Plusというものである。
+そんなこんなでrolldown製に置き換わったViteを中核に添え、Oxc系ツール（Oxlint/Oxfmt）やVitestのようなViteエコシステムのツールをvpコマンド1つで使えるようにしたのが、Vite Plusというもの。
 
 ## もっと詳しく
 まず、内部で何が使われているかを整理する。
@@ -44,7 +46,7 @@ Vite v7台までは、Viteの中身で、ESbuild + rollupを併用すること�
 
 上記のツール群を見ればわかるが、基本的にRustで実装されているツールが多いので、処理が鬼早い。
 
-また、上記のツール群を`vp`コマンド一つで、実行できてしまうのが、Vite Plusの一番の強みと言っても過言ではないかと思う。vpコマンドで表示させた使用可能コマンド一覧は[こちらの記事](http://saku-space.com/blog/vite-plus-commands/)を参照
+また、上記のツール群を`vp`コマンド1つで、実行できてしまうのが、Vite Plusの一番の強みと言っても過言ではないかと思う。vpコマンドで表示させた使用可能コマンド一覧は[こちらの記事](http://saku-space.com/blog/vite-plus-commands/)を参照。
 
 ### 注意点？使用感？
 

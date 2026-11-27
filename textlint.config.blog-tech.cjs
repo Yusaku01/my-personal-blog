@@ -15,9 +15,15 @@ module.exports = {
       },
       'no-mix-dearu-desumasu': {
         preferInHeader: '',
-        preferInBody: 'ですます',
-        preferInList: 'ですます',
+        // Each article keeps its own style; only mixing styles within one article is reported.
+        preferInBody: '',
+        preferInList: '',
         strict: false,
+      },
+      'ja-no-mixed-period': {
+        // Casual endings are part of the blog's voice.
+        allowPeriodMarks: ['〜', '...', '…', '笑'],
+        allowEmojiAtEnd: true,
       },
       'no-exclamation-question-mark': false,
       'ja-no-weak-phrase': false,

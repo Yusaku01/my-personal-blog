@@ -44,6 +44,7 @@ HTMLの仕様ではShared Workerも定義されています。また、Service W
 
 ## 使用するかどうかの判断基準
 
+{/* textlint-disable ja-technical-writing/ja-no-mixed-period */}
 <flow-diagram label="Web Workerを使うかどうかの判断" layout="vertical" legend="hidden" autoplay>
   <flow-node name="freeze" shape="decision">
     処理中にUIが固まるか
@@ -59,6 +60,7 @@ HTMLの仕様ではShared Workerも定義されています。また、Service W
   <flow-connection from="dom" to="split" label="はい" />
   <flow-connection from="dom" to="worker" label="いいえ" />
 </flow-diagram>
+{/* textlint-enable ja-technical-writing/ja-no-mixed-period */}
 
 ## Web Workerはどこに作られているのか
 
@@ -70,6 +72,7 @@ Web WorkerはJavaScriptで作られたライブラリではなく、HTML Standar
 
 ChromeのDedicated Workerでは、起動元のページと同じRenderer Process内にWorker Threadが作られます。
 
+{/* textlint-disable ja-technical-writing/ja-no-mixed-period */}
 <flow-diagram
   label="ChromeのRenderer Process内でのWeb Workerの配置"
   layout="vertical"
@@ -85,5 +88,6 @@ ChromeのDedicated Workerでは、起動元のページと同じRenderer Process
     </flow-group>
   </flow-group>
 </flow-diagram>
+{/* textlint-enable ja-technical-writing/ja-no-mixed-period */}
 
 Web Workerの仕様については、[HTML StandardのWeb Workers](https://html.spec.whatwg.org/multipage/workers.html)で確認できます。Chrome内部のイメージについては、Chromiumの[WorkerとWorkletの実装資料](https://chromium.googlesource.com/chromium/src/+/main/third_party/blink/renderer/core/workers/README.md)を参考にしました。

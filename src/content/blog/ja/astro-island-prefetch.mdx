@@ -7,9 +7,8 @@ tags: ['Astro', 'Prefetch', 'Islands architecture', 'パフォーマンス', 'Ja
 ---
 
 AstroにはPrefetch機能とIslands architectureという仕組みがあります。
-「Prefetchは、ユーザーが次に遷移する画面を予測し、先読みする仕組み」
-「Islands architectureは、静的HTMLの中に、動的なUIやサーバー処理をIslandとして分離し、それぞれ最適なタイミングで読み込む仕組み」
-という感じです。
+Prefetchは「ユーザーが次に遷移する画面を予測し、先読みする仕組み」です。
+Islands architectureは「静的HTMLの中に動的なUIやサーバー処理をIslandとして分離し、それぞれ最適なタイミングで読み込む仕組み」という感じです。
 
 ここで、1つ疑問が浮かびました。
 
@@ -42,7 +41,7 @@ AstroにはPrefetch機能とIslands architectureという仕組みがありま�
   <flow-connection from="prefetch" to="html" />
 </flow-diagram>
 
-Prefetchは図の左部分、Islands architectureは図の右部分がそれぞれの担当レイヤーになっています。すなわち、お互いに過度に干渉しているというよりは、機能として担当レイヤーが異なる、ユーザーの体験的には、担当レイヤーは連続している（Prefetch → Island処理）と言えると思います。
+Prefetchは図の左部分、Islands architectureは図の右部分がそれぞれの担当レイヤーになっています。すなわち、お互いに過度に干渉しているというよりは、機能として担当レイヤーが異なります。一方で、ユーザーの体験的には担当レイヤーが連続している（Prefetch → Island処理）と言えそうです。
 
 さてこの結論を胸に、中身を見ていきましょう。
 
@@ -53,10 +52,11 @@ Prefetchについてすでに理解を深めていらっしゃる方は、次の
 ## 前提情報 Prefetchとは何か
 
 今回の記事では、PrefetchとIsland Architectureを扱うため、前提情報についてまず触れていきます。
-さて、そもそもPrefetchとは何か、
+さて、そもそもPrefetchとは何か。
 
 **ユーザーが次に遷移する画面を予測し、先読みする仕組み**
 
+{/* textlint-disable ja-technical-writing/ja-no-mixed-period */}
 <flow-diagram label="Prefetchの実行フロー" layout="vertical" legend="hidden" autoplay>
   <flow-node name="interaction">ユーザーがリンクに触れる（hoverトリガー）</flow-node>
   <flow-connection />
@@ -66,6 +66,7 @@ Prefetchについてすでに理解を深めていらっしゃる方は、次の
   <flow-connection />
   <flow-node name="navigation">クリック時に素早く表示する</flow-node>
 </flow-diagram>
+{/* textlint-enable ja-technical-writing/ja-no-mixed-period */}
 
 上記の一言と図で表せると思います。
 
@@ -82,28 +83,28 @@ AstroのPrefetchでは、ユーザーが「次にそのリンクを選びそう�
 
 - `hover`は、リンクにホバーした時やキーボードフォーカスが当たった時に先読みします。実装上も`mouseenter`/`focusin`を起点にし、少し待ってから実行し、離れたらキャンセルするようになっています。
 - `tap`は`touchstart` / `mousedown`のタイミングで発火します。クリック直前なので、無駄な先読みをかなり減らしやすいです。
-- `viewport`は、リンクがビューポートに入ったときに低優先度で先読みします。裏側では`IntersectionObserver`ベースで監視されています。
+- `viewport`は、リンクがビューポートへ入ったときに低優先度で先読みします。裏側では`IntersectionObserver`ベースで監視されています。
 - `load`は、ページの読み込み完了後に、そのページ内のリンクを順番に低優先度で先読みします。
 
 この4つを見てわかるように、AstroのPrefetchは「次ページをどう読むか」だけでなく、「どの瞬間をユーザーの遷移意図とみなすか」まで含めて設計されています。
 
 **先読みのロジック**
 
-では、そのトリガーで実際に何をしているのか。Astroはここでもブラウザ標準の仕組みにかなり寄り添っています。通常のPrefetchでは、対応ブラウザなら`<link rel="prefetch">`を使って次ページの文書を先読みし、Safariなど`<link rel="prefetch">`がうまく機能しない場面では`fetch()`にフォールバックします。さらに`prefetch()`APIの仕様上、低速回線やData Saverが有効な環境では無理に先読みしない仕組みになっています。
+では、そのトリガーで実際に何をしているのか。Astroはここでもブラウザ標準の仕組みにかなり寄り添っています。通常のPrefetchでは、対応ブラウザなら`<link rel="prefetch">`を使って次ページの文書を先読みします。Safariなど`<link rel="prefetch">`がうまく機能しない場面では`fetch()`にフォールバックします。さらに`prefetch()`APIの仕様上、低速回線やData Saverが有効な環境では無理に先読みしない仕組みになっています。
 
-さらに、`experimental.clientPrerender`を有効にした場合は、「Speculation Rules API」を使って、Prefetchだけでなく、Prerenderまで行うことで、次ページをより積極的に準備します。この時は、いわば既存のPrefetch処理の拡張と言えると思います。
+さらに、`experimental.clientPrerender`を有効にした場合は、「Speculation Rules API」を使ってPrefetchだけでなくPrerenderまで行うことで、次ページをより積極的に準備します。この時は、いわば既存のPrefetch処理の拡張と言えそうです。
 
 :::note
 **Speculation Rules API**  
 
-MDNでも、Speculation Rules APIは文書単位の`prefetch` / `prerender`を扱う仕組みとして説明されており、特に`prerender`はhidden tabでページ自体を準備するため、単にHTMLをキャッシュしておくより一段踏み込んだ先読みです。（なお、これは現時点ではChromium系ブラウザ中心の実験的なサポートです）
+MDNでも、Speculation Rules APIは文書単位の`prefetch` / `prerender`を扱う仕組みとして説明されています。特に`prerender`はhidden tabでページ自体を準備するため、単にHTMLをキャッシュしておくより一段踏み込んだ先読みです。（なお、これは現時点ではChromium系ブラウザ中心の実験的なサポートです）
 :::
 
 つまり、Astroの先読みロジックはざっくり言うと以下のように整理できます。
 
 1. 通常時は`<link rel="prefetch">`を優先する
 2. 非対応ブラウザでは`fetch()`にフォールバックする
-3. `experimental.clientPrerender`を有効にした環境では Speculation Rules APIを活用する
+3. `experimental.clientPrerender`を有効にした環境ではSpeculation Rules APIを活用する
 
 この「ブラウザ標準を使い、必要な時だけフォールバックする」という姿勢は、Astroの設計思想がかなり表れている部分だと思います。
 
@@ -132,11 +133,11 @@ https://zenn.dev/akfm/articles/ppr-vs-islands-architecture
 https://zenn.dev/morinokami/articles/astro-server-islands-vs-nextjs-ppr
 
 
-上記を読みつつ、まとめると。Islands architectureとは、
+上記を読みつつまとめると、Islands architectureとは次のようなものです。
 
 **静的HTMLの中に、必要な動的UIやサーバー処理をIslandとして埋め込む仕組み**
 
-この一言で表せると思います。いや、流石に、こんな単純ではないかもしれません。そもそもこのIslandという概念は、元来Astro発祥ではなく、外から取り入れられたものです。間違ったことは言えないので、以下Astroの公式ドキュメントを引用すると
+この一言で表せると思います。いや、流石に、こんな単純ではないかもしれません。そもそもこのIslandという概念は、元来Astro発祥ではなく、外から取り入れられたものです。間違ったことは言えないので、以下Astroの公式ドキュメントを引用します。
 
 > 2019年にEtsyのフロントエンドアーキテクトKatie Sylor-Miller氏が初めて提案しました。その後、Preactの創始者Jason Miller氏が2020年8月11日の記事で概念を拡張し、体系立てて紹介しました。
 
@@ -156,12 +157,12 @@ AstroのIslands architectureを理解する上で、最低限押さえておき�
 2. インタラクティブなUIを埋め込みたい場合など、特定の状況下ではIsland経由でハイドレーション[^1]が必要
 3. その「Island」には、ブラウザで後からhydrateされるものと、サーバー側で別タイミングに描画されるものがある
 
-Astro自体は、MPA方式のフレームワークで、**Islands architecture**は、**AstroのデフォルトゼロJS**や**他のReactなどUIフレームワークを埋め込める特徴**とともに語られることが多いですが、これら3つの特徴は、お互いに深く関係しあっていると言えると思います。
+Astro自体はMPA方式のフレームワークで、**Islands architecture**は、**AstroのデフォルトゼロJS**や**他のReactなどUIフレームワークを埋め込める特徴**とともに語られることが多いです。これら3つの特徴は、お互いに深く関係しあっていると言えそうです。
 
 > 他のReactなどUIフレームワークを埋め込める特徴
 
 の部分をSPA方式でAstroとは異なる思想により機能しているJSコードの塊としてみてみましょう。
-あら不思議、3つともJSに関わる技術だと言えると思います。そういう意味で、Astroは非常に**JavaScriptの扱い**にこだわっているように感じますし、Islands architectureは、「どこにJavaScriptが必要か」だけでなく、「いつ実行するか」「どの単位で切り離すか」を考えるための設計でもあるなと感じます。
+あら不思議、3つともJSに関わる技術だと言えそうです。そういう意味で、Astroは非常に**JavaScriptの扱い**にこだわっているように感じます。また、Islands architectureは「どこにJavaScriptが必要か」だけでなく、「いつ実行するか」「どの単位で切り離すか」を考えるための設計でもあるなと感じます。
 
 #### 余談JavaScriptをIsland経由以外で書いたらどのように扱われるか
 
@@ -191,7 +192,7 @@ Astroのドキュメントを見ていくと、Islandと一口に言っても役
 
 #### Client Island
 
-Client Islandは、インタラクションが必要なUIを、必要なタイミングでだけブラウザ側にhydrateする考え方です。Astroでは、UIフレームワークのコンポーネントも最初はHTMLとして出力され、そのうえで`client:load` / `client:idle` / `client:visible` / `client:media` / `client:only`といったdirectiveに応じて、あとからJavaScriptを読み込んで動き出します。
+Client Islandは、インタラクションが必要なUIを、必要なタイミングでだけブラウザ側にhydrateする考え方です。Astroでは、UIフレームワークのコンポーネントも最初はHTMLとして出力されます。そのうえで`client:load` / `client:idle` / `client:visible` / `client:media` / `client:only`といったdirectiveに応じて、後からJavaScriptを読み込んで動き出します。
 
 要するに、Client Islandの関心事は「このUIをブラウザでいつ動かすか」です。ここが、後で出てくるPrefetchとの大きな違いでもあります。
 
@@ -199,7 +200,7 @@ Client Islandは、インタラクションが必要なUIを、必要なタイ�
 
 一方のServer Islandは、動的なコンテンツや重いサーバー処理を、ページ本体とは切り離して後から差し込むための仕組みです。`server:defer`を付けると、Astroはまずページ全体のHTMLを返し、その後で特別なエンドポイントにGETリクエストを送り、Server Islandの中身を別途取得します。`slot="fallback"`を用意しておけば、取得が終わるまでの仮表示も出せます。
 
-つまり、Server Islandの関心事は「この部分をサーバーからいつ返すか」です。Client Islandがブラウザ側のhydrateタイミングを扱うのに対して、Server Islandは**サーバー側のHTMLレスポンスタイミング**を扱う、と捉えると整理しやすいです。
+つまり、Server Islandの関心事は「この部分をサーバーからいつ返すか」です。Client Islandがブラウザ側のhydrateタイミングを扱うのに対して、Server Islandは**サーバー側のHTMLレスポンスタイミング**を扱う、と捉えれば整理しやすいです。
 
 ## PrefetchとIslands architectureを実行フロー順に整理する
 
@@ -207,7 +208,7 @@ Client Islandは、インタラクションが必要なUIを、必要なタイ�
 
 Prefetchは、**今見ているページから、次に遷移するかもしれないページをどこまで先読みしておくか** という仕組みです。つまり、主に担当しているレイヤーは、「遷移の前」です。
 
-一方Islands architectureは、**遷移した先のページを、どの単位で・どのタイミングで動かすか** を扱う仕組みです。こちらの主戦場は「遷移した後のページ内部」です。
+一方Islands architectureは、**遷移した先のページを、どの単位・どのタイミングで動かすか** を扱う仕組みです。こちらの主戦場は「遷移した後のページ内部」です。
 
 この時点で、両者はどちらも「情報の取得方法を制御する目的」を持ちながらも、基本的には別のレイヤーを担当していることがわかります。
 
@@ -227,7 +228,7 @@ Prefetchは、**今見ているページから、次に遷移するかもしれ�
 :::note
 **`experimental.clientPrerender`を有効にした場合**  
 
-あくまで推測が混じりますが、`experimental.clientPrerender`を有効にした場合はフローが少し変わるのではないか？と思います。Speculation Rules APIの`prerender`が使える環境では、遷移前から次ページ自体を Invisibleなhidden tabで準備（描画・実行）できるため、Client IslandのJavaScript実行や、Server Islandでのデータフェッチなどが遷移前に始まる可能性があるのではないか？と思っています。つまり、**通常のPrefetchでは役割分担がかなり明確だが、client prerenderまで有効にすると両者の実行タイミングは一部重なる**、と整理できるのではないでしょうか？
+あくまで推測が混じりますが、`experimental.clientPrerender`を有効にした場合はフローが少し変わるのではないか？と思います。Speculation Rules APIの`prerender`が使える環境では、遷移前から次ページ自体をInvisibleなhidden tabで準備（描画・実行）できます。そのため、Client IslandのJavaScript実行やServer Islandでのデータフェッチなどが、遷移前に始まる可能性があるのではないか？と思っています。つまり、**通常のPrefetchでは役割分担がかなり明確だが、client prerenderまで有効にすると両者の実行タイミングは一部重なる**、と整理できるのではないでしょうか？
 
 もし、先に実行できるのであれば使い方によってはユーザー体験を更に向上できるかもしれない反面、開発者が実行タイミングについてもより深く把握しておく必要が出てくるので、その点は気合いでなんとかするしかないかもですね。
 :::
@@ -237,9 +238,9 @@ Prefetchは、**今見ているページから、次に遷移するかもしれ�
 今回は、PrefetchというAstroの機能を通して、Islands architectureを観察してみました。
 PrefetchとIslands architectureは、どちらもユーザー体験を良くするための仕組みですが、通常は見ているレイヤーが異なります。Prefetchは「遷移前に次ページをどう準備するか」、Islands architectureは「遷移後のページ内をどう分割し、いつ動かすか」を扱っています。
 
-なので、通常のAstro Prefetchでは、両者は干渉するというより、前後の工程を分担していると考えるのが自然です。ただし、`experimental.clientPrerender`でprerenderまで踏み込むと、遷移前から次ページの実行準備が進む可能性があるため、ここで初めてIslands architectureとの重なりが増えるのではないかと思います。
+なので、通常のAstro Prefetchでは、両者は干渉するというより、前後の工程を分担していると考えるのが自然です。ただし、`experimental.clientPrerender`でprerenderまで踏み込むと、遷移前から次ページの実行準備も進み得ます。そのため、ここで初めてIslands architectureとの重なりが増えるのではないかと思います。
 
-今回の件でIslands architectureについてより深く調査しましたが、以前より更にAstroの特徴として上がる理由がわかった気がします。Islands architectureは、Reactなどを埋め込む、JSハイドレーションの文脈で触れられることが多いですが、違う視点で見てみると、それらの埋め込みなどは、あくまで副産物な気もしました。
+今回の件でIslands architectureについてより深く調査しましたが、以前より更にAstroの特徴として上がる理由もわかった気がします。Islands architectureは、Reactなどを埋め込むJSハイドレーションの文脈で触れられることが多いですが、違う視点で見てみると、それらの埋め込みなどはあくまで副産物な気もしました。
 
 今後もいろいろ観察していこうと思います。本記事を読んでいただきありがとうございました。
 

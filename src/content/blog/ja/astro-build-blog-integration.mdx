@@ -16,7 +16,7 @@ Astroで個人ブログを作るときに役立ちそうなインテグレーシ
 RSSとサイトマップは最低限のSEO基盤なので、だいたい初期構成で入れる。
 それに加えて **[astro-check](https://www.npmjs.com/package/@astrojs/check)** は、
 ビルド前に軽く健康診断できる感覚があって安心。
-あと、Markdownだけだと表現が足りない場面があるので、**[MDX](https://mdxjs.com)** はかなりおすすめ。
+あと、Markdownだけだと表現が足りない場面もあるので、**[MDX](https://mdxjs.com)** はかなりおすすめ。
 Astroなら **[@astrojs/mdx](https://docs.astro.build/en/guides/integrations-guide/mdx/)** を使う。
 このあたりは「入れておくと運用が楽になる」枠として見ている。
 
@@ -24,7 +24,7 @@ Astroなら **[@astrojs/mdx](https://docs.astro.build/en/guides/integrations-gui
 
 次に気になっているのは、公式インテグレーションの
 **[Astro OG](https://www.npmjs.com/package/@astrojs/og)**。
-中身はまだ深く見れていないけど、OG画像生成をもっとシンプルにできるならうれしい。
+中身はまだ深く見られていないけど、OG画像生成をもっとシンプルにできるならうれしい。
 今のブログだと、日本語改行の都合で自前実装が多くなっているので、
 そこが少しでも軽くなるなら試したい。
 
@@ -55,6 +55,7 @@ PCがあるときは問題ないけど、
 
 ## いろいろ見ているヘッドレスCMS候補
 
+{/* textlint-disable ja-technical-writing/sentence-length */}
 Astroの公式CMSガイドを眺めて、
 [Keystatic](https://keystatic.com) / [KeystoneJS](https://keystonejs.com) /
 [microCMS](https://microcms.io) / [Payload CMS](https://payloadcms.com) /
@@ -68,9 +69,10 @@ Astroの公式CMSガイドを眺めて、
 [Strapi](https://strapi.io) / [Tina CMS](https://tina.io) /
 [Builder.io](https://www.builder.io) / [ButterCMS](https://buttercms.com)
 などの候補やガイドが書かれている。
+{/* textlint-enable ja-technical-writing/sentence-length */}
 
 ContentfulやmicroCMSあたりは有名どころで触ったことはあるが、
-他はまだあまり深く見れていない。最近地域コミュニティでご一緒している方がNuxt Studioと発言しているのを見て、調べてみたが確かに良さそうな印象を受けた。Astroには類似の公式インテグレーションはないがポジション的にはKeystaticやTina CMSあたりに近いのかなと思う。色々触れていきたいなと感じる。
+他はまだあまり深く見られていない。最近地域コミュニティでご一緒している方がNuxt Studioと発言しているのを見て、調べてみたが確かに良さそうな印象を受けた。Astroには類似の公式インテグレーションはないがポジション的にはKeystaticやTina CMSあたりに近いのかなと思う。色々触れていきたいなと感じる。
 
 ただまぁ現状は選択肢が多すぎてまだ検証途中。
 良さそうなものが出てきたら、別途記事にまとめたいと思う。

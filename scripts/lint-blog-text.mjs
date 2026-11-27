@@ -8,6 +8,8 @@ const blogDir = path.resolve(cwd, 'src/content/blog');
 const baseConfigPath = path.resolve(cwd, 'textlint.config.blog-base.cjs');
 const techConfigPath = path.resolve(cwd, 'textlint.config.blog-tech.cjs');
 const supportedExtensions = new Set(['.md', '.mdx']);
+// The textlint presets check Japanese prose, so only Japanese articles are targets.
+const japaneseLocaleDirectory = 'ja';
 
 const parseArgs = (argv) => {
   const options = {
@@ -74,7 +76,11 @@ const isBlogArticleFile = (filePath) => {
   }
 
   const relativePath = path.relative(blogDir, filePath);
-  return relativePath !== '' && !relativePath.startsWith('..');
+  if (relativePath === '' || relativePath.startsWith('..')) {
+    return false;
+  }
+
+  return relativePath.split(path.sep)[0] === japaneseLocaleDirectory;
 };
 
 const isIgnoredDraft = (filePath) => {
@@ -91,7 +97,8 @@ const unique = (values) => {
 
 const normalizeInputFiles = async (inputFiles) => {
   if (inputFiles.length === 0) {
-    return collectBlogFiles(blogDir);
+    const files = await collectBlogFiles(blogDir);
+    return files.filter((filePath) => isBlogArticleFile(filePath));
   }
 
   const resolvedFiles = inputFiles.map((filePath) => {
