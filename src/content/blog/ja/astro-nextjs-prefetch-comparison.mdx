@@ -20,7 +20,7 @@ AstroとNext.jsは、どちらもPrefetch機能を備えていますが、その
 
 ## Prefetchは万能ではない
 
-先ほどPrefetchのいいところは「描画までの時間が短くなる＝ユーザー体験が向上すること」と述べました。しかし、決して万能な機能ではありません。なぜなら、**ユーザー体験につながるようなPrefetchを実現することは容易ではない**からです。
+先ほどPrefetchのいいところは「描画までの時間が短くなり、ユーザー体験を向上させること」と述べました。しかし、決して万能な機能ではありません。なぜなら、**ユーザー体験につながるようなPrefetchを実現することが容易ではない**からです。
 
 ユーザーの行動を先読みし、意味がある（体験に直結する）Prefetchのみ行うことは、神の視点を持つに等しいと言えます。実際には、アナリティクスと睨めっこし、ユーザー行動を分析することで、よく利用され効果が大きいものを優先的にPrefetchする**戦略**が必要だと思います。
 
@@ -93,7 +93,7 @@ Prefetchの起動トリガーとして、以下の4つのオプションを選�
 
 - **hover** → ホバーまたはフォーカス時に取得
 - **tap** → クリック（タップ）→ 直前に取得
-- **viewport** → リンクがビューポートに入ったタイミングで低優先度で取得
+- **viewport** → リンクがビューポートへ入ったときに低優先度で取得
 - **load** → ページ読み込み完了後に全リンクを低優先度で取得
 
 Prefetchをtrueにしつつも、できる限り不要な通信を避けたい場合は、`tap` を選択するのが良いと思います。ユーザーが実際にクリックする直前に取得するため、無駄な先読みを減らすことができます。
@@ -114,7 +114,7 @@ Prefetchをtrueにしつつも、できる限り不要な通信を避けたい�
 ::: 
 
 また、余談で、かつ実験的サポートですが、Speculation Rules APIの活用機能も存在します。
-前述したように、AstroのPrefetchは、configファイルで`prefetch`を設定して機能させますが[`clientPrerender`](https://docs.astro.build/en/reference/experimental-flags/client-prerender/)をtrueにすることで、Speculation Rules APIを活用したPrefetchも有効化されます。
+前述したように、AstroのPrefetchはconfigファイルで`prefetch`を設定して機能させます。さらに[`clientPrerender`](https://docs.astro.build/en/reference/experimental-flags/client-prerender/)をtrueにすることで、Speculation Rules APIを活用したPrefetchも有効化されます。
 
 :::note
 **Speculation Rules APIとは**  
@@ -127,7 +127,7 @@ Next.jsのPrefetchも基本的には、ユーザー体験の向上のための�
 
 :::caution
 **[`next/link`と`Linkコンポーネント`](https://nextjs.org/docs/app/api-reference/components/link)**  
-今回は、Prefetchの機能として`next/link`と`Link`を取り上げていますが、用途・機能はPrefetchに限りません。これはPrefetchの他にもSPAのようなフルリロードせずに画面遷移させたり、スクロール制御をしたり、遷移のフックを制御したり、遷移中の状態を取得したり、Hookを提供したりなどをしています。色々な機能を有していますが、わかりやすくまとめると名前の通り、Next.jsにおいてリンク（遷移）するという機能を詰め合わせたようなAPIになります。その中の1機能・役割としてPrefetchがあるわけです。今回は、そのPrefetchの部分にのみフォーカスして扱います。
+今回は、Prefetchの機能として`next/link`と`Link`を取り上げていますが、用途・機能はPrefetchに限りません。これはPrefetchの他にもSPAのようなフルリロードなしの画面遷移やスクロール制御をしたり、遷移のフックを制御したり、遷移中の状態を取得したり、Hookを提供したりなどをしています。色々な機能を有していますが、わかりやすくまとめると名前の通り、Next.jsにおいてリンク（遷移）するという機能を詰め合わせたようなAPIになります。その中の1機能・役割としてPrefetchがあるわけです。今回は、そのPrefetchの部分にのみフォーカスして扱います。
 :::
 
 ### どのように実現されているか
@@ -146,13 +146,13 @@ Next.jsのPrefetchも基本的には、ユーザー体験の向上のための�
 - **優先度** — 何を優先的にPrefetchするかを決めるもので、`Intent > Default > Background` の3段階があります。
 - **同時接続数** — 一度にどれくらいリクエストを飛ばせるかの上限で、（Next.js v16.1.6の実装では）Intentでは上限12本、Defaultでは上限4本が設定されています。
 
-Next.jsではRSCのセグメント単位でフェッチを行うため、1リンクのプリフェッチで複数リクエストが発生しがちです。この接続上限がないと、ブラウザのネットワークキューがつまる可能性があります。一番重要なのはユーザーが実際に飛ぶリンクを先読みすること（100%の精度は難しいですが）なので、不要な取得でアプリのパフォーマンスが低下することは望ましくありません。
+Next.jsではRSCのセグメント単位でフェッチを行うため、1リンクのプリフェッチで複数リクエストが発生しがちです。この接続上限がないと、ブラウザのネットワークキューがつまることもあり得ます。一番重要なのはユーザーが実際に飛ぶリンクを先読みすること（100%の精度は難しいですが）なので、不要な取得でアプリのパフォーマンスが低下することは望ましくありません。
 
 個人的には、Prefetch処理において、4のスケジューラーがNext.jsには存在するのが特徴的です。Prefetchに関わる状態をかなり細かく制御しています。PPRか否かで、セグメントの送信の仕方なども変わるのも特徴的ですね。
 
 ### 基本的な使い方
 
-Next.jsでは、以下コードのように、`next/link`をimportし、`<Link>`コンポーネントを使用することで、そのリンクは（デフォルトで）Prefetchの対象になります。
+Next.jsでは以下コードのように、`next/link`をimportし、`<Link>`コンポーネントを使用することで、そのリンクは（デフォルトで）Prefetchの対象になります。
 
 ```jsx
 import Link from 'next/link'
@@ -162,7 +162,7 @@ export default function Page() {
 }
 ```
 
-デフォルトでは、Next.jsはViewportに入ったときにPrefetchを行いますが、`prefetch` propを使用して、明示的にtrue/falseを設定することもできます。`false` にした場合は、viewportへの進入時・hover時ともにPrefetchが完全に無効化されます。
+デフォルトでは、Next.jsはViewportへ入ったときにPrefetchを行いますが、`prefetch` propを使用して、明示的にtrue/falseを設定できます。`false` にした場合は、viewportへの進入時・hover時ともにPrefetchが完全に無効化されます。
 
 なお、`prefetch` propを省略した場合（デフォルト値 `null`）の挙動は、リンク先のルートが静的か動的かで異なります。静的ルートの場合はフルにPrefetchされますが、動的ルートの場合は最も近い `loading.js` 境界までの部分的なPrefetchが行われます。この「セグメント単位の部分的なPrefetch」は、AstroのHTML全体取得とは対照的なアプローチです。
 

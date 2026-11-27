@@ -14,13 +14,13 @@ Astro route caching（Experimental）についてのメモ#2です。
 前回は、route cachingという機能の先出しと、その前提になるAstroのレンダリングモデルを整理しました。要点だけまとめると以下の通りです。
 
 - Astroには、Prerender（SSG）だけでなく、リクエスト時にビルドなしで動的更新するためのOn-demand Render（SSR）という仕組みがあります
-- Prerenderは事前生成（= CDNなどへ配信ファイルを"キャッシュ"）しておきますが、On-demand Renderはデフォルトだとキャッシュされず、毎回リクエスト時に更新になります
-- リアルタイム性が絶対的に必要ならこのままでもよいかもしれません。しかし、多少のラグを許容してキャッシュを保持した方がユーザー体験がよくなるケースも考えられます
+- Prerenderは事前生成（= CDNなどへ配信ファイルを"キャッシュ"）しておきますが、On-demand Renderはデフォルトだとキャッシュされず、毎回リクエスト時に更新されます
+- リアルタイム性が絶対的に必要ならこのままでもよいかもしれません。しかし、多少のラグを許容してキャッシュを保持した方が、ユーザー体験を高められるケースも考えられます
 - ただし、以前Astroプロジェクトでは、PaaSやCDNなどのキャッシュ機能を自分で活用するしかありませんでした
 
-この「SSRで返すレスポンスを、プラットフォーム依存の機能に寄せすぎずにどう扱うか」という悩みに対して、Astroが共通APIとして整備し始めたのが**route caching**です。
+この「SSRで返すレスポンスを、プラットフォーム依存の機能へ寄せすぎずにどう扱うか」という悩みに対して、Astroが共通APIとして整備し始めたのが**route caching**です。
 
-今回は前置きはここまでにして、次の2点に絞って見ていきます。
+今回の前置きはここまでにして、次の2点に絞って見ていきます。
 
 - route cachingがいつ、どのような問題意識で提起されたか
 - `cache.set()` をはじめ、どのようなAPIとして設計されているか
@@ -33,11 +33,11 @@ Astro route caching（Experimental）についてのメモ#2です。
 
 route cachingに直接つながる議論を辿ると、かなり早い段階では2022年4月26日のDiscussion[#181](https://github.com/withastro/roadmap/discussions/181)まで遡れます。この時点でのテーマは「SSR向けのキャッシュヘッダーは分かりづらいので、Astro側で高レベルなAPIを用意できないか」というものでした。提案内容も`Astro.cache()`で`maxAge`や`revalidate`、`private`などを宣言する、どちらかと言うと**header helper**に近い色味が強かったように見えます。
 
-ただ、この初期のDiscussionを読むと、単なるヘッダー補助だけでは収まらない雰囲気も見えてきます。返信では「それだと実際にサーバー側でキャッシュしてくれるのかと誤解しやすい」という反応があり、Next.jsなどとの機能比較も出ていました。まだ後のroute cachingのように`invalidation`、`provider`、Nodeのランタイム内キャッシュまで明確ではないものの、「ヘッダーを楽に書けるだけでは足りないのでは」という空気はすでにあったように感じます。
+ただ、この初期のDiscussionを読むと、単なるヘッダー補助だけでは収まらない雰囲気も見えてきます。返信では「それだと実際にサーバー側でキャッシュしてくれるのかと誤解しやすい」という反応があり、Next.jsなどとの機能比較も出ていました。まだ後のroute cachingのように`invalidation`、`provider`、Nodeのランタイム内キャッシュまで明確ではないものの、「ヘッダーを楽に書けるだけだと足りないのでは」という空気はすでにあったように感じます。
 
 ### Discussion #1131 / Issue #1140（2025年〜）
 
-大きく方向性が固まったのが、2025年2月28日のDiscussion[#1131](https://github.com/withastro/roadmap/discussions/1131)と、同年3月19日のStage 2 proposalであるissue[#1140](https://github.com/withastro/roadmap/issues/1140)です。ここでは要約として、**platform-agnosticなroute caching APIをAstro SSR pagesに導入し、ルートごとの宣言的な設定、middlewareやAPI handlersからの上書き、Node.js / Vercel / Netlify / Cloudflareをまたいだ一貫したDX、path/tagによるinvalidation**まで含めた構想が示されています。2022年のheader helper的な議論から、一気に包括的なキャッシュ機能へ昇華したことが分かります。
+大きく方向性が固まったのは、2025年2月28日のDiscussion[#1131](https://github.com/withastro/roadmap/discussions/1131)と、同年3月19日のStage 2 proposalであるissue[#1140](https://github.com/withastro/roadmap/issues/1140)です。要約として、**platform-agnosticなroute caching APIをAstro SSR pagesに導入し、ルートごとの宣言的な設定やmiddleware・API handlersからの上書き**を含む構想が示されています。さらに、**Node.js / Vercel / Netlify / Cloudflareをまたいだ一貫したDXや、path/tagによるinvalidation**まで含まれています。2022年のheader helper的な議論から、一気に包括的なキャッシュ機能へ昇華したことが分かります。
 
 さらにこの段階ではnon-goalsもかなり明確に書かれていて、route cachingが何でもかんでもを対象にする機能ではないことも早い時点で線引きされています。スコープとして意識的に切り分けられているのは次のあたりです。
 
@@ -46,15 +46,15 @@ route cachingに直接つながる議論を辿ると、かなり早い段階で�
 - 主眼はCDNやサーバー側のキャッシュ制御であり、ブラウザキャッシュそのものを全面的に置き換えるものではない
 - Node.jsでの分散キャッシュまでを最初から解決するわけではない
 
-つまりStage 2の時点で、Astroがやろうとしているのは「SSRを使うときに毎回ゼロからキャッシュ戦略を書かなくてよくする」ための仕組みであり、同時に「どこまでをroute cachingの責務にして、どこから先をCDNやホスティングサービスに委ねるか」を明確にしようとしていたことが読み取れます。SSGを否定するのではなく、SSGではカバーしきれない更新性の領域にだけ、明示的な足し算としてキャッシュ制御を持ち込む形です。
+つまりStage 2の時点で、Astroがやろうとしているのは「SSRを使うときに毎回ゼロからキャッシュ戦略を書かなくてよくする」ための仕組みです。同時に「どこまでをroute cachingの責務にして、どこから先をCDNやホスティングサービスに委ねるか」を明確にしようとしていたことも読み取れます。SSGを否定するのではなく、SSGではカバーしきれない更新性の領域にだけ、明示的な足し算としてキャッシュ制御を持ち込む形です。
 
 ### RoadmapへのPR #1245 （2025年〜）
 
-その後、この構想は2025年10月15日のStage 3 proposalであるPR[#1245](https://github.com/withastro/roadmap/pull/1245)でさらに具体化されています。この段階では、`Astro.cache()`のようなcallableな形ではなく`Astro.cache.set()` / `Astro.cache.invalidate()`を持つオブジェクトとして整理されたり、複数回の`cache.set()`のマージ挙動、`cache.set(false)`による明示的な無効化、`provider`の整理、configとroute codeの優先順位など、実際に使うときのディテールがかなり詰められています。Stage 2で大きな方向性を固め、Stage 3でAPIの細部と責務分界を磨いた、という流れで見るのが自然そうです。
+その後、この構想は2025年10月15日のStage 3 proposalであるPR[#1245](https://github.com/withastro/roadmap/pull/1245)でさらに具体化されています。この段階では、`Astro.cache()`のようなcallableな形ではなく、`Astro.cache.set()` / `Astro.cache.invalidate()`を持つオブジェクトとして整理されました。さらに、複数回の`cache.set()`のマージ挙動や`cache.set(false)`での無効化に加え、`provider`の整理やconfigとroute codeの優先順位など、実際に使うときのディテールも詰められています。Stage 2で大きな方向性を固め、Stage 3でAPIの細部と責務分界を磨いた、という流れで見るのが自然そうです。
 
 最終的にこの提案はAstro本体の[#15579](https://github.com/withastro/astro/pull/15579)で実装に進み、Astro v6.0.0でExperimentalとして入りました。公式のAstro v6リリース記事でも、「SSRレスポンスのキャッシュはホストごとにやり方が違いすぎるので、Astroから単一のAPIで扱えるようにする」という位置づけで紹介されていました。
 
-なお、ここまでの議論にはproposal段階とRFC段階の内容が混在していますが、実際にAstro v6で使えるExperimental APIとは細部が異なる部分があります。使うときは最新の公式ドキュメントも合わせて確認した方が安全です。
+なお、ここまでの議論にはproposal段階とRFC段階の内容が混在していますが、実際にAstro v6で使えるExperimental APIとは細部が異なる部分もあります。使うときは最新の公式ドキュメントも合わせて確認した方が安全です。
 
 ## route cachingがどのように設計されているか
 
@@ -82,7 +82,7 @@ export default defineConfig({
 - CDN側にヘッダーを渡してキャッシュさせる**CDN provider**
 - ランタイム側でレスポンスを保持する**Runtime provider**
 
-つまり、ルートのコードは`maxAge`や`tags`のような意図だけを宣言し、最終的にそれをヘッダーへ落とすのか、ランタイム内キャッシュとして扱うのかはプロバイダ側に委ねる構造になっています。この抽象化が「platform-agnostic[^1]」と言っている部分です。
+つまり、ルートのコードは`maxAge`や`tags`のような意図だけを宣言し、最終的にそれをヘッダーへ落とすのか、ランタイム内キャッシュとして扱うのかはプロバイダ側へ委ねる構造になっています。この抽象化が「platform-agnostic[^1]」と言っている部分です。
 
 [^1]: アプリコードから見たキャッシュAPIをプラットフォーム非依存にする、という意味です。
 
@@ -176,12 +176,12 @@ export async function POST(context) {
 - 主にastro.configファイルで宣言し、各.astroファイルやAPIルートで細かく制御・上書きされる設計
 - 設定に使用する値もHTTPキャッシュで使用されるような概念・単語とほぼ等価なので、理解しやすい
 
-現状はExperimentalとある通り、まだ実験段階であり、プラットフォームごとのバグや公式がリリースしているアダプタ、Live content collectionsとの連携など、色々探り探り進めている段階かと思います。使用する概念も便利ながらも未知の固有概念ではなく、ブラウザAPIの必要最低限の抽象化に感じるのはAstroっぽい色があって個人的ないいなと思います。
+現状はExperimentalとある通り、まだ実験段階であり、プラットフォームごとのバグや公式がリリースしているアダプタ、Live content collectionsとの連携など、色々手探りで進めている段階かと思います。使用する概念も便利ながらも未知の固有概念ではなく、ブラウザAPIの必要最低限の抽象化に感じるのはAstroっぽい色があって個人的ないいなと思います。
 
 
 ## 中締め
 
-ここまでで、route cachingが「なぜ必要とされたか」と「どんなAPIとして切られているか」はだいぶ整理できたかなと思います。まとめるとSSRのキャッシュをAstro流に無理なく扱えるようにした、という印象ですかね〜。
+ここまでで、route cachingが「なぜ必要とされたか」と「どんなAPIとして切られているか」はだいぶ整理できたかなと思います。まとめるとSSRのキャッシュをAstro流で無理なく扱えるようにした、という印象ですかね〜。
 
 次のメモ#3では、ここで見たAPIが実際にどんな用途を想定しているのか、逆にどんなケースでは使わない方がよさそうかを掘っていこうと思います。
 
